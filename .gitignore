@@ -20,7 +20,7 @@ backend/.gradle/
 backend/out/
 *.class
 *.jar
-!gradle/wrapper/gradle-wrapper.jar
+!backend/gradle/wrapper/gradle-wrapper.jar
 
 # ===== Node / Next.js =====
 frontend/node_modules/
