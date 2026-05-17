@@ -1,0 +1,19 @@
+﻿카테고리,역량_ID,역량명,신입 (0년),주니어 (1-2년),시니어 (3-5년),리드 (5년+),매칭 키워드,부족 시 보완 액션,가중치
+디자인 도구,UX-TOOL-001,Figma,튜토리얼 수준 사용,오토레이아웃·컴포넌트·바리언트 능숙,"디자인 시스템 구축·운영, 플러그인 활용",조직 디자인 도구 표준·워크플로,"Figma,Auto Layout,Component,Variant,Prototype,Plugin",Figma 디자인 시스템 1개 직접 구축,5
+디자인 도구,UX-TOOL-002,Sketch / Adobe XD (부가),용어 수준,기본 시안 작업,프로젝트 단위 운영,도구 선택 의사결정,"Sketch,Adobe XD,Photoshop,Illustrator",Figma와 비교 위해 1개 도구 튜토리얼,1
+디자인 도구,UX-TOOL-003,Photoshop / Illustrator,기본 이미지 편집,"리터칭·합성, 벡터 일러스트 기본","디자인 자산 제작, 일러스트레이션 시리즈",비주얼 아트 디렉션,"Photoshop,Illustrator,Sketch,Vector,Raster",포트폴리오에 들어갈 일러스트 1세트 제작,2
+사용자 리서치,UX-RSCH-001,리서치 방법론,용어 수준,인터뷰·설문조사 진행 가능,"정성·정량 혼합 리서치, 페르소나·여정 지도 작성",리서치 전략·조직 표준,"User Research,Interview,Survey,Persona,Journey Map,Qualitative,Quantitative",본 프로젝트 잠재 사용자 5명 인터뷰 진행,5
+사용자 리서치,UX-RSCH-002,사용성 평가,휴리스틱 평가 용어 이해,Nielsen 휴리스틱·인지 워크스루 진행,"Think-aloud·원격 사용성 테스트, 안건 설계·분석",조직 사용성 평가 표준,"Heuristic Evaluation,Usability Test,Think Aloud,Nielsen",본 프로젝트 와이어프레임 휴리스틱 평가 1회,4
+사용자 리서치,UX-RSCH-003,데이터 기반 의사결정,GA 기본 사용,"이벤트·퍼널 분석, 코호트 분석","A/B 테스트 설계·해석, 통계적 유의성",데이터 드리븐 디자인 문화,"Google Analytics,GA4,Amplitude,Mixpanel,A/B Test,Funnel,Cohort",본 프로젝트에 GA4 + 핵심 이벤트 5개 트래킹,4
+정보 설계·인터랙션,UX-IA-001,IA·와이어프레임,기본 박스 그리기,사이트맵·플로우·와이어프레임 작성,"복잡한 정보 구조 설계, 카드 정렬·트리 테스트",조직 IA 표준,"IA,Information Architecture,Sitemap,User Flow,Wireframe,Card Sorting",본 프로젝트 사이트맵·플로우 다이어그램 작성,5
+정보 설계·인터랙션,UX-IA-002,프로토타이핑,Figma 기본 프로토타입,인터랙션·전환·조건부 분기,"Framer·Principle로 마이크로 인터랙션, 모션 디자인",프로토타이핑 표준,"Prototype,Figma Prototype,Framer,Principle,Microinteraction,Motion",본 프로젝트 핵심 플로우 1개를 인터랙티브 프로토타입으로,3
+정보 설계·인터랙션,UX-IA-003,UX 라이팅,기본 라벨링,마이크로카피·에러 메시지 작성,"톤앤매너 가이드, 다국어 고려",조직 UX 라이팅 표준,"UX Writing,Microcopy,Voice and Tone,i18n",본 프로젝트 빈 상태·에러 메시지 카탈로그 작성,3
+비주얼 디자인,UX-VIS-001,타이포·컬러·그리드,기본 글꼴 적용,타입 스케일·컬러 시스템·8pt 그리드,컨트라스트·접근성 컬러·반응형 타이포,비주얼 시스템 표준 수립,"Typography,Color System,Grid,8pt Grid,Contrast,Accessibility",본 프로젝트 컬러·타이포 토큰 시스템 정의,4
+비주얼 디자인,UX-VIS-002,아이콘·일러스트,기성 아이콘 사용,아이콘 세트 일관성 유지·커스텀 제작,"일러스트 스타일 정립, 시리즈 작업",비주얼 아이덴티티 책임자,"Icon,Illustration,Iconography,SVG",본 프로젝트용 커스텀 아이콘 10개 제작,2
+비주얼 디자인,UX-VIS-003,반응형·다크모드,용어 수준,모바일·데스크톱 두 가지 작업,다양한 디바이스·다크모드 시스템 설계,디자인 시스템 다중 테마 운영,"Responsive,Mobile First,Dark Mode,Theming,Breakpoint",본 프로젝트 다크모드 시안 1셋,3
+디자인 시스템,UX-DS-001,디자인 토큰,용어 수준,기본 토큰(color/space/typography) 정의,"토큰 계층·시맨틱 토큰, 다중 테마",조직 DS 토큰 거버넌스,"Design Token,DS,Style Dictionary,Variables",본 프로젝트 토큰을 Figma Variables로 구축,4
+디자인 시스템,UX-DS-002,컴포넌트 체계,버튼·인풋 컴포넌트 작성,아토믹 디자인·컴포넌트 변형 체계,"DS 컴포넌트 라이브러리 운영, 코드 매핑",디자인 시스템 리더,"Atomic Design,Component,Library,Storybook",본 프로젝트 핵심 컴포넌트 20개를 DS로 정리,3
+디자인 시스템,UX-DS-003,Storybook·문서화,용어 수준,사용 가이드 작성,"Storybook 연동·시각 회귀, 사용 사례 카탈로그",DS 문서·교육 표준,"Storybook,Documentation,Zeroheight,Supernova",본 프로젝트 DS 5개 컴포넌트를 Storybook으로,2
+협업·접근성,UX-COL-001,개발자 협업·핸드오프,스펙 시트 작성,"디자인 토큰·컴포넌트 매핑, 핸드오프 도구 활용","엔지니어와 컴포넌트 공동 설계, 코드 리뷰 참여",디자인-개발 경계 정의,"Handoff,Figma Dev Mode,Design Token,Storybook",본 프로젝트 핸드오프 가이드 작성,5
+협업·접근성,UX-COL-002,접근성(a11y),alt·label 작성,컬러 컨트라스트·키보드 네비게이션 고려,"스크린 리더 테스트, WCAG AA 준수 검증",조직 접근성 표준,"Accessibility,a11y,WCAG,Contrast,Screen Reader",본 프로젝트 1개 화면 WCAG AA 검증,3
+협업·접근성,UX-COL-003,Git/디자인 버전 관리,Figma 페이지 분리,브랜치·라이브러리 관리,변경 관리·리뷰 워크플로,조직 버전 관리 표준,"Figma Branch,Library,Version,Abstract",Figma 브랜치 기능으로 협업 시도,2

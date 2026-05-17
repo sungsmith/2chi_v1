@@ -1,0 +1,35 @@
+﻿트랙 코드,트랙명,카테고리명,카테고리 코드,ID 접두사 예
+BE,백엔드,언어·프레임워크,LANG,BE-LANG-001
+BE,백엔드,데이터베이스,DB,BE-DB-001
+BE,백엔드,API 설계,API,BE-API-001
+BE,백엔드,아키텍처,ARCH,BE-ARCH-001
+BE,백엔드,운영·인프라,OPS,BE-OPS-001
+BE,백엔드,메시징·스트리밍,MSG,BE-MSG-001
+BE,백엔드,성능·확장성,PERF,BE-PERF-001
+BE,백엔드,테스트,TEST,BE-TEST-001
+BE,백엔드,협업·문화,COL,BE-COL-001
+FE,프론트엔드,언어·프레임워크,LANG,FE-LANG-001
+FE,프론트엔드,스타일링·UI,STYL,FE-STYL-001
+FE,프론트엔드,상태관리·데이터,STATE,FE-STATE-001
+FE,프론트엔드,성능·접근성,PERF,FE-PERF-001
+FE,프론트엔드,빌드·도구,BUILD,FE-BUILD-001
+FE,프론트엔드,테스트,TEST,FE-TEST-001
+FE,프론트엔드,협업·디자인 협업,COL,FE-COL-001
+IC,인프라_클라우드,클라우드 플랫폼,CLOUD,IC-CLOUD-001
+IC,인프라_클라우드,컨테이너·오케스트레이션,CONT,IC-CONT-001
+IC,인프라_클라우드,IaC,IAC,IC-IAC-001
+IC,인프라_클라우드,CI/CD,CICD,IC-CICD-001
+IC,인프라_클라우드,관측성·운영,OBS,IC-OBS-001
+IC,인프라_클라우드,네트워크·보안,NETSEC,IC-NETSEC-001
+IO,인프라_시스템운영,서버·OS 운영,OS,IO-OS-001
+IO,인프라_시스템운영,가상화·하이퍼바이저,VIRT,IO-VIRT-001
+IO,인프라_시스템운영,스토리지·백업,STOR,IO-STOR-001
+IO,인프라_시스템운영,네트워크,NET,IO-NET-001
+IO,인프라_시스템운영,정보보안,SEC,IO-SEC-001
+IO,인프라_시스템운영,자산·헬프데스크,ITAM,IO-ITAM-001
+UX,UI_UX_디자이너,디자인 도구,TOOL,UX-TOOL-001
+UX,UI_UX_디자이너,사용자 리서치,RSCH,UX-RSCH-001
+UX,UI_UX_디자이너,정보 설계·인터랙션,IA,UX-IA-001
+UX,UI_UX_디자이너,비주얼 디자인,VIS,UX-VIS-001
+UX,UI_UX_디자이너,디자인 시스템,DS,UX-DS-001
+UX,UI_UX_디자이너,협업·접근성,COL,UX-COL-001

@@ -1,0 +1,3135 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>이취 2chi · Design System v1</title>
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="doc.css" />
+</head>
+<body style="background-color: rgb(255, 255, 255)">
+<div class="doc-shell">
+
+<!-- ============================================================
+     SIDEBAR (TOC)
+============================================================ -->
+<aside class="doc-sidebar">
+  <div class="brand">
+    <div class="brand-mark">
+      <img src="assets/logo.svg" alt="이취" style="height:44px;width:auto;display:block"/>
+    </div>
+    <em style="font-style:normal;display:block;font-family:var(--font-family-sans);font-size:11px;font-weight:500;color:var(--color-text-muted);letter-spacing:0.04em;margin-top:12px">2chi · Design System v1</em>
+    <div class="brand-sub" style="margin-top:8px">2026.05 · 김소미</div>
+  </div>
+  <nav>
+    <ul class="toc-list">
+      <li><a href="#sec-00"><span class="num">00</span>Overview</a></li>
+      <li><a href="#sec-01"><span class="num">01</span>Brand Identity</a></li>
+      <li><a href="#sec-02"><span class="num">02</span>Product Tone</a></li>
+      <li><a href="#sec-03"><span class="num">03</span>Design Tokens</a></li>
+      <li><a href="#sec-04"><span class="num">04</span>Layout &amp; Grid</a></li>
+      <li><a href="#sec-05"><span class="num">05</span>Components</a></li>
+      <li><a href="#sec-icons"><span class="num">5b</span>Icon System</a></li>
+      <li><a href="#sec-06"><span class="num">06</span>AI &amp; Review</a></li>
+      <li><a href="#sec-07"><span class="num">07</span>Page Templates</a></li>
+      <li><a href="#sec-08"><span class="num">08</span>User Flows</a></li>
+      <li><a href="#sec-09"><span class="num">09</span>Theme Extension</a></li>
+      <li><a href="#sec-10"><span class="num">10</span>Accessibility</a></li>
+      <li><a href="#sec-11"><span class="num">11</span>Usage Guidelines</a></li>
+      <li><a href="#sec-12"><span class="num">12</span>Do / Don't</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main class="doc-main">
+
+<!-- ============================================================
+     00 OVERVIEW
+============================================================ -->
+<section id="sec-00">
+  <div class="hero">
+    <span class="tape" style="top:18px;left:48px"></span>
+    <span class="tape pink" style="top:24px;right:80px;transform:rotate(7deg)"></span>
+    <span class="tape mint" style="bottom:24px;right:120px;transform:rotate(-12deg)"></span>
+
+    <div class="mono" style="color:var(--color-text-muted);margin-bottom:14px">2chi / 이취 · 취업 · 이직 올인원 워크스페이스</div>
+    <h1>
+      매번 다시 쓰지 않는 자소서,<br/>
+      <span class="hand-underline">한곳에서 정리</span>되는 지원 흐름.
+    </h1>
+    <p class="lead">
+      이취(2chi)는 내 이력 + 기업분석 + 채용공고를 통합 분석하여 회사별로 다른 자소서를 만들고, 부족한 역량까지 짚어주는 IT 직군용 취업·이직 워크스페이스입니다.
+      이 문서는 v1 출시를 위한 디자인 시스템으로, <b>토큰 · 컴포넌트 · 페이지 템플릿 · AI 검토 패턴</b>까지 실제 개발 적용 가능한 단위로 정리되어 있습니다.
+    </p>
+    <div class="hero-meta">
+      <span><b>v1</b> · 2026 Q2</span>
+      <span><b>Platform</b> · PC Web First · Responsive</span>
+      <span><b>Font</b> · Pretendard · MemomentKkukkukk</span>
+      <span><b>Stack</b> · Next.js · Tailwind · shadcn</span>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <span class="eyebrow">00 · Overview</span>
+    <h2>제품 원칙 & 디자인 원칙</h2>
+    <p>이취는 "AI가 대신 써주는 서비스"가 아니라 "사용자가 자신의 경험을 정리하고 검토하는 워크스페이스"입니다. 모든 디자인 결정은 아래 5가지 원칙을 충족해야 합니다.</p>
+  </div>
+
+  <div class="grid g-3">
+    <div class="card">
+      <div class="badge info dot">원칙 01</div>
+      <h3 class="sub" style="margin-top:10px;font-size:17px">하나의 흐름으로 연결</h3>
+      <p style="margin:0;font-size:13px;color:var(--color-text-secondary)">이력 → 공고 → 기업분석 → 자소서 → 지원이 단절 없이 이어져 보이게. 같은 데이터를 두 번 입력하지 않는다.</p>
+    </div>
+    <div class="card">
+      <div class="badge lav dot">원칙 02</div>
+      <h3 class="sub" style="margin-top:10px;font-size:17px">검토 가능한 AI</h3>
+      <p style="margin:0;font-size:13px;color:var(--color-text-secondary)">AI 결과는 항상 "검토 필요" 상태로 시작한다. 출처가 확인되지 않는 표현은 시각적으로 강조하고, 사용자의 확정으로만 최종이 된다.</p>
+    </div>
+    <div class="card">
+      <div class="badge success dot">원칙 03</div>
+      <h3 class="sub" style="margin-top:10px;font-size:17px">불안을 낮추는 톤</h3>
+      <p style="margin:0;font-size:13px;color:var(--color-text-secondary)">취업 준비자의 압박감을 키우지 않는다. 부족 역량은 "비난"이 아니라 "보완 액션"으로 안내한다.</p>
+    </div>
+    <div class="card">
+      <div class="badge warning dot">원칙 04</div>
+      <h3 class="sub" style="margin-top:10px;font-size:17px">감성은 포인트, 정보는 또렷이</h3>
+      <p style="margin:0;font-size:13px;color:var(--color-text-secondary)">테이프 · 메모 · 손글씨는 빈 화면 · 격려 · 환영 영역에만. 자소서 · 이력서 · 데이터 테이블은 가독성 최우선.</p>
+    </div>
+    <div class="card">
+      <div class="badge pink dot">원칙 05</div>
+      <h3 class="sub" style="margin-top:10px;font-size:17px">신뢰 위에 올린 친근함</h3>
+      <p style="margin:0;font-size:13px;color:var(--color-text-secondary)">민감한 데이터(이력 · 자소서 · 결과)를 다루기에 SaaS급 신뢰감이 기본. 그 위에 친근한 톤을 얇게 얹는다.</p>
+    </div>
+    <div class="card soft">
+      <div class="mono" style="color:var(--color-text-muted)">v1 SCOPE</div>
+      <p style="margin:8px 0 0;font-size:12.5px;line-height:1.65;color:var(--color-text-secondary)">
+        포함: 회원/온보딩, 대시보드, 내 정보, 지원 현황, 자소서, 채용공고, 기업분석, 알림, 관리자.<br/>
+        제외: 면접/모의면접, 포트폴리오 빌더, 커뮤니티, 결제, 본인인증, 알림톡/SMS, 네이티브 앱, PWA.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     01 BRAND IDENTITY
+============================================================ -->
+<section id="sec-01">
+  <div class="section-head">
+    <span class="eyebrow">01 · Brand Identity</span>
+    <h2>로고 · 컬러 마크 · 톤 키워드</h2>
+    <p>한글 "이취"는 정체성, 영문 "2chi"는 확장성. 손글씨 느낌의 영문 표기로 친근함을 더하되, 한글은 또렷한 산세리프로 신뢰감을 유지합니다.</p>
+  </div>
+
+  <h3 class="sub">로고 마크</h3>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 16px;max-width:64ch">
+    주 로고는 손으로 그린 듯한 마크. 한글 "이취"가 정체성, 영문 "2chi"는 확장성을 담당합니다. 큰 사이즈/브랜드 면(랜딩·온보딩·환영·인쇄)에서는 SVG 마크를, 작은 UI 사이즈나 단색 컨텍스트에서는 텍스트 워드마크를 사용합니다.
+  </p>
+  <div class="logo-grid">
+    <div class="logo-cell white" style="grid-column:span 2;min-height:200px">
+      <img src="assets/logo.svg" alt="이취 (2chi)" style="height:140px;width:auto;display:block"/>
+      <div class="label">PRIMARY MARK · ON LIGHT</div>
+    </div>
+    <div class="logo-cell cream">
+      <img src="assets/logo.svg" alt="이취" style="height:100px;width:auto;display:block"/>
+      <div class="label">ON CREAM BG (#F8F8F4)</div>
+    </div>
+    <div class="logo-cell mint">
+      <img src="assets/logo.svg" alt="이취" style="height:100px;width:auto;display:block"/>
+      <div class="label">ON MINT TINT</div>
+    </div>
+    <div class="logo-cell lav">
+      <img src="assets/logo.svg" alt="이취" style="height:100px;width:auto;display:block"/>
+      <div class="label">ON LAVENDER TINT</div>
+    </div>
+    <div class="logo-cell dark">
+      <div class="logomark inv">이취<span class="star">*</span><span class="en">2chi</span></div>
+      <div class="label" style="color:rgba(255,255,255,.6)">WORDMARK · ON DARK</div>
+    </div>
+    <div class="logo-cell white">
+      <div class="logomark">이취<span class="star">*</span><span class="en">2chi</span></div>
+      <div class="label">WORDMARK · 작은 UI 컨텍스트</div>
+    </div>
+    <div class="logo-cell bad">
+      <img src="assets/logo.svg" alt="" style="height:90px;width:auto;display:block;opacity:0.7;filter:grayscale(0.4)"/>
+      <div class="label" style="color:#fff">✗ 비비드 패턴 위 사용 금지</div>
+    </div>
+  </div>
+
+  <h3 class="sub">로고 사용 규칙</h3>
+  <div class="grid g-2">
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">여백(Clearspace)</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">로고 X-height의 50% 이상을 사방 여백으로 확보합니다.</p>
+      <div class="clearspace">
+        <div class="logomark" style="font-size:32px">이취<span class="star">*</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">최소 사이즈</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">웹 24px · 인쇄 12mm 미만으로 축소 금지. 작은 크기에서는 한글 단독으로.</p>
+      <div class="row" style="gap:24px;align-items:flex-end">
+        <div class="logomark" style="font-size:48px">이취<span class="star">*</span></div>
+        <div class="logomark" style="font-size:24px">이취<span class="star">*</span></div>
+        <div class="logomark" style="font-size:16px"><span class="han">이취</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">표기 우선순위</h4>
+      <table class="token-table" style="font-size:12px">
+        <thead><tr><th>맥락</th><th>표기</th></tr></thead>
+        <tbody>
+          <tr><td>UI · 헤더 · 명함</td><td><b>이취 2chi</b> (조합)</td></tr>
+          <tr><td>이메일 발신자명 / 메타 태그</td><td>2chi</td></tr>
+          <tr><td>사용자 대화 / 문서 본문</td><td>이취</td></tr>
+          <tr><td>favicon · 16px 이하</td><td>2 (영문 단독)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">잘못된 사용</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--color-text-secondary);line-height:1.8">
+        <li>로고를 회전 · 기울이기</li>
+        <li>한글과 영문의 색을 동일하게 사용</li>
+        <li>비비드 그라데이션 · 패턴 위 사용</li>
+        <li>한글 자모 분리 후 재배열</li>
+        <li>로고 위에 그림자/외곽선 추가</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub">브랜드 톤 키워드</h3>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-top:-8px">제품의 모든 결정은 이 7개 키워드 중 최소 2개와 일치해야 합니다.</p>
+  <div class="tone-row">
+    <span class="tone-chip">정리</span>
+    <span class="tone-chip">연결</span>
+    <span class="tone-chip">안심</span>
+    <span class="tone-chip">준비</span>
+    <span class="tone-chip">성장</span>
+    <span class="tone-chip">맞춤</span>
+    <span class="tone-chip">검토</span>
+  </div>
+</section>
+
+<!-- ============================================================
+     02 PRODUCT TONE
+============================================================ -->
+<section id="sec-02">
+  <div class="section-head">
+    <span class="eyebrow">02 · Product Tone &amp; UX Writing</span>
+    <h2>사용자를 압박하지 않는 문장</h2>
+    <p>"AI가 알려준다"가 아니라 "함께 정리해본다". 명령형 대신 청유형 · 권유형으로, 단언 대신 검토 가능한 표현으로 작성합니다.</p>
+  </div>
+
+  <h3 class="sub">톤 원칙</h3>
+  <div class="grid g-2" style="margin-bottom:32px">
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">✓ 이런 톤으로</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>해요체 · 청유형 ("작성해볼까요?")</li>
+        <li>주체는 항상 "내(사용자) "</li>
+        <li>AI 결과는 "초안 · 추천 · 확인 필요"로 표기</li>
+        <li>부족 역량은 "보완할 경험" / "다음 준비"</li>
+        <li>구체적 행동을 다음 문장에 함께 제시</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">✗ 피해야 할 톤</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>합쇼체 / 명령형 ("작성하십시오")</li>
+        <li>"부족합니다 · 미흡합니다" 같은 평가어</li>
+        <li>"AI가 완성했습니다" 같은 단언</li>
+        <li>"제출하지 않으면 떨어집니다" 같은 위협</li>
+        <li>이모지 남용 / 감탄사 과다 사용</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub">예시 문구</h3>
+  <table class="token-table">
+    <thead><tr><th style="width:140px">맥락</th><th>예시 (UI 표시 문구)</th><th>피하기</th></tr></thead>
+    <tbody>
+      <tr><td>Empty (내 정보)</td><td>"내 정보를 입력하면 맞춤 분석이 시작돼요."</td><td>"먼저 정보를 입력해주세요."</td></tr>
+      <tr><td>Empty (자소서)</td><td>"첫 자소서를 작성해볼까요?"</td><td>"자소서를 작성하시오."</td></tr>
+      <tr><td>Hallucination</td><td>"이 표현은 내 이력에서 직접 확인되지 않았어요. 검토해주세요."</td><td>"오류: 잘못된 내용입니다."</td></tr>
+      <tr><td>Gap 안내</td><td>"이 공고는 <b>Kafka, MSA</b> 경험을 우대해요. 보완할 경험을 정리해볼까요?"</td><td>"Kafka, MSA 경험이 부족합니다."</td></tr>
+      <tr><td>D-day</td><td>"마감일이 가까워졌어요. 제출 준비를 확인해보세요."</td><td>"마감 임박. 빨리 제출하세요!"</td></tr>
+      <tr><td>Error · 5xx</td><td>"잠시 연결이 끊겼어요. 잠시 후 다시 시도해주세요."</td><td>"서버 오류 발생. Error 500."</td></tr>
+      <tr><td>Warning</td><td>"이 항목의 권장 글자수를 넘었어요. 줄여보시겠어요?"</td><td>"글자수 초과!"</td></tr>
+      <tr><td>Success</td><td>"자소서가 저장됐어요. 다음에 이어 쓸 수 있어요."</td><td>"저장됨."</td></tr>
+      <tr><td>CTA · Primary</td><td>"AI 초안 만들어보기"</td><td>"AI로 자동 생성"</td></tr>
+      <tr><td>CTA · 보완</td><td>"보완할 경험 정리하기"</td><td>"부족 항목 채우기"</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">대화 예시 (Before / After)</h3>
+  <div class="grid g-2">
+    <div class="card">
+      <span class="badge error dot" style="margin-bottom:8px">Before</span>
+      <div class="bubble bad">
+        <span class="speaker">자소서 결과 화면 · 거짓방지 알림</span>
+        오류: 사용자 이력에 없는 정보가 포함됨. 자동 생성된 자소서를 신뢰할 수 없습니다.
+      </div>
+    </div>
+    <div class="card">
+      <span class="badge success dot" style="margin-bottom:8px">After</span>
+      <div class="bubble good">
+        <span class="speaker">자소서 결과 화면 · 거짓방지 알림</span>
+        AI가 작성한 표현 중 <b>3곳</b>이 내 이력에서 직접 확인되지 않았어요. 검토해보고 그대로 둘지, 다시 쓸지 정해주세요.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     03 DESIGN TOKENS
+============================================================ -->
+<section id="sec-03">
+  <div class="section-head">
+    <span class="eyebrow">03 · Design Tokens</span>
+    <h2>Color · Typography · Spacing · Radius · Shadow</h2>
+    <p>모든 토큰은 Tailwind / shadcn 호환 형태로 작성되어 있으며, <code class="mono">--color-*</code> CSS 변수로 직접 사용 가능합니다.</p>
+  </div>
+
+  <!-- COLOR PALETTE ROOTS -->
+  <h3 class="sub">3.1 핵심 컬러 · Brand</h3>
+  <div class="grid g-6">
+    <div class="swatch"><div class="chip" style="background:var(--color-primary-500)"></div><div class="meta"><span class="name">primary</span><span class="hex">#5B8DEF</span><span class="usage">기본 액션 · 링크</span></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--color-mint-500)"></div><div class="meta"><span class="name">mint</span><span class="hex">#2FA980</span><span class="usage">매칭 · 성공</span></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--color-lavender-500)"></div><div class="meta"><span class="name">lavender</span><span class="hex">#8265DC</span><span class="usage">AI · 분석</span></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--color-pink-400)"></div><div class="meta"><span class="name">pink</span><span class="hex">#E96B91</span><span class="usage">D-day · 강조</span></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--color-peach-300)"></div><div class="meta"><span class="name">peach</span><span class="hex">#FFA178</span><span class="usage">갭 · 보완 안내</span></div></div>
+    <div class="swatch"><div class="chip" style="background:var(--color-yellow-300)"></div><div class="meta"><span class="name">yellow</span><span class="hex">#F5C947</span><span class="usage">검토 필요 · 경고</span></div></div>
+  </div>
+
+  <h3 class="sub">3.2 컬러 스케일 (50 ~ 900)</h3>
+
+  <!-- Primary scale -->
+  <div class="scale-row">
+    <div class="scale-label">primary</div>
+    <div class="cell" style="background:var(--color-primary-50)"><span class="step">50</span><span class="hex">#F2F7FF</span></div>
+    <div class="cell" style="background:var(--color-primary-100)"><span class="step">100</span><span class="hex">#E1ECFF</span></div>
+    <div class="cell" style="background:var(--color-primary-200)"><span class="step">200</span><span class="hex">#C7DCFF</span></div>
+    <div class="cell" style="background:var(--color-primary-300)"><span class="step">300</span><span class="hex">#A4C6FF</span></div>
+    <div class="cell" style="background:var(--color-primary-400)"><span class="step">400</span><span class="hex">#7CAAFB</span></div>
+    <div class="cell dark" style="background:var(--color-primary-500)"><span class="step">500</span><span class="hex">#5B8DEF</span></div>
+    <div class="cell dark" style="background:var(--color-primary-600)"><span class="step">600</span><span class="hex">#3F6FD6</span></div>
+    <div class="cell dark" style="background:var(--color-primary-700)"><span class="step">700</span><span class="hex">#2D55AE</span></div>
+    <div class="cell dark" style="background:var(--color-primary-800)"><span class="step">800</span><span class="hex">#1E3F84</span></div>
+    <div class="cell dark" style="background:var(--color-primary-900)"><span class="step">900</span><span class="hex">#14305F</span></div>
+  </div>
+
+  <div class="scale-row" style="grid-template-columns:120px repeat(7,1fr)">
+    <div class="scale-label">mint</div>
+    <div class="cell" style="background:var(--color-mint-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-mint-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-mint-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-mint-300)"><span class="step">300</span></div>
+    <div class="cell dark" style="background:var(--color-mint-400)"><span class="step">400</span></div>
+    <div class="cell dark" style="background:var(--color-mint-500)"><span class="step">500</span></div>
+    <div class="cell dark" style="background:var(--color-mint-700)"><span class="step">700</span></div>
+  </div>
+
+  <div class="scale-row" style="grid-template-columns:120px repeat(6,1fr)">
+    <div class="scale-label">lavender</div>
+    <div class="cell" style="background:var(--color-lavender-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-lavender-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-lavender-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-lavender-300)"><span class="step">300</span></div>
+    <div class="cell dark" style="background:var(--color-lavender-400)"><span class="step">400</span></div>
+    <div class="cell dark" style="background:var(--color-lavender-500)"><span class="step">500</span></div>
+  </div>
+
+  <div class="scale-row" style="grid-template-columns:120px repeat(5,1fr)">
+    <div class="scale-label">pink</div>
+    <div class="cell" style="background:var(--color-pink-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-pink-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-pink-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-pink-300)"><span class="step">300</span></div>
+    <div class="cell dark" style="background:var(--color-pink-400)"><span class="step">400</span></div>
+  </div>
+
+  <div class="scale-row" style="grid-template-columns:120px repeat(4,1fr)">
+    <div class="scale-label">peach</div>
+    <div class="cell" style="background:var(--color-peach-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-peach-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-peach-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-peach-300)"><span class="step">300</span></div>
+  </div>
+
+  <div class="scale-row" style="grid-template-columns:120px repeat(4,1fr)">
+    <div class="scale-label">yellow</div>
+    <div class="cell" style="background:var(--color-yellow-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-yellow-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-yellow-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-yellow-300)"><span class="step">300</span></div>
+  </div>
+
+  <div class="scale-row">
+    <div class="scale-label">neutral</div>
+    <div class="cell" style="background:var(--color-neutral-0);border:1px solid var(--color-border-default)"><span class="step">0</span></div>
+    <div class="cell" style="background:var(--color-neutral-50)"><span class="step">50</span></div>
+    <div class="cell" style="background:var(--color-neutral-100)"><span class="step">100</span></div>
+    <div class="cell" style="background:var(--color-neutral-200)"><span class="step">200</span></div>
+    <div class="cell" style="background:var(--color-neutral-300)"><span class="step">300</span></div>
+    <div class="cell" style="background:var(--color-neutral-400)"><span class="step">400</span></div>
+    <div class="cell dark" style="background:var(--color-neutral-500)"><span class="step">500</span></div>
+    <div class="cell dark" style="background:var(--color-neutral-600)"><span class="step">600</span></div>
+    <div class="cell dark" style="background:var(--color-neutral-800)"><span class="step">800</span></div>
+    <div class="cell dark" style="background:var(--color-neutral-900)"><span class="step">900</span></div>
+  </div>
+
+  <h3 class="sub">3.3 시맨틱 · Surface · Text 토큰</h3>
+  <table class="token-table">
+    <thead><tr><th>Token</th><th>Value</th><th>Usage</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><code>color.semantic.success</code></td><td>#2FA980</td><td>저장 성공 · 매칭 완료</td><td>Toast, Success Badge, Verification ✓</td></tr>
+      <tr><td><code>color.semantic.warning</code></td><td>#DDAA20</td><td>검토 필요 · 글자수 초과 임박</td><td>Hallucination Badge, Char Counter</td></tr>
+      <tr><td><code>color.semantic.error</code></td><td>#D94C5C</td><td>제출 실패 · 폼 오류</td><td>Field Error, Toast.error, Danger Button</td></tr>
+      <tr><td><code>color.semantic.info</code></td><td>#5B8DEF</td><td>안내 · 팁 · 분석 결과</td><td>Info Banner, JD Match Panel</td></tr>
+      <tr><td><code>color.surface.default</code></td><td>#FFFFFF</td><td>카드 · 모달 · 입력</td><td>Card, Modal, Input</td></tr>
+      <tr><td><code>color.surface.soft</code></td><td>#FAFAF7</td><td>사이드바 · 보조 영역</td><td>Sidebar, Table Header</td></tr>
+      <tr><td><code>color.surface.sunken</code></td><td>#F2F2EC</td><td>입력 비활성 · 코드 블록</td><td>Disabled Input</td></tr>
+      <tr><td><code>color.bg</code></td><td>#F8F8F4</td><td>앱 전체 배경 (Cream)</td><td>App Shell</td></tr>
+      <tr><td><code>color.border.default</code></td><td>#E8E7E0</td><td>일반 구획선</td><td>Card border, Divider</td></tr>
+      <tr><td><code>color.border.strong</code></td><td>#D5D4CB</td><td>인풋 · 강조 구획</td><td>Input border</td></tr>
+      <tr><td><code>color.border.focus</code></td><td>#5B8DEF</td><td>포커스 링</td><td>:focus-visible</td></tr>
+      <tr><td><code>color.text.primary</code></td><td>#25241F</td><td>본문 · 제목</td><td>Body, H1~H4</td></tr>
+      <tr><td><code>color.text.secondary</code></td><td>#54534C</td><td>설명 · 보조 문구</td><td>Description</td></tr>
+      <tr><td><code>color.text.muted</code></td><td>#8A8980</td><td>메타 · 캡션</td><td>Caption, Date</td></tr>
+      <tr><td><code>color.text.disabled</code></td><td>#BCBBB2</td><td>비활성 텍스트</td><td>Disabled Label</td></tr>
+      <tr><td><code>focus.ring</code></td><td>3px rgba(91,141,239,.35)</td><td>키보드 포커스</td><td>모든 인터랙티브 요소</td></tr>
+    </tbody>
+  </table>
+
+  <!-- TYPOGRAPHY -->
+  <h3 class="sub">3.4 Typography · Pretendard + MemomentKkukkukk</h3>
+  <div class="card" style="padding:24px 28px">
+    <div class="type-spec">
+      <div class="info"><b>Display</b>48 / 56 / 400<br/>Hand font</div>
+      <div class="sample hand-font" style="font-size:48px;line-height:1.15">매번 다시 쓰지 않는 자소서</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Page Title</b>36 / 44 / 400<br/>Hand font</div>
+      <div class="sample hand-font" style="font-size:36px;line-height:1.25">내 정보 · 학력 · 경력기술서</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Section Title</b>28 / 36 / 400<br/>Hand font</div>
+      <div class="sample hand-font" style="font-size:28px;line-height:1.3">자소서 작성 — 카카오 백엔드 신입</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Card Title</b>22 / 28 / 400<br/>Hand font</div>
+      <div class="sample hand-font" style="font-size:22px;line-height:1.3">이번 주 마감되는 공고</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Body</b>15 / 25 / 400</div>
+      <div class="sample" style="font-size:15px;line-height:1.65">취업 준비의 가장 큰 부담은 회사마다 자소서를 새로 쓰는 일이에요. 이취는 이력 · 공고 · 기업분석을 한 번에 묶어 회사별로 다른 자소서를 만들어줘요.</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Body Small</b>13 / 21 / 400</div>
+      <div class="sample" style="font-size:13px;line-height:1.6">3건의 표현이 내 이력에서 직접 확인되지 않았어요.</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Caption</b>12 / 19 / 400</div>
+      <div class="sample" style="font-size:12px;color:var(--color-text-muted)">최근 업데이트 · 2026.05.14 17:32</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Button</b>14 / 14 / 600</div>
+      <div class="sample"><span class="btn primary">AI 초안 만들어보기</span></div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Form Label</b>13 / 18 / 600</div>
+      <div class="sample" style="font-size:13px;font-weight:600">희망 포지션 <span style="color:var(--color-semantic-error)">*</span></div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Helper Text</b>12 / 18 / 400</div>
+      <div class="sample" style="font-size:12px;color:var(--color-text-muted)">2~20자, 한/영/숫자만 사용할 수 있어요.</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Chip / Badge</b>12 / 14 / 600</div>
+      <div class="sample"><span class="badge info dot">진행중</span> <span class="badge dday">D-3</span> <span class="badge lav">AI 초안</span></div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Data Number</b>20 / 24 / 700<br/>JetBrains Mono</div>
+      <div class="sample mono" style="font-size:24px;font-weight:700;color:var(--color-text-primary)">82%</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Table Header</b>12 / 16 / 600</div>
+      <div class="sample" style="font-size:12px;font-weight:600;letter-spacing:0.02em;color:var(--color-text-secondary);text-transform:uppercase">회사 · 전형 단계 · 마감일</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Table Cell</b>13 / 20 / 400</div>
+      <div class="sample" style="font-size:13px">카카오 · 1차 면접 · 2026.05.22</div>
+    </div>
+    <div class="type-spec">
+      <div class="info"><b>Hand · MemomentKkukkukk</b>타이틀 · 감성 문구<br/>온보딩 질문 · 환영 모달 · 메모</div>
+      <div class="sample hand-font" style="font-size:34px;color:var(--color-primary-600);line-height:1.2">함께 정리해볼까요?</div>
+    </div>
+  </div>
+
+  <!-- FONT SYSTEM USAGE -->
+  <h4 class="sub" style="margin-top:32px">3.4.1 Font System · 듀얼 폰트 사용 원칙</h4>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 16px;max-width:64ch">
+    이취는 두 개의 폰트를 함께 씁니다. <b>Pretendard</b>가 신뢰감을 받쳐주는 본문 골격이라면, <b>MemomentKkukkukk</b>은 사용자에게 말을 거는 순간에만 등장하는 손글씨 포인트. 한 화면에서 손글씨 비중은 1~2 곳을 넘기지 않습니다.
+  </p>
+
+  <div class="grid g-2">
+    <div class="card" style="padding:24px">
+      <div class="row" style="gap:10px;margin-bottom:12px">
+        <span class="badge info dot">SANS</span>
+        <b style="font-size:14px">Pretendard Variable</b>
+      </div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.6">
+        본문 · UI · 버튼 · 폼 · 데이터. 정보 전달이 우선되는 모든 텍스트의 기본 폰트.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--color-text-primary)">
+        <div style="font-size:22px;font-weight:700;letter-spacing:-0.02em">대시보드 · 자소서 · 지원 현황</div>
+        <div>본문 단락, helper text, label, badge</div>
+        <div><span class="btn primary sm">버튼 라벨</span></div>
+        <div class="mono" style="color:var(--color-text-muted);font-size:12px">data: 72%, D-3, 2026.05.22</div>
+      </div>
+    </div>
+    <div class="card" style="padding:24px;background:var(--color-lavender-50);border-color:var(--color-lavender-200)">
+      <div class="row" style="gap:10px;margin-bottom:12px">
+        <span class="badge lav dot">HAND</span>
+        <b style="font-size:14px">MemomentKkukkukk</b>
+      </div>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.6">
+        타이틀 · 감성 문구 · 환영 · 빈 화면. 사용자에게 말을 거는 순간에만 등장하는 손글씨 포인트.
+      </p>
+      <div style="display:flex;flex-direction:column;gap:6px;color:var(--color-text-primary)">
+        <div class="hand-font" style="font-size:28px;line-height:1.2">처음이라도 괜찮아요</div>
+        <div class="hand-font" style="font-size:20px;line-height:1.3;color:var(--color-primary-700)">함께 정리해볼까요?</div>
+        <div class="hand-font" style="font-size:16px;line-height:1.4;color:var(--color-text-secondary)">아직 작성한 자소서가 없어요</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px;padding:0;overflow:hidden">
+    <table class="token-table" style="border:none;border-radius:0">
+      <thead>
+        <tr><th style="width:30%">상황</th><th style="width:35%">Hand · MemomentKkukkukk</th><th>Sans · Pretendard</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>온보딩 메인 질문</td><td>✓ "경력을 알려주세요"</td><td>—</td></tr>
+        <tr><td>환영 / 완료 모달 타이틀</td><td>✓ "준비 다 됐어요!"</td><td>—</td></tr>
+        <tr><td>빈 상태 안내 제목</td><td>✓ "아직 정리한 경험이 없어요"</td><td>—</td></tr>
+        <tr><td>메모 카드 · CTA 카드</td><td>✓ "작은 행동이 큰 변화를 만들어요"</td><td>—</td></tr>
+        <tr><td>선택 카드 타이틀</td><td>✓ "취업 준비 중"</td><td>—</td></tr>
+        <tr><td>본문 단락 · 보조 설명</td><td>—</td><td>✓ Pretendard 15/24/400</td></tr>
+        <tr><td>버튼 · 라벨 · stepper</td><td>—</td><td>✓ Pretendard 14/14/600</td></tr>
+        <tr><td>데이터 · 숫자 · 날짜</td><td>—</td><td>✓ Pretendard / Mono</td></tr>
+        <tr><td>자소서 본문 · 이력 입력</td><td>—</td><td>✓ Pretendard (가독성 최우선)</td></tr>
+        <tr><td>경고 · 오류 · 상태 메시지</td><td>—</td><td>✓ Pretendard (정확성 우선)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="dodont" style="margin-top:16px">
+    <div class="col do">
+      <h4>✓ Hand 폰트는 이렇게</h4>
+      <ul>
+        <li>한 화면에 1~2 곳, 가장 큰 헤드라인이나 환영 문구</li>
+        <li>최소 18px 이상 — 작은 사이즈에서는 가독성 저하</li>
+        <li>한 줄에 20자 이내, 줄바꿈으로 호흡 조절</li>
+        <li>Primary-700 / Neutral-800 등 진한 색으로 안정감</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h4>✗ 이런 곳엔 쓰지 않기</h4>
+      <ul>
+        <li>자소서 본문 · 이력서 · 데이터 테이블 · 폼 인풋</li>
+        <li>14px 이하의 보조 텍스트 · helper · 캡션</li>
+        <li>긴 문장 (1줄 20자 초과 시 산세리프로)</li>
+        <li>오류 · 경고 · 상태 알림 같은 정확성 필요 메시지</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <h3 class="sub">3.5 Spacing Scale</h3>
+  <div class="card">
+    <div class="spacing-row"><span class="label">space.1</span><span class="spacing-bar" style="width:4px"></span><span class="px">4px</span></div>
+    <div class="spacing-row"><span class="label">space.2</span><span class="spacing-bar" style="width:8px"></span><span class="px">8px</span></div>
+    <div class="spacing-row"><span class="label">space.3</span><span class="spacing-bar" style="width:12px"></span><span class="px">12px</span></div>
+    <div class="spacing-row"><span class="label">space.4</span><span class="spacing-bar" style="width:16px"></span><span class="px">16px</span></div>
+    <div class="spacing-row"><span class="label">space.5</span><span class="spacing-bar" style="width:20px"></span><span class="px">20px</span></div>
+    <div class="spacing-row"><span class="label">space.6</span><span class="spacing-bar" style="width:24px"></span><span class="px">24px · 카드 내부 패딩 기본</span></div>
+    <div class="spacing-row"><span class="label">space.8</span><span class="spacing-bar" style="width:32px"></span><span class="px">32px · 섹션 간격</span></div>
+    <div class="spacing-row"><span class="label">space.10</span><span class="spacing-bar" style="width:40px"></span><span class="px">40px</span></div>
+    <div class="spacing-row"><span class="label">space.12</span><span class="spacing-bar" style="width:48px"></span><span class="px">48px · 페이지 좌우 여백</span></div>
+    <div class="spacing-row"><span class="label">space.16</span><span class="spacing-bar" style="width:64px"></span><span class="px">64px · 페이지 상하 여백</span></div>
+  </div>
+
+  <!-- RADIUS -->
+  <h3 class="sub">3.6 Radius Scale</h3>
+  <div class="grid g-6">
+    <div><div class="radius-cell" style="border-radius:var(--radius-xs)">xs · 4px</div></div>
+    <div><div class="radius-cell" style="border-radius:var(--radius-sm)">sm · 6px</div></div>
+    <div><div class="radius-cell" style="border-radius:var(--radius-md)">md · 10px</div></div>
+    <div><div class="radius-cell" style="border-radius:var(--radius-lg)">lg · 14px</div></div>
+    <div><div class="radius-cell" style="border-radius:var(--radius-xl)">xl · 20px</div></div>
+    <div><div class="radius-cell" style="border-radius:var(--radius-full);width:100px;margin:0 auto">full</div></div>
+  </div>
+  <p class="note">버튼 · 인풋 = md · 카드 = lg · 모달 / 큰 패널 = xl · 칩 · 아바타 = full.</p>
+
+  <!-- SHADOW -->
+  <h3 class="sub">3.7 Shadow Scale</h3>
+  <div class="grid g-5" style="background:var(--color-bg);padding:24px;border-radius:var(--radius-lg)">
+    <div class="shadow-cell" style="box-shadow:var(--shadow-none);border:1px solid var(--color-border-default)">none</div>
+    <div class="shadow-cell" style="box-shadow:var(--shadow-soft)">soft · 인풋 · 작은 카드</div>
+    <div class="shadow-cell" style="box-shadow:var(--shadow-card)">card · 대시보드 카드</div>
+    <div class="shadow-cell" style="box-shadow:var(--shadow-floating)">floating · 팝오버 · 드롭다운</div>
+    <div class="shadow-cell" style="box-shadow:var(--shadow-modal)">modal · 모달 · 토스트</div>
+  </div>
+
+  <!-- BORDER -->
+  <h3 class="sub">3.8 Border · Divider</h3>
+  <table class="token-table">
+    <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+    <tbody>
+      <tr><td><code>border.1</code></td><td>1px solid #E8E7E0</td><td>카드 · 일반 구획</td></tr>
+      <tr><td><code>border.2</code></td><td>2px solid #25241F</td><td>섹션 헤더 하단</td></tr>
+      <tr><td><code>border.dashed</code></td><td>1px dashed #D5D4CB</td><td>플레이스홀더 · 업로드 영역</td></tr>
+      <tr><td><code>divider.soft</code></td><td>1px solid #F0EFE9</td><td>리스트 행 사이</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     04 LAYOUT & GRID
+============================================================ -->
+<section id="sec-04">
+  <div class="section-head">
+    <span class="eyebrow">04 · Layout &amp; Grid</span>
+    <h2>App Shell · Grid · Responsive</h2>
+    <p>PC 웹 우선. 좌측 고정 사이드바(220px) + 상단 헤더(64px) + 본문(max-width 1280)을 기본 셸로 사용합니다. 자소서 작성 화면은 예외적으로 1440까지 확장합니다.</p>
+  </div>
+
+  <h3 class="sub">4.1 기본 App Shell</h3>
+  <div class="preview" style="padding:0;overflow:hidden">
+    <div style="display:grid;grid-template-columns:220px 1fr;height:520px;background:var(--color-bg)">
+      <!-- Sidebar -->
+      <div style="background:var(--color-surface-soft);border-right:1px solid var(--color-border-default);padding:18px 14px;display:flex;flex-direction:column;gap:14px">
+        <div class="logomark" style="font-size:24px">이취<span class="star" style="font-size:14px">*</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:10px">
+          <div class="wf tonal" style="padding:9px 12px;font-size:11px;color:var(--color-primary-700)">⌂  홈</div>
+          <div class="wf" style="padding:9px 12px;color:var(--color-text-secondary)">📋  내 정보</div>
+          <div class="wf" style="padding:9px 12px;color:var(--color-text-secondary)">📊  지원 현황</div>
+          <div class="wf" style="padding:9px 12px;color:var(--color-text-secondary)">✎  자소서</div>
+          <div class="wf" style="padding:9px 12px;color:var(--color-text-secondary)">🏢  기업</div>
+          <div class="wf" style="padding:9px 12px;color:var(--color-text-secondary)">🔔  알림</div>
+        </div>
+        <div style="margin-top:auto;padding:12px;background:var(--color-lavender-50);border-radius:10px;font-size:10px;color:var(--color-lavender-600);display:flex;gap:8px;align-items:center">
+          <span class="mascot-cloud sm"></span>
+          <div><b style="font-size:10px">3/5 완성</b><div class="progress" style="height:4px;margin-top:4px"><span style="width:60%"></span></div></div>
+        </div>
+      </div>
+      <!-- Main -->
+      <div style="display:flex;flex-direction:column">
+        <div style="height:56px;border-bottom:1px solid var(--color-border-default);background:var(--color-surface-default);display:flex;align-items:center;justify-content:space-between;padding:0 24px">
+          <div style="font-size:12px;color:var(--color-text-muted);font-family:var(--font-family-mono)">홈 / 자소서</div>
+          <div class="row" style="gap:10px">
+            <div class="wf" style="width:160px;padding:6px 10px">🔍  검색…</div>
+            <div class="wf" style="width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center">🔔</div>
+            <div class="wf" style="width:32px;height:32px;padding:0;background:var(--color-mint-100);border-radius:50%"></div>
+          </div>
+        </div>
+        <div style="padding:24px;display:grid;grid-template-columns:repeat(12,1fr);gap:16px;align-content:start;background:var(--color-bg);flex:1">
+          <div class="wf tonal" style="grid-column:span 12;padding:14px;font-size:11px"><b>김이취님, 오늘도 화이팅이에요!</b></div>
+          <div class="wf" style="grid-column:span 3;padding:14px;height:64px">자소서 작성 수</div>
+          <div class="wf" style="grid-column:span 3;padding:14px;height:64px">진행중 지원</div>
+          <div class="wf" style="grid-column:span 3;padding:14px;height:64px">다가오는 일정</div>
+          <div class="wf" style="grid-column:span 3;padding:14px;height:64px">매칭률 평균</div>
+          <div class="wf" style="grid-column:span 8;padding:14px;height:120px">최근 작업 리스트</div>
+          <div class="wf lav" style="grid-column:span 4;padding:14px;height:120px">AI 추천</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">4.2 그리드 시스템</h3>
+  <table class="token-table">
+    <thead><tr><th>Breakpoint</th><th>Width</th><th>Columns</th><th>Gutter</th><th>Margin</th><th>Sidebar</th></tr></thead>
+    <tbody>
+      <tr><td><b>Desktop</b> · 기본</td><td>≥ 1280px</td><td>12</td><td>16px</td><td>48px</td><td>220px 고정</td></tr>
+      <tr><td><b>Desktop · narrow</b></td><td>1024 ~ 1279</td><td>12</td><td>16px</td><td>32px</td><td>72px 축소(아이콘 only)</td></tr>
+      <tr><td><b>Tablet</b></td><td>768 ~ 1023</td><td>8</td><td>12px</td><td>24px</td><td>드로어 (햄버거)</td></tr>
+      <tr><td><b>Mobile</b></td><td>&lt; 768</td><td>4</td><td>12px</td><td>16px</td><td>하단 탭바 (5 items)</td></tr>
+    </tbody>
+  </table>
+  <p class="note">자소서 작성 / 지원 칸반 / 캘린더는 모바일에서 단일 컬럼 + 상단 탭 전환. v1은 PC 우선이라 모바일 폼은 단순화.</p>
+
+  <h3 class="sub">4.3 페이지 레이아웃 유형</h3>
+  <div class="grid g-3" style="gap:16px">
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">A. 대시보드형 (3-4열 카드)</h4>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--color-bg);padding:8px;border-radius:8px">
+        <div class="wf" style="height:36px"></div><div class="wf" style="height:36px"></div><div class="wf" style="height:36px"></div><div class="wf" style="height:36px"></div>
+        <div class="wf" style="grid-column:span 3;height:80px"></div><div class="wf lav" style="height:80px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 홈, 지원 대시보드, 관리자</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">B. 2단 분석형</h4>
+      <div style="display:grid;grid-template-columns:1fr 220px;gap:6px;background:var(--color-bg);padding:8px;border-radius:8px">
+        <div class="wf" style="height:140px"></div>
+        <div class="wf tonal" style="height:140px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 자소서 작성(에디터 + 사이드 분석), 기업분석</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">C. 칸반형 (4-5컬럼)</h4>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:var(--color-bg);padding:8px;border-radius:8px">
+        <div class="wf" style="height:120px"></div><div class="wf" style="height:120px"></div><div class="wf" style="height:120px"></div><div class="wf" style="height:120px"></div><div class="wf" style="height:120px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 지원 현황 칸반 (전형 단계별)</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">D. 캘린더형</h4>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;background:var(--color-bg);padding:8px;border-radius:8px">
+        <div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div><div class="wf" style="height:30px"></div>
+        <div class="wf" style="height:38px"></div><div class="wf pink" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf mint" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div>
+        <div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf yellow" style="height:38px"></div><div class="wf" style="height:38px"></div><div class="wf" style="height:38px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 지원 현황 캘린더 (연/월/주/일)</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">E. 폼 단일 컬럼</h4>
+      <div style="display:flex;flex-direction:column;gap:6px;background:var(--color-bg);padding:8px;border-radius:8px">
+        <div class="wf" style="height:28px;width:120px"></div>
+        <div class="wf" style="height:30px"></div>
+        <div class="wf" style="height:28px;width:120px"></div>
+        <div class="wf" style="height:30px"></div>
+        <div class="wf primary" style="height:30px;width:80px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 회원가입, 마이페이지, 채용공고 등록</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0;font-size:13px">F. 풀스크린 모달형</h4>
+      <div style="background:var(--color-neutral-800);padding:8px;border-radius:8px;display:flex;justify-content:center;align-items:center;height:160px">
+        <div style="width:75%;height:120px;background:#fff;border-radius:8px;display:flex;flex-direction:column;gap:4px;padding:8px">
+          <div class="wf" style="height:14px;width:80px"></div>
+          <div class="wf" style="flex:1"></div>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:8px 0 0">사용: 온보딩, 약관 동의, 자소서 결과 검토</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     05 COMPONENTS
+============================================================ -->
+<section id="sec-05">
+  <div class="section-head">
+    <span class="eyebrow">05 · Components</span>
+    <h2>Navigation · Button · Form · Card · Data · Feedback</h2>
+    <p>모든 컴포넌트는 <code class="mono">default / hover / active / focus / disabled</code> 5개 상태를 가지며, 키보드만으로 조작 가능합니다. 색상만으로 상태를 표현하지 않습니다.</p>
+  </div>
+
+  <!-- A · NAVIGATION -->
+  <h3 class="sub">A · Navigation</h3>
+  <div class="preview" style="padding:0;overflow:hidden">
+    <span class="preview-label">Sidebar · Active state</span>
+    <div style="display:flex">
+      <div style="width:220px;background:var(--color-surface-soft);border-right:1px solid var(--color-border-default);padding:18px 14px">
+        <div class="logomark" style="font-size:22px;margin-bottom:18px">이취<span class="star" style="font-size:12px">*</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;background:var(--color-primary-50);border-radius:8px;color:var(--color-primary-700);font-weight:600;font-size:13px"><span>⌂</span>홈</div>
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;color:var(--color-text-secondary);font-size:13px"><span>📋</span>내 정보</div>
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;color:var(--color-text-secondary);font-size:13px"><span>📊</span>지원 현황</div>
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;color:var(--color-text-secondary);font-size:13px;justify-content:space-between"><span style="display:flex;gap:10px;align-items:center"><span>✎</span>자소서</span><span class="badge info">3</span></div>
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;color:var(--color-text-secondary);font-size:13px"><span>🏢</span>기업</div>
+          <div style="padding:10px 12px;display:flex;align-items:center;gap:10px;color:var(--color-text-secondary);font-size:13px;justify-content:space-between"><span style="display:flex;gap:10px;align-items:center"><span>🔔</span>알림</span><span style="width:6px;height:6px;background:var(--color-pink-400);border-radius:50%"></span></div>
+        </div>
+      </div>
+      <div style="flex:1;padding:20px;background:var(--color-surface-default);display:flex;flex-direction:column;gap:18px">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid var(--color-border-default)">
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-text-muted)">
+            <span>홈</span><span>/</span><span>자소서</span><span>/</span><span style="color:var(--color-text-primary);font-weight:600">카카오 백엔드</span>
+          </div>
+          <div class="row" style="gap:8px">
+            <button class="btn ghost icon" aria-label="검색">🔍</button>
+            <button class="btn ghost icon" aria-label="알림" style="position:relative">🔔<span style="position:absolute;top:6px;right:6px;width:6px;height:6px;background:var(--color-pink-400);border-radius:50%"></span></button>
+            <div style="display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;border:1px solid var(--color-border-default)">
+              <div style="width:28px;height:28px;background:var(--color-mint-200);border-radius:50%"></div>
+              <span style="font-size:12px;font-weight:600">김이취</span>
+              <span style="color:var(--color-text-muted);font-size:10px">▾</span>
+            </div>
+          </div>
+        </div>
+        <!-- Mobile bottom nav preview -->
+        <div>
+          <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:8px;font-family:var(--font-family-mono)">MOBILE BOTTOM NAV · &lt; 768px</div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border:1px solid var(--color-border-default);border-radius:14px;overflow:hidden">
+            <div style="display:flex;flex-direction:column;align-items:center;padding:10px;gap:4px;color:var(--color-primary-600);font-size:10px;font-weight:600;background:var(--color-primary-50)">⌂<span>홈</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:10px;gap:4px;color:var(--color-text-muted);font-size:10px">📋<span>내 정보</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:10px;gap:4px;color:var(--color-text-muted);font-size:10px">📊<span>지원</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:10px;gap:4px;color:var(--color-text-muted);font-size:10px">✎<span>자소서</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;padding:10px;gap:4px;color:var(--color-text-muted);font-size:10px;position:relative">🔔<span>알림</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B · BUTTON -->
+  <h3 class="sub">B · Button</h3>
+  <div class="preview">
+    <span class="preview-label">Variants</span>
+    <div class="row" style="gap:10px;margin-bottom:18px">
+      <button class="btn primary">주요 액션</button>
+      <button class="btn secondary">보조</button>
+      <button class="btn tertiary">텍스트</button>
+      <button class="btn ghost">고스트</button>
+      <button class="btn danger">삭제</button>
+      <button class="btn ai">AI 초안 만들어보기</button>
+      <button class="btn primary loading">저장중</button>
+      <button class="btn" disabled>비활성</button>
+      <button class="btn secondary icon" aria-label="설정">⚙</button>
+      <button class="btn tertiary"><span>⬇</span> PDF 다운로드</button>
+    </div>
+    <div class="row" style="gap:10px;align-items:center">
+      <span class="mono muted" style="width:60px">sizes</span>
+      <button class="btn primary lg">Large 48</button>
+      <button class="btn primary">Default 40</button>
+      <button class="btn primary sm">Small 32</button>
+    </div>
+  </div>
+
+  <table class="token-table" style="margin-top:12px">
+    <thead><tr><th>Variant</th><th>용도</th><th>금지</th></tr></thead>
+    <tbody>
+      <tr><td><b>Primary</b></td><td>화면당 1개. 저장 / 제출 / AI 초안 만들기 등 핵심 액션</td><td>한 화면에 2개 이상 사용 금지</td></tr>
+      <tr><td><b>Secondary</b></td><td>일반적인 행동 (취소 · 미리보기 · 닫기)</td><td>위험 행동에 사용 금지</td></tr>
+      <tr><td><b>Tertiary</b></td><td>리스트 행 · 작은 영역의 액션 (다운로드 등)</td><td>본문 텍스트 중간 인라인 사용 금지</td></tr>
+      <tr><td><b>Ghost</b></td><td>아이콘 버튼 · 헤더 / 카드 우상단</td><td>주요 액션에 사용 금지</td></tr>
+      <tr><td><b>Danger</b></td><td>되돌릴 수 없는 행동 (자소서 영구 삭제 · 회원 탈퇴)</td><td>되돌릴 수 있는 행동에 사용 금지</td></tr>
+      <tr><td><b>AI</b></td><td>AI 호출이 일어나는 액션 (초안 · 분석 · 매칭)</td><td>일반 저장 / 일반 검색에 사용 금지</td></tr>
+    </tbody>
+  </table>
+
+  <!-- C · FORM -->
+  <h3 class="sub">C · Form</h3>
+  <div class="preview">
+    <span class="preview-label">Inputs · Validation</span>
+    <div class="grid g-2" style="gap:20px">
+      <div class="field">
+        <label class="lbl">이메일 <span class="req">*</span></label>
+        <input class="input" type="email" placeholder="example@2chi.kr" />
+        <span class="helper">이메일 인증이 필요해요.</span>
+      </div>
+      <div class="field">
+        <label class="lbl">비밀번호 <span class="req">*</span></label>
+        <input class="input" type="password" value="••••••" />
+        <span class="helper success">✓ 안전한 비밀번호예요</span>
+      </div>
+      <div class="field">
+        <label class="lbl">닉네임 <span class="req">*</span></label>
+        <input class="input error" value="ㅁㅁ" />
+        <span class="helper error">2자 이상 입력해주세요.</span>
+      </div>
+      <div class="field">
+        <label class="lbl">희망 포지션 <span class="req">*</span></label>
+        <select class="select">
+          <option>백엔드 개발자</option>
+          <option>프론트엔드 개발자</option>
+          <option>인프라/DevOps</option>
+          <option>UI/UX 디자이너</option>
+        </select>
+        <span class="helper">v1은 IT 4개 직군을 지원해요.</span>
+      </div>
+      <div class="field" style="grid-column:span 2">
+        <label class="lbl">자소서 항목 (1번)</label>
+        <textarea class="textarea" placeholder="질문에 대한 답변을 작성하거나, AI 초안 만들기를 눌러보세요.">저는 카카오페이의 여행상품 결제 기능을 개선하고 싶었습니다…</textarea>
+        <div style="display:flex;justify-content:space-between"><span class="helper">맞춤법 검사는 LLM 호출 기반이에요.</span><span class="helper mono">612 / 700자</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+      <div class="col-stack">
+        <span class="mono muted">Checkbox</span>
+        <span class="checkbox on"><span class="box"></span>이용약관 동의 (필수)</span>
+        <span class="checkbox"><span class="box"></span>마케팅 정보 수신 (선택)</span>
+      </div>
+      <div class="col-stack">
+        <span class="mono muted">Radio</span>
+        <span class="radio on"><span class="box"></span>이직</span>
+        <span class="radio"><span class="box"></span>취직</span>
+      </div>
+      <div class="col-stack">
+        <span class="mono muted">Switch</span>
+        <div class="row"><span class="switch on"></span><span style="font-size:13px">웹푸시 알림</span></div>
+        <div class="row"><span class="switch"></span><span style="font-size:13px">주간 요약 메일</span></div>
+      </div>
+      <div class="col-stack">
+        <span class="mono muted">File Upload</span>
+        <div style="border:1.5px dashed var(--color-border-strong);border-radius:10px;padding:18px;text-align:center;background:var(--color-surface-soft);font-size:12px;color:var(--color-text-secondary)">
+          📄 PDF · Word 파일을 끌어놓거나 <u>찾아보기</u><br/>
+          <span class="muted" style="font-size:10.5px">스캔 PDF는 텍스트가 추출되지 않아요</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- D · CARD -->
+  <h3 class="sub">D · Card</h3>
+
+  <h4 class="sub">대시보드 요약 카드 (Summary Card)</h4>
+  <div class="grid g-4">
+    <div class="summary-card">
+      <span class="lbl">자소서 작성 수</span>
+      <span class="val">12</span>
+      <span class="delta">이번 달 +3</span>
+    </div>
+    <div class="summary-card">
+      <span class="lbl">진행중인 지원</span>
+      <span class="val">7</span>
+      <span class="delta">서류 3 · 면접 2 · 합격 2</span>
+    </div>
+    <div class="summary-card">
+      <span class="lbl">다가오는 일정</span>
+      <span class="val">3 <span style="font-size:14px;color:var(--color-text-muted)">건</span></span>
+      <span class="delta down">가장 빠른 마감 D-2</span>
+    </div>
+    <div class="summary-card">
+      <span class="lbl">직무 매칭률 평균</span>
+      <span class="val mono">78%</span>
+      <span class="delta">기준: 백엔드 신입</span>
+    </div>
+  </div>
+
+  <h4 class="sub">Job Posting · Application · STAR · Cover Letter</h4>
+  <div class="grid g-2">
+    <!-- Job Posting Card -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="padding:16px 20px 14px;display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+        <div>
+          <div class="row" style="gap:6px;margin-bottom:6px"><span class="badge dday">D-3</span><span class="badge info dot">서류 작성중</span></div>
+          <div style="font-weight:700;font-size:16px">카카오페이 · 백엔드 신입</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">마감 2026.05.20 · 출처 사람인</div>
+        </div>
+        <div style="width:48px;height:48px;background:var(--color-yellow-100);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--color-yellow-400);font-size:18px">k</div>
+      </div>
+      <div style="padding:0 20px 16px">
+        <div class="row" style="gap:4px;flex-wrap:wrap">
+          <span class="chip-keyword matched">Java</span>
+          <span class="chip-keyword matched">Spring</span>
+          <span class="chip-keyword matched">MSA</span>
+          <span class="chip-keyword gap">Kafka</span>
+          <span class="chip-keyword gap">Kubernetes</span>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--color-border-subtle);padding:12px 20px;display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:12px"><b class="mono" style="color:var(--color-mint-700);font-size:14px">82%</b><span class="muted"> 매칭률</span></div>
+        <button class="btn tertiary sm">자소서 작성 →</button>
+      </div>
+    </div>
+
+    <!-- Application Card -->
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="height:4px;background:var(--color-primary-500)"></div>
+      <div style="padding:16px 20px">
+        <div class="row" style="justify-content:space-between"><b style="font-size:15px">네이버 · 프론트엔드</b><span class="badge warning dot">1차 면접</span></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;font-size:12px;color:var(--color-text-secondary)">
+          <div><b style="color:var(--color-text-primary);display:block;font-size:11px;color:var(--color-text-muted)">면접일</b>2026.05.18 14:00</div>
+          <div><b style="color:var(--color-text-primary);display:block;font-size:11px;color:var(--color-text-muted)">방식</b>온라인 화상</div>
+          <div><b style="color:var(--color-text-primary);display:block;font-size:11px;color:var(--color-text-muted)">자소서</b>v1 연결됨</div>
+          <div><b style="color:var(--color-text-primary);display:block;font-size:11px;color:var(--color-text-muted)">결과</b>대기</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--color-border-subtle);padding:10px 20px;display:flex;gap:8px"><button class="btn ghost sm">히스토리</button><button class="btn tertiary sm">일정 편집</button></div>
+    </div>
+
+    <!-- STAR Card -->
+    <div class="card" style="background:var(--color-primary-50);border-color:var(--color-primary-100);position:relative">
+      <span class="tape" style="top:-12px;left:24px"></span>
+      <div class="row" style="gap:6px;margin-bottom:10px"><span class="badge info">STAR 구조</span><span class="badge lav">자소서 1번 항목</span></div>
+      <div style="font-weight:700;font-size:15px;margin-bottom:10px">데이터 시각화 프로젝트</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px">
+        <div style="padding:10px;background:#fff;border-radius:8px"><b style="color:var(--color-primary-700);display:block;margin-bottom:4px">Situation</b>리텐션이 낮은 문제 상황</div>
+        <div style="padding:10px;background:#fff;border-radius:8px"><b style="color:var(--color-primary-700);display:block;margin-bottom:4px">Task</b>대시보드 구축 목표</div>
+        <div style="padding:10px;background:#fff;border-radius:8px"><b style="color:var(--color-primary-700);display:block;margin-bottom:4px">Action</b>SQL 전처리 + 자동화</div>
+        <div style="padding:10px;background:#fff;border-radius:8px"><b style="color:var(--color-pink-500);display:block;margin-bottom:4px">Result</b>리텐션 +23% 향상</div>
+      </div>
+    </div>
+
+    <!-- Cover Letter Item Card -->
+    <div class="card" style="position:relative">
+      <span class="tape mint" style="top:-12px;right:32px;transform:rotate(8deg)"></span>
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <span class="badge info dot">작성중</span>
+        <span class="mono muted">3 / 4 항목 완료</span>
+      </div>
+      <div style="font-weight:700;font-size:15px">카카오 백엔드 신입 자소서</div>
+      <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">최근 저장 1시간 전 · 연결된 공고 1</div>
+      <div class="progress" style="margin-top:12px"><span style="width:75%"></span></div>
+      <div class="row" style="margin-top:12px;gap:6px">
+        <button class="btn secondary sm">이어쓰기</button>
+        <button class="btn ghost sm">⬇ PDF</button>
+        <button class="btn ghost sm">⬇ Word</button>
+      </div>
+    </div>
+
+    <!-- Memo / Empty / CTA -->
+    <div class="memo-paper" style="padding:24px;position:relative">
+      <span class="tape pink" style="top:-12px;left:24px"></span>
+      <div class="hand-font" style="color:var(--color-neutral-700);font-size:22px;line-height:1.5">
+        작은 행동이<br/>큰 변화를 만들어요 :)
+      </div>
+      <div class="muted" style="font-size:11px;margin-top:12px">Memo Paper · Decorative</div>
+    </div>
+
+    <!-- CTA Card -->
+    <div class="card" style="background:linear-gradient(135deg, var(--color-lavender-50), var(--color-primary-50));border-color:var(--color-lavender-200);position:relative;overflow:hidden">
+      <div class="mascot-cloud" style="position:absolute;right:18px;top:18px"></div>
+      <div class="badge lav" style="margin-bottom:8px">AI 추천</div>
+      <h4 style="margin:0 0 6px;font-size:16px">지원할 때 연결하면 좋은 경험 소재를 추천했어요</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;line-height:1.55">이력에서 데이터 시각화 · 리텐션 개선 경험 3건을 찾았어요. 자소서에 활용해볼까요?</p>
+      <button class="btn primary sm">추천 소재 보기 →</button>
+    </div>
+  </div>
+
+  <h4 class="sub">Empty · Progress · Admin Stat</h4>
+  <div class="grid g-3">
+    <div class="card" style="text-align:center;padding:32px 20px">
+      <div class="mascot-cloud lg" style="margin:0 auto 16px"></div>
+      <h4 style="margin:0 0 6px;font-size:15px">아직 자소서가 없어요</h4>
+      <p style="font-size:12px;color:var(--color-text-muted);margin:0 0 14px">첫 자소서를 작성해볼까요?</p>
+      <button class="btn primary sm">새로 만들기</button>
+    </div>
+    <div class="card">
+      <div class="row" style="gap:18px;align-items:center">
+        <div class="circular" style="--p:78"><span>78<span style="font-size:11px;font-weight:600;color:var(--color-text-muted)">%</span></span></div>
+        <div>
+          <div style="font-weight:700;font-size:14px">작성 완성도</div>
+          <p style="font-size:12px;color:var(--color-text-secondary);margin:6px 0 0;line-height:1.5">학력 1건, 자격증 0건, 경력기술 1건이 더 필요해요.</p>
+          <button class="btn tertiary sm" style="margin-top:10px">결손 항목 보기</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px"><span class="mono muted">Admin · 이번 주</span><span class="badge success dot">+12%</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div><div class="mono" style="font-size:18px;font-weight:700">142</div><div style="font-size:10.5px;color:var(--color-text-muted)">신규 가입</div></div>
+        <div><div class="mono" style="font-size:18px;font-weight:700">1,238</div><div style="font-size:10.5px;color:var(--color-text-muted)">자소서 호출</div></div>
+        <div><div class="mono" style="font-size:18px;font-weight:700">$24.50</div><div style="font-size:10.5px;color:var(--color-text-muted)">LLM 비용</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E · DATA DISPLAY -->
+  <h3 class="sub">E · Data Display</h3>
+
+  <h4 class="sub">Table</h4>
+  <div class="preview" style="padding:0;overflow:hidden">
+    <table class="token-table" style="border:none;border-radius:0">
+      <thead>
+        <tr><th>회사</th><th>직무</th><th>전형 단계</th><th>마감일</th><th>매칭률</th><th>상태</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>카카오페이</b></td><td>백엔드</td><td><span class="badge info dot">서류 작성중</span></td><td>2026.05.20 <span class="badge dday" style="margin-left:6px">D-3</span></td><td class="mono">82%</td><td><button class="btn ghost sm">편집</button></td></tr>
+        <tr><td><b>네이버</b></td><td>프론트엔드</td><td><span class="badge warning dot">1차 면접</span></td><td>2026.05.18</td><td class="mono">76%</td><td><button class="btn ghost sm">편집</button></td></tr>
+        <tr><td><b>토스</b></td><td>인프라/DevOps</td><td><span class="badge success dot">합격</span></td><td>2026.05.15</td><td class="mono">88%</td><td><button class="btn ghost sm">편집</button></td></tr>
+        <tr><td><b>당근</b></td><td>UI/UX 디자이너</td><td><span class="badge dot">서류 작성중</span></td><td>2026.05.22</td><td class="mono">71%</td><td><button class="btn ghost sm">편집</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 class="sub">Timeline · History Log</h4>
+  <div class="card">
+    <ol style="list-style:none;padding:0;margin:0;position:relative">
+      <li style="position:relative;padding:0 0 18px 32px;border-left:2px solid var(--color-border-default);margin-left:8px">
+        <span style="position:absolute;left:-8px;top:0;width:14px;height:14px;background:var(--color-primary-500);border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px var(--color-primary-500)"></span>
+        <div class="mono muted" style="font-size:11px;margin-bottom:4px">2026.05.14 17:32 · 시스템</div>
+        <div style="font-size:13px">카카오페이 · 전형 단계 <b>서류 제출</b> → <b style="color:var(--color-primary-700)">서류 합격</b>으로 변경됨</div>
+      </li>
+      <li style="position:relative;padding:0 0 18px 32px;border-left:2px solid var(--color-border-default);margin-left:8px">
+        <span style="position:absolute;left:-8px;top:0;width:14px;height:14px;background:var(--color-mint-500);border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px var(--color-mint-500)"></span>
+        <div class="mono muted" style="font-size:11px;margin-bottom:4px">2026.05.13 11:08 · 김이취</div>
+        <div style="font-size:13px">카카오페이 · <b>자소서 v1 저장</b> 후 PDF 다운로드</div>
+      </li>
+      <li style="position:relative;padding:0 0 0 32px;margin-left:8px">
+        <span style="position:absolute;left:-8px;top:0;width:14px;height:14px;background:var(--color-lavender-500);border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px var(--color-lavender-500)"></span>
+        <div class="mono muted" style="font-size:11px;margin-bottom:4px">2026.05.12 22:41 · 김이취</div>
+        <div style="font-size:13px">카카오페이 · 기업분석 결과를 자소서 컨텍스트로 연결</div>
+      </li>
+    </ol>
+  </div>
+
+  <h4 class="sub">Kanban Column · Progress · Matching Score</h4>
+  <div class="grid g-3">
+    <div style="background:var(--color-surface-soft);border:1px solid var(--color-border-default);border-radius:14px;padding:14px">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b style="font-size:13px">서류 작성중</b><span class="badge">3</span></div>
+      <div class="col-stack" style="gap:8px">
+        <div class="card" style="padding:12px;border-radius:8px"><div style="font-size:12px;font-weight:600">카카오</div><div class="muted" style="font-size:10.5px">백엔드 · D-2</div></div>
+        <div class="card" style="padding:12px;border-radius:8px"><div style="font-size:12px;font-weight:600">라인플러스</div><div class="muted" style="font-size:10.5px">백엔드 · D-5</div></div>
+        <div class="card" style="padding:12px;border-radius:8px"><div style="font-size:12px;font-weight:600">당근</div><div class="muted" style="font-size:10.5px">디자이너 · D-7</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px">진행률</div>
+      <div class="col-stack">
+        <div><div class="row" style="justify-content:space-between;font-size:12px"><span>기초 정보</span><span class="mono">100%</span></div><div class="progress success" style="margin-top:4px"><span style="width:100%"></span></div></div>
+        <div><div class="row" style="justify-content:space-between;font-size:12px"><span>학력</span><span class="mono">100%</span></div><div class="progress success" style="margin-top:4px"><span style="width:100%"></span></div></div>
+        <div><div class="row" style="justify-content:space-between;font-size:12px"><span>경력기술</span><span class="mono">60%</span></div><div class="progress" style="margin-top:4px"><span style="width:60%"></span></div></div>
+        <div><div class="row" style="justify-content:space-between;font-size:12px"><span>포트폴리오</span><span class="mono">20%</span></div><div class="progress warn" style="margin-top:4px"><span style="width:20%"></span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px">JD 매칭 키워드</div>
+      <div class="row" style="gap:6px;margin-bottom:8px">
+        <span class="chip-keyword matched">사용자 경험</span>
+        <span class="chip-keyword matched">데이터 기반</span>
+        <span class="chip-keyword matched">문제 해결</span>
+      </div>
+      <div style="font-size:11px;color:var(--color-text-muted);margin-bottom:6px">보완할 키워드</div>
+      <div class="row" style="gap:6px">
+        <span class="chip-keyword gap">Kafka</span>
+        <span class="chip-keyword gap">MSA</span>
+        <span class="chip-keyword gap">Kubernetes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- F · STATUS / FEEDBACK -->
+  <h3 class="sub">F · Status &amp; Feedback</h3>
+  <div class="preview">
+    <span class="preview-label">Badge · Chip · D-day</span>
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <span class="badge info dot">진행중</span>
+      <span class="badge success dot">합격</span>
+      <span class="badge warning dot">검토 필요</span>
+      <span class="badge error dot">불합격</span>
+      <span class="badge lav">AI 초안</span>
+      <span class="badge pink">자소서</span>
+      <span class="badge dday">D-1</span>
+      <span class="badge dday" style="background:var(--color-yellow-100);color:var(--color-yellow-400)">D-7</span>
+      <span class="badge">기타</span>
+    </div>
+
+    <div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <span class="verify-chip">확인 필요</span>
+      <span class="verify-chip ok">이력 확인됨</span>
+      <span class="chip-keyword matched">Java</span>
+      <span class="chip-keyword gap">Kafka</span>
+      <span class="chip-keyword">사용자 경험</span>
+    </div>
+
+    <div class="col-stack" style="gap:10px">
+      <div class="alert info"><span class="alert-icon">i</span>이 공고는 <b>Kafka, MSA</b> 경험을 우대해요. 보완할 경험을 정리해볼까요?</div>
+      <div class="alert warning"><span class="alert-icon">!</span>AI가 작성한 표현 중 <b>3곳</b>이 내 이력에서 직접 확인되지 않았어요. 검토가 필요해요.</div>
+      <div class="alert error"><span class="alert-icon">×</span>잠시 연결이 끊겼어요. 잠시 후 다시 시도해주세요.</div>
+      <div class="alert success"><span class="alert-icon">✓</span>자소서가 저장됐어요. 다음에 이어 쓸 수 있어요.</div>
+    </div>
+  </div>
+
+  <!-- G · AI / Review -->
+  <h3 class="sub">G · AI &amp; Review</h3>
+  <div class="grid g-2">
+    <div class="card" style="border-color:var(--color-lavender-200)">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b style="font-size:13px">AI Draft Panel</b><span class="badge lav">AI</span></div>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:0 0 12px">내 이력 + 공고 + 기업분석을 함께 읽고, 회사에 맞는 초안을 만들어요.</p>
+      <div style="font-size:12px;padding:10px 12px;background:var(--color-lavender-50);border-radius:8px;line-height:1.6;border-left:3px solid var(--color-lavender-400);position:relative">
+        <span style="display:inline-block;width:6px;height:14px;background:var(--color-lavender-500);animation:blink 1s infinite;vertical-align:-2px"></span> 카카오의 인재상은 <i>"기술로 사용자를 돕는다"</i>입니다. 저의 데이터 시각화 프로젝트 경험은…
+      </div>
+      <button class="btn ai sm" style="margin-top:12px">AI 초안 만들어보기</button>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b style="font-size:13px">거짓방지 검토 (Hallucination Guard)</b><span class="badge warning dot">3건 검토 필요</span></div>
+      <p style="font-size:13px;line-height:1.7;color:var(--color-text-primary);margin:0 0 8px">
+        저는 <span class="kw-confirmed">SQL · Python</span> 으로 리텐션 지표를 정의하고,
+        <span class="kw-highlight" title="이력에서 확인되지 않음">Airflow 파이프라인을 구축</span>해
+        <span class="kw-highlight" title="이력에서 확인되지 않음">의사결정 시간 40% 단축</span>이라는 성과를 만들었습니다.
+      </p>
+      <p class="note" style="margin:8px 0 0">노랑 점선은 이력에서 직접 확인되지 않은 표현. 호버하면 이유를 보여줘요.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><b style="font-size:13px">JD Keyword Match</b><span class="mono" style="color:var(--color-mint-700);font-weight:700">82% 매칭</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div>
+          <div class="mono muted" style="font-size:10px;margin-bottom:6px">매칭된 키워드 (8)</div>
+          <div class="row" style="gap:4px;flex-wrap:wrap">
+            <span class="chip-keyword matched">Java</span>
+            <span class="chip-keyword matched">Spring</span>
+            <span class="chip-keyword matched">REST API</span>
+            <span class="chip-keyword matched">JPA</span>
+          </div>
+        </div>
+        <div>
+          <div class="mono muted" style="font-size:10px;margin-bottom:6px">보완 추천 (3)</div>
+          <div class="row" style="gap:4px;flex-wrap:wrap">
+            <span class="chip-keyword gap">Kafka</span>
+            <span class="chip-keyword gap">MSA</span>
+            <span class="chip-keyword gap">k8s</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background:var(--color-yellow-50);border-color:var(--color-yellow-200)">
+      <div class="row" style="gap:8px;align-items:center"><span style="width:20px;height:20px;background:var(--color-yellow-400);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:11px">?</span><b style="font-size:13px;color:var(--color-yellow-400)">사용자 확인 필요</b></div>
+      <p style="font-size:12.5px;line-height:1.6;color:var(--color-neutral-700);margin:10px 0 12px">
+        AI가 표현한 "팀장 직책 수행"은 이력에 명시되지 않았어요. 그대로 둘지, 다시 쓸지 정해주세요.
+      </p>
+      <div class="row" style="gap:6px"><button class="btn secondary sm">그대로 두기</button><button class="btn primary sm">다시 쓰기</button></div>
+    </div>
+  </div>
+
+  <style>@keyframes blink { 50% { opacity: 0 } }</style>
+
+  <!-- H · Decorative -->
+  <h3 class="sub">H · Decorative</h3>
+  <p class="note">감성 요소는 빈 화면 · CTA · 환영 · 격려 영역에만 사용. 데이터 테이블 · 자소서 본문 · 관리자 화면에는 사용 금지.</p>
+  <div class="grid g-4">
+    <div class="card" style="position:relative;min-height:120px">
+      <span class="tape" style="top:-10px;left:24px"></span>
+      <span class="tape pink" style="top:-10px;left:120px;transform:rotate(8deg)"></span>
+      <span class="tape mint" style="top:-10px;right:24px;transform:rotate(-6deg)"></span>
+      <div class="mono muted" style="font-size:11px;margin-top:24px">Tape · 노랑 / 핑크 / 민트</div>
+    </div>
+    <div class="card" style="display:flex;align-items:center;justify-content:center;gap:14px;min-height:120px">
+      <div class="mascot-cloud sm"></div>
+      <div class="mascot-cloud"></div>
+      <div class="mascot-cloud lg"></div>
+      <div style="position:absolute;bottom:8px;left:14px" class="mono muted">Mascot · 구름</div>
+    </div>
+    <div class="card" style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:center;min-height:120px">
+      <!-- Flower doodle -->
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="3.5" fill="#F5C947"/><g stroke="#828FED" stroke-width="2" stroke-linecap="round" fill="none"><path d="M18 14 Q 14 6, 12 4"/><path d="M22 16 Q 30 14, 32 12"/><path d="M22 22 Q 30 26, 32 28"/><path d="M14 22 Q 6 26, 4 28"/><path d="M14 18 Q 6 18, 4 18"/></g></svg>
+      <!-- Heart -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 26 C 6 18, 6 10, 12 10 C 14 10, 16 12, 16 14 C 16 12, 18 10, 20 10 C 26 10, 26 18, 16 26 Z" stroke="#E96B91" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+      <!-- Sparkle -->
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4 L18 14 L28 16 L18 18 L16 28 L14 18 L4 16 L14 14 Z" stroke="#6471E0" stroke-width="1.6" stroke-linejoin="round" fill="none"/></svg>
+      <!-- Leaf -->
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 30 Q 8 16, 22 8 Q 30 12, 26 22 Q 18 30, 6 30 Z M 10 26 Q 16 20, 24 14" stroke="#54C39B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Squiggle -->
+      <svg width="60" height="20" viewBox="0 0 60 20" fill="none"><path d="M4 12 Q 12 2, 20 12 T 36 12 T 52 12" stroke="#828FED" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      <div style="position:absolute;bottom:8px;left:14px" class="mono muted">Doodles · 꽃 · 하트 · 스파클 · 잎 · 스퀴글</div>
+    </div>
+    <div class="memo-paper" style="padding:18px;position:relative;min-height:120px">
+      <span class="tape lav" style="top:-10px;right:24px;transform:rotate(8deg)"></span>
+      <div class="hand-font" style="font-size:18px;line-height:1.5;color:var(--color-neutral-700)">
+        수정하면서<br/>나만의 답을 만들어요 ♡
+      </div>
+      <div style="position:absolute;bottom:8px;left:14px" class="mono muted">Memo Paper</div>
+    </div>
+  </div>
+
+  <h4 class="sub">사용 규칙</h4>
+  <table class="token-table">
+    <thead><tr><th>요소</th><th>허용 위치</th><th>금지 위치</th></tr></thead>
+    <tbody>
+      <tr><td>Tape · 메모지</td><td>홈, 온보딩, Empty, CTA 카드</td><td>자소서 본문, 테이블, 관리자, 폼 에러</td></tr>
+      <tr><td>마스코트</td><td>Empty, CTA, AI 추천 카드</td><td>경고/오류 메시지, 자소서 결과 검토</td></tr>
+      <tr><td>손글씨 (MemomentKkukkukk)</td><td>온보딩 질문 · 환영 모달 · Empty 문구 · 메모 · 헤드라인</td><td>본문, 버튼 라벨, 폼 라벨, 데이터, 테이블</td></tr>
+      <tr><td>도들 SVG</td><td>아이콘 옆 작은 장식, 빈 영역 보조</td><td>액션 버튼 내부, 토스트, 폼 도움말</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     5B · ICON SYSTEM
+============================================================ -->
+<style id="icon-system-style">
+  .lucide {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: inline-block;
+    vertical-align: middle;
+    flex: 0 0 auto;
+  }
+  .lucide.soft { stroke-width: 1.75; }
+  .icon-card {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px; padding: 14px 6px;
+    background: var(--color-surface-default);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+  .icon-card .lucide { color: var(--color-text-primary); }
+  .icon-card .nm { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); }
+  .icon-card .ctx { font-size: 10.5px; color: var(--color-text-secondary); }
+  .icon-grid { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 10px; }
+  .icon-grid.cols-6 { grid-template-columns: repeat(6, minmax(0,1fr)); }
+
+  .deco-card {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 18px 6px;
+    background: var(--color-surface-soft);
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+  }
+  .deco-card .nm {
+    font-family: var(--font-family-hand);
+    font-size: 14px; color: var(--color-text-secondary);
+  }
+
+  .code-block {
+    background: var(--color-neutral-800);
+    color: #F4F4EF;
+    padding: 20px 22px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .code-block .k { color: #BCA8F4; }      /* keyword */
+  .code-block .s { color: #80D8B7; }      /* string */
+  .code-block .c { color: #8A8980; font-style: italic; }   /* comment */
+  .code-block .n { color: #F5C947; }      /* type/name */
+  .code-block .t { color: #FFA178; }      /* tag */
+
+  .split-hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--color-border-default);
+  }
+  .split-hero > div {
+    padding: 22px 24px;
+    background: var(--color-surface-default);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .split-hero .right {
+    background: linear-gradient(135deg, var(--color-lavender-50), var(--color-pink-50));
+  }
+  .split-hero h4 {
+    margin: 0; font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .split-hero .tag {
+    font-family: var(--font-family-mono);
+    font-size: 10px; padding: 3px 8px; border-radius: 999px;
+    background: var(--color-surface-soft); color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .split-hero p { margin: 0; font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.55; }
+  .icon-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+</style>
+
+<section id="sec-icons">
+  <div class="section-head">
+    <span class="eyebrow">05B · Icon System</span>
+    <h2>두 개의 아이콘 시스템 — 기능 vs 감성</h2>
+    <p>이취는 두 가지 아이콘 시스템을 명확히 분리합니다. <b>Lucide Icons</b>(기능)와 <b>직접 제작 SVG</b>(장식)는 같은 화면에 함께 등장하지만, 역할이 다르고 사용 위치도 다릅니다.</p>
+  </div>
+
+  <!-- HERO COMPARISON -->
+  <div class="split-hero">
+    <div class="left">
+      <div class="row" style="justify-content:space-between"><h4>✓ Functional · 정보 전달</h4><span class="tag">LUCIDE</span></div>
+      <p>홈 · 내 정보 · 자소서 · 알림 등 <b>기능을 지칭</b>합니다. 선형 outline, 2px stroke, round cap. 의미는 항상 텍스트 라벨이 보조합니다.</p>
+      <div class="icon-row">
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg class="lucide" width="24" height="24" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 3v3M21 5h-3M5 19v3M7 21H3"/></svg>
+      </div>
+      <div class="mono" style="font-size:10.5px;color:var(--color-text-muted)">예: Home · UserRound · FileText · CalendarDays · Bell · Search · Sparkles</div>
+    </div>
+    <div class="right">
+      <div class="row" style="justify-content:space-between"><h4>✨ Decorative · 분위기 형성</h4><span class="tag">CUSTOM SVG</span></div>
+      <p>꽃 · 별 · 하트 · 메모지 · 테이프 등 <b>감성을 더하는 장식</b>. 손그림 느낌의 변형된 stroke, 일관되지 않은 곡선. <code style="background:rgba(0,0,0,.05);padding:1px 4px;border-radius:3px">aria-hidden="true"</code>로 처리합니다.</p>
+      <div class="icon-row">
+        <!-- flower -->
+        <svg width="28" height="28" viewBox="0 0 36 36"><circle cx="18" cy="18" r="3.5" fill="#F5C947"/><g stroke="#828FED" stroke-width="2" stroke-linecap="round" fill="none"><path d="M18 14 Q 14 6, 12 4"/><path d="M22 16 Q 30 14, 32 12"/><path d="M22 22 Q 30 26, 32 28"/><path d="M14 22 Q 6 26, 4 28"/><path d="M14 18 Q 6 18, 4 18"/></g></svg>
+        <!-- star -->
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4 L16 11 L23 13 L16 15 L14 22 L12 15 L5 13 L12 11 Z" stroke="#6471E0" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <!-- heart -->
+        <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M16 26 C 6 18, 6 10, 12 10 C 14 10, 16 12, 16 14 C 16 12, 18 10, 20 10 C 26 10, 26 18, 16 26 Z" stroke="#E96B91" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+        <!-- leaf -->
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><path d="M6 30 Q 8 16, 22 8 Q 30 12, 26 22 Q 18 30, 6 30 Z M 10 26 Q 16 20, 24 14" stroke="#54C39B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- sprout -->
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none"><path d="M18 30 V 18 M 18 18 Q 10 14, 8 8 Q 16 10, 18 16 M 18 20 Q 26 18, 28 12 Q 22 14, 18 20" stroke="#2FA980" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- scribble underline -->
+        <svg width="60" height="20" viewBox="0 0 60 20" fill="none"><path d="M4 12 Q 12 2, 20 12 T 36 12 T 52 12" stroke="#F37F4D" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+      </div>
+      <div class="mono" style="font-size:10.5px;color:var(--color-text-muted)">예: 꽃 · 별 · 하트 · 잎 · 새싹 · 강조 밑줄</div>
+    </div>
+  </div>
+
+  <p class="note" style="margin-top:16px">두 시스템은 같은 카드 안에 함께 등장할 수 있지만, <b>역할이 섞이면 안 됩니다.</b> 예: "AI 추천" 카드 = Sparkles 아이콘(기능) + 라벤더 구름 마스코트(장식)는 OK. 자소서 본문에 꽃 도들이 들어가는 것은 ✗.</p>
+
+  <!-- A · LUCIDE FUNCTIONAL ICONS -->
+  <h3 class="sub">A · 기능 아이콘 (Lucide)</h3>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-top:-8px">기준 라이브러리는 <a href="https://lucide.dev" target="_blank" style="color:var(--color-primary-700)">Lucide</a>. 모든 기능 아이콘은 outline · 2px stroke · round cap을 따릅니다. 감성적인 onboarding · empty state에서만 1.75px로 부드럽게.</p>
+
+  <h4 class="sub">메뉴 / 네비게이션</h4>
+  <div class="icon-grid">
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="ctx">홈</span><span class="nm">Home</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+      <span class="ctx">내 정보</span><span class="nm">UserRound</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M2 6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/><path d="M12 11v6M9 14h6"/></svg>
+      <span class="ctx">이력/경험</span><span class="nm">NotebookPen</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span class="ctx">자소서</span><span class="nm">FileText</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10.5 17.5l-2 .5.5-2 4.5-4.5a1 1 0 0 1 1.5 0l1 1a1 1 0 0 1 0 1.5z"/></svg>
+      <span class="ctx">자소서 편집</span><span class="nm">FilePenLine</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M15 2H8a2 2 0 0 0-2 2v3"/><path d="M17 6h-7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-9z"/><polyline points="17 6 17 11 22 11"/></svg>
+      <span class="ctx">경력기술서</span><span class="nm">Files</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l4-4a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-4 4a5 5 0 0 0 7 7l1-1"/></svg>
+      <span class="ctx">포트폴리오</span><span class="nm">Link</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><path d="M2 13h20"/></svg>
+      <span class="ctx">지원 현황</span><span class="nm">BriefcaseBusiness</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+      <span class="ctx">캘린더</span><span class="nm">CalendarDays</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9"/><polyline points="3 4 3 12 11 12"/><path d="M12 7v5l3 3"/></svg>
+      <span class="ctx">히스토리</span><span class="nm">History</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20" rx="2"/><path d="M9 22V12h6v10M9 8h6M9 5h6"/></svg>
+      <span class="ctx">기업분석</span><span class="nm">Building2</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M21 21H4a1 1 0 0 1-1-1V4"/><path d="M21 7l-7 7-4-4-4 4"/></svg>
+      <span class="ctx">분석/지표</span><span class="nm">ChartNoAxesCombined</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+      <span class="ctx">필터</span><span class="nm">ListFilter</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <span class="ctx">알림</span><span class="nm">Bell</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      <span class="ctx">설정</span><span class="nm">Settings</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="ctx">검색</span><span class="nm">Search</span>
+    </div>
+  </div>
+
+  <h4 class="sub">AI · 검토 · 상태</h4>
+  <div class="icon-grid">
+    <div class="icon-card" style="color:var(--color-lavender-500)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 3v3M21 5h-3M5 19v3M7 21H3"/></svg>
+      <span class="ctx">AI 추천/생성</span><span class="nm">Sparkles</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 8v-2M17 8v-2M7 20v-2M17 20v-2"/><path d="M7 12h2M11 12h2M15 12h2M7 15h6"/></svg>
+      <span class="ctx">글자수/검토</span><span class="nm">ScanText</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M3 17l2 2 4-4"/><path d="M3 7l2 2 4-4"/><path d="M3 12l2 2 4-4"/><line x1="13" y1="6" x2="21" y2="6"/><line x1="13" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg>
+      <span class="ctx">체크 리스트</span><span class="nm">ListChecks</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M4 19h16M6 19V9l5-5 5 5v10M9 14h6"/><path d="M14 8l-2-2-2 2"/></svg>
+      <span class="ctx">맞춤법</span><span class="nm">SpellCheck</span>
+    </div>
+    <div class="icon-card" style="color:var(--color-mint-700)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="ctx">거짓방지</span><span class="nm">ShieldCheck</span>
+    </div>
+    <div class="icon-card" style="color:var(--color-yellow-400)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span class="ctx">경고</span><span class="nm">TriangleAlert</span>
+    </div>
+    <div class="icon-card" style="color:var(--color-primary-600)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span class="ctx">확인 필요</span><span class="nm">CircleAlert</span>
+    </div>
+    <div class="icon-card" style="color:var(--color-semantic-success)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="ctx">성공/완료</span><span class="nm">CircleCheck</span>
+    </div>
+    <div class="icon-card" style="color:var(--color-semantic-error)">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      <span class="ctx">오류</span><span class="nm">CircleX</span>
+    </div>
+  </div>
+
+  <h4 class="sub">액션</h4>
+  <div class="icon-grid">
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span class="ctx">다운로드</span><span class="nm">Download</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span class="ctx">업로드</span><span class="nm">Upload</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      <span class="ctx">삭제</span><span class="nm">Trash2</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span class="ctx">추가</span><span class="nm">Plus</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/><path d="M15 5l4 4"/></svg>
+      <span class="ctx">편집</span><span class="nm">Pencil</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg>
+      <span class="ctx">더보기</span><span class="nm">MoreHorizontal</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><path d="M15 3h6v6"/><line x1="10" y1="14" x2="21" y2="3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+      <span class="ctx">외부 링크</span><span class="nm">ExternalLink</span>
+    </div>
+    <div class="icon-card">
+      <svg class="lucide" width="22" height="22" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>
+      <span class="ctx">이력 클립보드</span><span class="nm">ClipboardList</span>
+    </div>
+  </div>
+
+  <!-- B · SIZES -->
+  <h3 class="sub">B · 사이즈 · 컨텍스트</h3>
+  <table class="token-table">
+    <thead><tr><th>맥락</th><th>Size</th><th>Stroke Width</th><th>예시</th></tr></thead>
+    <tbody>
+      <tr><td>버튼 내부</td><td class="mono">16 ~ 18</td><td class="mono">2</td>
+        <td><button class="btn primary sm"><svg class="lucide" width="16" height="16" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>PDF 다운로드</button></td>
+      </tr>
+      <tr><td>사이드바 메뉴</td><td class="mono">18 ~ 20</td><td class="mono">2</td>
+        <td>
+          <span style="display:inline-flex;align-items:center;gap:10px;padding:8px 12px;background:var(--color-primary-50);color:var(--color-primary-700);border-radius:8px;font-size:13px;font-weight:600">
+            <svg class="lucide" width="18" height="18" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            홈
+          </span>
+        </td>
+      </tr>
+      <tr><td>카드 / 섹션 헤더</td><td class="mono">20 ~ 24</td><td class="mono">2</td>
+        <td>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700">
+            <svg class="lucide" width="22" height="22" viewBox="0 0 24 24" style="color:var(--color-lavender-500)"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/><path d="M19 3v3M21 5h-3"/></svg>
+            AI 추천
+          </span>
+        </td>
+      </tr>
+      <tr><td>Empty State</td><td class="mono">40 ~ 56</td><td class="mono">1.75 (soft)</td>
+        <td>
+          <svg class="lucide soft" width="40" height="40" viewBox="0 0 24 24" style="color:var(--color-text-muted)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </td>
+      </tr>
+      <tr><td>인라인 텍스트</td><td class="mono">14 ~ 16</td><td class="mono">2</td>
+        <td><span style="font-size:13px">매칭률 <svg class="lucide" width="14" height="14" viewBox="0 0 24 24" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> 82%</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- C · COLOR USAGE -->
+  <h3 class="sub">C · 컬러 사용</h3>
+  <div class="grid g-4">
+    <div class="card" style="text-align:center;padding:18px">
+      <svg class="lucide" width="28" height="28" viewBox="0 0 24 24" style="color:var(--color-text-primary)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <div style="margin-top:8px;font-size:11px"><code>text.primary</code></div>
+      <div class="muted" style="font-size:10.5px;margin-top:4px">기본 · 활성 상태</div>
+    </div>
+    <div class="card" style="text-align:center;padding:18px">
+      <svg class="lucide" width="28" height="28" viewBox="0 0 24 24" style="color:var(--color-text-secondary)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <div style="margin-top:8px;font-size:11px"><code>text.secondary</code></div>
+      <div class="muted" style="font-size:10.5px;margin-top:4px">기본 메뉴 비활성</div>
+    </div>
+    <div class="card" style="text-align:center;padding:18px">
+      <svg class="lucide" width="28" height="28" viewBox="0 0 24 24" style="color:var(--color-primary-600)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <div style="margin-top:8px;font-size:11px"><code>primary.600</code></div>
+      <div class="muted" style="font-size:10.5px;margin-top:4px">현재 위치 · 강조</div>
+    </div>
+    <div class="card" style="text-align:center;padding:18px">
+      <svg class="lucide" width="28" height="28" viewBox="0 0 24 24" style="color:var(--color-text-muted)"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <div style="margin-top:8px;font-size:11px"><code>text.muted</code></div>
+      <div class="muted" style="font-size:10.5px;margin-top:4px">disabled · placeholder</div>
+    </div>
+  </div>
+  <p class="note">아이콘 색상은 같이 쓰는 텍스트보다 강하지 않게. 의미 색은 시맨틱 토큰과 연결 — 성공=mint, 경고=yellow, 오류=red, AI=lavender.</p>
+
+  <!-- D · DECORATIVE -->
+  <h3 class="sub">D · 장식 아이콘 (Custom SVG)</h3>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-top:-8px">손그림 느낌의 SVG. 일정한 그리드/규격에 얽매이지 않고, 카드의 빈 공간이나 환영 메시지 옆에 단독으로 사용합니다. 절대 텍스트 라벨 대체로 사용하지 않습니다.</p>
+
+  <div class="icon-grid cols-6">
+    <div class="deco-card">
+      <svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="4" fill="#F5C947"/><g stroke="#828FED" stroke-width="2" stroke-linecap="round" fill="none"><path d="M18 13 Q 14 5, 12 3"/><path d="M23 16 Q 31 14, 33 12"/><path d="M23 22 Q 31 26, 33 28"/><path d="M13 22 Q 5 26, 3 28"/><path d="M13 16 Q 5 14, 3 12"/></g></svg>
+      <span class="nm">손그림 꽃</span>
+    </div>
+    <div class="deco-card">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 6 L20 14 L28 16 L20 18 L18 26 L16 18 L8 16 L16 14 Z" stroke="#6471E0" stroke-width="2" stroke-linejoin="round"/><circle cx="29" cy="9" r="1.5" fill="#6471E0"/><circle cx="7" cy="28" r="1" fill="#6471E0"/></svg>
+      <span class="nm">작은 별</span>
+    </div>
+    <div class="deco-card">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 28 C 6 19, 6 10, 13 10 C 16 10, 18 12, 18 15 C 18 12, 20 10, 23 10 C 30 10, 30 19, 18 28 Z" stroke="#E96B91" stroke-width="2.2" stroke-linejoin="round" fill="none"/></svg>
+      <span class="nm">하트</span>
+    </div>
+    <div class="deco-card">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 30 Q 8 16, 22 8 Q 30 12, 26 22 Q 18 30, 6 30 Z M 10 26 Q 16 20, 24 14" stroke="#54C39B" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="nm">잎사귀</span>
+    </div>
+    <div class="deco-card">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M18 30 V 18 M 18 18 Q 10 14, 8 8 Q 16 10, 18 16 M 18 20 Q 26 18, 28 12 Q 22 14, 18 20" stroke="#2FA980" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="nm">새싹</span>
+    </div>
+    <div class="deco-card" style="position:relative;height:80px">
+      <div class="memo-paper" style="width:60px;height:48px;padding:0;position:relative">
+        <span class="tape pink" style="top:-8px;right:6px;width:36px;height:14px;transform:rotate(8deg)"></span>
+      </div>
+      <span class="nm">메모지 + 테이프</span>
+    </div>
+    <div class="deco-card">
+      <span class="tape" style="position:relative;width:54px;height:18px;display:inline-block"></span>
+      <span class="tape mint" style="position:relative;width:54px;height:18px;display:inline-block;margin-top:-6px;transform:rotate(-6deg)"></span>
+      <span class="nm">마스킹 테이프</span>
+    </div>
+    <div class="deco-card">
+      <svg width="80" height="20" viewBox="0 0 80 20" fill="none"><path d="M4 12 Q 14 2, 24 12 T 44 12 T 64 12 T 76 12" stroke="#F5C947" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+      <span class="nm">강조 밑줄</span>
+    </div>
+    <div class="deco-card">
+      <div class="mascot-cloud sm"></div>
+      <span class="nm">작은 캐릭터</span>
+    </div>
+    <div class="deco-card">
+      <svg width="70" height="36" viewBox="0 0 70 36" fill="none"><path d="M5 18 Q 8 6, 18 8 Q 28 10, 35 14 Q 50 20, 60 12 Q 66 8, 68 4" stroke="#9F84EA" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="68" cy="4" r="1" fill="#9F84EA"/></svg>
+      <span class="nm">연필 낙서 선</span>
+    </div>
+    <div class="deco-card">
+      <svg width="64" height="48" viewBox="0 0 64 48" fill="none"><path d="M8 8 H 50 A 6 6 0 0 1 56 14 V 26 A 6 6 0 0 1 50 32 H 22 L 14 40 V 32 H 8 A 6 6 0 0 1 2 26 V 14 A 6 6 0 0 1 8 8 Z" stroke="#E96B91" stroke-width="2" fill="#FEF2F6" stroke-linejoin="round"/><circle cx="20" cy="20" r="1.4" fill="#E96B91"/><circle cx="30" cy="20" r="1.4" fill="#E96B91"/><circle cx="40" cy="20" r="1.4" fill="#E96B91"/></svg>
+      <span class="nm">응원 말풍선</span>
+    </div>
+    <div class="deco-card">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="18" r="14" stroke="#6471E0" stroke-width="2" fill="#F2F4FF"/><circle cx="17" cy="16" r="1.5" fill="#25241F"/><circle cx="27" cy="16" r="1.5" fill="#25241F"/><path d="M16 22 Q 22 26, 28 22" stroke="#25241F" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="14" cy="20" r="2" fill="#FFC4A8" opacity=".6"/><circle cx="30" cy="20" r="2" fill="#FFC4A8" opacity=".6"/></svg>
+      <span class="nm">웃는 스티커</span>
+    </div>
+  </div>
+
+  <!-- E · BIG TABLE -->
+  <h3 class="sub">E · 아이콘 카테고리 매트릭스</h3>
+  <table class="token-table">
+    <thead>
+      <tr>
+        <th>카테고리</th>
+        <th>제작 방식</th>
+        <th>대표 아이콘</th>
+        <th>사용 위치</th>
+        <th>크기</th>
+        <th>컬러 토큰</th>
+        <th>주의사항</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>네비게이션</b></td>
+        <td>Lucide</td>
+        <td>Home · UserRound · BriefcaseBusiness · Bell · Settings</td>
+        <td>사이드바, 헤더, 하단 탭바</td>
+        <td class="mono">18 ~ 20</td>
+        <td><code>text.secondary</code> · 활성 <code>primary.700</code></td>
+        <td>반드시 텍스트 라벨 동반</td>
+      </tr>
+      <tr>
+        <td><b>문서 / 자소서</b></td>
+        <td>Lucide</td>
+        <td>FileText · FilePenLine · Files · ClipboardList</td>
+        <td>자소서 카드, 경력기술서 화면</td>
+        <td class="mono">20 ~ 24</td>
+        <td><code>text.primary</code></td>
+        <td>장식 아이콘과 같은 카드 안에서 분리 배치</td>
+      </tr>
+      <tr>
+        <td><b>일정 / 시간</b></td>
+        <td>Lucide</td>
+        <td>CalendarDays · History · BriefcaseBusiness</td>
+        <td>지원 현황, 캘린더, 히스토리</td>
+        <td class="mono">18 ~ 20</td>
+        <td><code>text.primary</code> / 전형별 색</td>
+        <td>색상 단독으로 상태 구분 금지 — 항상 텍스트와 함께</td>
+      </tr>
+      <tr>
+        <td><b>검색 · 필터</b></td>
+        <td>Lucide</td>
+        <td>Search · ListFilter · ChartNoAxesCombined</td>
+        <td>검색 인풋 좌측, 필터 토글</td>
+        <td class="mono">16 ~ 20</td>
+        <td><code>text.muted</code></td>
+        <td>인풋 내부 아이콘은 placeholder보다 약하게</td>
+      </tr>
+      <tr>
+        <td><b>AI · 분석</b></td>
+        <td>Lucide</td>
+        <td>Sparkles · ScanText · ListChecks</td>
+        <td>AI 초안 버튼, 검토 패널</td>
+        <td class="mono">18 ~ 22</td>
+        <td><code>lavender.500</code></td>
+        <td>Sparkles는 AI 호출 액션에만 — 일반 검색/저장 금지</td>
+      </tr>
+      <tr>
+        <td><b>거짓방지 · 검토</b></td>
+        <td>Lucide</td>
+        <td>ShieldCheck · SpellCheck · CircleAlert · TriangleAlert</td>
+        <td>거짓방지 패널, 맞춤법, 경고 배너</td>
+        <td class="mono">18 ~ 22</td>
+        <td><code>semantic.warning</code> · <code>semantic.error</code></td>
+        <td>경고 메시지 주변에는 장식 SVG 금지</td>
+      </tr>
+      <tr>
+        <td><b>상태 (Success/Error)</b></td>
+        <td>Lucide</td>
+        <td>CircleCheck · CircleX · CircleAlert</td>
+        <td>토스트, 배지, 폼 검증</td>
+        <td class="mono">14 ~ 20</td>
+        <td><code>semantic.*</code></td>
+        <td>아이콘 + 텍스트 + 색 3중 표시</td>
+      </tr>
+      <tr>
+        <td><b>액션</b></td>
+        <td>Lucide</td>
+        <td>Download · Upload · Trash2 · Plus · Pencil · MoreHorizontal</td>
+        <td>버튼, 인라인 액션, 컨텍스트 메뉴</td>
+        <td class="mono">16 ~ 18</td>
+        <td><code>text.primary</code> / 위험 = <code>semantic.error</code></td>
+        <td>아이콘 단독 버튼은 반드시 <code>aria-label</code></td>
+      </tr>
+      <tr style="background:var(--color-lavender-50)">
+        <td><b>장식 · 손그림</b></td>
+        <td><b>Custom SVG</b></td>
+        <td>꽃 · 별 · 하트 · 잎 · 새싹 · 밑줄 · 낙서선</td>
+        <td>대시보드, 온보딩, Empty, CTA Card</td>
+        <td class="mono">28 ~ 56</td>
+        <td>파스텔 7종 (mint/lav/pink/peach/yellow…)</td>
+        <td>자소서 본문, 테이블, 관리자, 경고 주변 사용 금지</td>
+      </tr>
+      <tr style="background:var(--color-lavender-50)">
+        <td><b>마스코트</b></td>
+        <td><b>Custom CSS/SVG</b></td>
+        <td>라벤더 구름 캐릭터 (sm/md/lg)</td>
+        <td>Empty State, AI 추천 카드, 진행률 위젯</td>
+        <td class="mono">28 / 56 / 84</td>
+        <td><code>lavender.200</code> + <code>lavender.300</code></td>
+        <td>한 화면에 1마리만. 자소서/검토 화면 등장 금지</td>
+      </tr>
+      <tr style="background:var(--color-lavender-50)">
+        <td><b>스티커 · 테이프 · 메모</b></td>
+        <td><b>Custom SVG/CSS</b></td>
+        <td>마스킹 테이프(4색), 메모지, 응원 말풍선</td>
+        <td>홈, 온보딩 환영, 캘린더 강조</td>
+        <td class="mono">자유</td>
+        <td>노랑/핑크/민트/라벤더 파스텔</td>
+        <td>한 카드에 3개 이상 사용 금지. 회전은 ±15° 이내</td>
+      </tr>
+      <tr style="background:var(--color-mint-50)">
+        <td><b>소셜 로그인</b></td>
+        <td><b>각 플랫폼 공식 가이드</b></td>
+        <td>카카오 / 네이버 / 구글 공식 로고</td>
+        <td>로그인 화면 OAuth 버튼</td>
+        <td class="mono">18 ~ 20</td>
+        <td>각 브랜드 정의 색</td>
+        <td>임의 색 변형 금지 — 공식 컬러 + 클리어스페이스 준수</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- F · REACT COMPONENT -->
+  <h3 class="sub">F · React 컴포넌트 예시</h3>
+  <p style="font-size:13px;color:var(--color-text-secondary);margin-top:-8px">Lucide의 <code>LucideIcon</code> 타입을 받아 공통 <code>&lt;Icon&gt;</code>으로 래핑. size · strokeWidth · color · aria 제어를 한곳에서.</p>
+
+  <div class="code-block"><span class="c">// components/Icon.tsx — 공통 기능 아이콘 래퍼</span>
+<span class="k">import</span> <span class="k">type</span> { LucideIcon } <span class="k">from</span> <span class="s">'lucide-react'</span>;
+<span class="k">import</span> { cn } <span class="k">from</span> <span class="s">'@/lib/utils'</span>;
+
+<span class="k">interface</span> <span class="n">IconProps</span> {
+  icon: <span class="n">LucideIcon</span>;
+  size?: <span class="n">number</span>;            <span class="c">// 기본 20</span>
+  strokeWidth?: <span class="n">number</span>;     <span class="c">// 기본 2, soft = 1.75</span>
+  className?: <span class="n">string</span>;
+  label?: <span class="n">string</span>;           <span class="c">// aria-label · 없으면 aria-hidden=true</span>
+}
+
+<span class="k">export function</span> <span class="n">Icon</span>({
+  icon: <span class="n">IconComponent</span>,
+  size = <span class="n">20</span>,
+  strokeWidth = <span class="n">2</span>,
+  className,
+  label,
+}: <span class="n">IconProps</span>) {
+  <span class="k">return</span> (
+    <span class="t">&lt;IconComponent</span>
+      <span class="n">size</span>={size}
+      <span class="n">strokeWidth</span>={strokeWidth}
+      <span class="n">className</span>={cn(<span class="s">'text-text-primary'</span>, className)}
+      <span class="n">aria-hidden</span>={label ? <span class="k">undefined</span> : <span class="k">true</span>}
+      <span class="n">aria-label</span>={label}
+    <span class="t">/&gt;</span>
+  );
+}
+
+<span class="c">// 사용 예 ───────────────────────────────</span>
+<span class="t">&lt;Icon</span> <span class="n">icon</span>={Home} <span class="n">size</span>={<span class="n">18</span>} <span class="t">/&gt;</span>                          <span class="c">// 사이드바</span>
+<span class="t">&lt;Icon</span> <span class="n">icon</span>={Sparkles} <span class="n">className</span>=<span class="s">"text-lavender-500"</span> <span class="t">/&gt;</span>   <span class="c">// AI</span>
+<span class="t">&lt;Icon</span> <span class="n">icon</span>={Trash2} <span class="n">label</span>=<span class="s">"자소서 삭제"</span> <span class="t">/&gt;</span>             <span class="c">// 아이콘 버튼</span>
+<span class="t">&lt;Icon</span> <span class="n">icon</span>={FileText} <span class="n">size</span>={<span class="n">48</span>} <span class="n">strokeWidth</span>={<span class="n">1.75</span>} <span class="t">/&gt;</span>     <span class="c">// Empty State</span></div>
+
+  <p class="note" style="margin-top:14px">장식 SVG는 별도 컴포넌트로 분리. 예: <code>&lt;FlowerDoodle/&gt;</code>, <code>&lt;TapeStripe color="mint"/&gt;</code>. 두 시스템이 같은 import 경로를 공유하지 않도록 폴더를 나눠 관리: <code>components/icons/</code> vs <code>components/doodles/</code>.</p>
+
+  <!-- G · MIX RULES -->
+  <h3 class="sub">G · 혼용 규칙 · Do / Don't</h3>
+  <div class="dodont">
+    <div class="col do">
+      <h4>✓ Do</h4>
+      <ul>
+        <li>같은 카드에서 Lucide(기능) + 장식 SVG(분위기)를 함께 사용 — 단, 시각적으로 떨어진 위치에</li>
+        <li>아이콘 옆에 항상 텍스트 라벨 또는 <code>aria-label</code></li>
+        <li>Empty / Onboarding / CTA에서는 stroke 1.75 + 큰 사이즈로 부드럽게</li>
+        <li>의미 색은 시맨틱 토큰으로 (성공=mint, 경고=yellow, 오류=red, AI=lavender)</li>
+        <li>장식 SVG는 카드의 모서리 · 빈 공간에만</li>
+        <li>아이콘 색은 옆 텍스트보다 약하게 (대비 강하지 않도록)</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h4>✗ Don't</h4>
+      <ul>
+        <li>장식 SVG로 기능을 지칭 (예: 꽃 도들 = "추가" 버튼) — 금지</li>
+        <li>아이콘만으로 의미 전달 (필수 텍스트 라벨 누락)</li>
+        <li>자소서 본문 · 테이블 셀 · 관리자 화면에 장식 SVG 사용</li>
+        <li>경고 / 오류 메시지 옆에 캐릭터 · 메모지 · 테이프 배치</li>
+        <li>Lucide 아이콘을 색상만 바꿔 장식 용도로 활용</li>
+        <li>한 화면에 장식 요소 3개 이상</li>
+        <li>소셜 로그인 로고 색상 변경 — 공식 가이드 무시</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     06 AI & REVIEW PATTERNS
+============================================================ -->
+<section id="sec-06">
+  <div class="section-head">
+    <span class="eyebrow">06 · AI &amp; Review Patterns</span>
+    <h2>"AI가 작성"이 아니라 "함께 검토"</h2>
+    <p>이취의 AI는 사용자의 검토를 전제로 동작합니다. 모든 결과는 (1) 출처 가능 여부, (2) 사용자 확정 여부 두 축으로 시각화됩니다.</p>
+  </div>
+
+  <h3 class="sub">6.1 신뢰 상태 (Trust States)</h3>
+  <table class="token-table">
+    <thead><tr><th>상태</th><th>의미</th><th>시각</th><th>UI 표현</th></tr></thead>
+    <tbody>
+      <tr><td><b>Verified</b></td><td>이력에서 직접 확인된 표현</td><td>민트 밑줄</td><td><span class="kw-confirmed">SQL · Python</span></td></tr>
+      <tr><td><b>Unverified</b></td><td>AI가 만든 표현이지만 이력에서 확인되지 않음</td><td>노랑 점선 밑줄</td><td><span class="kw-highlight">의사결정 시간 40% 단축</span></td></tr>
+      <tr><td><b>User Confirmed</b></td><td>사용자가 "그대로 두기" 선택</td><td>회색 underline · 잠금 아이콘</td><td><u style="border-bottom:2px solid var(--color-neutral-400);text-decoration:none;padding:0 2px">팀장 직책 수행 🔒</u></td></tr>
+      <tr><td><b>User Edited</b></td><td>사용자가 직접 고친 표현</td><td>표시 없음 (Primary 텍스트)</td><td>일반 본문</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">6.2 AI Streaming State</h3>
+  <div class="grid g-3">
+    <div class="card">
+      <div class="badge lav" style="margin-bottom:10px">Idle</div>
+      <button class="btn ai sm">AI 초안 만들어보기</button>
+      <p style="font-size:12px;color:var(--color-text-secondary);margin:10px 0 0">버튼만 표시. 클릭 전까지 패널은 비어있음.</p>
+    </div>
+    <div class="card" style="background:var(--color-lavender-50);border-color:var(--color-lavender-200)">
+      <div class="badge lav" style="margin-bottom:10px">Streaming</div>
+      <div style="font-size:12px;line-height:1.7">저는 카카오의 인재상인 <i>"기술로 사용자를 돕는다"</i>에 깊이 공감합니다<span style="display:inline-block;width:6px;height:14px;background:var(--color-lavender-500);animation:blink 1s infinite;vertical-align:-2px"></span></div>
+      <p style="font-size:11px;color:var(--color-lavender-600);margin:10px 0 0">⏸ 생성중 · 멈추기 가능</p>
+    </div>
+    <div class="card">
+      <div class="badge warning dot" style="margin-bottom:10px">Review Needed</div>
+      <div style="font-size:12px;line-height:1.7">… <span class="kw-highlight">Airflow 파이프라인 구축</span> 경험을 통해 …</div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:10px 0 0">3건 검토 필요 · 검토를 마치면 저장됩니다.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">6.3 글자수 카운터 (Character Counter)</h3>
+  <div class="grid g-3">
+    <div class="card">
+      <span class="mono muted">정상 (≤ 90%)</span>
+      <div style="height:8px;background:var(--color-neutral-100);border-radius:999px;margin-top:8px;overflow:hidden"><span style="display:block;width:62%;height:100%;background:var(--color-primary-500)"></span></div>
+      <div class="row" style="justify-content:space-between;margin-top:6px;font-size:11px"><span class="mono">432 / 700자</span><span class="muted">공백 포함</span></div>
+    </div>
+    <div class="card" style="background:var(--color-yellow-50);border-color:var(--color-yellow-200)">
+      <span class="mono" style="color:var(--color-yellow-400)">⚠ 권장 초과 임박 (90~100%)</span>
+      <div style="height:8px;background:var(--color-yellow-100);border-radius:999px;margin-top:8px;overflow:hidden"><span style="display:block;width:94%;height:100%;background:var(--color-yellow-300)"></span></div>
+      <div class="row" style="justify-content:space-between;margin-top:6px;font-size:11px"><span class="mono">658 / 700자</span><span style="color:var(--color-yellow-400)">42자 남음</span></div>
+    </div>
+    <div class="card" style="background:var(--color-semantic-error-bg);border-color:#FBC7CD">
+      <span class="mono" style="color:var(--color-semantic-error)">✗ 초과 (&gt; 100%)</span>
+      <div style="height:8px;background:#FBC7CD;border-radius:999px;margin-top:8px;overflow:hidden"><span style="display:block;width:100%;height:100%;background:var(--color-semantic-error)"></span></div>
+      <div class="row" style="justify-content:space-between;margin-top:6px;font-size:11px"><span class="mono">742 / 700자</span><span style="color:var(--color-semantic-error)">−42자 줄여보세요</span></div>
+    </div>
+  </div>
+
+  <h3 class="sub">6.4 맞춤법 검사 결과 (Spell Check)</h3>
+  <div class="card">
+    <div class="row" style="justify-content:space-between;margin-bottom:12px"><b style="font-size:14px">맞춤법 검사 결과</b><span class="badge warning dot">5건</span></div>
+    <div class="col-stack" style="gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr 80px;gap:10px;align-items:center;font-size:12.5px;padding:10px 12px;background:var(--color-yellow-50);border-radius:8px">
+        <div><span style="text-decoration:underline wavy var(--color-yellow-400)">왜냐하면은</span></div>
+        <div style="text-align:center;color:var(--color-text-muted)">→</div>
+        <div><b>왜냐하면</b> <span class="muted" style="font-size:11px;margin-left:4px">반복 조사 사용 주의</span></div>
+        <button class="btn primary sm">바꾸기</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr 80px;gap:10px;align-items:center;font-size:12.5px;padding:10px 12px;background:var(--color-yellow-50);border-radius:8px">
+        <div><span style="text-decoration:underline wavy var(--color-yellow-400)">대시보드를 통해서</span></div>
+        <div style="text-align:center;color:var(--color-text-muted)">→</div>
+        <div><b>대시보드로</b> <span class="muted" style="font-size:11px;margin-left:4px">간결한 표현</span></div>
+        <button class="btn primary sm">바꾸기</button>
+      </div>
+    </div>
+    <p class="note" style="margin-top:14px">v1은 LLM 호출 기반 맞춤법 검사. "전체 적용" 액션은 위험이 크므로 행 단위 확정만 허용.</p>
+  </div>
+
+  <h3 class="sub">6.5 거짓방지 검토 플로우</h3>
+  <div class="flow" style="background:var(--color-surface-soft);padding:18px;border-radius:14px">
+    <div class="step start">① AI 초안 생성</div>
+    <span class="arrow">→</span>
+    <div class="step">② 이력 대조</div>
+    <span class="arrow">→</span>
+    <div class="step">③ 미확인 표현 하이라이트</div>
+    <span class="arrow">→</span>
+    <div class="step">④ 사용자 검토 (그대로/다시 쓰기)</div>
+    <span class="arrow">→</span>
+    <div class="step end">⑤ 확정 저장</div>
+  </div>
+  <p class="note">검토를 마치지 않은 자소서는 다운로드 시 한 번 더 경고. ④번 단계가 건너뛰어지지 않도록 UI로 강제.</p>
+
+  <h3 class="sub">6.6 부족 역량 안내 (Missing Skill Recommendation)</h3>
+  <div class="card" style="background:var(--color-peach-50);border-color:var(--color-peach-200)">
+    <div class="row" style="gap:14px;align-items:flex-start">
+      <div class="mascot-cloud" style="background:var(--color-peach-200);border-color:var(--color-peach-300);flex:0 0 auto"></div>
+      <div style="flex:1">
+        <b style="font-size:14px">이 공고는 Kafka · MSA 경험을 우대해요</b>
+        <p style="font-size:13px;color:var(--color-neutral-700);margin:6px 0 12px;line-height:1.6">
+          이력에서 직접 일치하는 경험은 찾지 못했어요. 비슷한 경험을 정리해보거나, 다음 준비를 함께 계획해볼까요?
+        </p>
+        <div class="row" style="gap:8px">
+          <button class="btn secondary sm">비슷한 경험 정리</button>
+          <button class="btn tertiary sm">다음 준비 계획</button>
+          <button class="btn ghost sm">나중에</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="note">"부족합니다 · 미흡합니다" 같은 평가 단어 금지. 항상 다음 행동을 함께 제시.</p>
+</section>
+
+<!-- ============================================================
+     07 PAGE TEMPLATES
+============================================================ -->
+<section id="sec-07">
+  <div class="section-head">
+    <span class="eyebrow">07 · Page Templates</span>
+    <h2>18개 핵심 페이지 와이어 프리뷰</h2>
+    <p>각 페이지의 목적 · 주요 행동 · 필요한 컴포넌트 · 빈 상태 · UX 라이팅 포인트를 함께 정리했습니다. 와이어는 실제 비율을 단순화한 프리뷰입니다.</p>
+  </div>
+
+  <div class="template-grid">
+
+    <!-- 1. 로그인 / 회원가입 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="display:flex;height:100%;border:1px solid var(--color-border-default);border-radius:8px;overflow:hidden;background:#fff">
+          <div style="flex:1;background:linear-gradient(135deg,var(--color-lavender-100),var(--color-primary-50));padding:20px;position:relative">
+            <span class="tape pink" style="top:14px;left:18px;transform:rotate(-8deg)"></span>
+            <div style="position:absolute;bottom:20px;left:20px"><div class="hand-font" style="color:var(--color-primary-700);font-size:18px;line-height:1.4">취업 준비,<br/>한곳에서 시작해요</div></div>
+          </div>
+          <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;font-weight:700">이취 시작하기</div>
+            <div class="wf" style="height:24px"></div>
+            <div class="wf" style="height:24px"></div>
+            <div class="wf primary" style="height:26px"></div>
+            <div class="muted mono" style="font-size:9px;text-align:center;margin:4px 0">— 소셜 로그인 —</div>
+            <div class="wf-h"><div class="wf yellow" style="flex:1;height:22px;text-align:center">카</div><div class="wf mint" style="flex:1;height:22px;text-align:center">N</div><div class="wf" style="flex:1;height:22px;text-align:center">G</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">01</span>로그인 · 회원가입</h4>
+        <p>좌측 브랜드 메시지 + 우측 폼. 카카오 · 네이버 · 구글 소셜 로그인. 5회 실패 시 10분 잠금.</p>
+        <div class="components"><span class="badge">Form</span><span class="badge">Field Validation</span><span class="badge">Social Btn</span><span class="badge">Mascot</span></div>
+      </div>
+    </div>
+
+    <!-- 2. 약관 동의 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:18px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf" style="height:20px;width:140px">서비스 이용 약관 동의</div>
+          <div class="wf" style="flex:1;background:var(--color-surface-sunken);border:1px dashed var(--color-border-strong)">약관 본문 스크롤</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf"><span style="color:var(--color-primary-600)">☑</span> 전체 동의</div>
+            <div class="wf">☑ 이용 약관 (필수)</div>
+            <div class="wf">☑ 개인정보 수집·이용 (필수)</div>
+            <div class="wf">☐ 마케팅 정보 (선택)</div>
+            <div class="wf">☐ 만 14세 이상입니다</div>
+          </div>
+          <div class="wf primary" style="height:24px;text-align:center">동의하고 계속하기</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">02</span>약관 동의</h4>
+        <p>전체 동의 + 항목별 체크. 필수 항목 미체크 시 CTA 비활성. 14세 미만 차단 메시지.</p>
+        <div class="components"><span class="badge">Checkbox</span><span class="badge">Disabled CTA</span><span class="badge">Scroll Area</span></div>
+      </div>
+    </div>
+
+    <!-- 3. 온보딩 4단계 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:18px;height:100%;display:flex;flex-direction:column;gap:10px">
+          <!-- stepper -->
+          <div style="display:flex;align-items:center;gap:6px;justify-content:center">
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-primary-600);color:#fff;font-size:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700">1</div>
+            <div style="flex:1;height:2px;background:var(--color-primary-200);max-width:36px"></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-primary-600);color:#fff;font-size:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700">2</div>
+            <div style="flex:1;height:2px;background:var(--color-neutral-200);max-width:36px"></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-neutral-200);color:var(--color-text-muted);font-size:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700">3</div>
+            <div style="flex:1;height:2px;background:var(--color-neutral-200);max-width:36px"></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--color-neutral-200);color:var(--color-text-muted);font-size:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700">4</div>
+          </div>
+          <div style="font-size:11px;text-align:center;font-weight:700;margin-top:4px">어떤 경력으로 시작할까요?</div>
+          <div class="wf-h" style="justify-content:center;flex-wrap:wrap;gap:4px">
+            <div class="wf tonal" style="padding:4px 10px">신입</div>
+            <div class="wf" style="padding:4px 10px">1년차</div>
+            <div class="wf" style="padding:4px 10px">2년차</div>
+            <div class="wf" style="padding:4px 10px">3년차</div>
+            <div class="wf" style="padding:4px 10px">5년차</div>
+            <div class="wf" style="padding:4px 10px">7년차+</div>
+          </div>
+          <div style="margin-top:auto;display:flex;justify-content:space-between"><div class="wf" style="padding:4px 12px">이전</div><div class="wf primary" style="padding:4px 12px">다음 →</div></div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">03</span>온보딩 4단계</h4>
+        <p>접속 목적 → 경력 → 희망 포지션 → 작성 체험. Step 4는 가상 이력으로 자소서 1건 데모.</p>
+        <div class="components"><span class="badge">Stepper</span><span class="badge">Chip Picker</span><span class="badge">AI Demo Card</span></div>
+      </div>
+    </div>
+
+    <!-- 4. 대시보드 홈 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:grid;grid-template-rows:auto 1fr;gap:8px">
+          <div style="font-size:11px;font-weight:700">김이취님, 오늘도 화이팅이에요! 💜</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto 1fr;gap:6px">
+            <div class="wf pink" style="height:34px">D-2 · 카카오 자소서</div>
+            <div class="wf mint" style="height:34px">작성중 · 네이버</div>
+            <div class="wf lav" style="height:34px">추천 액션</div>
+            <div class="wf tonal" style="height:34px">진행률 68%</div>
+            <div class="wf" style="grid-column:span 3">최근 작업 리스트</div>
+            <div class="wf lav">AI 추천</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">04</span>대시보드 홈</h4>
+        <p>플랫폼 전체 요약. 작성 수 · 진행중 지원 · 다가오는 일정 · 매칭률 · AI 추천. Empty 상태에서는 마스코트 + CTA.</p>
+        <div class="components"><span class="badge">Summary Card</span><span class="badge">Recent List</span><span class="badge">CTA Card</span><span class="badge">Mascot</span></div>
+      </div>
+    </div>
+
+    <!-- 5. 내 정보 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:grid;grid-template-columns:120px 1fr;gap:10px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf tonal">기초 정보</div>
+            <div class="wf">학력</div>
+            <div class="wf">자격증</div>
+            <div class="wf">경험·활동</div>
+            <div class="wf">이력서</div>
+            <div class="wf">경력기술</div>
+            <div class="wf">포트폴리오</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="wf-h"><div class="wf" style="flex:1;padding:4px">완성도 78%</div><div class="wf yellow" style="flex:1;padding:4px">결손 3건</div></div>
+            <div class="wf" style="flex:1">기초 정보 폼</div>
+            <div class="wf primary" style="height:22px;text-align:center;align-self:flex-end;padding:4px 14px">저장</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">05</span>내 정보 · 입력 / 관리</h4>
+        <p>좌측 섹션 네비게이션 + 우측 폼. 완성도 % 상단 고정. 결손 항목은 빨간 점 + 메시지.</p>
+        <div class="components"><span class="badge">Side Nav</span><span class="badge">Form Group</span><span class="badge">Completion Meter</span></div>
+      </div>
+    </div>
+
+    <!-- 6. 이력서/경력기술 입력 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf tonal" style="flex:1">작성 모드</div><div class="wf" style="flex:1">파일 업로드</div></div>
+          <div style="border:1.5px dashed var(--color-border-strong);border-radius:8px;padding:18px;text-align:center;flex:1;background:var(--color-surface-soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+            <div class="mono muted" style="font-size:10px">📄 PDF · Word · 60MB 이하</div>
+            <div class="wf primary" style="padding:4px 12px">파일 선택</div>
+          </div>
+          <div class="wf yellow" style="font-size:9px">스캔 PDF는 텍스트가 추출되지 않아요</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">06</span>이력서 · 경력기술 입력</h4>
+        <p>작성 모드 또는 파일 업로드 → 파싱 → 항목 확인 단계. 스캔 PDF는 사전 차단 안내.</p>
+        <div class="components"><span class="badge">Tab</span><span class="badge">File Upload</span><span class="badge">Parser Confirm</span><span class="badge">Warning Alert</span></div>
+      </div>
+    </div>
+
+    <!-- 7. 포트폴리오 링크 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf" style="flex:1">GitHub</div><div class="wf" style="flex:1">Notion</div><div class="wf" style="flex:1">Figma</div><div class="wf" style="flex:1">PDF</div></div>
+          <div class="wf"><b>대시보드 설계 케이스</b><div class="muted" style="font-size:8px">notion.so/2chi-design...</div></div>
+          <div class="wf"><b>리텐션 개선 프로젝트</b><div class="muted" style="font-size:8px">github.com/sumi/...</div></div>
+          <div class="wf" style="border:1px dashed var(--color-border-strong);text-align:center;color:var(--color-text-muted)">+ 링크 추가</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">07</span>포트폴리오 링크</h4>
+        <p>외부 링크 모음 (v1은 빌더 없음). 종류 태그 + 한 줄 설명 + 사용 기술. PDF는 S3 업로드.</p>
+        <div class="components"><span class="badge">URL Input</span><span class="badge">Type Chip</span><span class="badge">PDF Upload</span></div>
+      </div>
+    </div>
+
+    <!-- 8. 지원 현황 캘린더 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:12px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf tonal" style="padding:4px 8px">월</div><div class="wf" style="padding:4px 8px">주</div><div class="wf" style="padding:4px 8px">일</div><div style="flex:1"></div><div class="wf primary" style="padding:4px 10px">+ 일정</div></div>
+          <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;flex:1">
+            <div class="wf" style="font-size:8px"></div><div class="wf pink">D-2 카카오</div><div class="wf"></div><div class="wf mint">면접 토스</div><div class="wf"></div><div class="wf"></div><div class="wf"></div>
+            <div class="wf"></div><div class="wf"></div><div class="wf yellow">서류 네이버</div><div class="wf"></div><div class="wf"></div><div class="wf"></div><div class="wf"></div>
+            <div class="wf"></div><div class="wf"></div><div class="wf"></div><div class="wf"></div><div class="wf lav">코테 라인</div><div class="wf"></div><div class="wf"></div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">08</span>지원 현황 캘린더</h4>
+        <p>연 / 월 / 주 / 일 보기. 전형별 색상. 좌클릭 = 일정 팝오버, 우클릭 = 일정 추가.</p>
+        <div class="components"><span class="badge">Calendar Grid</span><span class="badge">Event Pill</span><span class="badge">Context Menu</span></div>
+      </div>
+    </div>
+
+    <!-- 9. 지원 대시보드 (Kanban) -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:10px;height:100%;display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
+          <div style="background:var(--color-surface-soft);border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:9px;font-weight:700">서류 작성</div>
+            <div class="wf pink" style="padding:6px">카카오 D-2</div>
+            <div class="wf" style="padding:6px">라인플러스</div>
+          </div>
+          <div style="background:var(--color-surface-soft);border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:9px;font-weight:700">서류 제출</div>
+            <div class="wf" style="padding:6px">네이버</div>
+            <div class="wf" style="padding:6px">토스</div>
+          </div>
+          <div style="background:var(--color-surface-soft);border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:9px;font-weight:700">1차 면접</div>
+            <div class="wf mint" style="padding:6px">카카오뱅크</div>
+          </div>
+          <div style="background:var(--color-surface-soft);border-radius:6px;padding:6px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:9px;font-weight:700">최종 합격</div>
+            <div class="wf yellow" style="padding:6px">컬리 ⭐</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">09</span>지원 대시보드 (Kanban)</h4>
+        <p>전형 단계별 컬럼. 드래그앤드롭으로 단계 변경 가능. 정렬 · 필터 · 페이징 20건.</p>
+        <div class="components"><span class="badge">Kanban</span><span class="badge">Application Card</span><span class="badge">Filter</span></div>
+      </div>
+    </div>
+
+    <!-- 10. 지원 히스토리 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf" style="flex:1">기간 ▾</div><div class="wf" style="flex:1">회사 ▾</div><div class="wf" style="flex:1">변경자 ▾</div></div>
+          <div class="wf" style="border-left:3px solid var(--color-primary-500)"><b>2026.05.14 17:32</b> · 카카오 · 서류 → 합격</div>
+          <div class="wf" style="border-left:3px solid var(--color-mint-500)"><b>2026.05.13 11:08</b> · 네이버 · 자소서 v1 저장</div>
+          <div class="wf" style="border-left:3px solid var(--color-lavender-500)"><b>2026.05.12 22:41</b> · 토스 · 기업분석 연결</div>
+          <div class="wf" style="border-left:3px solid var(--color-pink-400)"><b>2026.05.11 09:00</b> · D-3 알림 발송</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">10</span>지원 히스토리</h4>
+        <p>전형 · 일정 · 결과의 모든 변경 로그. 시간 역순 기본, 회사별 정렬. 페이징 30건.</p>
+        <div class="components"><span class="badge">Timeline</span><span class="badge">Filter</span><span class="badge">Change Diff</span></div>
+      </div>
+    </div>
+
+    <!-- 11. 자소서 작성 화면 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:10px;height:100%;display:grid;grid-template-columns:120px 1fr 100px;gap:6px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf tonal">질문 분석</div>
+            <div class="wf">추천 소재</div>
+            <div class="wf">자소서</div>
+            <div class="wf">피드백</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf" style="font-size:8px">질문: 직무 경험을 설명…</div>
+            <div class="wf" style="flex:1">에디터: 612 / 700자<br/>자소서 본문 작성 영역…</div>
+            <div class="wf-h"><div class="wf-h" style="flex:1"></div><div class="wf ai" style="padding:4px 10px;background:linear-gradient(135deg,var(--color-primary-500),var(--color-lavender-400));color:#fff">AI 피드백</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf">키워드</div>
+            <div class="wf mint">매칭 82%</div>
+            <div class="wf yellow">검토 3</div>
+            <div class="wf">맞춤법 5</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">11</span>자소서 작성</h4>
+        <p>3단 레이아웃: 좌측 단계 · 가운데 에디터 · 우측 분석 패널. 글자수 / 매칭률 / 거짓방지 / 맞춤법을 항상 우측에 표시.</p>
+        <div class="components"><span class="badge">Tabs</span><span class="badge">Editor</span><span class="badge">AI Panel</span><span class="badge">Char Counter</span><span class="badge">Match Score</span></div>
+      </div>
+    </div>
+
+    <!-- 12. 자소서 결과/검토 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf yellow" style="padding:6px 10px">⚠ 3건이 이력에서 확인되지 않았어요</div>
+          <div class="wf" style="flex:1;line-height:1.4">
+            저는 <span class="kw-confirmed">SQL · Python</span>으로 리텐션 지표를 정의하고, <span class="kw-highlight">Airflow 파이프라인</span>을 구축해…
+          </div>
+          <div class="wf-h">
+            <div class="wf" style="flex:1;padding:4px 8px">그대로 두기</div>
+            <div class="wf primary" style="flex:1;padding:4px 8px">다시 쓰기</div>
+            <div class="wf" style="padding:4px 10px">⬇ PDF</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">12</span>자소서 결과 · 검토</h4>
+        <p>거짓방지 하이라이트가 활성화된 상태. 미검토 표현은 다운로드 직전 한 번 더 경고.</p>
+        <div class="components"><span class="badge">Hallucination Guard</span><span class="badge">Confirm Dialog</span><span class="badge">Download</span></div>
+      </div>
+    </div>
+
+    <!-- 13. 경력기술서 재구조화 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:12px;height:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf" style="font-size:9px;font-weight:700">원본 경력</div>
+            <div class="wf" style="flex:1">기업 A / 2년<br/>· 백엔드 API 개발<br/>· 결제 시스템 유지보수</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div class="wf tonal" style="font-size:9px;font-weight:700">재구조화 결과 (네이버 향)</div>
+            <div class="wf lav" style="flex:1;line-height:1.4">대규모 트래픽 처리 경험을 강조하여 결제 시스템 운영 사례를 STAR 형식으로…</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">13</span>경력기술서 재구조화</h4>
+        <p>좌측 원본 + 우측 회사 향 재구성. 사용자가 수정 가능. PDF/Word 다운로드.</p>
+        <div class="components"><span class="badge">Diff View</span><span class="badge">AI Restructure</span><span class="badge">Editable Output</span></div>
+      </div>
+    </div>
+
+    <!-- 14. 채용공고 등록 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf tonal" style="flex:1">사람인 검색</div><div class="wf" style="flex:1">URL 붙여넣기</div><div class="wf" style="flex:1">직접 입력</div></div>
+          <div class="wf" style="height:24px">🔍 카카오페이 백엔드 신입…</div>
+          <div class="wf" style="flex:1;display:flex;flex-direction:column;gap:3px">
+            <div class="wf" style="padding:6px">카카오페이 · 백엔드 · D-3</div>
+            <div class="wf" style="padding:6px">카카오 · 백엔드 · D-7</div>
+          </div>
+          <div class="wf primary" style="text-align:center;padding:6px">선택한 공고 등록</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">14</span>채용공고 등록</h4>
+        <p>사람인 OpenAPI / URL / 직접 입력 3가지. URL 파싱 실패 시 본문 붙여넣기 폴백.</p>
+        <div class="components"><span class="badge">Tab</span><span class="badge">Search Result</span><span class="badge">URL Parser</span><span class="badge">Fallback Textarea</span></div>
+      </div>
+    </div>
+
+    <!-- 15. 기업분석 결과 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:6px">
+          <div class="wf-h"><div class="wf tonal" style="font-weight:700">카카오 분석 리포트</div><div style="flex:1"></div><div class="wf" style="padding:4px 8px">새로고침</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;flex:1">
+            <div class="wf" style="padding:6px"><b>회사 개요</b><br/>매출 / 인원 / 사업</div>
+            <div class="wf mint" style="padding:6px"><b>최근 이슈</b><br/>6개월 뉴스 키워드</div>
+            <div class="wf lav" style="padding:6px"><b>인재상</b><br/>홈페이지 추출</div>
+            <div class="wf pink" style="padding:6px"><b>활용 포인트</b><br/>자소서 액션 추천</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">15</span>기업분석 결과</h4>
+        <p>DART · 뉴스 · 회사 홈페이지 기반. 정보 부족 시 "정보가 제한적이에요" + 직접 입력 옵션.</p>
+        <div class="components"><span class="badge">Card Grid</span><span class="badge">Empty State</span><span class="badge">External Sources</span></div>
+      </div>
+    </div>
+
+    <!-- 16. 알림 설정 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:5px">
+          <div class="wf-h" style="justify-content:space-between"><div class="wf" style="background:none;border:none">채용공고 마감 D-3</div><div class="wf" style="background:var(--color-primary-500);width:30px;border-radius:999px">●</div></div>
+          <div class="wf-h" style="justify-content:space-between"><div class="wf" style="background:none;border:none">채용공고 마감 D-1</div><div class="wf" style="background:var(--color-primary-500);width:30px;border-radius:999px">●</div></div>
+          <div class="wf-h" style="justify-content:space-between"><div class="wf" style="background:none;border:none">면접/일정 D-1</div><div class="wf" style="background:var(--color-primary-500);width:30px;border-radius:999px">●</div></div>
+          <div class="wf-h" style="justify-content:space-between"><div class="wf" style="background:none;border:none">자소서 저장 후 미제출 7일</div><div class="wf" style="background:var(--color-neutral-200);width:30px;border-radius:999px"></div></div>
+          <div class="wf-h" style="justify-content:space-between"><div class="wf" style="background:none;border:none">주간 요약</div><div class="wf" style="background:var(--color-neutral-200);width:30px;border-radius:999px"></div></div>
+          <div class="wf yellow" style="font-size:9px">계정 보안 알림은 끌 수 없어요</div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">16</span>알림 설정</h4>
+        <p>이메일 · 웹푸시 채널별 ON/OFF. 카테고리별 토글. 계정 보안 알림은 강제 ON.</p>
+        <div class="components"><span class="badge">Switch</span><span class="badge">Section Group</span><span class="badge">Disabled Lock</span></div>
+      </div>
+    </div>
+
+    <!-- 17. 마이페이지 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:14px;height:100%;display:flex;flex-direction:column;gap:5px">
+          <div class="wf-h"><div class="wf" style="width:36px;height:36px;background:var(--color-mint-200);border-radius:50%"></div><div style="flex:1"><div class="wf" style="background:none;border:none;font-weight:700">김이취 · 2chi@example.com</div></div></div>
+          <div class="wf" style="padding:6px"><b>닉네임 변경</b></div>
+          <div class="wf" style="padding:6px"><b>비밀번호 변경</b></div>
+          <div class="wf" style="padding:6px"><b>소셜 계정 연결 관리</b></div>
+          <div class="wf" style="padding:6px"><b>알림 설정 →</b></div>
+          <div style="margin-top:auto;border-top:1px dashed var(--color-border-default);padding-top:6px">
+            <div class="wf" style="background:none;border:none;color:var(--color-semantic-error);font-size:9px">회원 탈퇴 · 30일 유예</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">17</span>마이페이지</h4>
+        <p>계정 · 연결 · 알림 · 탈퇴. 탈퇴는 30일 유예 후 영구 삭제. 위험 액션 분리.</p>
+        <div class="components"><span class="badge">List Settings</span><span class="badge">Danger Zone</span></div>
+      </div>
+    </div>
+
+    <!-- 18. 관리자 대시보드 -->
+    <div class="template">
+      <div class="template-frame" style="height:200px;background:var(--color-neutral-50)">
+        <div style="background:#fff;border:1px solid var(--color-border-default);border-radius:8px;padding:12px;height:100%;display:grid;grid-template-rows:auto 1fr;gap:6px">
+          <div class="wf-h"><div class="wf" style="flex:1">신규 가입 142</div><div class="wf" style="flex:1">자소서 호출 1,238</div><div class="wf" style="flex:1">기업분석 호출 312</div><div class="wf" style="flex:1">LLM 비용 $24.50</div></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:6px">
+            <div class="wf" style="font-size:9px">사용자 검색 · 정지 · 탈퇴 처리 테이블</div>
+            <div class="wf" style="font-size:9px;background:var(--color-yellow-50);border-color:var(--color-yellow-200)">긴급 공지 작성</div>
+          </div>
+        </div>
+      </div>
+      <div class="template-meta">
+        <h4><span class="idx">18</span>관리자 대시보드</h4>
+        <p>운영자 1명용. 사용자 관리 · LLM 호출/비용 모니터링 · 공지 발송. 감성 요소 최소 사용.</p>
+        <div class="components"><span class="badge">Stat Card</span><span class="badge">User Table</span><span class="badge">Bulk Email</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     08 USER FLOWS
+============================================================ -->
+<section id="sec-08">
+  <div class="section-head">
+    <span class="eyebrow">08 · Key User Flows</span>
+    <h2>핵심 사용자 흐름 6가지</h2>
+    <p>각 흐름은 화면 → 화면 사이의 상태 전환을 정의합니다. 이탈 지점(Drop-off)과 보조 안내를 함께 표시합니다.</p>
+  </div>
+
+  <div class="col-stack" style="gap:18px">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">① 회원가입 → 온보딩 → 작성 체험 → 대시보드</b><span class="badge info">First-time</span></div>
+      <div class="flow">
+        <div class="step start">회원가입</div><span class="arrow">→</span>
+        <div class="step">약관 동의</div><span class="arrow">→</span>
+        <div class="step">이메일 인증</div><span class="arrow">→</span>
+        <div class="step">온보딩 ①목적</div><span class="arrow">→</span>
+        <div class="step">②경력</div><span class="arrow">→</span>
+        <div class="step">③포지션</div><span class="arrow">→</span>
+        <div class="step">④AI 데모</div><span class="arrow">→</span>
+        <div class="step end">대시보드</div>
+      </div>
+      <p class="note">④ AI 데모는 스킵 가능. 가상 이력으로 자소서 1건을 보여 가치 체감.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">② 내 정보 입력 → 작성 완성도 상승 → 부족 항목 안내</b><span class="badge lav">Profile</span></div>
+      <div class="flow">
+        <div class="step start">내 정보 진입</div><span class="arrow">→</span>
+        <div class="step">기초 정보</div><span class="arrow">→</span>
+        <div class="step">학력 · 자격증</div><span class="arrow">→</span>
+        <div class="step">경험 · 활동</div><span class="arrow">→</span>
+        <div class="step">이력서 업로드/작성</div><span class="arrow">→</span>
+        <div class="step">완성도 % 갱신</div><span class="arrow">→</span>
+        <div class="step end">결손 항목 안내</div>
+      </div>
+      <p class="note">결손 항목은 "비난"이 아니라 "다음 채울 것"으로 표현. 예: "포트폴리오 링크 1건만 더 추가해볼까요?"</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">③ 채용공고 등록 → 기업분석 → JD 매칭률 확인</b><span class="badge info">Match</span></div>
+      <div class="flow">
+        <div class="step start">공고 검색/URL</div><span class="arrow">→</span>
+        <div class="step">공고 등록</div><span class="arrow">→</span>
+        <div class="step">기업분석 시작</div><span class="arrow">→</span>
+        <div class="step">DART/뉴스 분석</div><span class="arrow">→</span>
+        <div class="step">결과 카드</div><span class="arrow">→</span>
+        <div class="step end">매칭률 · 보완 키워드</div>
+      </div>
+      <p class="note">DART 정보 부족 시 "정보가 제한적이에요" 카드 + 직접 입력 폴백 제공.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">④ 자소서 항목 입력 → AI 초안 → 검토 → 저장/다운로드</b><span class="badge lav">Core</span></div>
+      <div class="flow">
+        <div class="step start">자소서 새로 만들기</div><span class="arrow">→</span>
+        <div class="step">공고 · 기업 연결</div><span class="arrow">→</span>
+        <div class="step">질문 입력</div><span class="arrow">→</span>
+        <div class="step">AI 초안 생성</div><span class="arrow">→</span>
+        <div class="step">글자수 / 맞춤법</div><span class="arrow">→</span>
+        <div class="step">거짓방지 검토</div><span class="arrow">→</span>
+        <div class="step">저장</div><span class="arrow">→</span>
+        <div class="step end">PDF · Word 다운로드</div>
+      </div>
+      <p class="note">거짓방지 검토를 마치지 않으면 다운로드 직전 모달로 한 번 더 안내.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">⑤ 지원 일정 등록 → 캘린더 → 알림 → 히스토리</b><span class="badge pink">Schedule</span></div>
+      <div class="flow">
+        <div class="step start">일정 추가</div><span class="arrow">→</span>
+        <div class="step">전형 단계 · 일자</div><span class="arrow">→</span>
+        <div class="step">캘린더 표시</div><span class="arrow">→</span>
+        <div class="step">알림 D-3 / D-1</div><span class="arrow">→</span>
+        <div class="step">단계 변경</div><span class="arrow">→</span>
+        <div class="step end">히스토리 로그</div>
+      </div>
+      <p class="note">단계 변경 로그는 자동 기록. 사용자가 직접 수정한 경우와 시스템 변경을 구분.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:14px"><b style="font-size:14px">⑥ 부족 역량 확인 → 보완 액션 추천</b><span class="badge" style="background:var(--color-peach-100);color:var(--color-peach-400)">Growth</span></div>
+      <div class="flow">
+        <div class="step start">매칭률 확인</div><span class="arrow">→</span>
+        <div class="step">부족 키워드 분석</div><span class="arrow">→</span>
+        <div class="step">표준 역량 매트릭스 대조</div><span class="arrow">→</span>
+        <div class="step">보완 액션 카드</div><span class="arrow">→</span>
+        <div class="step end">비슷한 경험 정리 / 다음 준비</div>
+      </div>
+      <p class="note">"못한다"가 아니라 "다음 채워봐요". 부족 역량은 항상 행동을 함께 제시.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     09 THEME EXTENSION
+============================================================ -->
+<section id="sec-09">
+  <div class="section-head">
+    <span class="eyebrow">09 · Theme Extension</span>
+    <h2>Light 기본 + 4개 확장 테마</h2>
+    <p>v1은 Light 기본만 사용합니다. 추후 사용자가 테마를 변경할 수 있도록 토큰 기반 구조를 미리 설계해두었습니다.</p>
+  </div>
+
+  <div class="grid g-3">
+    <div class="card" style="border:2px solid var(--color-primary-500)">
+      <div class="row" style="justify-content:space-between"><b>Light (기본)</b><span class="badge info">DEFAULT</span></div>
+      <div class="row" style="margin:14px 0 10px;gap:6px">
+        <div style="width:32px;height:32px;background:#6471E0;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#2FA980;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#E96B91;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#F8F8F4;border:1px solid var(--color-border-default);border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#25241F;border-radius:8px"></div>
+      </div>
+      <table style="width:100%;font-size:11px;color:var(--color-text-secondary);border-collapse:collapse">
+        <tr><td>Primary</td><td class="mono" style="text-align:right">#6471E0</td></tr>
+        <tr><td>Background</td><td class="mono" style="text-align:right">#F8F8F4</td></tr>
+        <tr><td>Surface</td><td class="mono" style="text-align:right">#FFFFFF</td></tr>
+        <tr><td>Text</td><td class="mono" style="text-align:right">#25241F</td></tr>
+      </table>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#F4FCF8,#EEFBF6)">
+      <div class="row" style="justify-content:space-between"><b>Mint Breeze</b><span class="badge success dot">차분</span></div>
+      <div class="row" style="margin:14px 0 10px;gap:6px">
+        <div style="width:32px;height:32px;background:#2FA980;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#6471E0;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#80D8B7;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#F2FBF6;border-radius:8px;border:1px solid var(--color-border-default)"></div>
+        <div style="width:32px;height:32px;background:#1F8865;border-radius:8px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:0">Primary가 민트로 전환. 차분한 워크플로우용.</p>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#FAF7FF,#F6F3FE)">
+      <div class="row" style="justify-content:space-between"><b>Lavender Dream</b><span class="badge lav">집중</span></div>
+      <div class="row" style="margin:14px 0 10px;gap:6px">
+        <div style="width:32px;height:32px;background:#8265DC;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#6471E0;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#BCA8F4;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#FAF7FF;border:1px solid var(--color-border-default);border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#6A4DC2;border-radius:8px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:0">집중 모드. 자소서 작성에 적합.</p>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#FFF8F2,#FFF4EE)">
+      <div class="row" style="justify-content:space-between"><b>Peach Bloom</b><span class="badge pink">활기</span></div>
+      <div class="row" style="margin:14px 0 10px;gap:6px">
+        <div style="width:32px;height:32px;background:#F37F4D;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#E96B91;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#FFC4A8;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#FFF8F2;border:1px solid var(--color-border-default);border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#25241F;border-radius:8px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:0">활기찬 인상. 신입 사용자 환영용.</p>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#F2F4FF,#E2E6FE)">
+      <div class="row" style="justify-content:space-between"><b>Focus Blue</b><span class="badge info">선명</span></div>
+      <div class="row" style="margin:14px 0 10px;gap:6px">
+        <div style="width:32px;height:32px;background:#3B43A8;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#6471E0;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#A6B0F5;border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#F2F4FF;border:1px solid var(--color-border-default);border-radius:8px"></div>
+        <div style="width:32px;height:32px;background:#1B205C;border-radius:8px"></div>
+      </div>
+      <p style="font-size:11px;color:var(--color-text-secondary);margin:0">선명한 대비. 관리자/데이터 화면에 적합.</p>
+    </div>
+
+    <div class="card" style="border:1.5px dashed var(--color-border-strong);background:var(--color-surface-soft);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;text-align:center;color:var(--color-text-muted)">
+      <div style="width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid var(--color-border-default);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300">+</div>
+      <div style="font-size:12px">새 테마 추가</div>
+      <div class="mono" style="font-size:10px">CSS Variables 1세트</div>
+    </div>
+  </div>
+
+  <h3 class="sub">테마 토큰 매핑</h3>
+  <table class="token-table">
+    <thead><tr><th>Role</th><th>Light</th><th>Mint Breeze</th><th>Lavender Dream</th><th>Peach Bloom</th><th>Focus Blue</th></tr></thead>
+    <tbody>
+      <tr><td>Primary</td><td class="mono">#6471E0</td><td class="mono">#2FA980</td><td class="mono">#8265DC</td><td class="mono">#F37F4D</td><td class="mono">#3B43A8</td></tr>
+      <tr><td>Secondary</td><td class="mono">#A6B0F5</td><td class="mono">#80D8B7</td><td class="mono">#BCA8F4</td><td class="mono">#FFC4A8</td><td class="mono">#6471E0</td></tr>
+      <tr><td>Accent</td><td class="mono">#E96B91</td><td class="mono">#6471E0</td><td class="mono">#6471E0</td><td class="mono">#E96B91</td><td class="mono">#A6B0F5</td></tr>
+      <tr><td>Background</td><td class="mono">#F8F8F4</td><td class="mono">#F2FBF6</td><td class="mono">#FAF7FF</td><td class="mono">#FFF8F2</td><td class="mono">#F2F4FF</td></tr>
+      <tr><td>Surface</td><td class="mono">#FFFFFF</td><td class="mono">#FFFFFF</td><td class="mono">#FFFFFF</td><td class="mono">#FFFFFF</td><td class="mono">#FFFFFF</td></tr>
+      <tr><td>Border</td><td class="mono">#E8E7E0</td><td class="mono">#D6F4E8</td><td class="mono">#ECE5FD</td><td class="mono">#FFE2D2</td><td class="mono">#E2E6FE</td></tr>
+      <tr><td>Text</td><td class="mono">#25241F</td><td class="mono">#25241F</td><td class="mono">#25241F</td><td class="mono">#25241F</td><td class="mono">#1B205C</td></tr>
+      <tr><td>Success</td><td class="mono">#2FA980</td><td class="mono">#1F8865</td><td class="mono">#2FA980</td><td class="mono">#2FA980</td><td class="mono">#2FA980</td></tr>
+      <tr><td>Warning</td><td class="mono">#DDAA20</td><td class="mono">#DDAA20</td><td class="mono">#DDAA20</td><td class="mono">#DDAA20</td><td class="mono">#DDAA20</td></tr>
+      <tr><td>Error</td><td class="mono">#D94C5C</td><td class="mono">#D94C5C</td><td class="mono">#D94C5C</td><td class="mono">#D94C5C</td><td class="mono">#D94C5C</td></tr>
+      <tr><td>Info</td><td class="mono">#6471E0</td><td class="mono">#2FA980</td><td class="mono">#8265DC</td><td class="mono">#F37F4D</td><td class="mono">#3B43A8</td></tr>
+    </tbody>
+  </table>
+  <p class="note">시맨틱 색상(Success/Warning/Error)은 모든 테마에서 동일하게 유지 — 의미가 색에 종속되지 않도록.</p>
+</section>
+
+<!-- ============================================================
+     10 ACCESSIBILITY
+============================================================ -->
+<section id="sec-10">
+  <div class="section-head">
+    <span class="eyebrow">10 · Accessibility</span>
+    <h2>WCAG 2.1 AA 기준 적용</h2>
+    <p>민감한 데이터를 다루는 서비스이므로 접근성은 선택이 아니라 필수입니다. 모든 인터랙티브 요소는 키보드만으로 조작 가능해야 합니다.</p>
+  </div>
+
+  <div class="grid g-2">
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">텍스트 대비</h4>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">본문 텍스트</td><td style="text-align:right" class="mono">≥ 4.5:1 (AA)</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">큰 텍스트 (18pt+)</td><td style="text-align:right" class="mono">≥ 3:1</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">UI · 아이콘</td><td style="text-align:right" class="mono">≥ 3:1</td></tr>
+        <tr><td style="padding:6px 0">Disabled (예외)</td><td style="text-align:right" class="mono">대비 제한 면제</td></tr>
+      </table>
+      <p class="note">text.muted (#8A8980) on bg는 4.5:1 미달이므로 본문에 사용 금지. 캡션/메타에만.</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">키보드 이동</h4>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">Tab</td><td>다음 인터랙티브 요소</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">Shift + Tab</td><td>이전</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">Esc</td><td>모달 · 팝오버 닫기</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-subtle)"><td style="padding:6px 0">Enter / Space</td><td>버튼 실행</td></tr>
+        <tr><td style="padding:6px 0">←→</td><td>탭/캘린더 이동</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">Focus Ring</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">모든 인터랙티브 요소는 <code class="mono">:focus-visible</code> 시 3px 외곽 링 표시.</p>
+      <div class="row" style="gap:14px">
+        <button class="btn primary" style="box-shadow:var(--focus-ring)">Focused</button>
+        <input class="input" style="width:160px;border-color:var(--color-border-focus);box-shadow:var(--focus-ring)" value="Focused" />
+      </div>
+      <p class="note" style="margin-top:12px">색상 + 외곽 두께 동시 변화. 색상만으로 표시하지 않음.</p>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">폼 에러 안내</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">색상 + 아이콘 + 텍스트 3중 표시. <code class="mono">aria-describedby</code>로 에러 메시지 연결.</p>
+      <div class="field" style="max-width:280px">
+        <label class="lbl">이메일</label>
+        <input class="input error" value="abc@" aria-describedby="err1" aria-invalid="true" />
+        <span class="helper error" id="err1">✗ 올바른 이메일 형식이 아니에요.</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">아이콘 단독 사용 금지</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">아이콘 버튼은 반드시 <code class="mono">aria-label</code> 또는 툴팁.</p>
+      <div class="row" style="gap:10px;align-items:center">
+        <button class="btn ghost icon" aria-label="알림 보기">🔔</button>
+        <code class="mono" style="font-size:11px;background:var(--color-surface-soft);padding:4px 8px;border-radius:4px">aria-label="알림 보기"</code>
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">색상만으로 상태 구분 금지</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 12px">전형 단계 색상은 항상 텍스트 라벨과 함께. 도트(●) + 텍스트 조합.</p>
+      <div class="row" style="gap:6px;flex-wrap:wrap">
+        <span class="badge info dot">서류 작성중</span>
+        <span class="badge warning dot">1차 면접</span>
+        <span class="badge success dot">합격</span>
+        <span class="badge error dot">불합격</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">스크린리더용 라벨</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 8px">아래 영역은 SR 전용 텍스트 권장.</p>
+      <ul style="margin:0;padding-left:18px;font-size:13px;color:var(--color-text-secondary);line-height:1.7">
+        <li>매칭률 차트 → <code class="mono" style="font-size:11px">aria-label="JD 매칭률 82%"</code></li>
+        <li>거짓방지 하이라이트 → <code class="mono" style="font-size:11px">aria-label="이력에서 확인되지 않은 표현"</code></li>
+        <li>마스코트 / 도들 → <code class="mono" style="font-size:11px">aria-hidden="true"</code></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">알림 · 토스트 접근성</h4>
+      <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 8px">
+        토스트는 <code class="mono">role="status"</code> (정보) 또는 <code class="mono">role="alert"</code> (에러). 시간이 지나도 자동으로 사라지지 않는 옵션 제공 (≥ 5초).
+      </p>
+      <div class="alert success" style="margin-top:6px"><span class="alert-icon">✓</span>자소서가 저장됐어요. <button class="btn ghost sm" style="margin-left:auto">×</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     11 USAGE GUIDELINES
+============================================================ -->
+<section id="sec-11">
+  <div class="section-head">
+    <span class="eyebrow">11 · Usage Guidelines</span>
+    <h2>레이아웃 · 컬러 · 텍스트 사용 원칙</h2>
+    <p>아래는 디자이너 · 개발자가 화면을 만들 때 반복 결정해야 할 항목의 기준입니다.</p>
+  </div>
+
+  <div class="grid g-2">
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">💡 정보 위계</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>한 화면에 H1 / Page Title은 1개</li>
+        <li>주요 액션 (Primary Button)도 1개</li>
+        <li>Section Title은 본문보다 위에, Card Title은 카드 좌상단</li>
+        <li>데이터(숫자)는 텍스트보다 크게, 색은 강조 마지막에</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">📐 카드 단위 그룹화</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>관련 정보는 카드 안에 묶기 (테두리 1px + radius lg)</li>
+        <li>카드 내부 패딩 기본 20px, 모바일 16px</li>
+        <li>카드끼리 사이 16px gap</li>
+        <li>카드 안에 또 다른 카드 깊이 2단계까지만</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">🎨 색상 의미</h4>
+      <table style="width:100%;font-size:12px;border-collapse:collapse">
+        <tr><td style="padding:5px 0">Primary (Periwinkle)</td><td>핵심 액션, 현재 위치</td></tr>
+        <tr><td style="padding:5px 0">Mint</td><td>저장 성공, 매칭, 합격</td></tr>
+        <tr><td style="padding:5px 0">Lavender</td><td>AI, 분석, 추천</td></tr>
+        <tr><td style="padding:5px 0">Pink</td><td>D-day, 자소서 카테고리</td></tr>
+        <tr><td style="padding:5px 0">Peach</td><td>갭, 보완 안내</td></tr>
+        <tr><td style="padding:5px 0">Yellow</td><td>검토 필요 (warning)</td></tr>
+        <tr><td style="padding:5px 0">Red</td><td>오류, 위험 액션</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">✏️ 마이크로카피</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>해요체 · 청유형 · 1인칭("내")</li>
+        <li>버튼: 동사로 시작 (✓ "저장하기" · ✗ "저장")</li>
+        <li>금지된 단어: 부족 / 미흡 / 실패 / 잘못된</li>
+        <li>권장 단어: 보완할 / 다음 준비 / 검토 / 확인</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">⚡ 인터랙션</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>호버 · 액티브 0.04~0.2s · ease-out</li>
+        <li>모달 진입 0.2s scale 0.96 → 1 + fade</li>
+        <li>토스트 4s 후 자동 dismiss, 에러는 수동 dismiss</li>
+        <li>스켈레톤 1.5s shimmer · prefers-reduced-motion 존중</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4 class="sub" style="margin-top:0">📊 데이터 / 숫자 표기</h4>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.8;color:var(--color-text-secondary)">
+        <li>모든 숫자는 JetBrains Mono</li>
+        <li>매칭률 / 진행률은 % 기호 작게(0.6em)</li>
+        <li>D-day는 핑크 100/400 단일 토큰</li>
+        <li>날짜 표기: 2026.05.20 (점 구분, 2자리)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     12 DO / DON'T
+============================================================ -->
+<section id="sec-12">
+  <div class="section-head">
+    <span class="eyebrow">12 · Do / Don't</span>
+    <h2>해야 할 것 · 하지 말 것</h2>
+    <p>아래 항목은 디자인 리뷰 체크리스트로도 사용됩니다. 새 화면을 그릴 때 마지막으로 한 번 더 확인해주세요.</p>
+  </div>
+
+  <div class="dodont">
+    <div class="col do">
+      <h4>✓ Do</h4>
+      <ul>
+        <li>정보 위계를 명확히 — H1, Primary Btn 각각 1개</li>
+        <li>카드 단위로 정보 그룹화 (radius lg + soft shadow)</li>
+        <li>감성 요소(테이프 · 메모 · 손글씨)는 환영 · CTA · 빈 화면에만</li>
+        <li>상태 색상은 의미에 맞게 (Mint=성공 · Yellow=검토 · Red=오류)</li>
+        <li>AI 결과는 항상 "검토 가능한 형태"로 (하이라이트 + 버튼)</li>
+        <li>부족 역량은 "보완 액션"으로 부드럽게 안내</li>
+        <li>자소서 작성 화면은 글쓰기 집중 우선 (장식 최소)</li>
+        <li>키보드만으로 모든 핵심 흐름 완수 가능</li>
+        <li>아이콘은 텍스트 라벨 또는 aria-label 동반</li>
+        <li>다크 텍스트(#25241F) + 크림 배경(#F8F8F4) 조합 유지</li>
+      </ul>
+    </div>
+    <div class="col dont">
+      <h4>✗ Don't</h4>
+      <ul>
+        <li>여백 없이 빽빽한 배치 (카드 사이 16px 미만 금지)</li>
+        <li>장식 요소 과다 사용 (한 카드에 테이프 3개 이상 금지)</li>
+        <li>낮은 대비 텍스트 (text.muted on bg, 본문 사용 금지)</li>
+        <li>AI 결과를 "정답"처럼 표현 ("자동 완성됨" · "검토 불필요" 금지)</li>
+        <li>경고 메시지를 공격적으로 ("실패!" · "잘못됨!" 금지)</li>
+        <li>자소서 · 이력서 본문에 캐릭터 / 도들 사용</li>
+        <li>관리자 화면에 메모지 · 손글씨 · 마스코트 사용</li>
+        <li>v1 범위 밖 기능(면접/커뮤니티/결제)을 메인 동선에 노출</li>
+        <li>색상만으로 상태 구분 (반드시 아이콘 + 텍스트 동반)</li>
+        <li>비비드 그라데이션 · 비비드 배경 위 로고 사용</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:32px;background:var(--color-surface-soft);text-align:center;padding:32px">
+    <div class="mascot-cloud lg" style="margin:0 auto 16px"></div>
+    <div class="hand-font" style="font-size:24px;color:var(--color-primary-700);margin-bottom:6px">함께 잘 만들어봐요 :)</div>
+    <p style="font-size:13px;color:var(--color-text-secondary);margin:0;max-width:48ch;margin-left:auto;margin-right:auto">
+      이 문서는 v1 출시까지 살아있는 문서입니다. 새 컴포넌트 · 새 패턴이 필요해지면 함께 업데이트해주세요.
+    </p>
+    <div class="mono" style="margin-top:18px;color:var(--color-text-muted);font-size:11px">
+      Design System v1 · 2026.05 · 이취 2chi
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+  // Smooth scroll for TOC + active state
+  const toc = document.querySelectorAll('.toc-list a');
+  toc.forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id && id.startsWith('#')) {
+        e.preventDefault();
+        const el = document.querySelector(id);
+        if (el) {
+          window.scrollTo({ top: el.offsetTop - 16, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // Highlight active section in TOC on scroll
+  const sections = [...document.querySelectorAll('main > section[id]')];
+  const tocLinks = new Map([...toc].map(a => [a.getAttribute('href').slice(1), a]));
+  const updateActive = () => {
+    const y = window.scrollY + 120;
+    let active = sections[0]?.id;
+    for (const s of sections) {
+      if (s.offsetTop <= y) active = s.id;
+    }
+    tocLinks.forEach((a, id) => {
+      if (id === active) {
+        a.style.background = 'var(--color-primary-50)';
+        a.style.color = 'var(--color-primary-700)';
+        a.style.fontWeight = '600';
+      } else {
+        a.style.background = '';
+        a.style.color = '';
+        a.style.fontWeight = '';
+      }
+    });
+  };
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+</script>
+
+<!-- ============================================================
+     TWEAKS · Theme · Mood · Roundness
+============================================================ -->
+<style id="tweaks-style">
+.tweaks-panel {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 296px;
+  background: #fff;
+  border: 1px solid var(--color-border-default);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -20px rgba(37,36,31,0.25), 0 8px 24px -10px rgba(37,36,31,0.12);
+  z-index: 10000;
+  font-family: var(--font-family-sans);
+  display: none;
+  overflow: hidden;
+}
+.tweaks-panel.open { display: block; }
+.tweaks-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px 12px 16px;
+  border-bottom: 1px solid var(--color-border-default);
+  cursor: move; user-select: none;
+  background: var(--color-surface-soft);
+}
+.tweaks-header h4 {
+  margin: 0; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; gap: 6px;
+  color: var(--color-text-primary);
+}
+.tweaks-header h4::before { content: "✦"; color: var(--color-primary-500); font-size: 14px; }
+.tweaks-close {
+  background: none; border: none; cursor: pointer;
+  width: 24px; height: 24px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-text-muted); font-size: 18px; line-height: 1;
+}
+.tweaks-close:hover { background: var(--color-neutral-100); color: var(--color-text-primary); }
+.tweaks-body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 18px; }
+.tweak-section .lbl {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 10.5px; font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.tweak-section .lbl b {
+  font-family: var(--font-family-sans);
+  text-transform: none; letter-spacing: 0;
+  color: var(--color-text-primary); font-weight: 600; font-size: 11px;
+}
+.tweak-section .desc {
+  font-size: 11px; color: var(--color-text-muted);
+  margin-top: 8px; line-height: 1.5;
+}
+
+/* Theme swatches */
+.tweak-themes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.tweak-themes button {
+  position: relative;
+  height: 42px; border-radius: 9px;
+  border: 2px solid transparent;
+  cursor: pointer; padding: 0;
+  display: flex; overflow: hidden;
+  outline: none;
+  transition: transform .1s;
+}
+.tweak-themes button:hover { transform: translateY(-1px); }
+.tweak-themes button > span { flex: 1; }
+.tweak-themes button.active {
+  border-color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px #fff inset;
+}
+.tweak-themes button::after {
+  content: ""; position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--color-text-muted);
+  white-space: nowrap; font-weight: 600;
+}
+.tweak-themes button[data-value="light"]::after    { content: "Light"; }
+.tweak-themes button[data-value="mint"]::after     { content: "Mint"; }
+.tweak-themes button[data-value="lavender"]::after { content: "Lav"; }
+.tweak-themes button[data-value="peach"]::after    { content: "Peach"; }
+.tweak-themes button[data-value="focus"]::after    { content: "Focus"; }
+.tweak-themes { padding-bottom: 16px; }
+
+/* Segmented */
+.tweak-seg {
+  display: grid; grid-auto-columns: 1fr; grid-auto-flow: column;
+  background: var(--color-surface-soft);
+  border-radius: 9px; padding: 3px;
+  border: 1px solid var(--color-border-default);
+}
+.tweak-seg button {
+  border: none; background: transparent;
+  padding: 7px 6px; border-radius: 7px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  color: var(--color-text-muted);
+  font-family: inherit;
+  transition: background .1s, color .1s;
+}
+.tweak-seg button:hover { color: var(--color-text-primary); }
+.tweak-seg button.active {
+  background: var(--color-surface-default);
+  color: var(--color-text-primary);
+  box-shadow: 0 1px 2px rgba(37,36,31,0.06), 0 1px 1px rgba(37,36,31,0.04);
+}
+
+/* ============================================================
+   MOOD: quiet — strip decorations, sober styling
+============================================================ */
+body[data-mood="quiet"] .tape,
+body[data-mood="quiet"] .mascot-cloud,
+body[data-mood="quiet"] .doc-main svg:not([class*="icon"]) {
+  display: none !important;
+}
+body[data-mood="quiet"] .memo-paper {
+  background: var(--color-surface-default) !important;
+  border: 1px solid var(--color-border-default) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+body[data-mood="quiet"] .hand-font {
+  font-family: var(--font-family-sans) !important;
+  font-weight: 600 !important;
+  color: var(--color-text-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+body[data-mood="quiet"] .hand-underline::after { display: none !important; }
+body[data-mood="quiet"] .hand-underline {
+  border-bottom: 3px solid var(--color-primary-300);
+  padding-bottom: 2px;
+}
+body[data-mood="quiet"] .hero {
+  background: var(--color-surface-default) !important;
+}
+body[data-mood="quiet"] .logo-cell.lav,
+body[data-mood="quiet"] .logo-cell.mint { background: var(--color-surface-default); }
+
+/* ============================================================
+   MOOD: playful — amplify decorations
+============================================================ */
+body[data-mood="playful"] .tape { transform: rotate(-14deg) scale(1.18); }
+body[data-mood="playful"] .tape.pink { transform: rotate(16deg) scale(1.2); }
+body[data-mood="playful"] .tape.mint { transform: rotate(-22deg) scale(1.15); }
+body[data-mood="playful"] .tape.lav  { transform: rotate(12deg) scale(1.18); }
+body[data-mood="playful"] .mascot-cloud { animation: cloudBob 3.2s ease-in-out infinite; }
+body[data-mood="playful"] .mascot-cloud.lg { animation-duration: 4s; }
+body[data-mood="playful"] .mascot-cloud.sm { animation-duration: 2.6s; }
+body[data-mood="playful"] .hand-font {
+  color: var(--color-pink-500) !important;
+  font-size: 1.1em !important;
+  transform: rotate(-1.5deg);
+  display: inline-block;
+}
+body[data-mood="playful"] .memo-paper { transform: rotate(-1deg); }
+body[data-mood="playful"] .hero h1 { letter-spacing: -0.05em; }
+body[data-mood="playful"] .hero {
+  background:
+    radial-gradient(900px 400px at 90% -10%, var(--color-mint-100), transparent 60%),
+    radial-gradient(800px 500px at 10% 100%, var(--color-lavender-100), transparent 60%),
+    radial-gradient(600px 350px at 50% 50%, var(--color-pink-50), transparent 60%),
+    var(--color-surface-default) !important;
+}
+@keyframes cloudBob {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-4px) rotate(1deg); }
+}
+</style>
+
+<div class="tweaks-panel" id="tweaks-panel" role="dialog" aria-label="Tweaks">
+  <div class="tweaks-header" id="tweaks-drag">
+    <h4>Tweaks</h4>
+    <button class="tweaks-close" aria-label="패널 닫기">×</button>
+  </div>
+  <div class="tweaks-body">
+    <div class="tweak-section">
+      <label class="lbl">Theme <b>컬러 정체성</b></label>
+      <div class="tweak-themes" data-tweak="theme">
+        <button data-value="light"    aria-label="Light"><span style="background:#6471E0"></span><span style="background:#A6B0F5"></span><span style="background:#E96B91"></span></button>
+        <button data-value="mint"     aria-label="Mint"><span style="background:#2FA980"></span><span style="background:#80D8B7"></span><span style="background:#6471E0"></span></button>
+        <button data-value="lavender" aria-label="Lavender"><span style="background:#8265DC"></span><span style="background:#BCA8F4"></span><span style="background:#6471E0"></span></button>
+        <button data-value="peach"    aria-label="Peach"><span style="background:#F37F4D"></span><span style="background:#FFC4A8"></span><span style="background:#E96B91"></span></button>
+        <button data-value="focus"    aria-label="Focus"><span style="background:#3B43A8"></span><span style="background:#A6B0F5"></span><span style="background:#828FED"></span></button>
+      </div>
+      <div class="desc">Primary · Accent · 보조 컬러를 통째로 바꿉니다.</div>
+    </div>
+
+    <div class="tweak-section">
+      <label class="lbl">Mood <b>감성 강도</b></label>
+      <div class="tweak-seg" data-tweak="mood">
+        <button data-value="quiet">차분</button>
+        <button data-value="default">기본</button>
+        <button data-value="playful">활기</button>
+      </div>
+      <div class="desc">차분 — 테이프 · 메모 · 손글씨 · 마스코트를 모두 숨겨 SaaS급으로.<br/>활기 — 마스코트 흔들림, 테이프 기울임, 메모지 회전.</div>
+    </div>
+
+    <div class="tweak-section">
+      <label class="lbl">Roundness <b>모서리 반경</b></label>
+      <div class="tweak-seg" data-tweak="roundness">
+        <button data-value="sharp">샤프</button>
+        <button data-value="soft">소프트</button>
+        <button data-value="round">라운드</button>
+      </div>
+      <div class="desc">전체 radius 스케일을 비례 조정합니다 (xs ~ 2xl).</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "theme": "light",
+    "mood": "default",
+    "roundness": "soft"
+  }/*EDITMODE-END*/;
+
+  const state = { ...TWEAKS };
+
+  const THEMES = {
+    light:    { 50:'#F2F4FF',100:'#E2E6FE',200:'#C7CEFB',300:'#A6B0F5',400:'#828FED',500:'#6471E0',600:'#4E58CC',700:'#3B43A8',800:'#2A3082',900:'#1B205C', accent:'#E96B91', focusRgb:'100,113,224', bg:'#F8F8F4' },
+    mint:     { 50:'#EEFBF6',100:'#D6F4E8',200:'#B0E9D3',300:'#80D8B7',400:'#54C39B',500:'#2FA980',600:'#1F8865',700:'#166A50',800:'#0E5240',900:'#093A2D', accent:'#6471E0', focusRgb:'47,169,128',  bg:'#F2FBF6' },
+    lavender: { 50:'#F6F3FE',100:'#ECE5FD',200:'#D8CBFA',300:'#BCA8F4',400:'#9F84EA',500:'#8265DC',600:'#6A4DC2',700:'#5840A0',800:'#3E2D72',900:'#28194D', accent:'#E96B91', focusRgb:'130,101,220', bg:'#FAF7FF' },
+    peach:    { 50:'#FFF4EE',100:'#FFE2D2',200:'#FFC4A8',300:'#FFA178',400:'#F37F4D',500:'#D96838',600:'#B45028',700:'#8A3B1B',800:'#5F2812',900:'#3D170A', accent:'#E96B91', focusRgb:'217,104,56',  bg:'#FFF8F2' },
+    focus:    { 50:'#F2F4FF',100:'#E2E6FE',200:'#C7CEFB',300:'#A6B0F5',400:'#828FED',500:'#3B43A8',600:'#2A3082',700:'#1B205C',800:'#13174A',900:'#0A0D33', accent:'#828FED', focusRgb:'59,67,168',   bg:'#F2F4FF' },
+  };
+
+  const RADIUS = {
+    sharp: { xs:'2px', sm:'3px',  md:'5px',  lg:'7px',  xl:'10px', '2xl':'14px' },
+    soft:  { xs:'4px', sm:'6px',  md:'10px', lg:'14px', xl:'20px', '2xl':'28px' },
+    round: { xs:'8px', sm:'12px', md:'18px', lg:'22px', xl:'30px', '2xl':'40px' },
+  };
+
+  function apply() {
+    const root = document.documentElement;
+    const t = THEMES[state.theme] || THEMES.light;
+
+    [50,100,200,300,400,500,600,700,800,900].forEach(step => {
+      root.style.setProperty('--color-primary-' + step, t[step]);
+    });
+    root.style.setProperty('--color-pink-400', t.accent);
+    root.style.setProperty('--color-text-brand', t[700]);
+    root.style.setProperty('--color-border-focus', t[500]);
+    root.style.setProperty('--color-semantic-info', t[500]);
+    root.style.setProperty('--color-semantic-info-bg', t[50]);
+    root.style.setProperty('--focus-ring', '0 0 0 3px rgba(' + t.focusRgb + ',0.35)');
+    root.style.setProperty('--color-bg', t.bg);
+
+    document.body.dataset.mood = state.mood;
+
+    const r = RADIUS[state.roundness] || RADIUS.soft;
+    Object.entries(r).forEach(([k,v]) => root.style.setProperty('--radius-'+k, v));
+
+    document.querySelectorAll('[data-tweak]').forEach(group => {
+      const key = group.dataset.tweak;
+      group.querySelectorAll('button[data-value]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === state[key]);
+      });
+    });
+  }
+
+  function setTweak(key, value) {
+    state[key] = value;
+    apply();
+    try {
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { [key]: value } }, '*');
+    } catch (e) {}
+  }
+
+  // Wire controls
+  const panel = document.getElementById('tweaks-panel');
+  document.querySelectorAll('[data-tweak] button[data-value]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.parentElement.dataset.tweak;
+      setTweak(key, btn.dataset.value);
+    });
+  });
+  panel.querySelector('.tweaks-close').addEventListener('click', () => {
+    panel.classList.remove('open');
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e){}
+  });
+
+  // Drag
+  const handle = document.getElementById('tweaks-drag');
+  let dragging = false, sx = 0, sy = 0, ox = 0, oy = 0;
+  handle.addEventListener('mousedown', (e) => {
+    if (e.target.closest('.tweaks-close')) return;
+    dragging = true;
+    const rect = panel.getBoundingClientRect();
+    sx = e.clientX; sy = e.clientY; ox = rect.left; oy = rect.top;
+    panel.style.right = 'auto'; panel.style.bottom = 'auto';
+    panel.style.left = ox + 'px'; panel.style.top = oy + 'px';
+    e.preventDefault();
+  });
+  window.addEventListener('mousemove', (e) => {
+    if (!dragging) return;
+    const nx = Math.max(8, Math.min(window.innerWidth - panel.offsetWidth - 8, ox + e.clientX - sx));
+    const ny = Math.max(8, Math.min(window.innerHeight - 60, oy + e.clientY - sy));
+    panel.style.left = nx + 'px';
+    panel.style.top = ny + 'px';
+  });
+  window.addEventListener('mouseup', () => { dragging = false; });
+
+  // CRITICAL: listener first, announce after
+  window.addEventListener('message', (e) => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode')   panel.classList.add('open');
+    if (e.data.type === '__deactivate_edit_mode') panel.classList.remove('open');
+  });
+
+  apply();
+  try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+})();
+</script>
+
+</body>
+</html>

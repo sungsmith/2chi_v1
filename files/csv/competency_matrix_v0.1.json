@@ -1,0 +1,2415 @@
+{
+  "version": "v0.1",
+  "tracks": [
+    "백엔드",
+    "프론트엔드",
+    "인프라_클라우드",
+    "인프라_시스템운영",
+    "UI_UX_디자이너"
+  ],
+  "total_competencies": 112,
+  "competencies": [
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-001",
+      "category": "언어·프레임워크",
+      "name": "Java/Kotlin 기초",
+      "expectations": {
+        "junior": "기본 문법, OOP, 컬렉션, 람다·스트림 가이드 받으며 사용",
+        "mid_1_2y": "단독으로 기능 단위 구현. 제네릭·예외처리·동시성 기본 이해",
+        "senior_3_5y": "메모리 모델·GC 동작 이해. 코루틴/CompletableFuture 자유롭게 사용",
+        "lead_5y_plus": "JVM 튜닝, 언어 선택 의사결정, 사내 코드 컨벤션 수립"
+      },
+      "keywords": [
+        "Java",
+        "Kotlin",
+        "JDK",
+        "JVM",
+        "OOP",
+        "Generic",
+        "Stream",
+        "Lambda",
+        "Coroutine"
+      ],
+      "gap_action": "이펙티브 자바, 모던 자바 인 액션 학습. 작은 토이 프로젝트(REST API) 1건",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-002",
+      "category": "언어·프레임워크",
+      "name": "Spring Boot",
+      "expectations": {
+        "junior": "튜토리얼 기반 CRUD 앱 작성 경험",
+        "mid_1_2y": "Controller·Service·Repository 분리, 의존성 주입, 프로파일 분리",
+        "senior_3_5y": "AOP·인터셉터·필터 활용. 자동설정 커스터마이징. 스타터 작성",
+        "lead_5y_plus": "프레임워크 코어 동작 이해. 사내 표준 보일러플레이트 설계"
+      },
+      "keywords": [
+        "Spring Boot",
+        "Spring Framework",
+        "DI",
+        "IoC",
+        "AOP",
+        "Bean",
+        "Starter"
+      ],
+      "gap_action": "공식 docs + 토비의 스프링 일독. CRUD에 인증/예외/검증 추가하기",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-003",
+      "category": "언어·프레임워크",
+      "name": "Spring Data JPA / Hibernate",
+      "expectations": {
+        "junior": "엔티티·리포지토리 정의 가능. 단순 CRUD",
+        "mid_1_2y": "연관관계(1:N, N:1) 매핑, FetchType, 영속성 컨텍스트 이해",
+        "senior_3_5y": "N+1·LazyInit 이슈 해결, dirty checking, 2차 캐시, 벌크 연산",
+        "lead_5y_plus": "도메인-영속성 경계 설계, 멀티 데이터소스, 샤딩 전략"
+      },
+      "keywords": [
+        "JPA",
+        "Hibernate",
+        "Entity",
+        "Repository",
+        "Lazy",
+        "Fetch",
+        "Persistence",
+        "N+1"
+      ],
+      "gap_action": "자바 ORM 표준 JPA 프로그래밍 책. 사이드 프로젝트에 영속성 컨텍스트 동작 직접 관찰",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-004",
+      "category": "언어·프레임워크",
+      "name": "QueryDSL / 동적 쿼리",
+      "expectations": {
+        "junior": "복잡한 검색 조건은 JPQL로 작성 가능",
+        "mid_1_2y": "QueryDSL로 동적 쿼리·페이징 작성",
+        "senior_3_5y": "프로젝션·DTO 매핑·서브쿼리·윈도우 함수 활용",
+        "lead_5y_plus": "조회 전용 모델 설계, CQRS 적용 결정"
+      },
+      "keywords": [
+        "QueryDSL",
+        "JPQL",
+        "Dynamic Query",
+        "Projection",
+        "DTO",
+        "Pagination"
+      ],
+      "gap_action": "검색 화면 1개 만들기 (다중 조건 동적 쿼리)",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-005",
+      "category": "언어·프레임워크",
+      "name": "Spring Security / 인증",
+      "expectations": {
+        "junior": "BasicAuth 또는 폼 로그인 사용 경험",
+        "mid_1_2y": "JWT·OAuth2 클라이언트 구성. 메서드 보안 어노테이션",
+        "senior_3_5y": "커스텀 필터·UserDetailsService 구현. RBAC/ABAC 설계",
+        "lead_5y_plus": "SSO 통합, 토큰 회전 전략, 보안 사고 대응"
+      },
+      "keywords": [
+        "Spring Security",
+        "JWT",
+        "OAuth2",
+        "RBAC",
+        "Filter",
+        "Authentication"
+      ],
+      "gap_action": "소셜 로그인(카카오/구글) 직접 붙여보기. 토큰 재발급 흐름까지",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-006",
+      "category": "언어·프레임워크",
+      "name": "비동기·리액티브",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "CompletableFuture·@Async 사용. 코루틴 기본",
+        "senior_3_5y": "Reactor/WebFlux로 비동기 파이프라인 구성, 백프레셔 이해",
+        "lead_5y_plus": "동기·비동기 패러다임 선택, 리액티브 풀스택 설계"
+      },
+      "keywords": [
+        "Reactor",
+        "WebFlux",
+        "CompletableFuture",
+        "Async",
+        "Coroutine",
+        "Backpressure"
+      ],
+      "gap_action": "WebFlux 튜토리얼 + 기존 동기 API 1개를 비동기로 리팩토링",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-LANG-007",
+      "category": "언어·프레임워크",
+      "name": "빌드·의존성 관리",
+      "expectations": {
+        "junior": "Gradle/Maven 기본 빌드 가능",
+        "mid_1_2y": "멀티 모듈, 프로파일별 빌드, 의존성 충돌 해결",
+        "senior_3_5y": "커스텀 플러그인 작성, 빌드 캐시·병렬 빌드 최적화",
+        "lead_5y_plus": "조직 표준 빌드 인프라 설계"
+      },
+      "keywords": [
+        "Gradle",
+        "Maven",
+        "Build",
+        "Multi-module",
+        "Dependency"
+      ],
+      "gap_action": "본인 프로젝트를 멀티 모듈로 리팩토링",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-001",
+      "category": "데이터베이스",
+      "name": "관계형 DB·SQL 기본",
+      "expectations": {
+        "junior": "SELECT/JOIN/GROUP BY 작성. 정규화 개념 이해",
+        "mid_1_2y": "트랜잭션·격리 수준 이해. 인덱스 활용",
+        "senior_3_5y": "실행 계획 읽기, 통계·통계 분석, 파티셔닝",
+        "lead_5y_plus": "데이터 모델링 결정, 쿼리 표준 수립"
+      },
+      "keywords": [
+        "SQL",
+        "RDBMS",
+        "MySQL",
+        "PostgreSQL",
+        "JOIN",
+        "Transaction",
+        "Isolation",
+        "Index"
+      ],
+      "gap_action": "리얼 MySQL 또는 PostgreSQL 공식 문서. SQL 문제풀이 50문제",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-002",
+      "category": "데이터베이스",
+      "name": "쿼리 최적화",
+      "expectations": {
+        "junior": "EXPLAIN으로 실행 계획 봤음",
+        "mid_1_2y": "N+1 진단·해결, 복합 인덱스 설계",
+        "senior_3_5y": "옵티마이저 동작, 통계 갱신, 슬로우 쿼리 모니터링",
+        "lead_5y_plus": "DB 성능 진단·튜닝 표준 수립"
+      },
+      "keywords": [
+        "EXPLAIN",
+        "Index",
+        "N+1",
+        "Slow Query",
+        "Query Plan",
+        "Cardinality"
+      ],
+      "gap_action": "본인 프로젝트 슬로우 쿼리 1개 → 인덱스/쿼리 개선 → 수치 측정",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-003",
+      "category": "데이터베이스",
+      "name": "ERD·데이터 모델링",
+      "expectations": {
+        "junior": "ERD 그릴 수 있고 정규화 1·2·3차 차이 설명 가능",
+        "mid_1_2y": "도메인 기반 모델링, 비정규화 트레이드오프 판단",
+        "senior_3_5y": "이력성·시계열 데이터 설계, 데이터 마이그레이션 전략",
+        "lead_5y_plus": "전사 데이터 표준·마스터 데이터 정의"
+      },
+      "keywords": [
+        "ERD",
+        "Normalization",
+        "Denormalization",
+        "Schema Design",
+        "DDL"
+      ],
+      "gap_action": "본 프로젝트(2chi)의 ERD를 직접 그려보고 검토",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-004",
+      "category": "데이터베이스",
+      "name": "Redis (캐시·세션)",
+      "expectations": {
+        "junior": "GET/SET 수준 사용",
+        "mid_1_2y": "캐시 패턴(Cache-aside, Write-through), TTL 설계",
+        "senior_3_5y": "분산 락(Redlock), Pub/Sub, Streams, 클러스터링",
+        "lead_5y_plus": "캐시 전략 표준 수립, 데이터 일관성 모델 결정"
+      },
+      "keywords": [
+        "Redis",
+        "Cache",
+        "TTL",
+        "Lock",
+        "Pub/Sub",
+        "Redlock",
+        "Stream"
+      ],
+      "gap_action": "Redis 캐시 도입 사이드 프로젝트 1건",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-005",
+      "category": "데이터베이스",
+      "name": "NoSQL (MongoDB / Elasticsearch)",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "기본 CRUD·인덱스 사용 경험",
+        "senior_3_5y": "스키마 설계 트레이드오프, 검색·집계 파이프라인",
+        "lead_5y_plus": "데이터 저장소 선택 의사결정, 폴리글랏 퍼시스턴스 설계"
+      },
+      "keywords": [
+        "MongoDB",
+        "Elasticsearch",
+        "NoSQL",
+        "Document",
+        "Search",
+        "Aggregation"
+      ],
+      "gap_action": "검색 기능을 Elasticsearch로 붙여보기",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-DB-006",
+      "category": "데이터베이스",
+      "name": "DB 마이그레이션",
+      "expectations": {
+        "junior": "DDL을 수동으로 실행하는 수준",
+        "mid_1_2y": "Flyway/Liquibase로 버전 관리",
+        "senior_3_5y": "무중단 마이그레이션, 롤백 전략, 대용량 변경",
+        "lead_5y_plus": "팀 마이그레이션 정책·리뷰 표준"
+      },
+      "keywords": [
+        "Flyway",
+        "Liquibase",
+        "Migration",
+        "Schema Version",
+        "DDL"
+      ],
+      "gap_action": "본 프로젝트에 Flyway 도입 + V1__init 작성",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-API-001",
+      "category": "API 설계",
+      "name": "REST API 설계",
+      "expectations": {
+        "junior": "리소스·메서드 매칭 기본 이해",
+        "mid_1_2y": "URI 설계 원칙, HTTP 상태 코드, idempotency",
+        "senior_3_5y": "API 버저닝, 하위호환성, 페이지네이션·필터 표준",
+        "lead_5y_plus": "조직 REST 가이드 수립, API 거버넌스"
+      },
+      "keywords": [
+        "REST",
+        "RESTful",
+        "HTTP",
+        "URI",
+        "Versioning",
+        "Idempotent",
+        "Status Code"
+      ],
+      "gap_action": "API 가이드 1개 정독 (Microsoft REST API Guidelines 등) + 본 프로젝트 API 설계",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-API-002",
+      "category": "API 설계",
+      "name": "API 문서화",
+      "expectations": {
+        "junior": "Swagger UI 보면서 호출",
+        "mid_1_2y": "Springdoc/Swagger 어노테이션으로 자동 문서화",
+        "senior_3_5y": "예시·에러 시나리오 문서화, 외부 공개 API 운영",
+        "lead_5y_plus": "문서·SDK·CLI 일관 자동 생성 파이프라인"
+      },
+      "keywords": [
+        "OpenAPI",
+        "Swagger",
+        "Springdoc",
+        "API Docs"
+      ],
+      "gap_action": "본 프로젝트 API에 Swagger 적용 + 외부 공유 가능 수준으로 작성",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-API-003",
+      "category": "API 설계",
+      "name": "에러 처리·예외 표준",
+      "expectations": {
+        "junior": "try-catch 작성 가능",
+        "mid_1_2y": "@ControllerAdvice로 전역 핸들러, 표준 에러 응답 정의",
+        "senior_3_5y": "도메인 예외·인프라 예외 분리, 에러 코드 체계",
+        "lead_5y_plus": "에러 추적·알림 표준, 사용자 친화 메시지 가이드"
+      },
+      "keywords": [
+        "Exception",
+        "Error Handling",
+        "ControllerAdvice",
+        "Error Code"
+      ],
+      "gap_action": "본 프로젝트에 에러 코드 체계 + 글로벌 핸들러 설계",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-API-004",
+      "category": "API 설계",
+      "name": "GraphQL or gRPC",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "기본 사용 경험",
+        "senior_3_5y": "스키마 설계, N+1 해결, 성능·복잡도 트레이드오프",
+        "lead_5y_plus": "통신 프로토콜 선택 의사결정"
+      },
+      "keywords": [
+        "GraphQL",
+        "gRPC",
+        "Schema",
+        "Protocol Buffer"
+      ],
+      "gap_action": "GraphQL 또는 gRPC로 작은 서비스 1개 구현",
+      "weight": 1
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-ARCH-001",
+      "category": "아키텍처",
+      "name": "모놀리식 vs MSA",
+      "expectations": {
+        "junior": "용어 차이 이해",
+        "mid_1_2y": "도메인 분리 기준·서비스 경계 정의 시도",
+        "senior_3_5y": "분산 트랜잭션·SAGA·Outbox 패턴",
+        "lead_5y_plus": "조직 수준 아키텍처 의사결정"
+      },
+      "keywords": [
+        "Monolith",
+        "MSA",
+        "Microservice",
+        "Saga",
+        "Outbox",
+        "Distributed"
+      ],
+      "gap_action": "모놀리식 한 부분을 작은 서비스로 분리 실험",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-ARCH-002",
+      "category": "아키텍처",
+      "name": "DDD (도메인 주도 설계)",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "엔티티·VO·애그리거트 구분",
+        "senior_3_5y": "Bounded Context·이벤트 스토밍 진행, 도메인 모델 정제",
+        "lead_5y_plus": "조직 컨텍스트 매핑·전략적 설계"
+      },
+      "keywords": [
+        "DDD",
+        "Domain",
+        "Aggregate",
+        "Bounded Context",
+        "Event Storming"
+      ],
+      "gap_action": "DDD Start! 또는 도메인 주도 설계 핵심 책 1독",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-ARCH-003",
+      "category": "아키텍처",
+      "name": "계층화·헥사고날·클린",
+      "expectations": {
+        "junior": "Controller/Service/Repository 3계층 작성",
+        "mid_1_2y": "포트·어댑터 분리, 의존성 역전",
+        "senior_3_5y": "유즈케이스 중심 설계, 인프라 교체 용이성",
+        "lead_5y_plus": "조직 아키텍처 표준"
+      },
+      "keywords": [
+        "Hexagonal",
+        "Clean Architecture",
+        "Layered",
+        "Port",
+        "Adapter",
+        "DIP"
+      ],
+      "gap_action": "본 프로젝트의 자소서 모듈을 헥사고날 구조로 설계 시도",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-ARCH-004",
+      "category": "아키텍처",
+      "name": "이벤트 기반 아키텍처",
+      "expectations": {
+        "junior": "이벤트 개념 이해",
+        "mid_1_2y": "도메인 이벤트 발행·구독 구현",
+        "senior_3_5y": "이벤트 스트리밍, CDC, 멱등성 보장",
+        "lead_5y_plus": "이벤트 표준·스키마 거버넌스"
+      },
+      "keywords": [
+        "Event-Driven",
+        "Event Sourcing",
+        "CDC",
+        "Pub/Sub",
+        "Idempotent"
+      ],
+      "gap_action": "회원가입 시 환영 메일을 이벤트로 비동기 발송 구조 만들기",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-OPS-001",
+      "category": "운영·인프라",
+      "name": "Docker / 컨테이너",
+      "expectations": {
+        "junior": "Dockerfile 작성 가능, 단일 컨테이너 실행",
+        "mid_1_2y": "멀티스테이지 빌드, docker-compose, 볼륨·네트워크",
+        "senior_3_5y": "이미지 최적화, 보안 스캔, 컨테이너 라이프사이클",
+        "lead_5y_plus": "조직 컨테이너 표준"
+      },
+      "keywords": [
+        "Docker",
+        "Container",
+        "Dockerfile",
+        "Compose",
+        "Image"
+      ],
+      "gap_action": "본 프로젝트 v1 docker-compose 구성",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-OPS-002",
+      "category": "운영·인프라",
+      "name": "CI/CD",
+      "expectations": {
+        "junior": "GitHub Actions 또는 Jenkins 사용 경험",
+        "mid_1_2y": "테스트·빌드·이미지 푸시 파이프라인 작성",
+        "senior_3_5y": "배포 전략(블루그린·카나리), 환경별 승인",
+        "lead_5y_plus": "조직 CD 인프라 설계"
+      },
+      "keywords": [
+        "CI",
+        "CD",
+        "GitHub Actions",
+        "Jenkins",
+        "Pipeline",
+        "Blue-Green",
+        "Canary"
+      ],
+      "gap_action": "본 프로젝트에 GitHub Actions로 PR 단위 자동 테스트",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-OPS-003",
+      "category": "운영·인프라",
+      "name": "관측성(Observability)",
+      "expectations": {
+        "junior": "로그 보는 수준",
+        "mid_1_2y": "메트릭(Prometheus)·트레이싱(Zipkin) 도입",
+        "senior_3_5y": "SLO/SLI 정의, 알림 설계, 사고 대응 플레이북",
+        "lead_5y_plus": "조직 관측성 표준·툴체인"
+      },
+      "keywords": [
+        "Prometheus",
+        "Grafana",
+        "Zipkin",
+        "OpenTelemetry",
+        "SLO",
+        "Tracing",
+        "Metrics"
+      ],
+      "gap_action": "Spring Boot + Prometheus + Grafana 도입 (로컬)",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-OPS-004",
+      "category": "운영·인프라",
+      "name": "구조화 로깅",
+      "expectations": {
+        "junior": "println·log 출력",
+        "mid_1_2y": "JSON 로그, MDC 컨텍스트(trace_id, user_id) 포함",
+        "senior_3_5y": "ELK/Loki 수집 파이프라인, PII 마스킹",
+        "lead_5y_plus": "로그 표준·보존 정책·법규 대응"
+      },
+      "keywords": [
+        "Logging",
+        "JSON Log",
+        "MDC",
+        "ELK",
+        "Loki",
+        "Logback"
+      ],
+      "gap_action": "Logback 설정으로 JSON 구조화 로그 출력",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-MSG-001",
+      "category": "메시징·스트리밍",
+      "name": "Kafka",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "Producer·Consumer 작성, 토픽·파티션 설계",
+        "senior_3_5y": "Exactly-once, 컨슈머 그룹 운영, 백프레셔",
+        "lead_5y_plus": "이벤트 스트리밍 플랫폼 설계"
+      },
+      "keywords": [
+        "Kafka",
+        "Producer",
+        "Consumer",
+        "Topic",
+        "Partition",
+        "Exactly-once"
+      ],
+      "gap_action": "Kafka 도커로 띄우고 회원가입 이벤트 발행/구독",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-MSG-002",
+      "category": "메시징·스트리밍",
+      "name": "RabbitMQ / 일반 큐",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "큐 생성, 메시지 발행/소비",
+        "senior_3_5y": "교환기·라우팅 키, DLX(Dead Letter)",
+        "lead_5y_plus": "메시징 패턴 선택 의사결정"
+      },
+      "keywords": [
+        "RabbitMQ",
+        "Queue",
+        "AMQP",
+        "DLX",
+        "Routing"
+      ],
+      "gap_action": "비동기 메일 발송 워커 1개 구현",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-PERF-001",
+      "category": "성능·확장성",
+      "name": "캐시 전략",
+      "expectations": {
+        "junior": "로컬 캐시(@Cacheable) 사용",
+        "mid_1_2y": "분산 캐시·TTL·캐시 무효화 전략",
+        "senior_3_5y": "캐시 스탬피드 방지, 다층 캐시(L1/L2)",
+        "lead_5y_plus": "조직 캐시 표준"
+      },
+      "keywords": [
+        "Cache",
+        "Cacheable",
+        "TTL",
+        "Invalidation",
+        "Stampede"
+      ],
+      "gap_action": "Redis 도입한 사이드 프로젝트에서 캐시 hit/miss 측정",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-PERF-002",
+      "category": "성능·확장성",
+      "name": "부하 분산·스케일링",
+      "expectations": {
+        "junior": "수평/수직 확장 차이 이해",
+        "mid_1_2y": "L4/L7 로드밸런서, 무상태(stateless) 설계",
+        "senior_3_5y": "오토스케일링·셰셔닝, 핫스팟 분산",
+        "lead_5y_plus": "확장성 아키텍처 의사결정"
+      },
+      "keywords": [
+        "Load Balancer",
+        "Scaling",
+        "Stateless",
+        "Auto-scaling",
+        "Sharding"
+      ],
+      "gap_action": "로드 테스트(JMeter/k6)로 본 프로젝트 한계 찾기",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-PERF-003",
+      "category": "성능·확장성",
+      "name": "동시성 제어",
+      "expectations": {
+        "junior": "synchronized·Lock 차이 이해",
+        "mid_1_2y": "낙관적·비관적 락, 격리 수준 적용",
+        "senior_3_5y": "분산 락, 락 프리 자료구조, 데드락 진단",
+        "lead_5y_plus": "조직 동시성 표준"
+      },
+      "keywords": [
+        "Concurrency",
+        "Lock",
+        "Optimistic",
+        "Pessimistic",
+        "Deadlock",
+        "Race Condition"
+      ],
+      "gap_action": "동시성 문제 시나리오(잔액 차감 등) 1개 직접 구현·해결",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-PERF-004",
+      "category": "성능·확장성",
+      "name": "대용량 트래픽 처리",
+      "expectations": {
+        "junior": "용어 수준 이해",
+        "mid_1_2y": "TPS 측정·병목 식별",
+        "senior_3_5y": "TPS 수천 이상 운영 경험, 비동기·캐시·읽기 복제 활용",
+        "lead_5y_plus": "트래픽 폭증 대응 표준"
+      },
+      "keywords": [
+        "TPS",
+        "Throughput",
+        "Latency",
+        "Bottleneck",
+        "Performance",
+        "Load Test"
+      ],
+      "gap_action": "k6로 본 프로젝트 부하 테스트 후 병목 1개 개선",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-TEST-001",
+      "category": "테스트",
+      "name": "단위 테스트",
+      "expectations": {
+        "junior": "JUnit Hello World",
+        "mid_1_2y": "Mockito로 의존성 격리, AssertJ로 가독성 있는 검증",
+        "senior_3_5y": "테스트 더블 전략, 픽스처 관리, 커버리지 정책",
+        "lead_5y_plus": "테스트 표준·문화 수립"
+      },
+      "keywords": [
+        "JUnit",
+        "Mockito",
+        "AssertJ",
+        "Unit Test",
+        "TDD"
+      ],
+      "gap_action": "본 프로젝트 핵심 서비스 1개에 단위 테스트 80% 커버리지",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-TEST-002",
+      "category": "테스트",
+      "name": "통합 테스트",
+      "expectations": {
+        "junior": "@SpringBootTest로 띄워봤음",
+        "mid_1_2y": "Testcontainers로 실제 DB·Kafka 띄우고 테스트",
+        "senior_3_5y": "테스트 데이터 격리, 병렬 실행, 빠른 피드백",
+        "lead_5y_plus": "테스트 인프라 표준"
+      },
+      "keywords": [
+        "Integration Test",
+        "Testcontainers",
+        "SpringBootTest",
+        "@DataJpaTest"
+      ],
+      "gap_action": "Testcontainers로 PostgreSQL 통합 테스트 1개",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-TEST-003",
+      "category": "테스트",
+      "name": "E2E·계약 테스트",
+      "expectations": {
+        "junior": "Postman으로 API 호출",
+        "mid_1_2y": "REST Assured로 E2E 자동화",
+        "senior_3_5y": "Consumer-Driven Contract, Pact",
+        "lead_5y_plus": "E2E 자동화 전략"
+      },
+      "keywords": [
+        "REST Assured",
+        "E2E",
+        "Pact",
+        "Contract Test"
+      ],
+      "gap_action": "본 프로젝트 핵심 시나리오 E2E 스크립트 작성",
+      "weight": 2
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-COL-001",
+      "category": "협업·문화",
+      "name": "Git/GitHub 흐름",
+      "expectations": {
+        "junior": "clone/commit/push 가능",
+        "mid_1_2y": "브랜치 전략(Git Flow, Trunk-based) 이해, PR 작성",
+        "senior_3_5y": "리베이스·체리픽 능숙, 충돌 해결, 릴리즈 관리",
+        "lead_5y_plus": "조직 브랜치 전략 수립"
+      },
+      "keywords": [
+        "Git",
+        "GitHub",
+        "Branch",
+        "PR",
+        "Rebase",
+        "Merge",
+        "Git Flow"
+      ],
+      "gap_action": "오픈소스 1개에 PR 보내보기",
+      "weight": 5
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-COL-002",
+      "category": "협업·문화",
+      "name": "코드 리뷰",
+      "expectations": {
+        "junior": "리뷰 받은 경험 있음",
+        "mid_1_2y": "리뷰 의견 작성·반영, 컨벤션 인지",
+        "senior_3_5y": "설계·테스트·성능 관점 리뷰, 멘토링 톤",
+        "lead_5y_plus": "조직 리뷰 문화·체크리스트 정립"
+      },
+      "keywords": [
+        "Code Review",
+        "PR",
+        "Convention"
+      ],
+      "gap_action": "동료 PR 5건 리뷰 + 자신의 PR 셀프 체크리스트 만들기",
+      "weight": 4
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-COL-003",
+      "category": "협업·문화",
+      "name": "기술 문서화",
+      "expectations": {
+        "junior": "README 작성",
+        "mid_1_2y": "ADR(Architecture Decision Record), 런북, 온보딩 가이드 작성",
+        "senior_3_5y": "RFC 작성·리뷰 주도, 외부 공개 문서",
+        "lead_5y_plus": "조직 문서화 표준"
+      },
+      "keywords": [
+        "Documentation",
+        "README",
+        "ADR",
+        "Runbook",
+        "RFC"
+      ],
+      "gap_action": "본 프로젝트의 핵심 의사결정 1건을 ADR로 기록",
+      "weight": 3
+    },
+    {
+      "track": "백엔드",
+      "competency_id": "BE-COL-004",
+      "category": "협업·문화",
+      "name": "애자일·스크럼",
+      "expectations": {
+        "junior": "데일리 스탠드업 참여",
+        "mid_1_2y": "회고·계획·플래닝 포커 참여",
+        "senior_3_5y": "스프린트 운영, 백로그 그루밍 주도",
+        "lead_5y_plus": "조직 프로세스 개선 주도"
+      },
+      "keywords": [
+        "Agile",
+        "Scrum",
+        "Kanban",
+        "Retro",
+        "Sprint"
+      ],
+      "gap_action": "팀 스크럼 1회 진행자 자원",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-LANG-001",
+      "category": "언어·프레임워크",
+      "name": "JavaScript / TypeScript",
+      "expectations": {
+        "junior": "기본 문법, 비동기(Promise) 이해",
+        "mid_1_2y": "TypeScript 타입 시스템 능숙. ES6+ 기능 활용",
+        "senior_3_5y": "고급 타입(제네릭·매핑드 타입), 비동기 흐름 제어",
+        "lead_5y_plus": "타입 정책·코딩 컨벤션 수립"
+      },
+      "keywords": [
+        "JavaScript",
+        "TypeScript",
+        "ES6",
+        "Promise",
+        "Async",
+        "Generic"
+      ],
+      "gap_action": "TypeScript Deep Dive 정독. 기존 JS 프로젝트를 TS로 마이그레이션",
+      "weight": 5
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-LANG-002",
+      "category": "언어·프레임워크",
+      "name": "React",
+      "expectations": {
+        "junior": "함수형 컴포넌트·Hooks 기본",
+        "mid_1_2y": "상태 관리, useEffect 의존성, 메모이제이션",
+        "senior_3_5y": "Suspense·Server Component, 동시성 모드, 렌더링 최적화",
+        "lead_5y_plus": "프레임워크 선택 의사결정·아키텍처"
+      },
+      "keywords": [
+        "React",
+        "Hooks",
+        "JSX",
+        "useState",
+        "useEffect",
+        "Suspense",
+        "Server Component"
+      ],
+      "gap_action": "본 프로젝트 프론트엔드 컴포넌트 직접 작성",
+      "weight": 5
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-LANG-003",
+      "category": "언어·프레임워크",
+      "name": "Next.js",
+      "expectations": {
+        "junior": "App Router 페이지 생성",
+        "mid_1_2y": "라우팅·레이아웃·Server Action 활용",
+        "senior_3_5y": "RSC 최적화, ISR/SSR/SSG 선택, 미들웨어",
+        "lead_5y_plus": "Next.js 기반 풀스택 아키텍처"
+      },
+      "keywords": [
+        "Next.js",
+        "App Router",
+        "RSC",
+        "SSR",
+        "SSG",
+        "ISR",
+        "Server Action"
+      ],
+      "gap_action": "본 프로젝트 페이지 5개를 Next.js App Router로 구성",
+      "weight": 5
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-LANG-004",
+      "category": "언어·프레임워크",
+      "name": "Vue / Angular (부가)",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "튜토리얼 수준 사용 경험",
+        "senior_3_5y": "팀 표준에 맞춰 운영 가능",
+        "lead_5y_plus": "프레임워크 비교·의사결정"
+      },
+      "keywords": [
+        "Vue",
+        "Angular",
+        "Nuxt"
+      ],
+      "gap_action": "React와 비교 위해 Vue 튜토리얼 1회",
+      "weight": 1
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STYL-001",
+      "category": "스타일링·UI",
+      "name": "CSS·HTML 기초",
+      "expectations": {
+        "junior": "Flexbox·Grid 기본 사용",
+        "mid_1_2y": "반응형 디자인, 미디어 쿼리",
+        "senior_3_5y": "CSS 아키텍처(ITCSS·BEM), 모션·애니메이션",
+        "lead_5y_plus": "디자인 시스템 설계"
+      },
+      "keywords": [
+        "CSS",
+        "HTML",
+        "Flexbox",
+        "Grid",
+        "Responsive",
+        "BEM",
+        "Semantic"
+      ],
+      "gap_action": "본 프로젝트의 1개 페이지를 반응형으로 직접 작성",
+      "weight": 5
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STYL-002",
+      "category": "스타일링·UI",
+      "name": "Tailwind / CSS-in-JS",
+      "expectations": {
+        "junior": "tailwind 클래스 검색해서 사용",
+        "mid_1_2y": "유틸리티 컴포지션, 디자인 토큰화",
+        "senior_3_5y": "디자인 시스템 매핑, 다크모드·테마",
+        "lead_5y_plus": "스타일링 표준 수립"
+      },
+      "keywords": [
+        "Tailwind",
+        "CSS-in-JS",
+        "Styled Components",
+        "Emotion",
+        "Design Token"
+      ],
+      "gap_action": "본 프로젝트에 Tailwind 도입 + 컴포넌트화",
+      "weight": 4
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STYL-003",
+      "category": "스타일링·UI",
+      "name": "컴포넌트 디자인",
+      "expectations": {
+        "junior": "기본 UI 컴포넌트(버튼·인풋) 작성",
+        "mid_1_2y": "재사용 가능한 컴포넌트 라이브러리 작성",
+        "senior_3_5y": "Headless UI 패턴, 접근성 고려 컴포넌트",
+        "lead_5y_plus": "디자인 시스템 책임자"
+      },
+      "keywords": [
+        "Component",
+        "Headless UI",
+        "shadcn/ui",
+        "Radix",
+        "Reusable"
+      ],
+      "gap_action": "shadcn/ui 도입 또는 자체 컴포넌트 5개 라이브러리화",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STATE-001",
+      "category": "상태관리·데이터",
+      "name": "상태관리 라이브러리",
+      "expectations": {
+        "junior": "useState로 로컬 상태 관리",
+        "mid_1_2y": "Context API, Redux/Zustand 1개 능숙",
+        "senior_3_5y": "서버 상태 vs 클라이언트 상태 분리 (TanStack Query)",
+        "lead_5y_plus": "상태관리 전략 표준"
+      },
+      "keywords": [
+        "Redux",
+        "Zustand",
+        "Recoil",
+        "Context",
+        "TanStack Query",
+        "React Query",
+        "SWR"
+      ],
+      "gap_action": "본 프로젝트에 TanStack Query 도입 + 캐싱 전략",
+      "weight": 4
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STATE-002",
+      "category": "상태관리·데이터",
+      "name": "Form 처리",
+      "expectations": {
+        "junior": "controlled input 기본",
+        "mid_1_2y": "React Hook Form 또는 Formik 사용",
+        "senior_3_5y": "복잡한 폼 검증, 단계별 폼, 동적 필드",
+        "lead_5y_plus": "폼 표준화·재사용 패턴"
+      },
+      "keywords": [
+        "Form",
+        "React Hook Form",
+        "Formik",
+        "Validation",
+        "Yup",
+        "Zod"
+      ],
+      "gap_action": "본 프로젝트의 자소서 작성 폼을 RHF + Zod로 구현",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-STATE-003",
+      "category": "상태관리·데이터",
+      "name": "API 통신",
+      "expectations": {
+        "junior": "fetch/axios 기본",
+        "mid_1_2y": "인터셉터·에러 핸들링·재시도",
+        "senior_3_5y": "토큰 갱신·캐시·요청 중복 제거",
+        "lead_5y_plus": "통신 레이어 표준"
+      },
+      "keywords": [
+        "Fetch",
+        "Axios",
+        "Interceptor",
+        "Retry",
+        "Token Refresh"
+      ],
+      "gap_action": "axios 인터셉터로 JWT 자동 갱신 구현",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-PERF-001",
+      "category": "성능·접근성",
+      "name": "코어 웹 바이탈",
+      "expectations": {
+        "junior": "LCP/FCP 용어 이해",
+        "mid_1_2y": "측정 도구(Lighthouse) 사용, 이미지 최적화",
+        "senior_3_5y": "코드 스플리팅, Lazy Loading, 번들 분석",
+        "lead_5y_plus": "성능 예산·모니터링 표준"
+      },
+      "keywords": [
+        "LCP",
+        "FCP",
+        "CLS",
+        "Lighthouse",
+        "Web Vitals",
+        "Bundle Analysis"
+      ],
+      "gap_action": "본 프로젝트의 1개 페이지에 Lighthouse 점수 90+ 만들기",
+      "weight": 4
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-PERF-002",
+      "category": "성능·접근성",
+      "name": "접근성(a11y)",
+      "expectations": {
+        "junior": "alt 속성·label 작성",
+        "mid_1_2y": "ARIA 속성·키보드 네비게이션, 시맨틱 HTML",
+        "senior_3_5y": "스크린 리더 테스트, WCAG 준수",
+        "lead_5y_plus": "접근성 정책 수립"
+      },
+      "keywords": [
+        "Accessibility",
+        "a11y",
+        "ARIA",
+        "WCAG",
+        "Screen Reader",
+        "Keyboard Nav"
+      ],
+      "gap_action": "본 프로젝트의 1개 페이지에 WCAG AA 준수",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-PERF-003",
+      "category": "성능·접근성",
+      "name": "이미지·미디어 최적화",
+      "expectations": {
+        "junior": "JPG/PNG 차이 이해",
+        "mid_1_2y": "WebP/AVIF 사용, srcset",
+        "senior_3_5y": "Next.js Image 컴포넌트 활용, CDN 최적화",
+        "lead_5y_plus": "미디어 파이프라인 설계"
+      },
+      "keywords": [
+        "Image Optimization",
+        "WebP",
+        "AVIF",
+        "Next.js Image",
+        "srcset"
+      ],
+      "gap_action": "본 프로젝트 이미지를 Next.js Image로 전환",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-BUILD-001",
+      "category": "빌드·도구",
+      "name": "번들러 / 빌드 도구",
+      "expectations": {
+        "junior": "create-react-app·next dev 사용",
+        "mid_1_2y": "Vite/Webpack 기본 설정",
+        "senior_3_5y": "트리쉐이킹·코드 스플리팅 최적화",
+        "lead_5y_plus": "빌드 인프라 설계"
+      },
+      "keywords": [
+        "Vite",
+        "Webpack",
+        "Rollup",
+        "esbuild",
+        "Bundle",
+        "Tree Shaking"
+      ],
+      "gap_action": "Vite 구성 직접 만들어보기",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-BUILD-002",
+      "category": "빌드·도구",
+      "name": "린팅·포매팅",
+      "expectations": {
+        "junior": "Prettier 설치 사용",
+        "mid_1_2y": "ESLint 규칙 커스터마이징",
+        "senior_3_5y": "팀 컨벤션 정립, pre-commit 훅",
+        "lead_5y_plus": "조직 표준·자동화"
+      },
+      "keywords": [
+        "ESLint",
+        "Prettier",
+        "Husky",
+        "lint-staged"
+      ],
+      "gap_action": "본 프로젝트에 ESLint + Prettier + Husky 설정",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-TEST-001",
+      "category": "테스트",
+      "name": "단위 테스트",
+      "expectations": {
+        "junior": "Jest 기본 사용",
+        "mid_1_2y": "RTL(React Testing Library)로 컴포넌트 테스트",
+        "senior_3_5y": "테스트 더블, MSW로 API 모킹",
+        "lead_5y_plus": "테스트 표준 수립"
+      },
+      "keywords": [
+        "Jest",
+        "React Testing Library",
+        "RTL",
+        "MSW",
+        "Vitest"
+      ],
+      "gap_action": "본 프로젝트 핵심 컴포넌트 5개에 단위 테스트",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-TEST-002",
+      "category": "테스트",
+      "name": "E2E 테스트",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "Playwright 또는 Cypress 기본 시나리오",
+        "senior_3_5y": "테스트 데이터·환경 격리, 시각적 회귀",
+        "lead_5y_plus": "E2E 전략·인프라"
+      },
+      "keywords": [
+        "Playwright",
+        "Cypress",
+        "E2E",
+        "Visual Regression"
+      ],
+      "gap_action": "본 프로젝트 회원가입~자소서 작성 시나리오 E2E",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-COL-001",
+      "category": "협업·디자인 협업",
+      "name": "디자이너 협업",
+      "expectations": {
+        "junior": "Figma 시안 보고 구현",
+        "mid_1_2y": "디자인 토큰·컴포넌트 매핑, 핸드오프 도구 활용",
+        "senior_3_5y": "디자이너와 컴포넌트 공동 설계, 디자인 시스템 기여",
+        "lead_5y_plus": "디자인-개발 경계 정의"
+      },
+      "keywords": [
+        "Figma",
+        "Design Token",
+        "Handoff",
+        "Storybook",
+        "Design System"
+      ],
+      "gap_action": "본 프로젝트 디자인 시스템 토큰을 코드로 옮기기",
+      "weight": 3
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-COL-002",
+      "category": "협업·디자인 협업",
+      "name": "Storybook",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "컴포넌트 단위 카탈로그 작성",
+        "senior_3_5y": "Interaction Test, Chromatic 시각 회귀",
+        "lead_5y_plus": "조직 컴포넌트 카탈로그 운영"
+      },
+      "keywords": [
+        "Storybook",
+        "Chromatic",
+        "Component Catalog"
+      ],
+      "gap_action": "공통 컴포넌트 10개를 Storybook으로 정리",
+      "weight": 2
+    },
+    {
+      "track": "프론트엔드",
+      "competency_id": "FE-COL-003",
+      "category": "협업·디자인 협업",
+      "name": "Git/GitHub 흐름",
+      "expectations": {
+        "junior": "기본 clone/commit",
+        "mid_1_2y": "브랜치 전략·PR",
+        "senior_3_5y": "리뷰·릴리즈 관리",
+        "lead_5y_plus": "조직 정책"
+      },
+      "keywords": [
+        "Git",
+        "GitHub",
+        "Branch",
+        "PR"
+      ],
+      "gap_action": "오픈소스 PR 1건",
+      "weight": 5
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CLOUD-001",
+      "category": "클라우드 플랫폼",
+      "name": "AWS 기본",
+      "expectations": {
+        "junior": "EC2 인스턴스 띄워본 적 있음",
+        "mid_1_2y": "EC2·RDS·S3·VPC 기본 운영. IAM 정책 이해",
+        "senior_3_5y": "Auto Scaling·Load Balancer·CloudFront, 비용 최적화",
+        "lead_5y_plus": "멀티 계정·랜딩존, 조직 거버넌스"
+      },
+      "keywords": [
+        "AWS",
+        "EC2",
+        "RDS",
+        "S3",
+        "VPC",
+        "IAM",
+        "CloudFront",
+        "Auto Scaling"
+      ],
+      "gap_action": "AWS Free Tier로 작은 서비스 1개 배포",
+      "weight": 5
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CLOUD-002",
+      "category": "클라우드 플랫폼",
+      "name": "GCP / Azure (부가)",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "튜토리얼 수준 사용",
+        "senior_3_5y": "프로젝트 단위 운영 경험",
+        "lead_5y_plus": "멀티클라우드 전략"
+      },
+      "keywords": [
+        "GCP",
+        "Azure",
+        "Cloud Run",
+        "AKS"
+      ],
+      "gap_action": "GCP $300 크레딧으로 작은 서비스 1개 배포",
+      "weight": 1
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CONT-001",
+      "category": "컨테이너·오케스트레이션",
+      "name": "Docker",
+      "expectations": {
+        "junior": "Dockerfile 작성, 단일 컨테이너 실행",
+        "mid_1_2y": "멀티스테이지·docker-compose 활용",
+        "senior_3_5y": "이미지 보안 스캔, 최적화, 컨테이너 라이프사이클",
+        "lead_5y_plus": "조직 컨테이너 표준"
+      },
+      "keywords": [
+        "Docker",
+        "Container",
+        "Dockerfile",
+        "Compose"
+      ],
+      "gap_action": "본 프로젝트 docker-compose 구성",
+      "weight": 5
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CONT-002",
+      "category": "컨테이너·오케스트레이션",
+      "name": "Kubernetes",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "Pod·Service·Deployment 작성, kubectl 사용",
+        "senior_3_5y": "Helm 차트, Ingress, ConfigMap·Secret 관리",
+        "lead_5y_plus": "클러스터 설계·운영, 멀티테넌시"
+      },
+      "keywords": [
+        "Kubernetes",
+        "k8s",
+        "Pod",
+        "Deployment",
+        "Service",
+        "Helm",
+        "Ingress"
+      ],
+      "gap_action": "minikube로 본 프로젝트 배포 실습",
+      "weight": 3
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CONT-003",
+      "category": "컨테이너·오케스트레이션",
+      "name": "GitOps / ArgoCD",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "ArgoCD로 단일 앱 동기화",
+        "senior_3_5y": "App of Apps 패턴, 환경 분리",
+        "lead_5y_plus": "조직 GitOps 표준"
+      },
+      "keywords": [
+        "GitOps",
+        "ArgoCD",
+        "FluxCD"
+      ],
+      "gap_action": "ArgoCD 로컬 설치 + 본 프로젝트 동기화 실습",
+      "weight": 2
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-IAC-001",
+      "category": "IaC",
+      "name": "Terraform",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "단일 모듈로 EC2/RDS 프로비저닝",
+        "senior_3_5y": "모듈화·워크스페이스·remote state, 변경 계획 리뷰",
+        "lead_5y_plus": "조직 Terraform 표준·드리프트 관리"
+      },
+      "keywords": [
+        "Terraform",
+        "IaC",
+        "Module",
+        "Workspace",
+        "State"
+      ],
+      "gap_action": "본 프로젝트 v2 인프라를 Terraform으로 정의 (드라이런)",
+      "weight": 3
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-IAC-002",
+      "category": "IaC",
+      "name": "Ansible / 설정 관리",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 플레이북 작성",
+        "senior_3_5y": "롤·인벤토리 구조, 멱등성 보장",
+        "lead_5y_plus": "조직 설정 관리 표준"
+      },
+      "keywords": [
+        "Ansible",
+        "Playbook",
+        "Role",
+        "Inventory"
+      ],
+      "gap_action": "Ansible로 본 PC 셋업 자동화",
+      "weight": 1
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CICD-001",
+      "category": "CI/CD",
+      "name": "GitHub Actions",
+      "expectations": {
+        "junior": "기본 워크플로 작성",
+        "mid_1_2y": "테스트·빌드·이미지 푸시 파이프라인",
+        "senior_3_5y": "재사용 워크플로, 셀프 호스트 러너, 보안 스캐닝",
+        "lead_5y_plus": "조직 CI/CD 플랫폼 표준"
+      },
+      "keywords": [
+        "GitHub Actions",
+        "CI",
+        "CD",
+        "Workflow",
+        "Runner"
+      ],
+      "gap_action": "본 프로젝트에 PR 단위 자동 테스트 워크플로",
+      "weight": 5
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CICD-002",
+      "category": "CI/CD",
+      "name": "Jenkins (부가)",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "파이프라인 작성",
+        "senior_3_5y": "마스터·에이전트 운영, 플러그인 관리",
+        "lead_5y_plus": "조직 Jenkins 운영"
+      },
+      "keywords": [
+        "Jenkins",
+        "Pipeline",
+        "Groovy"
+      ],
+      "gap_action": "Jenkinsfile로 본 프로젝트 빌드 1회",
+      "weight": 1
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-CICD-003",
+      "category": "CI/CD",
+      "name": "배포 전략",
+      "expectations": {
+        "junior": "수동 배포",
+        "mid_1_2y": "롤링·블루그린 이해",
+        "senior_3_5y": "카나리·점진 배포, 자동 롤백",
+        "lead_5y_plus": "조직 배포 표준"
+      },
+      "keywords": [
+        "Rolling",
+        "Blue-Green",
+        "Canary",
+        "Rollback"
+      ],
+      "gap_action": "본 프로젝트에 블루그린 배포 시뮬레이션",
+      "weight": 3
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-OBS-001",
+      "category": "관측성·운영",
+      "name": "메트릭·모니터링",
+      "expectations": {
+        "junior": "기본 로그 보기",
+        "mid_1_2y": "Prometheus·Grafana 도입, 알림 설정",
+        "senior_3_5y": "SLO/SLI 정의, 에러 버짓 운영",
+        "lead_5y_plus": "조직 SRE 문화·표준"
+      },
+      "keywords": [
+        "Prometheus",
+        "Grafana",
+        "Datadog",
+        "SLO",
+        "SLI",
+        "Alert"
+      ],
+      "gap_action": "본 프로젝트에 Prometheus + Grafana 로컬 도입",
+      "weight": 4
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-OBS-002",
+      "category": "관측성·운영",
+      "name": "트레이싱",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "Zipkin/Jaeger 도입",
+        "senior_3_5y": "분산 트레이싱, OpenTelemetry 표준",
+        "lead_5y_plus": "추적 인프라 설계"
+      },
+      "keywords": [
+        "OpenTelemetry",
+        "Zipkin",
+        "Jaeger",
+        "Tracing"
+      ],
+      "gap_action": "Spring Boot에 Zipkin 트레이싱 적용",
+      "weight": 2
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-OBS-003",
+      "category": "관측성·운영",
+      "name": "로그 수집",
+      "expectations": {
+        "junior": "kubectl logs",
+        "mid_1_2y": "ELK·Loki 스택 운영",
+        "senior_3_5y": "PII 마스킹, 멀티 테넌시, 비용 최적화",
+        "lead_5y_plus": "조직 로그 표준"
+      },
+      "keywords": [
+        "ELK",
+        "Loki",
+        "Fluentd",
+        "Logstash",
+        "Elasticsearch"
+      ],
+      "gap_action": "Loki + Grafana로 본 프로젝트 로그 검색",
+      "weight": 2
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-NETSEC-001",
+      "category": "네트워크·보안",
+      "name": "네트워크 기초",
+      "expectations": {
+        "junior": "VPC·서브넷·라우팅 용어 이해",
+        "mid_1_2y": "보안 그룹·NACL 설계, 로드밸런서",
+        "senior_3_5y": "VPN·Transit Gateway·VPC 피어링",
+        "lead_5y_plus": "조직 네트워크 표준"
+      },
+      "keywords": [
+        "VPC",
+        "Subnet",
+        "Security Group",
+        "NACL",
+        "Load Balancer",
+        "Route Table"
+      ],
+      "gap_action": "AWS VPC + 퍼블릭/프라이빗 서브넷 1셋 구성",
+      "weight": 3
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-NETSEC-002",
+      "category": "네트워크·보안",
+      "name": "IAM·시크릿",
+      "expectations": {
+        "junior": "IAM 사용자 생성",
+        "mid_1_2y": "역할·정책·최소 권한 원칙",
+        "senior_3_5y": "Secrets Manager·KMS, 자동 회전",
+        "lead_5y_plus": "조직 IAM 거버넌스"
+      },
+      "keywords": [
+        "IAM",
+        "Role",
+        "Policy",
+        "Secrets Manager",
+        "KMS"
+      ],
+      "gap_action": "본 프로젝트 시크릿을 Secrets Manager로 이관",
+      "weight": 4
+    },
+    {
+      "track": "인프라_클라우드",
+      "competency_id": "IC-NETSEC-003",
+      "category": "네트워크·보안",
+      "name": "보안 스캐닝·인증",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 컨테이너 이미지 스캔",
+        "senior_3_5y": "SAST/DAST 도구 도입, OWASP Top 10 대응",
+        "lead_5y_plus": "조직 보안 표준·인증(ISMS·SOC2)"
+      },
+      "keywords": [
+        "OWASP",
+        "SAST",
+        "DAST",
+        "Trivy",
+        "Snyk"
+      ],
+      "gap_action": "Trivy로 본 프로젝트 이미지 스캔",
+      "weight": 2
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-OS-001",
+      "category": "서버·OS 운영",
+      "name": "Linux 운영",
+      "expectations": {
+        "junior": "기본 명령어(ls/cd/ps) 사용",
+        "mid_1_2y": "프로세스·서비스 관리(systemd), 권한·사용자 관리",
+        "senior_3_5y": "성능 분석(top/iostat/strace), 커널 파라미터 튜닝",
+        "lead_5y_plus": "리눅스 운영 표준"
+      },
+      "keywords": [
+        "Linux",
+        "Ubuntu",
+        "CentOS",
+        "systemd",
+        "strace",
+        "top",
+        "iostat"
+      ],
+      "gap_action": "리눅스 기본 명령어 200개 마스터, 시스템 콜 모니터링 실습",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-OS-002",
+      "category": "서버·OS 운영",
+      "name": "Windows Server",
+      "expectations": {
+        "junior": "기본 GUI 운영",
+        "mid_1_2y": "Active Directory·그룹 정책",
+        "senior_3_5y": "AD 도메인 설계, GPO 정책 표준화",
+        "lead_5y_plus": "기업 윈도우 인프라 설계"
+      },
+      "keywords": [
+        "Windows Server",
+        "Active Directory",
+        "AD",
+        "GPO",
+        "DNS",
+        "DHCP"
+      ],
+      "gap_action": "AD 환경 구축 실습 (가상서버 위)",
+      "weight": 3
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-OS-003",
+      "category": "서버·OS 운영",
+      "name": "셸 스크립팅",
+      "expectations": {
+        "junior": "기본 bash 명령어",
+        "mid_1_2y": "변수·조건문·반복문, 로그 파싱",
+        "senior_3_5y": "복잡한 자동화 스크립트, 에러 처리",
+        "lead_5y_plus": "조직 자동화 표준"
+      },
+      "keywords": [
+        "Bash",
+        "PowerShell",
+        "Shell Script",
+        "sed",
+        "awk",
+        "grep"
+      ],
+      "gap_action": "백업·로그 정리 스크립트 작성",
+      "weight": 4
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-VIRT-001",
+      "category": "가상화·하이퍼바이저",
+      "name": "VMware ESXi / vSphere",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "vCenter로 VM 생성·관리",
+        "senior_3_5y": "vMotion·HA·DRS, 스토리지·네트워크 설계",
+        "lead_5y_plus": "엔터프라이즈 가상화 설계"
+      },
+      "keywords": [
+        "VMware",
+        "ESXi",
+        "vSphere",
+        "vCenter",
+        "vMotion",
+        "HA",
+        "DRS"
+      ],
+      "gap_action": "ESXi 무료 라이선스로 홈랩 구축",
+      "weight": 4
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-VIRT-002",
+      "category": "가상화·하이퍼바이저",
+      "name": "Hyper-V / KVM",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 VM 운영",
+        "senior_3_5y": "라이브 마이그레이션, 클러스터링",
+        "lead_5y_plus": "하이퍼바이저 선택 의사결정"
+      },
+      "keywords": [
+        "Hyper-V",
+        "KVM",
+        "Proxmox",
+        "libvirt"
+      ],
+      "gap_action": "Proxmox 또는 Hyper-V로 가상화 환경 구축",
+      "weight": 2
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-VIRT-003",
+      "category": "가상화·하이퍼바이저",
+      "name": "VDI / 원격 데스크톱",
+      "expectations": {
+        "junior": "RDP 접속 가능",
+        "mid_1_2y": "RDS·Citrix 기본 운영",
+        "senior_3_5y": "VDI 풀·프로파일 관리, GPU 가상화",
+        "lead_5y_plus": "엔드유저 컴퓨팅 전략"
+      },
+      "keywords": [
+        "VDI",
+        "RDS",
+        "Citrix",
+        "Horizon"
+      ],
+      "gap_action": "Windows RDS 호스트 구축 실습",
+      "weight": 1
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-STOR-001",
+      "category": "스토리지·백업",
+      "name": "NAS / SAN 관리",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "Synology/QNAP NAS 권한·공유 폴더 운영",
+        "senior_3_5y": "iSCSI·NFS·SMB 프로토콜, RAID 설계, 용량 계획",
+        "lead_5y_plus": "엔터프라이즈 스토리지 아키텍처"
+      },
+      "keywords": [
+        "NAS",
+        "SAN",
+        "iSCSI",
+        "NFS",
+        "SMB",
+        "RAID",
+        "Synology",
+        "QNAP"
+      ],
+      "gap_action": "NAS 1대로 부서 공유 환경 + 권한 정책 수립",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-STOR-002",
+      "category": "스토리지·백업",
+      "name": "백업·재해복구",
+      "expectations": {
+        "junior": "수동 복사 백업",
+        "mid_1_2y": "Veeam·Acronis로 일/주/월 정책 운영",
+        "senior_3_5y": "RPO/RTO 정의, 오프사이트·이뮤터블 백업, 복구 훈련",
+        "lead_5y_plus": "BCP·DR 전략 수립"
+      },
+      "keywords": [
+        "Veeam",
+        "Acronis",
+        "Backup",
+        "RPO",
+        "RTO",
+        "DR",
+        "Immutable",
+        "Offsite"
+      ],
+      "gap_action": "Veeam 무료로 본 NAS 백업 + 월간 복구 훈련",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-STOR-003",
+      "category": "스토리지·백업",
+      "name": "데이터 복구",
+      "expectations": {
+        "junior": "휴지통에서 복구",
+        "mid_1_2y": "이전 버전·스냅샷에서 복구",
+        "senior_3_5y": "랜섬웨어 사고 시 데이터 복구, 포렌식 기초",
+        "lead_5y_plus": "조직 복구 SOP 수립"
+      },
+      "keywords": [
+        "Recovery",
+        "Snapshot",
+        "Ransomware Recovery",
+        "Forensic"
+      ],
+      "gap_action": "랜섬웨어 시뮬레이션 + 백업으로 복구 실습",
+      "weight": 4
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-NET-001",
+      "category": "네트워크",
+      "name": "L2/L3 스위칭·라우팅",
+      "expectations": {
+        "junior": "케이블 연결",
+        "mid_1_2y": "VLAN·트렁크·STP, 정적 라우팅",
+        "senior_3_5y": "OSPF·BGP, QoS, 멀티 사이트 설계",
+        "lead_5y_plus": "기업 네트워크 아키텍처"
+      },
+      "keywords": [
+        "Switch",
+        "Router",
+        "VLAN",
+        "Trunk",
+        "STP",
+        "OSPF",
+        "BGP",
+        "Cisco"
+      ],
+      "gap_action": "Packet Tracer 또는 GNS3로 멀티 VLAN 구성",
+      "weight": 4
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-NET-002",
+      "category": "네트워크",
+      "name": "방화벽·VPN",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "방화벽 룰 설정, IPSec/SSL VPN 운영",
+        "senior_3_5y": "차세대 방화벽(NGFW), DPI, 제로 트러스트",
+        "lead_5y_plus": "조직 보안 경계 설계"
+      },
+      "keywords": [
+        "Firewall",
+        "VPN",
+        "IPSec",
+        "SSL VPN",
+        "NGFW",
+        "Zero Trust",
+        "WireGuard"
+      ],
+      "gap_action": "WireGuard로 사이트간 VPN 구축",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-NET-003",
+      "category": "네트워크",
+      "name": "Wi-Fi·무선",
+      "expectations": {
+        "junior": "AP 설치 가능",
+        "mid_1_2y": "다중 AP 환경, SSID 분리·인증(802.1x)",
+        "senior_3_5y": "RF 설계, 컨트롤러·로밍 최적화",
+        "lead_5y_plus": "기업 무선 네트워크 표준"
+      },
+      "keywords": [
+        "Wi-Fi",
+        "AP",
+        "SSID",
+        "WPA2",
+        "WPA3",
+        "802.1x",
+        "Wireless Controller"
+      ],
+      "gap_action": "다중 SSID + 게스트망 분리 구성",
+      "weight": 2
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-SEC-001",
+      "category": "정보보안",
+      "name": "보안 정책·운영",
+      "expectations": {
+        "junior": "비밀번호 정책 이해",
+        "mid_1_2y": "패치 관리·취약점 점검·접근 통제",
+        "senior_3_5y": "보안 사고 대응(IR), 위협 인텔리전스",
+        "lead_5y_plus": "ISMS-P·ISO27001 인증 책임자"
+      },
+      "keywords": [
+        "Patch Management",
+        "Vulnerability",
+        "Access Control",
+        "IR",
+        "Threat Intelligence"
+      ],
+      "gap_action": "K-Shield Jr. 또는 정보보안기사 학습",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-SEC-002",
+      "category": "정보보안",
+      "name": "엔드포인트 보안",
+      "expectations": {
+        "junior": "백신 설치",
+        "mid_1_2y": "EDR·DLP·매체 통제 도구 운영",
+        "senior_3_5y": "EDR 룰 작성, 이상 행위 분석",
+        "lead_5y_plus": "조직 엔드포인트 표준"
+      },
+      "keywords": [
+        "Antivirus",
+        "EDR",
+        "DLP",
+        "V3",
+        "AhnLab",
+        "CrowdStrike",
+        "SentinelOne"
+      ],
+      "gap_action": "오픈소스 EDR(Wazuh) 또는 무료 EDR 도입 실습",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-SEC-003",
+      "category": "정보보안",
+      "name": "이메일 보안·계정 탈취 대응",
+      "expectations": {
+        "junior": "스팸 필터 이해",
+        "mid_1_2y": "SPF·DKIM·DMARC 설정, 피싱 훈련",
+        "senior_3_5y": "BEC 사고 대응, 메일 게이트웨이 운영",
+        "lead_5y_plus": "조직 계정 보안 표준"
+      },
+      "keywords": [
+        "SPF",
+        "DKIM",
+        "DMARC",
+        "Phishing",
+        "BEC",
+        "Email Gateway"
+      ],
+      "gap_action": "본 회사·집 도메인에 SPF/DKIM/DMARC 설정",
+      "weight": 3
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-SEC-004",
+      "category": "정보보안",
+      "name": "랜섬웨어 대응",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 격리·복구 절차 숙지",
+        "senior_3_5y": "감염 격리·증거 보존·재발 방지 조치 전체 주도",
+        "lead_5y_plus": "조직 IR 플레이북 수립·훈련"
+      },
+      "keywords": [
+        "Ransomware",
+        "EDR",
+        "Backup",
+        "IR",
+        "Incident Response",
+        "Isolation"
+      ],
+      "gap_action": "랜섬웨어 시나리오 테이블탑 훈련 1회 참여",
+      "weight": 5
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-SEC-005",
+      "category": "정보보안",
+      "name": "SIEM·로그 분석",
+      "expectations": {
+        "junior": "기본 로그 보기",
+        "mid_1_2y": "Splunk·Wazuh 기본 검색, 룰 작성",
+        "senior_3_5y": "상관 분석·이상 탐지·SOC 운영",
+        "lead_5y_plus": "조직 SOC 설계"
+      },
+      "keywords": [
+        "SIEM",
+        "Splunk",
+        "Wazuh",
+        "ELK",
+        "Sigma",
+        "Correlation"
+      ],
+      "gap_action": "Wazuh 또는 ELK로 본 환경 로그 수집·이상 탐지 룰 1개",
+      "weight": 3
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-ITAM-001",
+      "category": "자산·헬프데스크",
+      "name": "IT 자산 관리",
+      "expectations": {
+        "junior": "엑셀로 자산 목록 관리",
+        "mid_1_2y": "ITAM 도구·라이프사이클, 라이선스 추적",
+        "senior_3_5y": "자동 발견·계약·소프트웨어 자산 거버넌스",
+        "lead_5y_plus": "조직 자산 관리 표준"
+      },
+      "keywords": [
+        "ITAM",
+        "Asset Management",
+        "License Tracking",
+        "GLPI",
+        "Snipe-IT"
+      ],
+      "gap_action": "GLPI 또는 Snipe-IT로 자산 인벤토리 구축",
+      "weight": 3
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-ITAM-002",
+      "category": "자산·헬프데스크",
+      "name": "헬프데스크·티켓 운영",
+      "expectations": {
+        "junior": "사용자 요청 처리",
+        "mid_1_2y": "Jira Service Management·Zendesk 운영, SLA",
+        "senior_3_5y": "ITSM(ITIL) 프로세스 정립, 셀프서비스 포털",
+        "lead_5y_plus": "조직 ITSM 책임자"
+      },
+      "keywords": [
+        "Helpdesk",
+        "ITSM",
+        "ITIL",
+        "Jira Service Management",
+        "Zendesk",
+        "SLA"
+      ],
+      "gap_action": "GLPI 티켓 모듈로 헬프데스크 워크플로 구성",
+      "weight": 3
+    },
+    {
+      "track": "인프라_시스템운영",
+      "competency_id": "IO-ITAM-003",
+      "category": "자산·헬프데스크",
+      "name": "기술 지원·교육",
+      "expectations": {
+        "junior": "1차 응대",
+        "mid_1_2y": "FAQ·매뉴얼 작성, 사용자 교육",
+        "senior_3_5y": "내부 KMS 구축, 신입 온보딩 표준",
+        "lead_5y_plus": "조직 교육·문화"
+      },
+      "keywords": [
+        "Documentation",
+        "KMS",
+        "Training",
+        "Onboarding"
+      ],
+      "gap_action": "사내 위키 1개 운영 + 신입 온보딩 가이드 작성",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-TOOL-001",
+      "category": "디자인 도구",
+      "name": "Figma",
+      "expectations": {
+        "junior": "튜토리얼 수준 사용",
+        "mid_1_2y": "오토레이아웃·컴포넌트·바리언트 능숙",
+        "senior_3_5y": "디자인 시스템 구축·운영, 플러그인 활용",
+        "lead_5y_plus": "조직 디자인 도구 표준·워크플로"
+      },
+      "keywords": [
+        "Figma",
+        "Auto Layout",
+        "Component",
+        "Variant",
+        "Prototype",
+        "Plugin"
+      ],
+      "gap_action": "Figma 디자인 시스템 1개 직접 구축",
+      "weight": 5
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-TOOL-002",
+      "category": "디자인 도구",
+      "name": "Sketch / Adobe XD (부가)",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 시안 작업",
+        "senior_3_5y": "프로젝트 단위 운영",
+        "lead_5y_plus": "도구 선택 의사결정"
+      },
+      "keywords": [
+        "Sketch",
+        "Adobe XD",
+        "Photoshop",
+        "Illustrator"
+      ],
+      "gap_action": "Figma와 비교 위해 1개 도구 튜토리얼",
+      "weight": 1
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-TOOL-003",
+      "category": "디자인 도구",
+      "name": "Photoshop / Illustrator",
+      "expectations": {
+        "junior": "기본 이미지 편집",
+        "mid_1_2y": "리터칭·합성, 벡터 일러스트 기본",
+        "senior_3_5y": "디자인 자산 제작, 일러스트레이션 시리즈",
+        "lead_5y_plus": "비주얼 아트 디렉션"
+      },
+      "keywords": [
+        "Photoshop",
+        "Illustrator",
+        "Sketch",
+        "Vector",
+        "Raster"
+      ],
+      "gap_action": "포트폴리오에 들어갈 일러스트 1세트 제작",
+      "weight": 2
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-RSCH-001",
+      "category": "사용자 리서치",
+      "name": "리서치 방법론",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "인터뷰·설문조사 진행 가능",
+        "senior_3_5y": "정성·정량 혼합 리서치, 페르소나·여정 지도 작성",
+        "lead_5y_plus": "리서치 전략·조직 표준"
+      },
+      "keywords": [
+        "User Research",
+        "Interview",
+        "Survey",
+        "Persona",
+        "Journey Map",
+        "Qualitative",
+        "Quantitative"
+      ],
+      "gap_action": "본 프로젝트 잠재 사용자 5명 인터뷰 진행",
+      "weight": 5
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-RSCH-002",
+      "category": "사용자 리서치",
+      "name": "사용성 평가",
+      "expectations": {
+        "junior": "휴리스틱 평가 용어 이해",
+        "mid_1_2y": "Nielsen 휴리스틱·인지 워크스루 진행",
+        "senior_3_5y": "Think-aloud·원격 사용성 테스트, 안건 설계·분석",
+        "lead_5y_plus": "조직 사용성 평가 표준"
+      },
+      "keywords": [
+        "Heuristic Evaluation",
+        "Usability Test",
+        "Think Aloud",
+        "Nielsen"
+      ],
+      "gap_action": "본 프로젝트 와이어프레임 휴리스틱 평가 1회",
+      "weight": 4
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-RSCH-003",
+      "category": "사용자 리서치",
+      "name": "데이터 기반 의사결정",
+      "expectations": {
+        "junior": "GA 기본 사용",
+        "mid_1_2y": "이벤트·퍼널 분석, 코호트 분석",
+        "senior_3_5y": "A/B 테스트 설계·해석, 통계적 유의성",
+        "lead_5y_plus": "데이터 드리븐 디자인 문화"
+      },
+      "keywords": [
+        "Google Analytics",
+        "GA4",
+        "Amplitude",
+        "Mixpanel",
+        "A/B Test",
+        "Funnel",
+        "Cohort"
+      ],
+      "gap_action": "본 프로젝트에 GA4 + 핵심 이벤트 5개 트래킹",
+      "weight": 4
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-IA-001",
+      "category": "정보 설계·인터랙션",
+      "name": "IA·와이어프레임",
+      "expectations": {
+        "junior": "기본 박스 그리기",
+        "mid_1_2y": "사이트맵·플로우·와이어프레임 작성",
+        "senior_3_5y": "복잡한 정보 구조 설계, 카드 정렬·트리 테스트",
+        "lead_5y_plus": "조직 IA 표준"
+      },
+      "keywords": [
+        "IA",
+        "Information Architecture",
+        "Sitemap",
+        "User Flow",
+        "Wireframe",
+        "Card Sorting"
+      ],
+      "gap_action": "본 프로젝트 사이트맵·플로우 다이어그램 작성",
+      "weight": 5
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-IA-002",
+      "category": "정보 설계·인터랙션",
+      "name": "프로토타이핑",
+      "expectations": {
+        "junior": "Figma 기본 프로토타입",
+        "mid_1_2y": "인터랙션·전환·조건부 분기",
+        "senior_3_5y": "Framer·Principle로 마이크로 인터랙션, 모션 디자인",
+        "lead_5y_plus": "프로토타이핑 표준"
+      },
+      "keywords": [
+        "Prototype",
+        "Figma Prototype",
+        "Framer",
+        "Principle",
+        "Microinteraction",
+        "Motion"
+      ],
+      "gap_action": "본 프로젝트 핵심 플로우 1개를 인터랙티브 프로토타입으로",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-IA-003",
+      "category": "정보 설계·인터랙션",
+      "name": "UX 라이팅",
+      "expectations": {
+        "junior": "기본 라벨링",
+        "mid_1_2y": "마이크로카피·에러 메시지 작성",
+        "senior_3_5y": "톤앤매너 가이드, 다국어 고려",
+        "lead_5y_plus": "조직 UX 라이팅 표준"
+      },
+      "keywords": [
+        "UX Writing",
+        "Microcopy",
+        "Voice and Tone",
+        "i18n"
+      ],
+      "gap_action": "본 프로젝트 빈 상태·에러 메시지 카탈로그 작성",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-VIS-001",
+      "category": "비주얼 디자인",
+      "name": "타이포·컬러·그리드",
+      "expectations": {
+        "junior": "기본 글꼴 적용",
+        "mid_1_2y": "타입 스케일·컬러 시스템·8pt 그리드",
+        "senior_3_5y": "컨트라스트·접근성 컬러·반응형 타이포",
+        "lead_5y_plus": "비주얼 시스템 표준 수립"
+      },
+      "keywords": [
+        "Typography",
+        "Color System",
+        "Grid",
+        "8pt Grid",
+        "Contrast",
+        "Accessibility"
+      ],
+      "gap_action": "본 프로젝트 컬러·타이포 토큰 시스템 정의",
+      "weight": 4
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-VIS-002",
+      "category": "비주얼 디자인",
+      "name": "아이콘·일러스트",
+      "expectations": {
+        "junior": "기성 아이콘 사용",
+        "mid_1_2y": "아이콘 세트 일관성 유지·커스텀 제작",
+        "senior_3_5y": "일러스트 스타일 정립, 시리즈 작업",
+        "lead_5y_plus": "비주얼 아이덴티티 책임자"
+      },
+      "keywords": [
+        "Icon",
+        "Illustration",
+        "Iconography",
+        "SVG"
+      ],
+      "gap_action": "본 프로젝트용 커스텀 아이콘 10개 제작",
+      "weight": 2
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-VIS-003",
+      "category": "비주얼 디자인",
+      "name": "반응형·다크모드",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "모바일·데스크톱 두 가지 작업",
+        "senior_3_5y": "다양한 디바이스·다크모드 시스템 설계",
+        "lead_5y_plus": "디자인 시스템 다중 테마 운영"
+      },
+      "keywords": [
+        "Responsive",
+        "Mobile First",
+        "Dark Mode",
+        "Theming",
+        "Breakpoint"
+      ],
+      "gap_action": "본 프로젝트 다크모드 시안 1셋",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-DS-001",
+      "category": "디자인 시스템",
+      "name": "디자인 토큰",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "기본 토큰(color/space/typography) 정의",
+        "senior_3_5y": "토큰 계층·시맨틱 토큰, 다중 테마",
+        "lead_5y_plus": "조직 DS 토큰 거버넌스"
+      },
+      "keywords": [
+        "Design Token",
+        "DS",
+        "Style Dictionary",
+        "Variables"
+      ],
+      "gap_action": "본 프로젝트 토큰을 Figma Variables로 구축",
+      "weight": 4
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-DS-002",
+      "category": "디자인 시스템",
+      "name": "컴포넌트 체계",
+      "expectations": {
+        "junior": "버튼·인풋 컴포넌트 작성",
+        "mid_1_2y": "아토믹 디자인·컴포넌트 변형 체계",
+        "senior_3_5y": "DS 컴포넌트 라이브러리 운영, 코드 매핑",
+        "lead_5y_plus": "디자인 시스템 리더"
+      },
+      "keywords": [
+        "Atomic Design",
+        "Component",
+        "Library",
+        "Storybook"
+      ],
+      "gap_action": "본 프로젝트 핵심 컴포넌트 20개를 DS로 정리",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-DS-003",
+      "category": "디자인 시스템",
+      "name": "Storybook·문서화",
+      "expectations": {
+        "junior": "용어 수준",
+        "mid_1_2y": "사용 가이드 작성",
+        "senior_3_5y": "Storybook 연동·시각 회귀, 사용 사례 카탈로그",
+        "lead_5y_plus": "DS 문서·교육 표준"
+      },
+      "keywords": [
+        "Storybook",
+        "Documentation",
+        "Zeroheight",
+        "Supernova"
+      ],
+      "gap_action": "본 프로젝트 DS 5개 컴포넌트를 Storybook으로",
+      "weight": 2
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-COL-001",
+      "category": "협업·접근성",
+      "name": "개발자 협업·핸드오프",
+      "expectations": {
+        "junior": "스펙 시트 작성",
+        "mid_1_2y": "디자인 토큰·컴포넌트 매핑, 핸드오프 도구 활용",
+        "senior_3_5y": "엔지니어와 컴포넌트 공동 설계, 코드 리뷰 참여",
+        "lead_5y_plus": "디자인-개발 경계 정의"
+      },
+      "keywords": [
+        "Handoff",
+        "Figma Dev Mode",
+        "Design Token",
+        "Storybook"
+      ],
+      "gap_action": "본 프로젝트 핸드오프 가이드 작성",
+      "weight": 5
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-COL-002",
+      "category": "협업·접근성",
+      "name": "접근성(a11y)",
+      "expectations": {
+        "junior": "alt·label 작성",
+        "mid_1_2y": "컬러 컨트라스트·키보드 네비게이션 고려",
+        "senior_3_5y": "스크린 리더 테스트, WCAG AA 준수 검증",
+        "lead_5y_plus": "조직 접근성 표준"
+      },
+      "keywords": [
+        "Accessibility",
+        "a11y",
+        "WCAG",
+        "Contrast",
+        "Screen Reader"
+      ],
+      "gap_action": "본 프로젝트 1개 화면 WCAG AA 검증",
+      "weight": 3
+    },
+    {
+      "track": "UI_UX_디자이너",
+      "competency_id": "UX-COL-003",
+      "category": "협업·접근성",
+      "name": "Git/디자인 버전 관리",
+      "expectations": {
+        "junior": "Figma 페이지 분리",
+        "mid_1_2y": "브랜치·라이브러리 관리",
+        "senior_3_5y": "변경 관리·리뷰 워크플로",
+        "lead_5y_plus": "조직 버전 관리 표준"
+      },
+      "keywords": [
+        "Figma Branch",
+        "Library",
+        "Version",
+        "Abstract"
+      ],
+      "gap_action": "Figma 브랜치 기능으로 협업 시도",
+      "weight": 2
+    }
+  ]
+}

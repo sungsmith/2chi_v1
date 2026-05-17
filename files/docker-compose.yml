@@ -1,0 +1,134 @@
+# =============================================================================
+# 2chi v1 로컬 인프라 (Postgres + MinIO + Redis)
+# -----------------------------------------------------------------------------
+# 용도        : 본인 PC 로컬 개발 + 지인 클로즈드 베타 운영
+# 적용 대상   : v1만. v2 클라우드 진입 시 별도 설정.
+# 운영 원칙   : 백엔드/프론트엔드는 docker 외부에서 직접 실행(개발 편의).
+#               여기서는 인프라 컴포넌트만 컨테이너로.
+# -----------------------------------------------------------------------------
+# 첫 기동     : docker compose up -d
+# 정지        : docker compose down
+# 데이터 보존 : docker compose down (볼륨 유지)
+# 데이터 초기화 : docker compose down -v  ← 주의: 모든 DB·파일 삭제
+# =============================================================================
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL 15
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: twochi-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-twochi}
+      POSTGRES_USER: ${POSTGRES_USER:-twochi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      TZ: Asia/Seoul
+      # Postgres 자체 로케일 (한국어 정렬·전문 검색 대비)
+      LANG: ko_KR.utf8
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # 초기 스키마는 Flyway가 관리하므로 init.d는 비워둠
+      # 필요 시 ./infra/postgres/init.d:/docker-entrypoint-initdb.d:ro 추가
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-twochi} -d ${POSTGRES_DB:-twochi}"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  # ---------------------------------------------------------------------------
+  # MinIO (S3 호환 객체 스토리지)
+  # v1: 이력서/자소서 파일 첨부, 다운로드 결과물(PDF/Word) 저장
+  # v2 클라우드 이전 시 endpoint만 AWS S3로 교체하면 코드 변경 없음
+  # ---------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    container_name: twochi-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      TZ: Asia/Seoul
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"      # S3 API
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"  # 웹 콘솔 (http://localhost:9001)
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+
+  # ---------------------------------------------------------------------------
+  # MinIO 초기화 (버킷 자동 생성)
+  # 첫 기동 시 1회 실행 후 종료. 이미 존재하면 skip.
+  # ---------------------------------------------------------------------------
+  minio-init:
+    image: minio/mc:latest
+    container_name: twochi-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    restart: "no"
+    entrypoint: >
+      /bin/sh -c "
+      until /usr/bin/mc alias set local http://minio:9000 ${MINIO_ROOT_USER:-minioadmin} ${MINIO_ROOT_PASSWORD:-minioadmin}; do
+        echo 'Waiting for MinIO...'; sleep 2;
+      done;
+      /usr/bin/mc mb -p local/twochi-resume || true;
+      /usr/bin/mc mb -p local/twochi-portfolio || true;
+      /usr/bin/mc mb -p local/twochi-download || true;
+      /usr/bin/mc anonymous set none local/twochi-resume;
+      /usr/bin/mc anonymous set none local/twochi-portfolio;
+      /usr/bin/mc anonymous set none local/twochi-download;
+      echo 'Buckets initialized';
+      exit 0;
+      "
+
+  # ---------------------------------------------------------------------------
+  # Redis (선택)
+  # v1: 세션·자주 조회되는 채용공고/기업분석 캐시
+  # 필요 없으면 이 서비스 블록 전체 삭제
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: twochi-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD:-changeme}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-changeme}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+
+  # ---------------------------------------------------------------------------
+  # (선택) Cloudflare Tunnel — 컨테이너로 운영하고 싶을 때
+  # 기본 권장: 호스트에서 cloudflared 직접 실행 (가이드 참조)
+  # 컨테이너로 운영하려면 .env에 CLOUDFLARED_TOKEN 설정 후 주석 해제
+  # ---------------------------------------------------------------------------
+  # cloudflared:
+  #   image: cloudflare/cloudflared:latest
+  #   container_name: twochi-cloudflared
+  #   restart: unless-stopped
+  #   command: tunnel --no-autoupdate run
+  #   environment:
+  #     TUNNEL_TOKEN: ${CLOUDFLARED_TOKEN}
+  #   network_mode: "host"   # 호스트의 3000/8080 접근 위해
+
+volumes:
+  postgres_data:
+    name: twochi_postgres_data
+  minio_data:
+    name: twochi_minio_data
+  redis_data:
+    name: twochi_redis_data

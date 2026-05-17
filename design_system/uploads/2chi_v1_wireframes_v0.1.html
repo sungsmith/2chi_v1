@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>2chi v1 와이어프레임 v0.1</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, "Segoe UI", "맑은 고딕", "Apple SD Gothic Neo", system-ui, sans-serif;
+    background: #f5f5f7;
+    color: #2a2a2a;
+    line-height: 1.5;
+  }
+  code, .mono { font-family: "JetBrains Mono", Consolas, Menlo, monospace; }
+
+  /* ---- top sticky nav ---- */
+  .top {
+    position: sticky; top: 0; z-index: 50;
+    background: #1f3a5f; color: #fff;
+    border-bottom: 1px solid #16294a;
+  }
+  .top-inner {
+    max-width: 1240px; margin: 0 auto; padding: 14px 28px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .top h1 { margin: 0; font-size: 18px; font-weight: 700; }
+  .top h1 small { font-weight: 400; opacity: .7; margin-left: 8px; }
+  .top nav { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
+  .top nav a {
+    color: #cfd8e3; text-decoration: none; font-size: 13px;
+    padding: 6px 10px; border-radius: 6px;
+    transition: background .15s;
+  }
+  .top nav a:hover { background: #2e5984; color: #fff; }
+
+  /* ---- doc header ---- */
+  .doc-header {
+    max-width: 1240px; margin: 0 auto; padding: 28px;
+  }
+  .doc-header h2 { margin: 0 0 6px; font-size: 28px; font-weight: 700; color: #1f3a5f; }
+  .doc-header p { margin: 0; color: #666; }
+
+  /* ---- wireframe section ---- */
+  .wf-block {
+    max-width: 1240px; margin: 0 auto; padding: 24px 28px 48px;
+  }
+  .wf-block > h3 {
+    margin: 0 0 8px; font-size: 22px; font-weight: 700; color: #1f3a5f;
+    border-left: 4px solid #1f3a5f; padding-left: 12px;
+  }
+  .wf-block > .note {
+    margin: 0 0 18px; color: #555; font-size: 14px; padding-left: 16px;
+  }
+
+  /* ---- browser frame ---- */
+  .wf-frame {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .wf-browser {
+    background: #e8eaef;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid #d0d3da;
+  }
+  .wf-dots { display: flex; gap: 6px; }
+  .wf-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .wf-dot.r { background: #ff5f56; }
+  .wf-dot.y { background: #ffbd2e; }
+  .wf-dot.g { background: #27c93f; }
+  .wf-url {
+    flex: 1; background: #fff; border: 1px solid #d0d3da;
+    border-radius: 6px; padding: 4px 10px;
+    font-family: Consolas, monospace; font-size: 12px; color: #555;
+  }
+
+  /* ---- app shell ---- */
+  .wf-app { display: flex; flex-direction: column; min-height: 560px; background: #fafafa; }
+  .wf-topnav {
+    display: flex; align-items: center; gap: 18px;
+    padding: 12px 20px; background: #fff;
+    border-bottom: 1px solid #e2e2e2; font-size: 14px;
+  }
+  .wf-topnav .logo { font-weight: 800; color: #1f3a5f; font-size: 18px; letter-spacing: -.5px; }
+  .wf-topnav .menus { display: flex; gap: 4px; }
+  .wf-topnav .menus a {
+    padding: 6px 12px; border-radius: 6px; color: #444; text-decoration: none;
+  }
+  .wf-topnav .menus a.active { background: #1f3a5f; color: #fff; }
+  .wf-topnav .right { margin-left: auto; display: flex; gap: 14px; align-items: center; color: #555; font-size: 13px; }
+  .wf-topnav .bell { font-size: 16px; cursor: pointer; }
+  .wf-topnav .avatar {
+    width: 28px; height: 28px; border-radius: 50%; background: #d8d8d8;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; color: #555;
+  }
+  .wf-layout { display: flex; flex: 1; }
+  .wf-sidenav {
+    width: 200px; background: #fff;
+    border-right: 1px solid #e2e2e2;
+    padding: 18px 12px;
+    font-size: 13px;
+  }
+  .wf-sidenav .section { color: #999; font-size: 11px; margin: 12px 8px 6px; text-transform: uppercase; letter-spacing: .5px; }
+  .wf-sidenav .item { padding: 8px 10px; border-radius: 6px; color: #444; cursor: default; }
+  .wf-sidenav .item:hover { background: #f3f3f3; }
+  .wf-sidenav .item.active { background: #e8eef7; color: #1f3a5f; font-weight: 600; }
+  .wf-sidenav .item .badge { float: right; background: #ddd; color: #555; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+
+  .wf-main {
+    flex: 1; padding: 22px 26px;
+    background: #fafafa;
+  }
+  .wf-main h4 { margin: 0 0 14px; font-size: 18px; }
+  .wf-main h5 { margin: 18px 0 8px; font-size: 14px; color: #555; }
+
+  /* ---- generic boxes ---- */
+  .row { display: flex; gap: 14px; }
+  .col { display: flex; flex-direction: column; gap: 14px; flex: 1; }
+  .card {
+    background: #fff; border: 1px solid #e2e2e2; border-radius: 8px;
+    padding: 14px;
+  }
+  .card .ttl { font-size: 12px; color: #777; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+  .card .val { font-size: 22px; font-weight: 700; color: #1f3a5f; }
+  .card .sub { font-size: 12px; color: #888; margin-top: 4px; }
+
+  .ph { /* placeholder */
+    background: #ececec; color: #888; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px; min-height: 24px; padding: 4px 8px;
+  }
+  .ph.dashed { background: #f6f6f8; border: 1.5px dashed #c8c8c8; }
+  .ph.tall { min-height: 80px; }
+  .ph.taller { min-height: 140px; }
+
+  .input {
+    background: #fff; border: 1px solid #d0d0d0; border-radius: 4px;
+    padding: 6px 10px; font-size: 13px; color: #888;
+  }
+  .btn {
+    display: inline-block; padding: 6px 14px;
+    border: 1px solid #1f3a5f; background: #1f3a5f; color: #fff;
+    border-radius: 6px; font-size: 13px; cursor: default;
+  }
+  .btn.ghost { background: #fff; color: #1f3a5f; }
+  .btn.disabled { background: #ddd; border-color: #ccc; color: #888; }
+
+  .lbl { font-size: 12px; color: #666; margin-bottom: 4px; display: block; }
+  .req::after { content: " *"; color: #d33; }
+
+  /* stage colors */
+  .stg { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; color: #fff; }
+  .stg.doc { background: #6c8aff; }
+  .stg.coding { background: #ffaa42; }
+  .stg.int1 { background: #4ec9b0; }
+  .stg.int2 { background: #5fb1a3; }
+  .stg.exec { background: #c084fc; }
+  .stg.nego { background: #b08968; }
+  .stg.pass { background: #4ade80; }
+  .stg.fail { background: #f87171; }
+
+  /* tag */
+  .tag {
+    display: inline-block; padding: 2px 8px; background: #eef2f8; color: #1f3a5f;
+    border-radius: 10px; font-size: 11px; margin-right: 4px;
+  }
+
+  /* table */
+  .wf-table { width: 100%; border-collapse: collapse; font-size: 13px; background: #fff; border: 1px solid #e2e2e2; border-radius: 6px; overflow: hidden; }
+  .wf-table th, .wf-table td {
+    padding: 8px 10px; text-align: left; border-bottom: 1px solid #eee;
+  }
+  .wf-table th { background: #f5f7fa; color: #444; font-weight: 600; font-size: 12px; }
+  .wf-table tr:last-child td { border-bottom: none; }
+
+  /* calendar */
+  .cal {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #ddd;
+    border: 1px solid #ddd; border-radius: 6px; overflow: hidden;
+  }
+  .cal .day-h { background: #f5f7fa; padding: 8px; text-align: center; font-size: 11px; color: #666; font-weight: 600; }
+  .cal .day { background: #fff; min-height: 80px; padding: 6px; font-size: 11px; }
+  .cal .day .d { color: #555; font-weight: 600; margin-bottom: 4px; }
+  .cal .day.mute .d { color: #bbb; }
+  .cal .ev { display: block; font-size: 10px; padding: 2px 4px; border-radius: 3px; color: #fff; margin-bottom: 2px; }
+
+  /* dual pane */
+  .dual {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .pane {
+    background: #fff; border: 1px solid #d0d3da; border-radius: 6px;
+    padding: 12px; min-height: 220px;
+    font-size: 13px; color: #555; line-height: 1.7;
+  }
+  .pane .ph-line { background: #ececec; height: 10px; border-radius: 3px; margin: 6px 0; }
+  .pane .ph-line.s { width: 50%; }
+  .pane.draft { background: #f8f8f8; }
+  .pane.draft .pane-h { color: #888; }
+  .pane.edit { background: #fffbf2; border-color: #f0d27a; }
+  .pane-h {
+    font-size: 11px; color: #444; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .pane-h .dot { width: 8px; height: 8px; border-radius: 50%; background: #aaa; }
+  .pane.draft .pane-h .dot { background: #999; }
+  .pane.edit .pane-h .dot { background: #f0a040; }
+
+  /* highlight */
+  .hl-add { background: #fff3b0; padding: 0 2px; border-radius: 2px; }
+  .hl-warn { background: #ffdada; padding: 0 2px; border-radius: 2px; }
+
+  /* steppers */
+  .stepper { display: flex; align-items: center; gap: 8px; }
+  .step {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #ddd; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .step.active { background: #1f3a5f; }
+  .step.done { background: #4ade80; }
+  .step-line { width: 30px; height: 2px; background: #ddd; }
+
+  /* annotation pills (gray callouts) */
+  .anno {
+    display: inline-flex; gap: 4px; align-items: center;
+    background: #fff8d6; border: 1px dashed #d4b800; color: #6b5300;
+    padding: 4px 10px; border-radius: 16px; font-size: 11px;
+    margin: 4px 0;
+  }
+  .anno::before { content: "💡"; }
+
+  /* helpers */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .gap-sm { gap: 8px; }
+  .mt { margin-top: 14px; }
+  .mb { margin-bottom: 14px; }
+  .muted { color: #888; }
+  .small { font-size: 12px; }
+  .bold { font-weight: 600; }
+  hr.soft { border: none; border-top: 1px dashed #e0e0e0; margin: 14px 0; }
+
+  /* legend */
+  .legend {
+    max-width: 1240px; margin: 0 auto 8px; padding: 14px 28px;
+    background: #fff; border: 1px solid #e2e2e2; border-radius: 8px;
+    display: flex; gap: 20px; flex-wrap: wrap; font-size: 12px; color: #555;
+  }
+  .legend .li { display: flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 16px; height: 14px; border-radius: 3px; }
+
+  footer {
+    max-width: 1240px; margin: 28px auto; padding: 24px 28px;
+    color: #999; font-size: 12px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <h1>2chi v1 와이어프레임 <small>v0.1 · 9개 핵심 화면</small></h1>
+    <nav>
+      <a href="#wf-1">1. 온보딩</a>
+      <a href="#wf-2">2. 대시보드</a>
+      <a href="#wf-3">3. 내 정보·경력</a>
+      <a href="#wf-4">4. 채용공고 등록</a>
+      <a href="#wf-5">5. 자소서 마스터</a>
+      <a href="#wf-6">6. 자소서 작성</a>
+      <a href="#wf-7">7. 캘린더</a>
+      <a href="#wf-8">8. 지원 대시보드</a>
+      <a href="#wf-9">9. 기업분석</a>
+    </nav>
+  </div>
+</header>
+
+<div class="doc-header">
+  <h2>2chi v1 화면 와이어프레임</h2>
+  <p>저충실도 · v1 핵심 화면 9개 · 본 와이어프레임은 레이아웃과 컴포넌트 배치를 정의하기 위함이며 최종 디자인이 아닙니다. 컬러·여백·아이콘은 디자이너 작업 단계에서 조정됩니다.</p>
+</div>
+
+<div class="legend">
+  <div class="li"><span class="sw" style="background:#ececec"></span>회색 박스 = 콘텐츠/이미지 영역</div>
+  <div class="li"><span class="sw" style="background:#f6f6f8; border:1.5px dashed #c8c8c8"></span>점선 박스 = 빈/플레이스홀더</div>
+  <div class="li"><span class="sw" style="background:#fffbf2; border:1px solid #f0d27a"></span>편집 가능 영역</div>
+  <div class="li"><span class="sw" style="background:#fff8d6; border:1px dashed #d4b800"></span>주석/메모</div>
+  <div class="li"><span class="sw" style="background:#1f3a5f"></span>주요 액션 / 활성 메뉴</div>
+</div>
+
+<!-- =================== 1. 온보딩 =================== -->
+<section id="wf-1" class="wf-block">
+  <h3>1. 온보딩 (4단계)</h3>
+  <p class="note">회원가입 직후 1회 진행. 가운데 모달 카드 + 4단계 stepper. 4단계는 스킵 가능하나 미입력 시 첫 화면에서 재안내.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/onboarding</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus"><a class="active">온보딩</a></div>
+        <div class="right"><span>김소미</span><span class="avatar">소</span></div>
+      </div>
+      <div style="background:#fafafa; padding: 36px; display:flex; justify-content:center;">
+        <div style="background:#fff; border:1px solid #e2e2e2; border-radius:12px; padding:32px; width:680px;">
+          <!-- Stepper -->
+          <div class="stepper" style="margin-bottom:24px; justify-content:center;">
+            <div class="step done">✓</div><div class="step-line" style="background:#4ade80"></div>
+            <div class="step active">2</div><div class="step-line"></div>
+            <div class="step">3</div><div class="step-line"></div>
+            <div class="step">4</div>
+          </div>
+
+          <div style="text-align:center; margin-bottom: 6px; color:#888; font-size:12px;">STEP 2 / 4</div>
+          <h4 style="text-align:center; margin: 0 0 4px;">경력을 알려주세요</h4>
+          <p style="text-align:center; color:#888; margin: 0 0 24px; font-size:13px;">맞춤 자소서 컨설팅을 위해 현재 경력 연차를 선택해주세요.</p>
+
+          <div class="grid-3 gap-sm">
+            <div class="ph" style="padding:14px; background:#fff; border:1.5px solid #1f3a5f; color:#1f3a5f; font-weight:700;">신입 (0년)</div>
+            <div class="ph" style="padding:14px;">1년차</div>
+            <div class="ph" style="padding:14px;">2년차</div>
+            <div class="ph" style="padding:14px;">3년차</div>
+            <div class="ph" style="padding:14px;">4년차</div>
+            <div class="ph" style="padding:14px;">5년차</div>
+            <div class="ph" style="padding:14px;">6년차</div>
+            <div class="ph" style="padding:14px;">7년차+</div>
+            <div></div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-top:28px;">
+            <span class="btn ghost">← 이전</span>
+            <div>
+              <span class="muted small" style="margin-right:12px;">스킵</span>
+              <span class="btn">다음 →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:#fafafa; padding: 0 36px 36px;">
+        <div class="anno">단계 진행 흐름: 1) 접속 목적(이직/취직) → 2) 경력 연차 → 3) 희망 포지션(BACKEND/FRONTEND/INFRA_CLOUD/INFRA_OPS/UI_UX 다중 선택) → 4) 작성 체험(샘플 자소서 1건 자동 생성 데모)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 2. 대시보드 =================== -->
+<section id="wf-2" class="wf-block">
+  <h3>2. 대시보드 (홈)</h3>
+  <p class="note">로그인 후 첫 화면. 플랫폼 전체 요약. 지원 현황 &gt; 대시보드와 다름 — 이쪽은 플랫폼 전체, 그쪽은 지원 내용에 한정.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/dashboard</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a class="active">대시보드</a>
+          <a>내 정보</a>
+          <a>지원 현황</a>
+          <a>이직/취업</a>
+          <a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔 3</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-main">
+        <div style="display:flex; align-items:flex-end; gap:10px; margin-bottom:18px;">
+          <div>
+            <div style="font-size:22px; font-weight:700;">안녕하세요, 김소미님 👋</div>
+            <div class="muted small">백엔드 · 중고신입 · 이직 준비 중</div>
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="ttl">내 작성 이력 완성도</div>
+            <div class="val">72%</div>
+            <div class="sub">이력서 90% · 경력기술 70% · 포트폴리오 55%</div>
+            <div class="ph dashed" style="height:8px; margin-top:8px;">━━━━━━━━━━━━━━━ (프로그레스바)</div>
+          </div>
+          <div class="card">
+            <div class="ttl">자소서 작성 수</div>
+            <div class="val">14건</div>
+            <div class="sub">이번 달 5건 · 마스터 6개 · 변형본 14개</div>
+          </div>
+          <div class="card">
+            <div class="ttl">진행중인 지원</div>
+            <div class="val">7건</div>
+            <div class="sub">
+              <span class="stg doc">서류 3</span>
+              <span class="stg coding">코테 1</span>
+              <span class="stg int1">1차면접 2</span>
+              <span class="stg int2">2차면접 1</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2 mt">
+          <div class="card">
+            <div class="ttl">📅 다가오는 일정 (7일 이내)</div>
+            <table class="wf-table" style="border:none;">
+              <tr>
+                <td style="width:60px;"><span class="stg int1">1차면접</span></td>
+                <td>(주)테크컴퍼니</td>
+                <td class="muted">5/10 (월) 14:00</td>
+              </tr>
+              <tr>
+                <td><span class="stg coding">코테</span></td>
+                <td>네이버</td>
+                <td class="muted">5/11 (화) 10:00</td>
+              </tr>
+              <tr>
+                <td><span class="stg doc">서류마감</span></td>
+                <td>카카오</td>
+                <td class="muted">5/12 (수)</td>
+              </tr>
+              <tr>
+                <td><span class="stg exec">임원면접</span></td>
+                <td>토스</td>
+                <td class="muted">5/14 (금) 16:00</td>
+              </tr>
+            </table>
+          </div>
+          <div class="card">
+            <div class="ttl">📊 매칭 분석</div>
+            <div class="small mt" style="margin-bottom:8px;">희망 포지션 평균 JD 매칭률</div>
+            <div class="val" style="font-size:28px;">68%</div>
+            <hr class="soft">
+            <div class="small bold">🔧 부족 역량 TOP 3</div>
+            <ul style="margin: 6px 0 0 18px; padding:0; font-size:13px; color:#555;">
+              <li>Kafka / MSA 운영 경험</li>
+              <li>대용량 트래픽 처리 (TPS 5K+)</li>
+              <li>관측성(Observability) 도구 사용</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card mt">
+          <div class="ttl">🚀 바로가기</div>
+          <div style="display:flex; gap:10px; margin-top:8px; flex-wrap:wrap;">
+            <span class="btn">+ 자소서 작성</span>
+            <span class="btn ghost">+ 채용공고 등록</span>
+            <span class="btn ghost">+ 기업분석 시작</span>
+            <span class="btn ghost">📅 캘린더 보기</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 3. 내 정보 - 경력/프로젝트 =================== -->
+<section id="wf-3" class="wf-block">
+  <h3>3. 내 정보 → 경력 / 프로젝트 (PRAR 입력)</h3>
+  <p class="note">경력기술 입력 화면. 회사 단위로 묶고, 회사 내 프로젝트는 직군별 권장 구조(여기서는 백엔드 → PRAR)로 4단 입력.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/me/career</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a class="active">내 정보</a><a>지원 현황</a><a>이직/취업</a><a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">기본 정보</div>
+          <div class="item">기초 정보</div>
+          <div class="item">학력</div>
+          <div class="item">자격증</div>
+          <div class="item">경험 / 대외활동</div>
+          <div class="section">경력 / 이력</div>
+          <div class="item">이력서</div>
+          <div class="item active">경력기술 <span class="badge">PRAR</span></div>
+          <div class="section">기타</div>
+          <div class="item">포트폴리오 링크</div>
+        </div>
+        <div class="wf-main">
+          <h4>경력기술</h4>
+          <div class="anno">현재 직군: 백엔드 → 프로젝트 입력 시 <b>PRAR(문제·원인·접근·결과)</b> 4단 구조 자동 적용. 직군은 [내 정보 > 기초 정보]에서 변경.</div>
+
+          <!-- Career card -->
+          <div class="card mt">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <div>
+                <div style="font-size:16px; font-weight:700;">(주)현재회사</div>
+                <div class="muted small">백엔드 개발자 · 2024.04 ~ 재직중</div>
+              </div>
+              <div>
+                <span class="btn ghost">편집</span>
+                <span class="btn ghost">삭제</span>
+              </div>
+            </div>
+
+            <hr class="soft">
+            <div class="small bold">프로젝트 (2건)</div>
+
+            <!-- Project 1 (PRAR) -->
+            <div style="background:#f8fafd; border:1px solid #d8e3f0; border-radius:6px; padding:14px; margin-top:10px;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                  <span class="bold">주문 정산 시스템 성능 개선</span>
+                  <span class="tag">Spring Boot</span><span class="tag">PostgreSQL</span><span class="tag">Kafka</span>
+                </div>
+                <span class="muted small">2025.02 ~ 2025.06 · 본인 기여 70%</span>
+              </div>
+
+              <div class="grid-2 mt">
+                <div>
+                  <label class="lbl req">P · 문제 (Problem)</label>
+                  <div class="ph dashed" style="height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">월말 정산 시 TPS 500 한계 도달, 10분 이상 지연 발생</div>
+                </div>
+                <div>
+                  <label class="lbl req">R · 원인 (Root cause)</label>
+                  <div class="ph dashed" style="height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">N+1 쿼리 + 인덱스 부재 + 단일 DB 직접 접근</div>
+                </div>
+                <div>
+                  <label class="lbl req">A · 접근 (Approach)</label>
+                  <div class="ph dashed" style="height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">JPA 패치 전환, 복합 인덱스 추가, Kafka 비동기 처리 도입</div>
+                </div>
+                <div>
+                  <label class="lbl req">R · 결과 (Result)</label>
+                  <div class="ph dashed" style="height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">TPS 500 → 2,000, 지연 10분 → 30초, 무중단 전환</div>
+                </div>
+              </div>
+
+              <h5>📊 정량 성과 (metrics)</h5>
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <span class="tag" style="background:#fff3b0; color:#6b5300;">TPS: 500 → 2,000</span>
+                <span class="tag" style="background:#fff3b0; color:#6b5300;">처리 지연: 10분 → 30초</span>
+                <span class="tag" style="background:#fff3b0; color:#6b5300;">월간 운영비: -₩2,000,000</span>
+              </div>
+            </div>
+
+            <!-- Project 2 - collapsed -->
+            <div style="background:#f8fafd; border:1px solid #d8e3f0; border-radius:6px; padding:14px; margin-top:10px; opacity:.7;">
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                  <span class="bold">유저 인증 모듈 리팩토링</span>
+                  <span class="tag">Spring Security</span><span class="tag">JWT</span>
+                </div>
+                <span class="muted small">▼ 펼치기</span>
+              </div>
+            </div>
+
+            <div class="mt"><span class="btn ghost">+ 프로젝트 추가</span></div>
+          </div>
+
+          <!-- Career card 2 - collapsed -->
+          <div class="card mt" style="opacity:.7;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <div style="font-size:16px; font-weight:700;">(주)이전회사</div>
+                <div class="muted small">백엔드 개발자 · 2023.07 ~ 2024.03 (8개월)</div>
+              </div>
+              <span class="muted small">▼ 펼치기</span>
+            </div>
+          </div>
+
+          <div class="mt"><span class="btn">+ 회사 추가</span></div>
+
+          <div class="anno mt">
+            보완 안내(자동): "주문 정산 시스템" 프로젝트의 정량 성과가 풍부합니다. 단, "유저 인증 모듈" 프로젝트는 결과 정량치가 비어있어요. 채용공고 매칭률 향상을 위해 정량 결과 추가를 권장합니다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 4. 채용공고 등록 =================== -->
+<section id="wf-4" class="wf-block">
+  <h3>4. 채용공고 등록</h3>
+  <p class="note">v1은 URL 입력 + 직접 작성만 지원. 사람인 OpenAPI 검색은 v2. URL 파싱 실패 시 본문 직접 붙여넣기 폴백.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/company/postings/new</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a>지원 현황</a><a>이직/취업</a><a class="active">기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">기업</div>
+          <div class="item active">채용공고</div>
+          <div class="item">기업분석</div>
+        </div>
+        <div class="wf-main">
+          <h4>+ 채용공고 등록</h4>
+
+          <!-- Tabs -->
+          <div style="display:flex; gap:0; border-bottom:1px solid #e2e2e2; margin-bottom:16px;">
+            <div style="padding:8px 18px; background:#1f3a5f; color:#fff; border-radius:6px 6px 0 0;">🔗 URL 붙여넣기</div>
+            <div style="padding:8px 18px; color:#555;">✏️ 직접 작성</div>
+            <div style="padding:8px 18px; color:#bbb;">🔍 검색 <span class="tag" style="background:#fff8d6; color:#6b5300;">v2</span></div>
+          </div>
+
+          <div class="card">
+            <label class="lbl req">채용공고 URL</label>
+            <div style="display:flex; gap:8px;">
+              <input class="input" style="flex:1;" placeholder="https://www.saramin.co.kr/zf_user/jobs/...">
+              <span class="btn">파싱</span>
+            </div>
+
+            <hr class="soft">
+            <div class="anno">파싱 성공 시 아래 필드 자동 채움. 자사 홈페이지 등 파싱 불가 사이트는 "본문 직접 붙여넣기" 폴백으로 전환.</div>
+
+            <div class="grid-2 mt">
+              <div>
+                <label class="lbl req">회사명</label>
+                <div class="ph dashed" style="text-align:left; padding-left:10px;">(주)테크컴퍼니</div>
+              </div>
+              <div>
+                <label class="lbl req">공고 제목</label>
+                <div class="ph dashed" style="text-align:left; padding-left:10px;">백엔드 개발자 (경력 2~5년)</div>
+              </div>
+              <div>
+                <label class="lbl">직무</label>
+                <div class="ph dashed" style="text-align:left; padding-left:10px;">백엔드 개발자</div>
+              </div>
+              <div>
+                <label class="lbl">마감일</label>
+                <div class="ph dashed" style="text-align:left; padding-left:10px;">2026-05-31</div>
+              </div>
+            </div>
+
+            <h5>주요 업무</h5>
+            <div class="ph dashed" style="min-height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">
+              · 결제·정산 시스템 백엔드 개발 및 운영
+              · MSA 환경에서 도메인 서비스 개발
+              · 대용량 트래픽 처리 최적화
+            </div>
+
+            <h5>자격 요건</h5>
+            <div class="ph dashed" style="min-height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">
+              · Java / Spring Boot 2년 이상
+              · RDBMS (MySQL/PostgreSQL) 운영 경험
+              · REST API 설계·구현 경험
+            </div>
+
+            <h5>우대 사항</h5>
+            <div class="ph dashed" style="min-height:60px; text-align:left; align-items:flex-start; padding:10px; color:#555;">
+              · Kafka / MSA 경험
+              · AWS 운영 경험
+              · 대용량 트래픽(TPS 5K+) 처리 경험
+            </div>
+
+            <h5>🤖 JD 핵심 키워드 (LLM 추출)</h5>
+            <div>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">MSA</span>
+              <span class="tag">Kafka</span>
+              <span class="tag">AWS</span>
+              <span class="tag">PostgreSQL</span>
+              <span class="tag">REST API</span>
+              <span class="tag">대용량 트래픽</span>
+              <span class="tag">결제·정산</span>
+              <span class="tag">백엔드</span>
+              <span class="tag">2년+</span>
+            </div>
+
+            <div class="mt" style="display:flex; gap:8px; justify-content:flex-end;">
+              <span class="btn ghost">취소</span>
+              <span class="btn">저장 후 자소서 작성</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 5. 자소서 마스터 =================== -->
+<section id="wf-5" class="wf-block">
+  <h3>5. 자소서 → 마스터 탭</h3>
+  <p class="note">항목 유형별로 사용자의 마스터 답변을 작성·관리. 회사 지원 시 AI가 베이스로 활용. is_default = TRUE인 마스터가 자동 선택됨.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/cover-letters/master</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a>지원 현황</a><a class="active">이직/취업</a><a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">이직 / 취업</div>
+          <div class="item active">자소서</div>
+          <div class="item">경력기술서</div>
+        </div>
+        <div class="wf-main">
+          <!-- Tabs -->
+          <div style="display:flex; gap:0; border-bottom:1px solid #e2e2e2; margin-bottom:16px;">
+            <div style="padding:8px 18px; color:#555;">🏢 회사별 변형본 (14)</div>
+            <div style="padding:8px 18px; background:#1f3a5f; color:#fff; border-radius:6px 6px 0 0;">⭐ 마스터 (6)</div>
+            <div style="padding:8px 18px; color:#555;">🗑 휴지통 (2)</div>
+          </div>
+
+          <div class="row">
+            <!-- Left: item type list -->
+            <div style="width:260px;">
+              <div class="small bold mb">항목 유형</div>
+              <div class="card" style="padding:0;">
+                <div class="item active" style="margin:0; border-radius:0; padding:10px 14px;">
+                  지원동기 <span class="badge" style="background:#1f3a5f; color:#fff;">2</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  입사 후 포부 <span class="badge">1</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  협업 경험 <span class="badge">1</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  갈등 해결 <span class="badge">0</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  성취 경험 <span class="badge">1</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  문제 해결 <span class="badge">1</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  본인의 강점 <span class="badge">0</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  본인의 약점 <span class="badge">0</span>
+                </div>
+                <div class="item" style="margin:0; border-radius:0; padding:10px 14px; border-top:1px solid #f0f0f0;">
+                  기타 <span class="badge">0</span>
+                </div>
+              </div>
+              <span class="btn ghost mt small" style="display:block; text-align:center; margin-top:10px;">+ 마스터 새로 만들기</span>
+            </div>
+
+            <!-- Right: editor for selected item type -->
+            <div style="flex:1;">
+              <div class="card">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div>
+                    <div class="muted small">항목 유형: 지원동기</div>
+                    <div style="font-size:16px; font-weight:700;">A형 - 정량 성과 중심 ⭐ 기본</div>
+                  </div>
+                  <div>
+                    <span class="btn ghost small">기본 해제</span>
+                    <span class="btn ghost small">복사</span>
+                    <span class="btn ghost small">삭제</span>
+                  </div>
+                </div>
+
+                <hr class="soft">
+
+                <div class="grid-2">
+                  <div>
+                    <label class="lbl">제목 (선택)</label>
+                    <input class="input" style="width:100%;" value="A형 - 정량 성과 중심">
+                  </div>
+                  <div>
+                    <label class="lbl">타겟 글자수 힌트</label>
+                    <input class="input" style="width:100%;" value="500자">
+                  </div>
+                </div>
+
+                <h5>마스터 답변 (PRAR 구조 권장)</h5>
+                <div class="pane edit" style="min-height:220px;">
+                  <div class="pane-h"><span class="dot"></span>편집 가능 · 485자</div>
+                  <div style="color:#444;">저는 백엔드 개발자로서 성능과 안정성에 집중해왔습니다. 직전 회사에서 주문 정산 시스템의 TPS 500 한계를 해결하기 위해 N+1 쿼리와 단일 DB 병목을 분석하고 Kafka 비동기 처리를 도입해 TPS를 2,000까지 끌어올렸습니다...</div>
+                  <div class="ph-line"></div>
+                  <div class="ph-line"></div>
+                  <div class="ph-line s"></div>
+                </div>
+
+                <div class="anno mt">PRAR 가이드: 직군이 백엔드라 P→R→A→R 4단으로 작성하시면 회사별 변형본 생성 시 AI가 자동으로 구조를 유지합니다.</div>
+
+                <div class="mt" style="display:flex; gap:8px; justify-content:flex-end;">
+                  <span class="btn ghost">취소</span>
+                  <span class="btn">저장</span>
+                </div>
+              </div>
+
+              <!-- Other masters for same item_type -->
+              <div class="card mt">
+                <div style="display:flex; align-items:center; justify-content:space-between;">
+                  <div>
+                    <div class="muted small">같은 항목 유형의 다른 마스터</div>
+                  </div>
+                </div>
+                <div class="item" style="margin-top:6px; padding:10px;">
+                  B형 - 협업 스토리 중심
+                  <span class="muted small" style="float:right;">320자 · 2026-04-22 수정</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 6. 자소서 작성 (좌·우 분할) =================== -->
+<section id="wf-6" class="wf-block">
+  <h3>6. 자소서 작성 ⭐ 핵심 화면 (AI 초안 / 수정본 좌·우 분할)</h3>
+  <p class="note">v1의 핵심 가치. 상단 입력 → AI 초안 생성 → 좌측에 초안(읽기 전용), 우측에 수정본(편집 가능) 동시 표시. 사이드 패널은 글자수·맞춤법·거짓방지.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/cover-letters/variants/new</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a>지원 현황</a><a class="active">이직/취업</a><a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-main" style="padding: 18px 22px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+          <span class="muted small">자소서 &gt; 회사별 변형본 &gt; </span>
+          <span class="bold">(주)테크컴퍼니 · 지원동기</span>
+        </div>
+
+        <!-- Input row -->
+        <div class="card mb">
+          <div class="grid-3 gap-sm">
+            <div>
+              <label class="lbl req">자소서 항목 (질문)</label>
+              <div class="ph dashed" style="text-align:left; padding-left:10px;">우리 회사에 지원한 이유를 작성해주세요.</div>
+            </div>
+            <div>
+              <label class="lbl req">글자수 제한</label>
+              <input class="input" style="width:100%;" value="500">
+            </div>
+            <div>
+              <label class="lbl req">채용공고 연결</label>
+              <div class="ph dashed" style="text-align:left; padding-left:10px;">(주)테크컴퍼니 - 백엔드 (경력 2~5년) ▾</div>
+            </div>
+            <div>
+              <label class="lbl">기업분석 연결</label>
+              <div class="ph dashed" style="text-align:left; padding-left:10px;">(주)테크컴퍼니 분석 (2026-05-05) ▾</div>
+            </div>
+            <div>
+              <label class="lbl">마스터 답변 연결</label>
+              <div class="ph dashed" style="text-align:left; padding-left:10px;">지원동기 · A형 (자동 선택) ▾</div>
+            </div>
+            <div>
+              <label class="lbl">사용자 요청사항</label>
+              <input class="input" style="width:100%;" placeholder="ex) 정량 수치를 강조해주세요">
+            </div>
+          </div>
+          <div class="mt" style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="anno">프롬프트 분기: 직군(백엔드 → PRAR) × 항목 유형(지원동기 → 동기 템플릿) 이중 적용. 마스터 답변을 베이스로 기업분석·JD를 반영해 변형.</div>
+            <span class="btn">🤖 AI 초안 생성</span>
+          </div>
+        </div>
+
+        <!-- Dual pane -->
+        <div class="dual">
+          <div class="pane draft">
+            <div class="pane-h"><span class="dot"></span>AI 초안 (읽기 전용) · 487자 · GPT-4o-mini</div>
+            <div>(주)테크컴퍼니의 결제·정산 도메인에 합류하고 싶습니다. 저는 직전 회사에서 주문 정산 시스템의 TPS 500 한계를 해결한 경험이 있습니다. N+1 쿼리와 단일 DB 병목을 분석해 <span class="hl-add">Kafka 비동기 처리</span>를 도입했고 TPS를 2,000까지 끌어올렸습니다. 이 경험은 <span class="hl-add">MSA</span>와 <span class="hl-add">대용량 트래픽</span>이 핵심인 귀사의 도전 과제와 맞닿아 있습니다...</div>
+            <div class="ph-line"></div>
+            <div class="ph-line"></div>
+            <div class="ph-line s"></div>
+            <div class="muted small mt">📌 보존됨. 사용자가 우측에서 수정해도 초안은 그대로 남음.</div>
+          </div>
+          <div class="pane edit">
+            <div class="pane-h"><span class="dot"></span>수정본 (편집 가능) · <span style="color:#4ade80;">492자 / 500</span></div>
+            <div>(주)테크컴퍼니의 결제·정산 도메인에 합류하고 싶습니다. 저는 직전 회사에서 주문 정산 시스템의 TPS 500 한계를 해결한 경험이 있습니다. N+1 쿼리와 단일 DB 병목을 분석해 Kafka 비동기 처리를 도입했고 TPS를 2,000까지 끌어올렸습니다. 또한 월간 운영비를 200만 원 절감했습니다. 이 경험은 MSA와 대용량 트래픽이 핵심인 귀사의 도전 과제와 직결됩니다...</div>
+            <div class="ph-line"></div>
+            <div class="ph-line"></div>
+            <div class="ph-line s"></div>
+          </div>
+        </div>
+
+        <!-- Side panel -->
+        <div class="grid-3 mt">
+          <div class="card">
+            <div class="ttl">✓ 자동 검증</div>
+            <div class="small mt">
+              <div>🟢 글자수: 492 / 500 OK</div>
+              <div>🟢 JD 키워드 매칭: 4 / 10 (기준 3) OK</div>
+              <div class="small bold mt">매칭된 키워드</div>
+              <div><span class="tag">Spring Boot</span><span class="tag">MSA</span><span class="tag">Kafka</span><span class="tag">대용량 트래픽</span></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ttl">⚠️ 거짓 방지 검토</div>
+            <div class="small mt">
+              <div>이력에 명시되지 않은 표현:</div>
+              <div style="margin-top:4px;">
+                <span class="hl-warn">"월간 운영비를 200만 원 절감"</span>
+              </div>
+              <div class="muted small mt">▶ 본인이 추가한 수정 내용으로 보입니다. 실제 사실이면 검토 완료 표시 후 진행하세요.</div>
+              <span class="btn ghost small mt" style="margin-top:6px;">✓ 검토 완료</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="ttl">📝 맞춤법</div>
+            <div class="small mt">
+              <div>오타: 0건</div>
+              <div>띄어쓰기 권장: 2건</div>
+              <ul style="margin: 6px 0 0 18px; padding:0; color:#555;">
+                <li>"맞닿아있는" → "맞닿아 있는"</li>
+                <li>"이 경험은" → 자연스러움</li>
+              </ul>
+              <span class="btn ghost small mt" style="margin-top:6px;">🔍 다시 검사</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt" style="display:flex; gap:8px; justify-content:flex-end;">
+          <span class="btn ghost">⬇ PDF</span>
+          <span class="btn ghost">⬇ Word</span>
+          <span class="btn ghost">임시 저장</span>
+          <span class="btn">완료 저장</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 7. 캘린더 =================== -->
+<section id="wf-7" class="wf-block">
+  <h3>7. 지원 현황 → 캘린더</h3>
+  <p class="note">월/주/일 보기. 일자 좌클릭 = 일정 팝오버, 우클릭 = 일정 추가. 전형 색상 구분.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/applications/calendar</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a class="active">지원 현황</a><a>이직/취업</a><a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">지원 현황</div>
+          <div class="item active">캘린더</div>
+          <div class="item">대시보드</div>
+          <div class="item">히스토리</div>
+        </div>
+        <div class="wf-main">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="btn ghost small">‹</span>
+              <h4 style="margin:0;">2026년 5월</h4>
+              <span class="btn ghost small">›</span>
+              <span class="btn ghost small" style="margin-left:8px;">오늘</span>
+            </div>
+            <div style="display:flex; gap:0;">
+              <div style="padding:4px 12px; background:#1f3a5f; color:#fff; border-radius:6px 0 0 6px; font-size:12px;">월</div>
+              <div style="padding:4px 12px; background:#eee; color:#555; font-size:12px;">주</div>
+              <div style="padding:4px 12px; background:#eee; color:#555; border-radius:0 6px 6px 0; font-size:12px;">일</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:14px; margin-bottom:10px; flex-wrap:wrap; font-size:11px;">
+            <span><span class="stg doc">서류</span></span>
+            <span><span class="stg coding">코딩테스트</span></span>
+            <span><span class="stg int1">1차면접</span></span>
+            <span><span class="stg int2">2차면접</span></span>
+            <span><span class="stg exec">임원면접</span></span>
+            <span><span class="stg nego">처우협의</span></span>
+            <span><span class="stg pass">합격</span></span>
+            <span><span class="stg fail">불합격</span></span>
+          </div>
+
+          <div class="cal">
+            <div class="day-h">일</div><div class="day-h">월</div><div class="day-h">화</div><div class="day-h">수</div><div class="day-h">목</div><div class="day-h">금</div><div class="day-h">토</div>
+
+            <div class="day mute"><div class="d">26</div></div>
+            <div class="day mute"><div class="d">27</div></div>
+            <div class="day mute"><div class="d">28</div></div>
+            <div class="day mute"><div class="d">29</div></div>
+            <div class="day mute"><div class="d">30</div></div>
+            <div class="day"><div class="d">1</div></div>
+            <div class="day"><div class="d">2</div></div>
+
+            <div class="day"><div class="d">3</div></div>
+            <div class="day"><div class="d">4</div></div>
+            <div class="day"><div class="d">5</div></div>
+            <div class="day"><div class="d">6</div></div>
+            <div class="day"><div class="d">7</div><span class="ev" style="background:#6c8aff">서류마감 카카오</span></div>
+            <div class="day"><div class="d">8</div></div>
+            <div class="day"><div class="d">9</div></div>
+
+            <div class="day"><div class="d">10</div><span class="ev" style="background:#4ec9b0">1차면접 (주)테크</span></div>
+            <div class="day"><div class="d">11</div><span class="ev" style="background:#ffaa42">코테 네이버</span></div>
+            <div class="day" style="background:#fff8d6;"><div class="d" style="color:#1f3a5f;">12 (오늘)</div><span class="ev" style="background:#6c8aff">서류마감 카카오</span></div>
+            <div class="day"><div class="d">13</div></div>
+            <div class="day"><div class="d">14</div><span class="ev" style="background:#c084fc">임원면접 토스</span></div>
+            <div class="day"><div class="d">15</div></div>
+            <div class="day"><div class="d">16</div></div>
+
+            <div class="day"><div class="d">17</div></div>
+            <div class="day"><div class="d">18</div></div>
+            <div class="day"><div class="d">19</div></div>
+            <div class="day"><div class="d">20</div><span class="ev" style="background:#5fb1a3">2차면접 라인</span></div>
+            <div class="day"><div class="d">21</div></div>
+            <div class="day"><div class="d">22</div></div>
+            <div class="day"><div class="d">23</div></div>
+
+            <div class="day"><div class="d">24</div></div>
+            <div class="day"><div class="d">25</div></div>
+            <div class="day"><div class="d">26</div><span class="ev" style="background:#4ade80">합격 (주)스타트업</span></div>
+            <div class="day"><div class="d">27</div></div>
+            <div class="day"><div class="d">28</div></div>
+            <div class="day"><div class="d">29</div></div>
+            <div class="day"><div class="d">30</div></div>
+
+            <div class="day"><div class="d">31</div></div>
+            <div class="day mute"><div class="d">1</div></div>
+            <div class="day mute"><div class="d">2</div></div>
+            <div class="day mute"><div class="d">3</div></div>
+            <div class="day mute"><div class="d">4</div></div>
+            <div class="day mute"><div class="d">5</div></div>
+            <div class="day mute"><div class="d">6</div></div>
+          </div>
+
+          <div class="anno mt">우클릭: 일정 추가 컨텍스트 메뉴 / 일정 좌클릭: 편집 팝오버(내용·기간·결과 수정, 삭제 버튼) / 사용자 커스터마이징: 시작 요일·기본 단위·전형 색상.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 8. 지원 대시보드 =================== -->
+<section id="wf-8" class="wf-block">
+  <h3>8. 지원 현황 → 대시보드 (목록)</h3>
+  <p class="note">지원한 내용 전체 목록. 전형별/전체 토글, 정렬, 페이징, 인라인 편집.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/applications</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a class="active">지원 현황</a><a>이직/취업</a><a>기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">지원 현황</div>
+          <div class="item">캘린더</div>
+          <div class="item active">대시보드</div>
+          <div class="item">히스토리</div>
+        </div>
+        <div class="wf-main">
+          <h4>지원 목록 (총 23건)</h4>
+
+          <!-- Filter row -->
+          <div class="card mb" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+            <span class="small bold">전형</span>
+            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+              <span class="btn" style="padding:4px 10px; font-size:11px;">전체 23</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">서류 8</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">코테 3</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">1차면접 5</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">2차면접 2</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">합격 2</span>
+              <span class="btn ghost" style="padding:4px 10px; font-size:11px;">불합격 3</span>
+            </div>
+            <div style="margin-left:auto; display:flex; gap:6px;">
+              <div class="input small">결과: 전체 ▾</div>
+              <div class="input small">기간: 최근 3개월 ▾</div>
+              <div class="input small">정렬: 최신순 ▾</div>
+              <span class="btn">+ 새 지원</span>
+            </div>
+          </div>
+
+          <table class="wf-table">
+            <thead>
+              <tr>
+                <th style="width:24px;"></th>
+                <th>회사</th>
+                <th>직무</th>
+                <th>전형</th>
+                <th>일정</th>
+                <th>결과</th>
+                <th>자소서</th>
+                <th>업데이트</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>📌</td>
+                <td><b>(주)테크컴퍼니</b></td>
+                <td>백엔드 (2~5년)</td>
+                <td><span class="stg int1">1차면접</span></td>
+                <td>5/10 (월) 14:00</td>
+                <td><span class="muted">진행 중</span></td>
+                <td><span class="tag">3건</span></td>
+                <td class="muted small">2시간 전</td>
+                <td>⋯</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>네이버</b></td>
+                <td>백엔드 신입/주니어</td>
+                <td><span class="stg coding">코딩테스트</span></td>
+                <td>5/11 (화) 10:00</td>
+                <td><span class="muted">예정</span></td>
+                <td><span class="tag">2건</span></td>
+                <td class="muted small">어제</td>
+                <td>⋯</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>카카오</b></td>
+                <td>백엔드 (3~7년)</td>
+                <td><span class="stg doc">서류</span></td>
+                <td>마감 5/12</td>
+                <td><span class="muted">진행 중</span></td>
+                <td><span class="tag">5건</span></td>
+                <td class="muted small">3일 전</td>
+                <td>⋯</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>토스</b></td>
+                <td>Server Developer</td>
+                <td><span class="stg exec">임원면접</span></td>
+                <td>5/14 (금) 16:00</td>
+                <td><span class="muted">진행 중</span></td>
+                <td><span class="tag">2건</span></td>
+                <td class="muted small">5일 전</td>
+                <td>⋯</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>(주)스타트업</b></td>
+                <td>백엔드 시니어</td>
+                <td><span class="stg pass">합격</span></td>
+                <td>5/2 통보</td>
+                <td><span style="color:#16a34a; font-weight:600;">최종 합격</span></td>
+                <td><span class="tag">2건</span></td>
+                <td class="muted small">1주일 전</td>
+                <td>⋯</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>(주)이커머스</b></td>
+                <td>백엔드 (1~3년)</td>
+                <td><span class="stg fail">불합격</span></td>
+                <td>4/28 통보</td>
+                <td><span style="color:#dc2626;">서류 탈락</span></td>
+                <td><span class="tag">1건</span></td>
+                <td class="muted small">2주일 전</td>
+                <td>⋯</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mt" style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="muted small">1 - 20 / 23건</div>
+            <div style="display:flex; gap:4px;">
+              <span class="btn ghost small">‹</span>
+              <span class="btn small">1</span>
+              <span class="btn ghost small">2</span>
+              <span class="btn ghost small">›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== 9. 기업분석 결과 =================== -->
+<section id="wf-9" class="wf-block">
+  <h3>9. 기업 → 기업분석 결과</h3>
+  <p class="note">DART + 뉴스 + 회사 홈페이지 기반 분석. "취업·이직에 활용 가능한" 정보로 정리. 30일 캐시.</p>
+
+  <div class="wf-frame">
+    <div class="wf-browser">
+      <div class="wf-dots"><span class="wf-dot r"></span><span class="wf-dot y"></span><span class="wf-dot g"></span></div>
+      <div class="wf-url">2chi.app/company/analysis/123</div>
+    </div>
+    <div class="wf-app">
+      <div class="wf-topnav">
+        <div class="logo">2chi</div>
+        <div class="menus">
+          <a>대시보드</a><a>내 정보</a><a>지원 현황</a><a>이직/취업</a><a class="active">기업</a>
+        </div>
+        <div class="right"><span class="bell">🔔</span><span class="avatar">소</span></div>
+      </div>
+      <div class="wf-layout">
+        <div class="wf-sidenav">
+          <div class="section">기업</div>
+          <div class="item">채용공고</div>
+          <div class="item active">기업분석</div>
+        </div>
+        <div class="wf-main">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div>
+              <h4 style="margin:0;">(주)테크컴퍼니 — 기업분석</h4>
+              <div class="muted small">분석 생성: 2026-05-05 · GPT-4o-mini · 캐시 만료 D-23</div>
+            </div>
+            <div>
+              <span class="btn ghost">🔄 재분석</span>
+              <span class="btn">📝 이 분석으로 자소서 작성</span>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="ttl">🏢 회사 개요</div>
+              <div class="small mt">
+                <div><b>사업 영역:</b> 결제·정산 SaaS</div>
+                <div><b>주요 제품:</b> TC-Pay, TC-Settle, TC-Analytics</div>
+                <div><b>규모:</b> 임직원 ~120명, 2025년 매출 약 380억</div>
+                <div><b>소재:</b> 서울 강남구</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="ttl">👥 인재상 (회사 홈페이지)</div>
+              <div class="small mt">
+                <span class="tag">고객 중심</span>
+                <span class="tag">데이터 기반 의사결정</span>
+                <span class="tag">자율과 책임</span>
+                <span class="tag">실험과 학습</span>
+                <span class="tag">기술 깊이</span>
+              </div>
+              <div class="muted small mt">출처: <span class="mono">techcompany.kr/about/values</span></div>
+            </div>
+
+            <div class="card">
+              <div class="ttl">📰 최근 6개월 이슈</div>
+              <ul style="margin: 6px 0 0 18px; padding:0; font-size:13px; color:#555;">
+                <li><b>2026.04</b> — Series B 250억 투자 유치</li>
+                <li><b>2026.03</b> — TC-Settle MSA 전환 발표</li>
+                <li><b>2026.02</b> — 글로벌 결제 게이트웨이 파트너십</li>
+                <li><b>2025.12</b> — 신규 CTO 영입 (前 토스 결제팀)</li>
+              </ul>
+              <div class="mt">
+                <span class="tag">Series B</span><span class="tag">MSA 전환</span><span class="tag">글로벌</span><span class="tag">CTO 영입</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="ttl">🎯 채용 절차 (알려진 정보)</div>
+              <div class="stepper mt" style="gap:4px;">
+                <div class="step done" style="background:#1f3a5f;">1</div><div class="step-line"></div>
+                <div class="step done" style="background:#1f3a5f;">2</div><div class="step-line"></div>
+                <div class="step done" style="background:#1f3a5f;">3</div><div class="step-line"></div>
+                <div class="step done" style="background:#1f3a5f;">4</div>
+              </div>
+              <div class="small mt" style="color:#555;">
+                서류 → 코딩테스트(2H) → 1차 기술면접(2H) → 임원면접(1H)
+              </div>
+              <div class="muted small mt">평균 전체 기간: 약 3주</div>
+            </div>
+          </div>
+
+          <!-- Action points -->
+          <div class="card mt" style="border-left: 4px solid #1f3a5f;">
+            <div class="ttl">💡 자소서·면접 활용 포인트 (AI 추천)</div>
+            <ol style="margin: 8px 0 0 20px; padding:0; font-size:13px; line-height:1.8; color:#444;">
+              <li>이 회사는 <b>MSA 전환</b>을 핵심 과제로 두고 있습니다. 본인 이력의 <span class="hl-add">Kafka 비동기 처리 도입</span> 경험을 "MSA 환경 적응성"으로 풀어내면 효과적.</li>
+              <li>최근 <b>Series B 투자 유치</b>로 확장 단계. 자소서에서 "성장하는 조직에서 영향력을 행사하고 싶다" 류의 동기를 구체 수치(투자액·MSA 전환)와 연결.</li>
+              <li>인재상 "<b>데이터 기반 의사결정</b>"이 강조됨. 본인 프로젝트의 <span class="hl-add">TPS 500 → 2000, 운영비 200만원 절감</span> 같은 정량 결과를 두드러지게.</li>
+              <li>전 토스 CTO 영입 → 결제·정산 도메인 전문성 강화 방향. 직군 매칭률을 위해 "결제·정산 도메인 학습 의지"를 마지막 문단에 배치.</li>
+            </ol>
+          </div>
+
+          <div class="anno mt">참조 출처: DART 공시 / 네이버 뉴스 검색 결과 8건 / 회사 홈페이지 5개 페이지. 모든 출처는 <span class="mono">company_analysis.source_urls</span>에 저장됨.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  2chi v1 와이어프레임 v0.1 · 2026-05-08 · 김소미 · 디자이너 작업 시 기준 문서
+</footer>
+
+</body>
+</html>

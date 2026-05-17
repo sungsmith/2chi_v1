@@ -1,0 +1,249 @@
+erDiagram
+    %% 2chi v1 ERD v0.1
+    %% 시각화: mermaid.live 또는 VS Code Mermaid 확장에 붙여넣기
+
+    %% === 관계 ===
+    User ||--o| Profile : has
+    User ||--o| Resume : has
+    User ||--o| NotificationPreference : has
+    User ||--o{ SocialAccount : has
+    User ||--o{ ConsentLog : has
+    User ||--o{ AuditLog : has
+    User ||--o{ Education : has
+    User ||--o{ Certificate : has
+    User ||--o{ Experience : has
+    User ||--o{ CareerHistory : has
+    User ||--o{ Project : owns
+    User ||--o{ PortfolioLink : has
+    User ||--o{ JobPosting : registers
+    User ||--o{ CompanyAnalysis : requests
+    User ||--o{ CoverLetterMaster : has
+    User ||--o{ CoverLetterVariant : has
+    User ||--o{ CareerStatement : has
+    User ||--o{ Application : creates
+    User ||--o{ Notification : receives
+
+    CareerHistory ||--o{ Project : contains
+    JobPosting ||--o{ CoverLetterVariant : refs
+    JobPosting ||--o{ CareerStatement : refs
+    JobPosting ||--o{ Application : appliedTo
+    CompanyAnalysis ||--o{ CoverLetterVariant : refs
+    CompanyAnalysis ||--o{ CareerStatement : refs
+    CoverLetterMaster ||--o{ CoverLetterVariant : variantOf
+    Application ||--o{ ApplicationHistory : tracks
+
+    %% === 엔티티 ===
+    User {
+      bigserial id PK
+      varchar email "unique alive"
+      varchar password_hash "nullable"
+      varchar nickname "unique alive"
+      varchar role "USER/ADMIN"
+      boolean email_verified
+      timestamptz last_login_at
+      int failed_login_count
+      timestamptz locked_until
+      timestamptz created_at
+      timestamptz deleted_at "soft delete"
+    }
+    Profile {
+      bigint user_id PK
+      varchar target "JOB_CHANGE/EMPLOYMENT"
+      smallint career_year
+      text_array target_jobs
+      boolean onboarding_completed
+      varchar name "encrypted"
+      date birth_date
+      varchar phone "encrypted"
+      varchar region
+    }
+    SocialAccount {
+      bigserial id PK
+      bigint user_id FK
+      varchar provider
+      varchar provider_user_id
+      varchar email
+      timestamptz linked_at
+    }
+    ConsentLog {
+      bigserial id PK
+      bigint user_id FK
+      varchar consent_type
+      boolean agreed
+      varchar version
+      timestamptz created_at
+    }
+    AuditLog {
+      bigserial id PK
+      bigint user_id FK
+      varchar action
+      varchar target_type
+      varchar target_id
+      jsonb metadata
+      timestamptz created_at
+    }
+    Education {
+      bigserial id PK
+      bigint user_id FK
+      varchar level
+      varchar school
+      varchar major
+      date start_date
+      date end_date
+      numeric gpa
+      varchar status
+    }
+    Certificate {
+      bigserial id PK
+      bigint user_id FK
+      varchar name
+      varchar issuer
+      date acquired_at
+      varchar score
+    }
+    Experience {
+      bigserial id PK
+      bigint user_id FK
+      varchar type
+      varchar name
+      varchar organization
+      date start_date
+      date end_date
+      text summary
+    }
+    Resume {
+      bigserial id PK
+      bigint user_id FK_unique
+      varchar mode "FORM/FILE"
+      jsonb content_json "encrypted"
+      varchar file_url
+      jsonb parsed_json
+    }
+    CareerHistory {
+      bigserial id PK
+      bigint user_id FK
+      varchar company
+      varchar position
+      date start_date
+      date end_date
+      boolean is_current
+    }
+    Project {
+      bigserial id PK
+      bigint user_id FK
+      bigint career_history_id FK
+      varchar title
+      text_array tech_stack
+      varchar structure_type "PRAR/UX/OPS/DT"
+      jsonb structure_data
+      jsonb metrics
+    }
+    PortfolioLink {
+      bigserial id PK
+      bigint user_id FK
+      varchar title
+      varchar link_type
+      varchar url
+      varchar file_url
+      text_array tags
+      text contribution
+    }
+    JobPosting {
+      bigserial id PK
+      bigint user_id FK
+      varchar source "URL/MANUAL"
+      varchar company
+      varchar title
+      varchar job_role
+      text requirements
+      text preferred
+      text main_tasks
+      date deadline
+      text_array keywords
+    }
+    CompanyAnalysis {
+      bigserial id PK
+      bigint user_id FK
+      varchar company
+      jsonb summary_json
+      text_array news_keywords
+      varchar dart_corp_code
+      timestamptz generated_at
+      varchar generated_by
+    }
+    CoverLetterMaster {
+      bigserial id PK
+      bigint user_id FK
+      varchar item_type
+      varchar title
+      text master_answer "encrypted"
+      int char_limit_hint
+      boolean is_default
+    }
+    CoverLetterVariant {
+      bigserial id PK
+      bigint user_id FK
+      bigint posting_id FK
+      bigint analysis_id FK
+      bigint master_id FK
+      varchar item_type
+      varchar question
+      int char_limit
+      text ai_draft "encrypted"
+      text user_edit "encrypted"
+      jsonb validation_json
+      varchar status
+      timestamptz deleted_at
+    }
+    CareerStatement {
+      bigserial id PK
+      bigint user_id FK
+      bigint posting_id FK
+      bigint analysis_id FK
+      jsonb content_json "encrypted"
+      text user_edit "encrypted"
+      varchar file_url
+      timestamptz deleted_at
+    }
+    Application {
+      bigserial id PK
+      bigint user_id FK
+      bigint posting_id FK
+      varchar company
+      varchar stage
+      varchar result
+      jsonb dates_json
+      varchar location
+      varchar mode
+      text memo
+      varchar color
+    }
+    ApplicationHistory {
+      bigserial id PK
+      bigint application_id FK
+      bigint user_id FK
+      varchar field_name
+      jsonb before_value
+      jsonb after_value
+      varchar actor
+      timestamptz changed_at
+    }
+    Notification {
+      bigserial id PK
+      bigint user_id FK
+      varchar channel
+      varchar type
+      varchar title
+      text body
+      jsonb payload_json
+      timestamptz scheduled_at
+      timestamptz sent_at
+      timestamptz read_at
+    }
+    NotificationPreference {
+      bigint user_id PK
+      boolean email_enabled
+      boolean push_enabled
+      jsonb prefs_json
+      varchar push_endpoint
+    }

@@ -1,0 +1,21 @@
+﻿카테고리,역량_ID,역량명,신입 (0년),주니어 (1-2년),시니어 (3-5년),리드 (5년+),매칭 키워드,부족 시 보완 액션,가중치
+서버·OS 운영,IO-OS-001,Linux 운영,기본 명령어(ls/cd/ps) 사용,"프로세스·서비스 관리(systemd), 권한·사용자 관리","성능 분석(top/iostat/strace), 커널 파라미터 튜닝",리눅스 운영 표준,"Linux,Ubuntu,CentOS,systemd,strace,top,iostat","리눅스 기본 명령어 200개 마스터, 시스템 콜 모니터링 실습",5
+서버·OS 운영,IO-OS-002,Windows Server,기본 GUI 운영,Active Directory·그룹 정책,"AD 도메인 설계, GPO 정책 표준화",기업 윈도우 인프라 설계,"Windows Server,Active Directory,AD,GPO,DNS,DHCP",AD 환경 구축 실습 (가상서버 위),3
+서버·OS 운영,IO-OS-003,셸 스크립팅,기본 bash 명령어,"변수·조건문·반복문, 로그 파싱","복잡한 자동화 스크립트, 에러 처리",조직 자동화 표준,"Bash,PowerShell,Shell Script,sed,awk,grep",백업·로그 정리 스크립트 작성,4
+가상화·하이퍼바이저,IO-VIRT-001,VMware ESXi / vSphere,용어 수준,vCenter로 VM 생성·관리,"vMotion·HA·DRS, 스토리지·네트워크 설계",엔터프라이즈 가상화 설계,"VMware,ESXi,vSphere,vCenter,vMotion,HA,DRS",ESXi 무료 라이선스로 홈랩 구축,4
+가상화·하이퍼바이저,IO-VIRT-002,Hyper-V / KVM,용어 수준,기본 VM 운영,"라이브 마이그레이션, 클러스터링",하이퍼바이저 선택 의사결정,"Hyper-V,KVM,Proxmox,libvirt",Proxmox 또는 Hyper-V로 가상화 환경 구축,2
+가상화·하이퍼바이저,IO-VIRT-003,VDI / 원격 데스크톱,RDP 접속 가능,RDS·Citrix 기본 운영,"VDI 풀·프로파일 관리, GPU 가상화",엔드유저 컴퓨팅 전략,"VDI,RDS,Citrix,Horizon",Windows RDS 호스트 구축 실습,1
+스토리지·백업,IO-STOR-001,NAS / SAN 관리,용어 수준,Synology/QNAP NAS 권한·공유 폴더 운영,"iSCSI·NFS·SMB 프로토콜, RAID 설계, 용량 계획",엔터프라이즈 스토리지 아키텍처,"NAS,SAN,iSCSI,NFS,SMB,RAID,Synology,QNAP",NAS 1대로 부서 공유 환경 + 권한 정책 수립,5
+스토리지·백업,IO-STOR-002,백업·재해복구,수동 복사 백업,Veeam·Acronis로 일/주/월 정책 운영,"RPO/RTO 정의, 오프사이트·이뮤터블 백업, 복구 훈련",BCP·DR 전략 수립,"Veeam,Acronis,Backup,RPO,RTO,DR,Immutable,Offsite",Veeam 무료로 본 NAS 백업 + 월간 복구 훈련,5
+스토리지·백업,IO-STOR-003,데이터 복구,휴지통에서 복구,이전 버전·스냅샷에서 복구,"랜섬웨어 사고 시 데이터 복구, 포렌식 기초",조직 복구 SOP 수립,"Recovery,Snapshot,Ransomware Recovery,Forensic",랜섬웨어 시뮬레이션 + 백업으로 복구 실습,4
+네트워크,IO-NET-001,L2/L3 스위칭·라우팅,케이블 연결,"VLAN·트렁크·STP, 정적 라우팅","OSPF·BGP, QoS, 멀티 사이트 설계",기업 네트워크 아키텍처,"Switch,Router,VLAN,Trunk,STP,OSPF,BGP,Cisco",Packet Tracer 또는 GNS3로 멀티 VLAN 구성,4
+네트워크,IO-NET-002,방화벽·VPN,용어 수준,"방화벽 룰 설정, IPSec/SSL VPN 운영","차세대 방화벽(NGFW), DPI, 제로 트러스트",조직 보안 경계 설계,"Firewall,VPN,IPSec,SSL VPN,NGFW,Zero Trust,WireGuard",WireGuard로 사이트간 VPN 구축,5
+네트워크,IO-NET-003,Wi-Fi·무선,AP 설치 가능,"다중 AP 환경, SSID 분리·인증(802.1x)","RF 설계, 컨트롤러·로밍 최적화",기업 무선 네트워크 표준,"Wi-Fi,AP,SSID,WPA2,WPA3,802.1x,Wireless Controller",다중 SSID + 게스트망 분리 구성,2
+정보보안,IO-SEC-001,보안 정책·운영,비밀번호 정책 이해,패치 관리·취약점 점검·접근 통제,"보안 사고 대응(IR), 위협 인텔리전스",ISMS-P·ISO27001 인증 책임자,"Patch Management,Vulnerability,Access Control,IR,Threat Intelligence",K-Shield Jr. 또는 정보보안기사 학습,5
+정보보안,IO-SEC-002,엔드포인트 보안,백신 설치,EDR·DLP·매체 통제 도구 운영,"EDR 룰 작성, 이상 행위 분석",조직 엔드포인트 표준,"Antivirus,EDR,DLP,V3,AhnLab,CrowdStrike,SentinelOne",오픈소스 EDR(Wazuh) 또는 무료 EDR 도입 실습,5
+정보보안,IO-SEC-003,이메일 보안·계정 탈취 대응,스팸 필터 이해,"SPF·DKIM·DMARC 설정, 피싱 훈련","BEC 사고 대응, 메일 게이트웨이 운영",조직 계정 보안 표준,"SPF,DKIM,DMARC,Phishing,BEC,Email Gateway",본 회사·집 도메인에 SPF/DKIM/DMARC 설정,3
+정보보안,IO-SEC-004,랜섬웨어 대응,용어 수준,기본 격리·복구 절차 숙지,감염 격리·증거 보존·재발 방지 조치 전체 주도,조직 IR 플레이북 수립·훈련,"Ransomware,EDR,Backup,IR,Incident Response,Isolation",랜섬웨어 시나리오 테이블탑 훈련 1회 참여,5
+정보보안,IO-SEC-005,SIEM·로그 분석,기본 로그 보기,"Splunk·Wazuh 기본 검색, 룰 작성",상관 분석·이상 탐지·SOC 운영,조직 SOC 설계,"SIEM,Splunk,Wazuh,ELK,Sigma,Correlation",Wazuh 또는 ELK로 본 환경 로그 수집·이상 탐지 룰 1개,3
+자산·헬프데스크,IO-ITAM-001,IT 자산 관리,엑셀로 자산 목록 관리,"ITAM 도구·라이프사이클, 라이선스 추적",자동 발견·계약·소프트웨어 자산 거버넌스,조직 자산 관리 표준,"ITAM,Asset Management,License Tracking,GLPI,Snipe-IT",GLPI 또는 Snipe-IT로 자산 인벤토리 구축,3
+자산·헬프데스크,IO-ITAM-002,헬프데스크·티켓 운영,사용자 요청 처리,"Jira Service Management·Zendesk 운영, SLA","ITSM(ITIL) 프로세스 정립, 셀프서비스 포털",조직 ITSM 책임자,"Helpdesk,ITSM,ITIL,Jira Service Management,Zendesk,SLA",GLPI 티켓 모듈로 헬프데스크 워크플로 구성,3
+자산·헬프데스크,IO-ITAM-003,기술 지원·교육,1차 응대,"FAQ·매뉴얼 작성, 사용자 교육","내부 KMS 구축, 신입 온보딩 표준",조직 교육·문화,"Documentation,KMS,Training,Onboarding",사내 위키 1개 운영 + 신입 온보딩 가이드 작성,3

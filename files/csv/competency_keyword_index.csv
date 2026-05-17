@@ -1,0 +1,611 @@
+﻿키워드,참조 수,트랙,역량_ID,역량명
+802.1x,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+8pt grid,1.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+@datajpatest,1.0,백엔드,BE-TEST-002,통합 테스트
+a/b test,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+a11y,2.0,프론트엔드,FE-PERF-002,접근성(a11y)
+a11y,2.0,UI_UX_디자이너,UX-COL-002,접근성(a11y)
+abstract,1.0,UI_UX_디자이너,UX-COL-003,Git/디자인 버전 관리
+access control,1.0,인프라_시스템운영,IO-SEC-001,보안 정책·운영
+accessibility,3.0,프론트엔드,FE-PERF-002,접근성(a11y)
+accessibility,3.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+accessibility,3.0,UI_UX_디자이너,UX-COL-002,접근성(a11y)
+acronis,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+active directory,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+ad,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+adapter,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+adobe xd,1.0,UI_UX_디자이너,UX-TOOL-002,Sketch / Adobe XD (부가)
+adr,1.0,백엔드,BE-COL-003,기술 문서화
+aggregate,1.0,백엔드,BE-ARCH-002,DDD (도메인 주도 설계)
+aggregation,1.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+agile,1.0,백엔드,BE-COL-004,애자일·스크럼
+ahnlab,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+aks,1.0,인프라_클라우드,IC-CLOUD-002,GCP / Azure (부가)
+alert,1.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+amplitude,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+amqp,1.0,백엔드,BE-MSG-002,RabbitMQ / 일반 큐
+angular,1.0,프론트엔드,FE-LANG-004,Vue / Angular (부가)
+ansible,1.0,인프라_클라우드,IC-IAC-002,Ansible / 설정 관리
+antivirus,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+aop,1.0,백엔드,BE-LANG-002,Spring Boot
+ap,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+api docs,1.0,백엔드,BE-API-002,API 문서화
+app router,1.0,프론트엔드,FE-LANG-003,Next.js
+argocd,1.0,인프라_클라우드,IC-CONT-003,GitOps / ArgoCD
+aria,1.0,프론트엔드,FE-PERF-002,접근성(a11y)
+assertj,1.0,백엔드,BE-TEST-001,단위 테스트
+asset management,1.0,인프라_시스템운영,IO-ITAM-001,IT 자산 관리
+async,2.0,백엔드,BE-LANG-006,비동기·리액티브
+async,2.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+atomic design,1.0,UI_UX_디자이너,UX-DS-002,컴포넌트 체계
+authentication,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+auto layout,1.0,UI_UX_디자이너,UX-TOOL-001,Figma
+auto scaling,1.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+auto-scaling,1.0,백엔드,BE-PERF-002,부하 분산·스케일링
+avif,1.0,프론트엔드,FE-PERF-003,이미지·미디어 최적화
+awk,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+aws,1.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+axios,1.0,프론트엔드,FE-STATE-003,API 통신
+azure,1.0,인프라_클라우드,IC-CLOUD-002,GCP / Azure (부가)
+backpressure,1.0,백엔드,BE-LANG-006,비동기·리액티브
+backup,2.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+backup,2.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+bash,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+bean,1.0,백엔드,BE-LANG-002,Spring Boot
+bec,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+bem,1.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+bgp,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+blue-green,2.0,백엔드,BE-OPS-002,CI/CD
+blue-green,2.0,인프라_클라우드,IC-CICD-003,배포 전략
+bottleneck,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+bounded context,1.0,백엔드,BE-ARCH-002,DDD (도메인 주도 설계)
+branch,2.0,백엔드,BE-COL-001,Git/GitHub 흐름
+branch,2.0,프론트엔드,FE-COL-003,Git/GitHub 흐름
+breakpoint,1.0,UI_UX_디자이너,UX-VIS-003,반응형·다크모드
+build,1.0,백엔드,BE-LANG-007,빌드·의존성 관리
+bundle,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+bundle analysis,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+cache,2.0,백엔드,BE-DB-004,Redis (캐시·세션)
+cache,2.0,백엔드,BE-PERF-001,캐시 전략
+cacheable,1.0,백엔드,BE-PERF-001,캐시 전략
+canary,2.0,백엔드,BE-OPS-002,CI/CD
+canary,2.0,인프라_클라우드,IC-CICD-003,배포 전략
+card sorting,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+cardinality,1.0,백엔드,BE-DB-002,쿼리 최적화
+cd,2.0,백엔드,BE-OPS-002,CI/CD
+cd,2.0,인프라_클라우드,IC-CICD-001,GitHub Actions
+cdc,1.0,백엔드,BE-ARCH-004,이벤트 기반 아키텍처
+centos,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+chromatic,1.0,프론트엔드,FE-COL-002,Storybook
+ci,2.0,백엔드,BE-OPS-002,CI/CD
+ci,2.0,인프라_클라우드,IC-CICD-001,GitHub Actions
+cisco,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+citrix,1.0,인프라_시스템운영,IO-VIRT-003,VDI / 원격 데스크톱
+clean architecture,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+cloud run,1.0,인프라_클라우드,IC-CLOUD-002,GCP / Azure (부가)
+cloudfront,1.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+cls,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+code review,1.0,백엔드,BE-COL-002,코드 리뷰
+cohort,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+color system,1.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+completablefuture,1.0,백엔드,BE-LANG-006,비동기·리액티브
+component,3.0,프론트엔드,FE-STYL-003,컴포넌트 디자인
+component,3.0,UI_UX_디자이너,UX-TOOL-001,Figma
+component,3.0,UI_UX_디자이너,UX-DS-002,컴포넌트 체계
+component catalog,1.0,프론트엔드,FE-COL-002,Storybook
+compose,2.0,백엔드,BE-OPS-001,Docker / 컨테이너
+compose,2.0,인프라_클라우드,IC-CONT-001,Docker
+concurrency,1.0,백엔드,BE-PERF-003,동시성 제어
+consumer,1.0,백엔드,BE-MSG-001,Kafka
+container,2.0,백엔드,BE-OPS-001,Docker / 컨테이너
+container,2.0,인프라_클라우드,IC-CONT-001,Docker
+context,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+contract test,1.0,백엔드,BE-TEST-003,E2E·계약 테스트
+contrast,2.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+contrast,2.0,UI_UX_디자이너,UX-COL-002,접근성(a11y)
+controlleradvice,1.0,백엔드,BE-API-003,에러 처리·예외 표준
+convention,1.0,백엔드,BE-COL-002,코드 리뷰
+coroutine,2.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+coroutine,2.0,백엔드,BE-LANG-006,비동기·리액티브
+correlation,1.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+crowdstrike,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+css,1.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+css-in-js,1.0,프론트엔드,FE-STYL-002,Tailwind / CSS-in-JS
+cypress,1.0,프론트엔드,FE-TEST-002,E2E 테스트
+dark mode,1.0,UI_UX_디자이너,UX-VIS-003,반응형·다크모드
+dast,1.0,인프라_클라우드,IC-NETSEC-003,보안 스캐닝·인증
+datadog,1.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+ddd,1.0,백엔드,BE-ARCH-002,DDD (도메인 주도 설계)
+ddl,2.0,백엔드,BE-DB-003,ERD·데이터 모델링
+ddl,2.0,백엔드,BE-DB-006,DB 마이그레이션
+deadlock,1.0,백엔드,BE-PERF-003,동시성 제어
+denormalization,1.0,백엔드,BE-DB-003,ERD·데이터 모델링
+dependency,1.0,백엔드,BE-LANG-007,빌드·의존성 관리
+deployment,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+design system,1.0,프론트엔드,FE-COL-001,디자이너 협업
+design token,4.0,프론트엔드,FE-STYL-002,Tailwind / CSS-in-JS
+design token,4.0,프론트엔드,FE-COL-001,디자이너 협업
+design token,4.0,UI_UX_디자이너,UX-DS-001,디자인 토큰
+design token,4.0,UI_UX_디자이너,UX-COL-001,개발자 협업·핸드오프
+dhcp,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+di,1.0,백엔드,BE-LANG-002,Spring Boot
+dip,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+distributed,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+dkim,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+dlp,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+dlx,1.0,백엔드,BE-MSG-002,RabbitMQ / 일반 큐
+dmarc,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+dns,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+docker,2.0,백엔드,BE-OPS-001,Docker / 컨테이너
+docker,2.0,인프라_클라우드,IC-CONT-001,Docker
+dockerfile,2.0,백엔드,BE-OPS-001,Docker / 컨테이너
+dockerfile,2.0,인프라_클라우드,IC-CONT-001,Docker
+document,1.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+documentation,3.0,백엔드,BE-COL-003,기술 문서화
+documentation,3.0,인프라_시스템운영,IO-ITAM-003,기술 지원·교육
+documentation,3.0,UI_UX_디자이너,UX-DS-003,Storybook·문서화
+domain,1.0,백엔드,BE-ARCH-002,DDD (도메인 주도 설계)
+dr,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+drs,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+ds,1.0,UI_UX_디자이너,UX-DS-001,디자인 토큰
+dto,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+dynamic query,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+e2e,2.0,백엔드,BE-TEST-003,E2E·계약 테스트
+e2e,2.0,프론트엔드,FE-TEST-002,E2E 테스트
+ec2,1.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+edr,2.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+edr,2.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+elasticsearch,2.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+elasticsearch,2.0,인프라_클라우드,IC-OBS-003,로그 수집
+elk,3.0,백엔드,BE-OPS-004,구조화 로깅
+elk,3.0,인프라_클라우드,IC-OBS-003,로그 수집
+elk,3.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+email gateway,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+emotion,1.0,프론트엔드,FE-STYL-002,Tailwind / CSS-in-JS
+entity,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+erd,1.0,백엔드,BE-DB-003,ERD·데이터 모델링
+error code,1.0,백엔드,BE-API-003,에러 처리·예외 표준
+error handling,1.0,백엔드,BE-API-003,에러 처리·예외 표준
+es6,1.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+esbuild,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+eslint,1.0,프론트엔드,FE-BUILD-002,린팅·포매팅
+esxi,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+event sourcing,1.0,백엔드,BE-ARCH-004,이벤트 기반 아키텍처
+event storming,1.0,백엔드,BE-ARCH-002,DDD (도메인 주도 설계)
+event-driven,1.0,백엔드,BE-ARCH-004,이벤트 기반 아키텍처
+exactly-once,1.0,백엔드,BE-MSG-001,Kafka
+exception,1.0,백엔드,BE-API-003,에러 처리·예외 표준
+explain,1.0,백엔드,BE-DB-002,쿼리 최적화
+fcp,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+fetch,2.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+fetch,2.0,프론트엔드,FE-STATE-003,API 통신
+figma,2.0,프론트엔드,FE-COL-001,디자이너 협업
+figma,2.0,UI_UX_디자이너,UX-TOOL-001,Figma
+figma branch,1.0,UI_UX_디자이너,UX-COL-003,Git/디자인 버전 관리
+figma dev mode,1.0,UI_UX_디자이너,UX-COL-001,개발자 협업·핸드오프
+figma prototype,1.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+filter,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+firewall,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+flexbox,1.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+fluentd,1.0,인프라_클라우드,IC-OBS-003,로그 수집
+fluxcd,1.0,인프라_클라우드,IC-CONT-003,GitOps / ArgoCD
+flyway,1.0,백엔드,BE-DB-006,DB 마이그레이션
+forensic,1.0,인프라_시스템운영,IO-STOR-003,데이터 복구
+form,1.0,프론트엔드,FE-STATE-002,Form 처리
+formik,1.0,프론트엔드,FE-STATE-002,Form 처리
+framer,1.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+funnel,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+ga4,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+gcp,1.0,인프라_클라우드,IC-CLOUD-002,GCP / Azure (부가)
+generic,2.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+generic,2.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+git,2.0,백엔드,BE-COL-001,Git/GitHub 흐름
+git,2.0,프론트엔드,FE-COL-003,Git/GitHub 흐름
+git flow,1.0,백엔드,BE-COL-001,Git/GitHub 흐름
+github,2.0,백엔드,BE-COL-001,Git/GitHub 흐름
+github,2.0,프론트엔드,FE-COL-003,Git/GitHub 흐름
+github actions,2.0,백엔드,BE-OPS-002,CI/CD
+github actions,2.0,인프라_클라우드,IC-CICD-001,GitHub Actions
+gitops,1.0,인프라_클라우드,IC-CONT-003,GitOps / ArgoCD
+glpi,1.0,인프라_시스템운영,IO-ITAM-001,IT 자산 관리
+google analytics,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+gpo,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+gradle,1.0,백엔드,BE-LANG-007,빌드·의존성 관리
+grafana,2.0,백엔드,BE-OPS-003,관측성(Observability)
+grafana,2.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+graphql,1.0,백엔드,BE-API-004,GraphQL or gRPC
+grep,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+grid,2.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+grid,2.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+groovy,1.0,인프라_클라우드,IC-CICD-002,Jenkins (부가)
+grpc,1.0,백엔드,BE-API-004,GraphQL or gRPC
+ha,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+handoff,2.0,프론트엔드,FE-COL-001,디자이너 협업
+handoff,2.0,UI_UX_디자이너,UX-COL-001,개발자 협업·핸드오프
+headless ui,1.0,프론트엔드,FE-STYL-003,컴포넌트 디자인
+helm,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+helpdesk,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+heuristic evaluation,1.0,UI_UX_디자이너,UX-RSCH-002,사용성 평가
+hexagonal,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+hibernate,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+hooks,1.0,프론트엔드,FE-LANG-002,React
+horizon,1.0,인프라_시스템운영,IO-VIRT-003,VDI / 원격 데스크톱
+html,1.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+http,1.0,백엔드,BE-API-001,REST API 설계
+husky,1.0,프론트엔드,FE-BUILD-002,린팅·포매팅
+hyper-v,1.0,인프라_시스템운영,IO-VIRT-002,Hyper-V / KVM
+i18n,1.0,UI_UX_디자이너,UX-IA-003,UX 라이팅
+ia,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+iac,1.0,인프라_클라우드,IC-IAC-001,Terraform
+iam,2.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+iam,2.0,인프라_클라우드,IC-NETSEC-002,IAM·시크릿
+icon,1.0,UI_UX_디자이너,UX-VIS-002,아이콘·일러스트
+iconography,1.0,UI_UX_디자이너,UX-VIS-002,아이콘·일러스트
+idempotent,2.0,백엔드,BE-API-001,REST API 설계
+idempotent,2.0,백엔드,BE-ARCH-004,이벤트 기반 아키텍처
+illustration,1.0,UI_UX_디자이너,UX-VIS-002,아이콘·일러스트
+illustrator,2.0,UI_UX_디자이너,UX-TOOL-002,Sketch / Adobe XD (부가)
+illustrator,2.0,UI_UX_디자이너,UX-TOOL-003,Photoshop / Illustrator
+image,1.0,백엔드,BE-OPS-001,Docker / 컨테이너
+image optimization,1.0,프론트엔드,FE-PERF-003,이미지·미디어 최적화
+immutable,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+incident response,1.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+index,2.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+index,2.0,백엔드,BE-DB-002,쿼리 최적화
+information architecture,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+ingress,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+integration test,1.0,백엔드,BE-TEST-002,통합 테스트
+interceptor,1.0,프론트엔드,FE-STATE-003,API 통신
+interview,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+invalidation,1.0,백엔드,BE-PERF-001,캐시 전략
+inventory,1.0,인프라_클라우드,IC-IAC-002,Ansible / 설정 관리
+ioc,1.0,백엔드,BE-LANG-002,Spring Boot
+iostat,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+ipsec,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+ir,2.0,인프라_시스템운영,IO-SEC-001,보안 정책·운영
+ir,2.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+iscsi,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+isolation,2.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+isolation,2.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+isr,1.0,프론트엔드,FE-LANG-003,Next.js
+itam,1.0,인프라_시스템운영,IO-ITAM-001,IT 자산 관리
+itil,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+itsm,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+jaeger,1.0,인프라_클라우드,IC-OBS-002,트레이싱
+java,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+javascript,1.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+jdk,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+jenkins,2.0,백엔드,BE-OPS-002,CI/CD
+jenkins,2.0,인프라_클라우드,IC-CICD-002,Jenkins (부가)
+jest,1.0,프론트엔드,FE-TEST-001,단위 테스트
+jira service management,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+join,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+journey map,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+jpa,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+jpql,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+json log,1.0,백엔드,BE-OPS-004,구조화 로깅
+jsx,1.0,프론트엔드,FE-LANG-002,React
+junit,1.0,백엔드,BE-TEST-001,단위 테스트
+jvm,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+jwt,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+k8s,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+kafka,1.0,백엔드,BE-MSG-001,Kafka
+kanban,1.0,백엔드,BE-COL-004,애자일·스크럼
+keyboard nav,1.0,프론트엔드,FE-PERF-002,접근성(a11y)
+kms,2.0,인프라_클라우드,IC-NETSEC-002,IAM·시크릿
+kms,2.0,인프라_시스템운영,IO-ITAM-003,기술 지원·교육
+kotlin,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+kubernetes,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+kvm,1.0,인프라_시스템운영,IO-VIRT-002,Hyper-V / KVM
+lambda,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+latency,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+layered,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+lazy,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+lcp,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+library,2.0,UI_UX_디자이너,UX-DS-002,컴포넌트 체계
+library,2.0,UI_UX_디자이너,UX-COL-003,Git/디자인 버전 관리
+libvirt,1.0,인프라_시스템운영,IO-VIRT-002,Hyper-V / KVM
+license tracking,1.0,인프라_시스템운영,IO-ITAM-001,IT 자산 관리
+lighthouse,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+lint-staged,1.0,프론트엔드,FE-BUILD-002,린팅·포매팅
+linux,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+liquibase,1.0,백엔드,BE-DB-006,DB 마이그레이션
+load balancer,2.0,백엔드,BE-PERF-002,부하 분산·스케일링
+load balancer,2.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+load test,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+lock,2.0,백엔드,BE-DB-004,Redis (캐시·세션)
+lock,2.0,백엔드,BE-PERF-003,동시성 제어
+logback,1.0,백엔드,BE-OPS-004,구조화 로깅
+logging,1.0,백엔드,BE-OPS-004,구조화 로깅
+logstash,1.0,인프라_클라우드,IC-OBS-003,로그 수집
+loki,2.0,백엔드,BE-OPS-004,구조화 로깅
+loki,2.0,인프라_클라우드,IC-OBS-003,로그 수집
+maven,1.0,백엔드,BE-LANG-007,빌드·의존성 관리
+mdc,1.0,백엔드,BE-OPS-004,구조화 로깅
+merge,1.0,백엔드,BE-COL-001,Git/GitHub 흐름
+metrics,1.0,백엔드,BE-OPS-003,관측성(Observability)
+microcopy,1.0,UI_UX_디자이너,UX-IA-003,UX 라이팅
+microinteraction,1.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+microservice,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+migration,1.0,백엔드,BE-DB-006,DB 마이그레이션
+mixpanel,1.0,UI_UX_디자이너,UX-RSCH-003,데이터 기반 의사결정
+mobile first,1.0,UI_UX_디자이너,UX-VIS-003,반응형·다크모드
+mockito,1.0,백엔드,BE-TEST-001,단위 테스트
+module,1.0,인프라_클라우드,IC-IAC-001,Terraform
+mongodb,1.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+monolith,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+motion,1.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+msa,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+msw,1.0,프론트엔드,FE-TEST-001,단위 테스트
+multi-module,1.0,백엔드,BE-LANG-007,빌드·의존성 관리
+mysql,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+n+1,2.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+n+1,2.0,백엔드,BE-DB-002,쿼리 최적화
+nacl,1.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+nas,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+next.js,1.0,프론트엔드,FE-LANG-003,Next.js
+next.js image,1.0,프론트엔드,FE-PERF-003,이미지·미디어 최적화
+nfs,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+ngfw,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+nielsen,1.0,UI_UX_디자이너,UX-RSCH-002,사용성 평가
+normalization,1.0,백엔드,BE-DB-003,ERD·데이터 모델링
+nosql,1.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+nuxt,1.0,프론트엔드,FE-LANG-004,Vue / Angular (부가)
+oauth2,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+offsite,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+onboarding,1.0,인프라_시스템운영,IO-ITAM-003,기술 지원·교육
+oop,1.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+openapi,1.0,백엔드,BE-API-002,API 문서화
+opentelemetry,2.0,백엔드,BE-OPS-003,관측성(Observability)
+opentelemetry,2.0,인프라_클라우드,IC-OBS-002,트레이싱
+optimistic,1.0,백엔드,BE-PERF-003,동시성 제어
+ospf,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+outbox,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+owasp,1.0,인프라_클라우드,IC-NETSEC-003,보안 스캐닝·인증
+pact,1.0,백엔드,BE-TEST-003,E2E·계약 테스트
+pagination,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+partition,1.0,백엔드,BE-MSG-001,Kafka
+patch management,1.0,인프라_시스템운영,IO-SEC-001,보안 정책·운영
+performance,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+persistence,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+persona,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+pessimistic,1.0,백엔드,BE-PERF-003,동시성 제어
+phishing,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+photoshop,2.0,UI_UX_디자이너,UX-TOOL-002,Sketch / Adobe XD (부가)
+photoshop,2.0,UI_UX_디자이너,UX-TOOL-003,Photoshop / Illustrator
+pipeline,2.0,백엔드,BE-OPS-002,CI/CD
+pipeline,2.0,인프라_클라우드,IC-CICD-002,Jenkins (부가)
+playbook,1.0,인프라_클라우드,IC-IAC-002,Ansible / 설정 관리
+playwright,1.0,프론트엔드,FE-TEST-002,E2E 테스트
+plugin,1.0,UI_UX_디자이너,UX-TOOL-001,Figma
+pod,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+policy,1.0,인프라_클라우드,IC-NETSEC-002,IAM·시크릿
+port,1.0,백엔드,BE-ARCH-003,계층화·헥사고날·클린
+postgresql,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+powershell,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+pr,3.0,백엔드,BE-COL-001,Git/GitHub 흐름
+pr,3.0,백엔드,BE-COL-002,코드 리뷰
+pr,3.0,프론트엔드,FE-COL-003,Git/GitHub 흐름
+prettier,1.0,프론트엔드,FE-BUILD-002,린팅·포매팅
+principle,1.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+producer,1.0,백엔드,BE-MSG-001,Kafka
+projection,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+prometheus,2.0,백엔드,BE-OPS-003,관측성(Observability)
+prometheus,2.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+promise,1.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+protocol buffer,1.0,백엔드,BE-API-004,GraphQL or gRPC
+prototype,2.0,UI_UX_디자이너,UX-TOOL-001,Figma
+prototype,2.0,UI_UX_디자이너,UX-IA-002,프로토타이핑
+proxmox,1.0,인프라_시스템운영,IO-VIRT-002,Hyper-V / KVM
+pub/sub,2.0,백엔드,BE-DB-004,Redis (캐시·세션)
+pub/sub,2.0,백엔드,BE-ARCH-004,이벤트 기반 아키텍처
+qnap,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+qualitative,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+quantitative,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+query plan,1.0,백엔드,BE-DB-002,쿼리 최적화
+querydsl,1.0,백엔드,BE-LANG-004,QueryDSL / 동적 쿼리
+queue,1.0,백엔드,BE-MSG-002,RabbitMQ / 일반 큐
+rabbitmq,1.0,백엔드,BE-MSG-002,RabbitMQ / 일반 큐
+race condition,1.0,백엔드,BE-PERF-003,동시성 제어
+radix,1.0,프론트엔드,FE-STYL-003,컴포넌트 디자인
+raid,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+ransomware,1.0,인프라_시스템운영,IO-SEC-004,랜섬웨어 대응
+ransomware recovery,1.0,인프라_시스템운영,IO-STOR-003,데이터 복구
+raster,1.0,UI_UX_디자이너,UX-TOOL-003,Photoshop / Illustrator
+rbac,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+rdbms,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+rds,2.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+rds,2.0,인프라_시스템운영,IO-VIRT-003,VDI / 원격 데스크톱
+react,1.0,프론트엔드,FE-LANG-002,React
+react hook form,1.0,프론트엔드,FE-STATE-002,Form 처리
+react query,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+react testing library,1.0,프론트엔드,FE-TEST-001,단위 테스트
+reactor,1.0,백엔드,BE-LANG-006,비동기·리액티브
+readme,1.0,백엔드,BE-COL-003,기술 문서화
+rebase,1.0,백엔드,BE-COL-001,Git/GitHub 흐름
+recoil,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+recovery,1.0,인프라_시스템운영,IO-STOR-003,데이터 복구
+redis,1.0,백엔드,BE-DB-004,Redis (캐시·세션)
+redlock,1.0,백엔드,BE-DB-004,Redis (캐시·세션)
+redux,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+repository,1.0,백엔드,BE-LANG-003,Spring Data JPA / Hibernate
+responsive,2.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+responsive,2.0,UI_UX_디자이너,UX-VIS-003,반응형·다크모드
+rest,1.0,백엔드,BE-API-001,REST API 설계
+rest assured,1.0,백엔드,BE-TEST-003,E2E·계약 테스트
+restful,1.0,백엔드,BE-API-001,REST API 설계
+retro,1.0,백엔드,BE-COL-004,애자일·스크럼
+retry,1.0,프론트엔드,FE-STATE-003,API 통신
+reusable,1.0,프론트엔드,FE-STYL-003,컴포넌트 디자인
+rfc,1.0,백엔드,BE-COL-003,기술 문서화
+role,2.0,인프라_클라우드,IC-IAC-002,Ansible / 설정 관리
+role,2.0,인프라_클라우드,IC-NETSEC-002,IAM·시크릿
+rollback,1.0,인프라_클라우드,IC-CICD-003,배포 전략
+rolling,1.0,인프라_클라우드,IC-CICD-003,배포 전략
+rollup,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+route table,1.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+router,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+routing,1.0,백엔드,BE-MSG-002,RabbitMQ / 일반 큐
+rpo,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+rsc,1.0,프론트엔드,FE-LANG-003,Next.js
+rtl,1.0,프론트엔드,FE-TEST-001,단위 테스트
+rto,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+runbook,1.0,백엔드,BE-COL-003,기술 문서화
+runner,1.0,인프라_클라우드,IC-CICD-001,GitHub Actions
+s3,1.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+saga,1.0,백엔드,BE-ARCH-001,모놀리식 vs MSA
+san,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+sast,1.0,인프라_클라우드,IC-NETSEC-003,보안 스캐닝·인증
+scaling,1.0,백엔드,BE-PERF-002,부하 분산·스케일링
+schema,1.0,백엔드,BE-API-004,GraphQL or gRPC
+schema design,1.0,백엔드,BE-DB-003,ERD·데이터 모델링
+schema version,1.0,백엔드,BE-DB-006,DB 마이그레이션
+screen reader,2.0,프론트엔드,FE-PERF-002,접근성(a11y)
+screen reader,2.0,UI_UX_디자이너,UX-COL-002,접근성(a11y)
+scrum,1.0,백엔드,BE-COL-004,애자일·스크럼
+search,1.0,백엔드,BE-DB-005,NoSQL (MongoDB / Elasticsearch)
+secrets manager,1.0,인프라_클라우드,IC-NETSEC-002,IAM·시크릿
+security group,1.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+sed,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+semantic,1.0,프론트엔드,FE-STYL-001,CSS·HTML 기초
+sentinelone,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+server action,1.0,프론트엔드,FE-LANG-003,Next.js
+server component,1.0,프론트엔드,FE-LANG-002,React
+service,1.0,인프라_클라우드,IC-CONT-002,Kubernetes
+shadcn/ui,1.0,프론트엔드,FE-STYL-003,컴포넌트 디자인
+sharding,1.0,백엔드,BE-PERF-002,부하 분산·스케일링
+shell script,1.0,인프라_시스템운영,IO-OS-003,셸 스크립팅
+siem,1.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+sigma,1.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+sitemap,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+sketch,2.0,UI_UX_디자이너,UX-TOOL-002,Sketch / Adobe XD (부가)
+sketch,2.0,UI_UX_디자이너,UX-TOOL-003,Photoshop / Illustrator
+sla,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+sli,1.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+slo,2.0,백엔드,BE-OPS-003,관측성(Observability)
+slo,2.0,인프라_클라우드,IC-OBS-001,메트릭·모니터링
+slow query,1.0,백엔드,BE-DB-002,쿼리 최적화
+smb,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+snapshot,1.0,인프라_시스템운영,IO-STOR-003,데이터 복구
+snipe-it,1.0,인프라_시스템운영,IO-ITAM-001,IT 자산 관리
+snyk,1.0,인프라_클라우드,IC-NETSEC-003,보안 스캐닝·인증
+spf,1.0,인프라_시스템운영,IO-SEC-003,이메일 보안·계정 탈취 대응
+splunk,1.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+spring boot,1.0,백엔드,BE-LANG-002,Spring Boot
+spring framework,1.0,백엔드,BE-LANG-002,Spring Boot
+spring security,1.0,백엔드,BE-LANG-005,Spring Security / 인증
+springboottest,1.0,백엔드,BE-TEST-002,통합 테스트
+springdoc,1.0,백엔드,BE-API-002,API 문서화
+sprint,1.0,백엔드,BE-COL-004,애자일·스크럼
+sql,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+srcset,1.0,프론트엔드,FE-PERF-003,이미지·미디어 최적화
+ssg,1.0,프론트엔드,FE-LANG-003,Next.js
+ssid,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+ssl vpn,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+ssr,1.0,프론트엔드,FE-LANG-003,Next.js
+stampede,1.0,백엔드,BE-PERF-001,캐시 전략
+starter,1.0,백엔드,BE-LANG-002,Spring Boot
+state,1.0,인프라_클라우드,IC-IAC-001,Terraform
+stateless,1.0,백엔드,BE-PERF-002,부하 분산·스케일링
+status code,1.0,백엔드,BE-API-001,REST API 설계
+storybook,5.0,프론트엔드,FE-COL-001,디자이너 협업
+storybook,5.0,프론트엔드,FE-COL-002,Storybook
+storybook,5.0,UI_UX_디자이너,UX-DS-002,컴포넌트 체계
+storybook,5.0,UI_UX_디자이너,UX-DS-003,Storybook·문서화
+storybook,5.0,UI_UX_디자이너,UX-COL-001,개발자 협업·핸드오프
+stp,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+strace,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+stream,2.0,백엔드,BE-LANG-001,Java/Kotlin 기초
+stream,2.0,백엔드,BE-DB-004,Redis (캐시·세션)
+style dictionary,1.0,UI_UX_디자이너,UX-DS-001,디자인 토큰
+styled components,1.0,프론트엔드,FE-STYL-002,Tailwind / CSS-in-JS
+subnet,1.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+supernova,1.0,UI_UX_디자이너,UX-DS-003,Storybook·문서화
+survey,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+suspense,1.0,프론트엔드,FE-LANG-002,React
+svg,1.0,UI_UX_디자이너,UX-VIS-002,아이콘·일러스트
+swagger,1.0,백엔드,BE-API-002,API 문서화
+switch,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+swr,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+synology,1.0,인프라_시스템운영,IO-STOR-001,NAS / SAN 관리
+systemd,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+tailwind,1.0,프론트엔드,FE-STYL-002,Tailwind / CSS-in-JS
+tanstack query,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리
+tdd,1.0,백엔드,BE-TEST-001,단위 테스트
+terraform,1.0,인프라_클라우드,IC-IAC-001,Terraform
+testcontainers,1.0,백엔드,BE-TEST-002,통합 테스트
+theming,1.0,UI_UX_디자이너,UX-VIS-003,반응형·다크모드
+think aloud,1.0,UI_UX_디자이너,UX-RSCH-002,사용성 평가
+threat intelligence,1.0,인프라_시스템운영,IO-SEC-001,보안 정책·운영
+throughput,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+token refresh,1.0,프론트엔드,FE-STATE-003,API 통신
+top,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+topic,1.0,백엔드,BE-MSG-001,Kafka
+tps,1.0,백엔드,BE-PERF-004,대용량 트래픽 처리
+tracing,2.0,백엔드,BE-OPS-003,관측성(Observability)
+tracing,2.0,인프라_클라우드,IC-OBS-002,트레이싱
+training,1.0,인프라_시스템운영,IO-ITAM-003,기술 지원·교육
+transaction,1.0,백엔드,BE-DB-001,관계형 DB·SQL 기본
+tree shaking,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+trivy,1.0,인프라_클라우드,IC-NETSEC-003,보안 스캐닝·인증
+trunk,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+ttl,2.0,백엔드,BE-DB-004,Redis (캐시·세션)
+ttl,2.0,백엔드,BE-PERF-001,캐시 전략
+typescript,1.0,프론트엔드,FE-LANG-001,JavaScript / TypeScript
+typography,1.0,UI_UX_디자이너,UX-VIS-001,타이포·컬러·그리드
+ubuntu,1.0,인프라_시스템운영,IO-OS-001,Linux 운영
+unit test,1.0,백엔드,BE-TEST-001,단위 테스트
+uri,1.0,백엔드,BE-API-001,REST API 설계
+usability test,1.0,UI_UX_디자이너,UX-RSCH-002,사용성 평가
+useeffect,1.0,프론트엔드,FE-LANG-002,React
+user flow,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+user research,1.0,UI_UX_디자이너,UX-RSCH-001,리서치 방법론
+usestate,1.0,프론트엔드,FE-LANG-002,React
+ux writing,1.0,UI_UX_디자이너,UX-IA-003,UX 라이팅
+v3,1.0,인프라_시스템운영,IO-SEC-002,엔드포인트 보안
+validation,1.0,프론트엔드,FE-STATE-002,Form 처리
+variables,1.0,UI_UX_디자이너,UX-DS-001,디자인 토큰
+variant,1.0,UI_UX_디자이너,UX-TOOL-001,Figma
+vcenter,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+vdi,1.0,인프라_시스템운영,IO-VIRT-003,VDI / 원격 데스크톱
+vector,1.0,UI_UX_디자이너,UX-TOOL-003,Photoshop / Illustrator
+veeam,1.0,인프라_시스템운영,IO-STOR-002,백업·재해복구
+version,1.0,UI_UX_디자이너,UX-COL-003,Git/디자인 버전 관리
+versioning,1.0,백엔드,BE-API-001,REST API 설계
+visual regression,1.0,프론트엔드,FE-TEST-002,E2E 테스트
+vite,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+vitest,1.0,프론트엔드,FE-TEST-001,단위 테스트
+vlan,1.0,인프라_시스템운영,IO-NET-001,L2/L3 스위칭·라우팅
+vmotion,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+vmware,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+voice and tone,1.0,UI_UX_디자이너,UX-IA-003,UX 라이팅
+vpc,2.0,인프라_클라우드,IC-CLOUD-001,AWS 기본
+vpc,2.0,인프라_클라우드,IC-NETSEC-001,네트워크 기초
+vpn,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+vsphere,1.0,인프라_시스템운영,IO-VIRT-001,VMware ESXi / vSphere
+vue,1.0,프론트엔드,FE-LANG-004,Vue / Angular (부가)
+vulnerability,1.0,인프라_시스템운영,IO-SEC-001,보안 정책·운영
+wazuh,1.0,인프라_시스템운영,IO-SEC-005,SIEM·로그 분석
+wcag,2.0,프론트엔드,FE-PERF-002,접근성(a11y)
+wcag,2.0,UI_UX_디자이너,UX-COL-002,접근성(a11y)
+web vitals,1.0,프론트엔드,FE-PERF-001,코어 웹 바이탈
+webflux,1.0,백엔드,BE-LANG-006,비동기·리액티브
+webp,1.0,프론트엔드,FE-PERF-003,이미지·미디어 최적화
+webpack,1.0,프론트엔드,FE-BUILD-001,번들러 / 빌드 도구
+wi-fi,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+windows server,1.0,인프라_시스템운영,IO-OS-002,Windows Server
+wireframe,1.0,UI_UX_디자이너,UX-IA-001,IA·와이어프레임
+wireguard,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+wireless controller,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+workflow,1.0,인프라_클라우드,IC-CICD-001,GitHub Actions
+workspace,1.0,인프라_클라우드,IC-IAC-001,Terraform
+wpa2,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+wpa3,1.0,인프라_시스템운영,IO-NET-003,Wi-Fi·무선
+yup,1.0,프론트엔드,FE-STATE-002,Form 처리
+zendesk,1.0,인프라_시스템운영,IO-ITAM-002,헬프데스크·티켓 운영
+zero trust,1.0,인프라_시스템운영,IO-NET-002,방화벽·VPN
+zeroheight,1.0,UI_UX_디자이너,UX-DS-003,Storybook·문서화
+zipkin,2.0,백엔드,BE-OPS-003,관측성(Observability)
+zipkin,2.0,인프라_클라우드,IC-OBS-002,트레이싱
+zod,1.0,프론트엔드,FE-STATE-002,Form 처리
+zustand,1.0,프론트엔드,FE-STATE-001,상태관리 라이브러리

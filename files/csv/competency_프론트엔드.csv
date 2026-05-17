@@ -1,0 +1,21 @@
+﻿카테고리,역량_ID,역량명,신입 (0년),주니어 (1-2년),시니어 (3-5년),리드 (5년+),매칭 키워드,부족 시 보완 액션,가중치
+언어·프레임워크,FE-LANG-001,JavaScript / TypeScript,"기본 문법, 비동기(Promise) 이해",TypeScript 타입 시스템 능숙. ES6+ 기능 활용,"고급 타입(제네릭·매핑드 타입), 비동기 흐름 제어",타입 정책·코딩 컨벤션 수립,"JavaScript,TypeScript,ES6,Promise,Async,Generic",TypeScript Deep Dive 정독. 기존 JS 프로젝트를 TS로 마이그레이션,5
+언어·프레임워크,FE-LANG-002,React,함수형 컴포넌트·Hooks 기본,"상태 관리, useEffect 의존성, 메모이제이션","Suspense·Server Component, 동시성 모드, 렌더링 최적화",프레임워크 선택 의사결정·아키텍처,"React,Hooks,JSX,useState,useEffect,Suspense,Server Component",본 프로젝트 프론트엔드 컴포넌트 직접 작성,5
+언어·프레임워크,FE-LANG-003,Next.js,App Router 페이지 생성,라우팅·레이아웃·Server Action 활용,"RSC 최적화, ISR/SSR/SSG 선택, 미들웨어",Next.js 기반 풀스택 아키텍처,"Next.js,App Router,RSC,SSR,SSG,ISR,Server Action",본 프로젝트 페이지 5개를 Next.js App Router로 구성,5
+언어·프레임워크,FE-LANG-004,Vue / Angular (부가),용어 수준,튜토리얼 수준 사용 경험,팀 표준에 맞춰 운영 가능,프레임워크 비교·의사결정,"Vue,Angular,Nuxt",React와 비교 위해 Vue 튜토리얼 1회,1
+스타일링·UI,FE-STYL-001,CSS·HTML 기초,Flexbox·Grid 기본 사용,"반응형 디자인, 미디어 쿼리","CSS 아키텍처(ITCSS·BEM), 모션·애니메이션",디자인 시스템 설계,"CSS,HTML,Flexbox,Grid,Responsive,BEM,Semantic",본 프로젝트의 1개 페이지를 반응형으로 직접 작성,5
+스타일링·UI,FE-STYL-002,Tailwind / CSS-in-JS,tailwind 클래스 검색해서 사용,"유틸리티 컴포지션, 디자인 토큰화","디자인 시스템 매핑, 다크모드·테마",스타일링 표준 수립,"Tailwind,CSS-in-JS,Styled Components,Emotion,Design Token",본 프로젝트에 Tailwind 도입 + 컴포넌트화,4
+스타일링·UI,FE-STYL-003,컴포넌트 디자인,기본 UI 컴포넌트(버튼·인풋) 작성,재사용 가능한 컴포넌트 라이브러리 작성,"Headless UI 패턴, 접근성 고려 컴포넌트",디자인 시스템 책임자,"Component,Headless UI,shadcn/ui,Radix,Reusable",shadcn/ui 도입 또는 자체 컴포넌트 5개 라이브러리화,3
+상태관리·데이터,FE-STATE-001,상태관리 라이브러리,useState로 로컬 상태 관리,"Context API, Redux/Zustand 1개 능숙",서버 상태 vs 클라이언트 상태 분리 (TanStack Query),상태관리 전략 표준,"Redux,Zustand,Recoil,Context,TanStack Query,React Query,SWR",본 프로젝트에 TanStack Query 도입 + 캐싱 전략,4
+상태관리·데이터,FE-STATE-002,Form 처리,controlled input 기본,React Hook Form 또는 Formik 사용,"복잡한 폼 검증, 단계별 폼, 동적 필드",폼 표준화·재사용 패턴,"Form,React Hook Form,Formik,Validation,Yup,Zod",본 프로젝트의 자소서 작성 폼을 RHF + Zod로 구현,3
+상태관리·데이터,FE-STATE-003,API 통신,fetch/axios 기본,인터셉터·에러 핸들링·재시도,토큰 갱신·캐시·요청 중복 제거,통신 레이어 표준,"Fetch,Axios,Interceptor,Retry,Token Refresh",axios 인터셉터로 JWT 자동 갱신 구현,3
+성능·접근성,FE-PERF-001,코어 웹 바이탈,LCP/FCP 용어 이해,"측정 도구(Lighthouse) 사용, 이미지 최적화","코드 스플리팅, Lazy Loading, 번들 분석",성능 예산·모니터링 표준,"LCP,FCP,CLS,Lighthouse,Web Vitals,Bundle Analysis",본 프로젝트의 1개 페이지에 Lighthouse 점수 90+ 만들기,4
+성능·접근성,FE-PERF-002,접근성(a11y),alt 속성·label 작성,"ARIA 속성·키보드 네비게이션, 시맨틱 HTML","스크린 리더 테스트, WCAG 준수",접근성 정책 수립,"Accessibility,a11y,ARIA,WCAG,Screen Reader,Keyboard Nav",본 프로젝트의 1개 페이지에 WCAG AA 준수,3
+성능·접근성,FE-PERF-003,이미지·미디어 최적화,JPG/PNG 차이 이해,"WebP/AVIF 사용, srcset","Next.js Image 컴포넌트 활용, CDN 최적화",미디어 파이프라인 설계,"Image Optimization,WebP,AVIF,Next.js Image,srcset",본 프로젝트 이미지를 Next.js Image로 전환,2
+빌드·도구,FE-BUILD-001,번들러 / 빌드 도구,create-react-app·next dev 사용,Vite/Webpack 기본 설정,트리쉐이킹·코드 스플리팅 최적화,빌드 인프라 설계,"Vite,Webpack,Rollup,esbuild,Bundle,Tree Shaking",Vite 구성 직접 만들어보기,2
+빌드·도구,FE-BUILD-002,린팅·포매팅,Prettier 설치 사용,ESLint 규칙 커스터마이징,"팀 컨벤션 정립, pre-commit 훅",조직 표준·자동화,"ESLint,Prettier,Husky,lint-staged",본 프로젝트에 ESLint + Prettier + Husky 설정,2
+테스트,FE-TEST-001,단위 테스트,Jest 기본 사용,RTL(React Testing Library)로 컴포넌트 테스트,"테스트 더블, MSW로 API 모킹",테스트 표준 수립,"Jest,React Testing Library,RTL,MSW,Vitest",본 프로젝트 핵심 컴포넌트 5개에 단위 테스트,3
+테스트,FE-TEST-002,E2E 테스트,용어 수준,Playwright 또는 Cypress 기본 시나리오,"테스트 데이터·환경 격리, 시각적 회귀",E2E 전략·인프라,"Playwright,Cypress,E2E,Visual Regression",본 프로젝트 회원가입~자소서 작성 시나리오 E2E,2
+협업·디자인 협업,FE-COL-001,디자이너 협업,Figma 시안 보고 구현,"디자인 토큰·컴포넌트 매핑, 핸드오프 도구 활용","디자이너와 컴포넌트 공동 설계, 디자인 시스템 기여",디자인-개발 경계 정의,"Figma,Design Token,Handoff,Storybook,Design System",본 프로젝트 디자인 시스템 토큰을 코드로 옮기기,3
+협업·디자인 협업,FE-COL-002,Storybook,용어 수준,컴포넌트 단위 카탈로그 작성,"Interaction Test, Chromatic 시각 회귀",조직 컴포넌트 카탈로그 운영,"Storybook,Chromatic,Component Catalog",공통 컴포넌트 10개를 Storybook으로 정리,2
+협업·디자인 협업,FE-COL-003,Git/GitHub 흐름,기본 clone/commit,브랜치 전략·PR,리뷰·릴리즈 관리,조직 정책,"Git,GitHub,Branch,PR",오픈소스 PR 1건,5
