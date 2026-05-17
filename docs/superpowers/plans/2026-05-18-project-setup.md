@@ -187,11 +187,11 @@ redis_data/
 POSTGRES_DB=twochi
 POSTGRES_USER=twochi
 POSTGRES_PASSWORD=changeme
-POSTGRES_PORT=5432
+POSTGRES_PORT=5433   # 호스트 노출 포트 (호스트 Postgres 충돌 방지). 컨테이너 내부는 5432.
 
 # ===== Backend (Spring Boot 가 읽음) =====
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=5433
 DB_NAME=twochi
 DB_USER=twochi
 DB_PASSWORD=changeme
@@ -237,14 +237,25 @@ Expected: `twochi-postgres`, `twochi-minio`, `twochi-redis` 가 `healthy` 또는
 docker compose down
 ```
 
-- [ ] **Step 6: 커밋**
+- [ ] **Step 6: 이미 커밋된 .DS_Store 제거**
+
+Task 1 에서 `.DS_Store` 가 일부 커밋됐으므로 .gitignore 작성 후 untrack:
+
+```bash
+git rm --cached docs/.DS_Store docs/portfolio/.DS_Store files/.DS_Store 2>/dev/null || true
+find . -name '.DS_Store' -not -path './node_modules/*' -not -path './.git/*' 2>/dev/null
+```
+
+Verify: `git ls-files | grep DS_Store` → 출력 없음
+
+- [ ] **Step 7: 커밋**
 
 ```bash
 git add .gitignore .env.example docker-compose.yml backend/src/main/resources/db/migration/V1__init_schema.sql
 git status
 ```
 
-Verify: `.env` 는 staged 되지 않음 (gitignore 작동 확인).
+Verify: `.env` 는 staged 되지 않음 (gitignore 작동 확인). `.DS_Store` 들이 deleted (staged) 상태.
 
 ```bash
 git commit -m "chore: 모노레포 디렉토리 + .gitignore + 인프라 파일 이동"
@@ -337,7 +348,7 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:twochi}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:twochi}
     username: ${DB_USER:twochi}
     password: ${DB_PASSWORD:changeme}
     driver-class-name: org.postgresql.Driver
