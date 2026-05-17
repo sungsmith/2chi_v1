@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "../styles/tokens.css";
 
+/* TODO: MemomentKkukkukk(--font-family-hand) 폰트 파일 추가 — design_system/uploads/MemomentKkukkukkR.woff2 를 frontend/public/fonts/ 로 복사 후 여기에 @font-face 선언. 그 전까지는 fallback 폰트 적용됨. */
+
 html, body {
   padding: 0;
   margin: 0;

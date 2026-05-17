@@ -279,7 +279,7 @@ cd /Users/sungjiwon/claude/2chi_v1
 curl -G https://start.spring.io/starter.zip \
   -d type=gradle-project-kotlin \
   -d language=java \
-  -d bootVersion=3.3.4 \
+  -d bootVersion=3.5.6 \
   -d baseDir=backend \
   -d groupId=com.twochi \
   -d artifactId=twochi \
@@ -312,7 +312,7 @@ Verify:
 
 `backend/build.gradle.kts` 를 읽어서 다음이 들어 있는지 확인:
 
-- `id("org.springframework.boot") version "3.3.4"`
+- `id("org.springframework.boot") version "3.5.6"` (또는 Initializr 가 반환한 최신 stable)
 - `implementation("org.springframework.boot:spring-boot-starter-web")`
 - `implementation("org.springframework.boot:spring-boot-starter-data-jpa")`
 - `implementation("org.springframework.boot:spring-boot-starter-validation")`
