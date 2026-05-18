@@ -1,5 +1,6 @@
 package com.twochi.common.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -33,6 +35,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnknown(Exception ex) {
         String traceId = UUID.randomUUID().toString();
+        log.error("Unhandled exception. traceId={}", traceId, ex);
         return ResponseEntity
             .status(ErrorCode.INTERNAL_ERROR.status())
             .body(ErrorResponse.of(ErrorCode.INTERNAL_ERROR, traceId));
