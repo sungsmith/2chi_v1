@@ -3,6 +3,7 @@ package com.twochi.auth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twochi.consent.repository.ConsentLogRepository;
 import com.twochi.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,13 @@ class LoginIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(signup)))
             .andExpect(status().isCreated());
+    }
+
+    @AfterEach
+    void tearDown() {
+        consentLogRepository.deleteAll();
+        userRepository.deleteAll();
+        redis.getConnection().serverCommands().flushDb();
     }
 
     @Test
