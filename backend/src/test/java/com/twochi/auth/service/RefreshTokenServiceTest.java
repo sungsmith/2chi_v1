@@ -29,16 +29,17 @@ class RefreshTokenServiceTest {
     @Test
     void rotate_invalidatesOldAndIssuesNew() {
         String old = service.issue(42L);
-        String fresh = service.rotate(old);
+        RefreshTokenService.RotateResult fresh = service.rotate(old);
 
         assertThat(service.findUserId(old)).isEmpty();
-        assertThat(service.findUserId(fresh)).contains(42L);
+        assertThat(service.findUserId(fresh.newToken())).contains(42L);
+        assertThat(fresh.userId()).isEqualTo(42L);
     }
 
     @Test
     void rotate_unknownToken_throws() {
         org.junit.jupiter.api.Assertions.assertThrows(
-            IllegalStateException.class,
+            com.twochi.common.exception.BusinessException.class,
             () -> service.rotate("not-a-real-token")
         );
     }

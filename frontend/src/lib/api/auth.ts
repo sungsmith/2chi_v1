@@ -1,4 +1,4 @@
-import { apiUrl, setAccessToken, http } from "./http";
+import { apiUrl, setAccessToken } from "./http";
 
 export type SignupPayload = {
   email: string;
@@ -63,9 +63,16 @@ export async function logout(): Promise<void> {
   setAccessToken(null);
 }
 
-export async function fetchMe(): Promise<AuthUser | null> {
-  const res = await http("/api/v1/users/me");
-  if (!res.ok) return null;
-  const body = await res.json() as { userId: number; email: string; nickname: string; role: string };
-  return { userId: body.userId, email: body.email, nickname: body.nickname };
+export async function restoreSession(): Promise<AuthUser | null> {
+  const res = await fetch(apiUrl("/api/v1/auth/refresh"), {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!res.ok) {
+    setAccessToken(null);
+    return null;
+  }
+  const body = await res.json() as { accessToken: string; user: AuthUser };
+  setAccessToken(body.accessToken);
+  return body.user;
 }

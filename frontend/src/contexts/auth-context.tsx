@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { AuthUser, fetchMe, login as apiLogin, logout as apiLogout } from "@/lib/api/auth";
+import { AuthUser, restoreSession, login as apiLogin, logout as apiLogout } from "@/lib/api/auth";
 
 type AuthContextValue = {
   user: AuthUser | null;
@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let alive = true;
-    fetchMe()
+    restoreSession()
       .then((u) => { if (alive) setUser(u); })
       .finally(() => { if (alive) setInitialized(true); });
     return () => { alive = false; };

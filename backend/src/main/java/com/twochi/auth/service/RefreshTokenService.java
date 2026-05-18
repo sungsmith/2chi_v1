@@ -42,11 +42,14 @@ public class RefreshTokenService {
         return Optional.of(Long.parseLong(value));
     }
 
-    public String rotate(String oldRaw) {
+    public record RotateResult(String newToken, Long userId) {}
+
+    public RotateResult rotate(String oldRaw) {
         Long userId = findUserId(oldRaw)
-            .orElseThrow(() -> new IllegalStateException("Refresh token not found"));
+            .orElseThrow(() -> new com.twochi.common.exception.BusinessException(
+                com.twochi.common.exception.ErrorCode.INVALID_REFRESH_TOKEN));
         revoke(oldRaw);
-        return issue(userId);
+        return new RotateResult(issue(userId), userId);
     }
 
     public void revoke(String raw) {

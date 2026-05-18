@@ -91,14 +91,13 @@ public class AuthController {
         if (oldToken == null || oldToken.isBlank()) {
             throw new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN);
         }
-        Long userId = refreshTokenService.findUserId(oldToken)
-            .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
+        RefreshTokenService.RotateResult rotated = refreshTokenService.rotate(oldToken);
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(rotated.userId())
             .filter(u -> u.getDeletedAt() == null)
             .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
 
-        String newToken = refreshTokenService.rotate(oldToken);
+        String newToken = rotated.newToken();
         String access = jwtTokenProvider.issue(user.getId(), user.getEmail(), user.getNickname(), user.getRole());
 
         LoginResponse response = new LoginResponse(
