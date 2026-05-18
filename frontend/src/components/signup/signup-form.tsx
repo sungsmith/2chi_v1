@@ -175,7 +175,6 @@ export function SignupForm() {
         onChange={(e) => handleField("password", e.target.value)}
         onBlur={() => handleBlur("password")}
         error={errors.password}
-        helper="8자 이상, 영문/숫자/특수문자 중 2종 이상"
         required
         autoComplete="new-password"
       />
@@ -188,7 +187,7 @@ export function SignupForm() {
         onChange={(e) => handleField("nickname", e.target.value)}
         onBlur={() => handleBlur("nickname")}
         error={errors.nickname}
-        helper="2~20자, 한글/영문/숫자만"
+        helper="2~20자, 한글/영문/숫자 및 -, _"
         required
       />
 

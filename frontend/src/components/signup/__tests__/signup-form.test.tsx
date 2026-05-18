@@ -32,16 +32,19 @@ describe("SignupForm", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  test("비밀번호 1종만 입력 시 onBlur 검증 에러", async () => {
-    const user = userEvent.setup();
-    render(<SignupForm />);
-
-    const pw = screen.getByLabelText(/비밀번호/);
-    await user.type(pw, "abcdefgh");
-    await user.tab();
-
-    expect(screen.getByText("영문, 숫자, 특수문자 중 2종 이상을 조합해주세요.")).toBeInTheDocument();
-  });
+  // v1 클로즈드 베타: 비밀번호 정책 완화로 비활성화.
+  // 서비스 출시 시 lib/validation/signup.ts 의 password 규칙 주석 해제와 함께 활성화.
+  //
+  // test("비밀번호 1종만 입력 시 onBlur 검증 에러", async () => {
+  //   const user = userEvent.setup();
+  //   render(<SignupForm />);
+  //
+  //   const pw = screen.getByLabelText(/비밀번호/);
+  //   await user.type(pw, "abcdefgh");
+  //   await user.tab();
+  //
+  //   expect(screen.getByText("영문, 숫자, 특수문자 중 2종 이상을 조합해주세요.")).toBeInTheDocument();
+  // });
 
   test("정상 입력 + 약관·개인정보 체크 후 submit 시 fetch 호출 페이로드 정확", async () => {
     fetchMock.mockResolvedValueOnce({
@@ -52,7 +55,7 @@ describe("SignupForm", () => {
     render(<SignupForm />);
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
-    await user.type(screen.getByLabelText(/비밀번호/), "Pass1234!");
+    await user.type(screen.getByLabelText(/비밀번호/), "123456");
     await user.type(screen.getByLabelText(/닉네임/), "alice");
     await user.click(screen.getByLabelText(/만 14세 이상/));
     await user.click(screen.getByRole("checkbox", { name: /서비스 이용 약관.*동의/ }));
@@ -64,7 +67,7 @@ describe("SignupForm", () => {
     const [, init] = fetchMock.mock.calls[0];
     expect(JSON.parse(init.body)).toEqual({
       email: "a@b.com",
-      password: "Pass1234!",
+      password: "123456",
       nickname: "alice",
       ageConfirmed: true,
       consents: { terms: true, privacy: true, marketing: false },
@@ -85,7 +88,7 @@ describe("SignupForm", () => {
     render(<SignupForm />);
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
-    await user.type(screen.getByLabelText(/비밀번호/), "Pass1234!");
+    await user.type(screen.getByLabelText(/비밀번호/), "123456");
     await user.type(screen.getByLabelText(/닉네임/), "alice");
     await user.click(screen.getByLabelText(/만 14세 이상/));
     await user.click(screen.getByRole("checkbox", { name: /서비스 이용 약관.*동의/ }));

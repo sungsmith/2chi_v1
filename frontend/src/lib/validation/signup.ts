@@ -8,7 +8,7 @@ export type SignupErrors = {
 };
 
 const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-const NICKNAME_RE = /^[가-힣A-Za-z0-9]{2,20}$/;
+const NICKNAME_RE = /^[가-힣A-Za-z0-9_-]{2,20}$/;
 
 export function validateEmail(value: string): string | undefined {
   if (!value) return "이메일을 입력해주세요.";
@@ -17,20 +17,21 @@ export function validateEmail(value: string): string | undefined {
   return undefined;
 }
 
+// v1 클로즈드 베타: 비밀번호 정책 완화 (입력 여부만). 서비스 출시 시 아래 규칙 활성화.
 export function validatePassword(value: string): string | undefined {
   if (!value) return "비밀번호를 입력해주세요.";
-  if (value.length < 8) return "비밀번호는 8자 이상이어야 합니다.";
-  const hasAlpha = /[A-Za-z]/.test(value);
-  const hasDigit = /[0-9]/.test(value);
-  const hasSymbol = /[^A-Za-z0-9]/.test(value);
-  const types = [hasAlpha, hasDigit, hasSymbol].filter(Boolean).length;
-  if (types < 2) return "영문, 숫자, 특수문자 중 2종 이상을 조합해주세요.";
+  // if (value.length < 8) return "비밀번호는 8자 이상이어야 합니다.";
+  // const hasAlpha = /[A-Za-z]/.test(value);
+  // const hasDigit = /[0-9]/.test(value);
+  // const hasSymbol = /[^A-Za-z0-9]/.test(value);
+  // const types = [hasAlpha, hasDigit, hasSymbol].filter(Boolean).length;
+  // if (types < 2) return "영문, 숫자, 특수문자 중 2종 이상을 조합해주세요.";
   return undefined;
 }
 
 export function validateNickname(value: string): string | undefined {
   if (!value) return "닉네임을 입력해주세요.";
-  if (!NICKNAME_RE.test(value)) return "닉네임은 2~20자의 한글/영문/숫자만 가능합니다.";
+  if (!NICKNAME_RE.test(value)) return "닉네임은 2~20자의 한글/영문/숫자 및 -, _ 만 가능합니다.";
   return undefined;
 }
 

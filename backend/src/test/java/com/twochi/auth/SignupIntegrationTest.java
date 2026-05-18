@@ -110,26 +110,29 @@ class SignupIntegrationTest {
             .andExpect(jsonPath("$.code").value("NICKNAME_DUPLICATE"));
     }
 
-    @Test
-    void signup_passwordTooShort_returns400() throws Exception {
-        Map<String, Object> body = withOverride("password", "Pa1!");
-        mockMvc.perform(post("/api/v1/auth/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(body)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
-            .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
-    }
-
-    @Test
-    void signup_passwordOneCharType_returns400() throws Exception {
-        Map<String, Object> body = withOverride("password", "abcdefgh");
-        mockMvc.perform(post("/api/v1/auth/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(body)))
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
-    }
+    // v1 클로즈드 베타: 비밀번호 정책 완화로 아래 두 테스트는 비활성화.
+    // 서비스 출시 시 SignupRequest 의 @Size/@Pattern 주석 해제와 함께 활성화.
+    //
+    // @Test
+    // void signup_passwordTooShort_returns400() throws Exception {
+    //     Map<String, Object> body = withOverride("password", "Pa1!");
+    //     mockMvc.perform(post("/api/v1/auth/signup")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(om.writeValueAsString(body)))
+    //         .andExpect(status().isBadRequest())
+    //         .andExpect(jsonPath("$.code").value("VALIDATION_FAILED"))
+    //         .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
+    // }
+    //
+    // @Test
+    // void signup_passwordOneCharType_returns400() throws Exception {
+    //     Map<String, Object> body = withOverride("password", "abcdefgh");
+    //     mockMvc.perform(post("/api/v1/auth/signup")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(om.writeValueAsString(body)))
+    //         .andExpect(status().isBadRequest())
+    //         .andExpect(jsonPath("$.errors[?(@.field=='password')]").exists());
+    // }
 
     @Test
     void signup_invalidEmail_returns400() throws Exception {
