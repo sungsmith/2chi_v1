@@ -111,6 +111,19 @@ public class AuthController {
             .body(response);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+        @CookieValue(value = "refresh_token", required = false) String token
+    ) {
+        if (token != null && !token.isBlank()) {
+            refreshTokenService.revoke(token);
+        }
+        ResponseCookie expired = buildRefreshCookie("", Duration.ZERO);
+        return ResponseEntity.noContent()
+            .header(HttpHeaders.SET_COOKIE, expired.toString())
+            .build();
+    }
+
     private ResponseCookie buildRefreshCookie(String value, Duration maxAge) {
         return ResponseCookie.from(cookieName, value)
             .httpOnly(true)
