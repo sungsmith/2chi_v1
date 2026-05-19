@@ -60,7 +60,9 @@ describe("LoginForm", () => {
   });
 
   test("정상 로그인 → router.push('/') 호출", async () => {
-    loginMock.mockResolvedValueOnce(undefined);
+    loginMock.mockResolvedValueOnce({
+      userId: 1, email: "a@b.com", nickname: "alice", onboardingCompleted: true
+    });
     const user = userEvent.setup();
     render(<LoginForm />);
 
@@ -103,5 +105,19 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: /로그인/ }));
 
     expect(await screen.findByText(/10분 후 다시 시도/)).toBeInTheDocument();
+  });
+
+  test("로그인 + onboardingCompleted=false → /onboarding 로 이동", async () => {
+    loginMock.mockResolvedValueOnce({
+      userId: 1, email: "a@b.com", nickname: "alice", onboardingCompleted: false
+    });
+    const user = userEvent.setup();
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText(/이메일/), "a@b.com");
+    await user.type(screen.getByLabelText(/비밀번호/), "abc123");
+    await user.click(screen.getByRole("button", { name: /로그인/ }));
+
+    expect(pushMock).toHaveBeenCalledWith("/onboarding");
   });
 });

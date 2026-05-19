@@ -10,7 +10,12 @@ export type SignupPayload = {
 
 export type SignupSuccess = { userId: number; email: string; nickname: string };
 
-export type AuthUser = { userId: number; email: string; nickname: string };
+export type AuthUser = {
+  userId: number;
+  email: string;
+  nickname: string;
+  onboardingCompleted: boolean;
+};
 
 export type SignupError = {
   code: string;

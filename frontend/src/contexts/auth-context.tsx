@@ -6,8 +6,9 @@ import { AuthUser, restoreSession, login as apiLogin, logout as apiLogout } from
 type AuthContextValue = {
   user: AuthUser | null;
   initialized: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -24,9 +25,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => { alive = false; };
   }, []);
 
-  async function login(email: string, password: string) {
+  async function login(email: string, password: string): Promise<AuthUser> {
     const result = await apiLogin(email, password);
     setUser(result.user);
+    return result.user;
   }
 
   async function logout() {
@@ -34,8 +36,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   }
 
+  async function refreshUser() {
+    const u = await restoreSession();
+    setUser(u);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, initialized, login, logout }}>
+    <AuthContext.Provider value={{ user, initialized, login, logout, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
