@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         String traceId = UUID.randomUUID().toString();
         return ResponseEntity
             .status(ex.code().status())
-            .body(ErrorResponse.of(ex.code(), ex.getMessage(), traceId));
+            .body(ErrorResponse.of(ex.code(), ex.getMessage(), traceId, ex.metadata()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

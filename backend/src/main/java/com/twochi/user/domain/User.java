@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
 import java.time.Instant;
 
 @Entity
@@ -64,5 +65,32 @@ public class User {
 
     public static User createEmailUser(String email, String passwordHash, String nickname) {
         return new User(email, passwordHash, nickname);
+    }
+
+    private static final int MAX_FAILURES = 5;
+    private static final Duration LOCK_DURATION = Duration.ofMinutes(10);
+
+    public boolean isLocked(Instant now) {
+        return lockedUntil != null && lockedUntil.isAfter(now);
+    }
+
+    public long retryAfterSeconds(Instant now) {
+        if (!isLocked(now)) return 0;
+        return Duration.between(now, lockedUntil).getSeconds();
+    }
+
+    public void recordLoginFailure(Instant now) {
+        this.failedLoginCount = this.failedLoginCount + 1;
+        if (this.failedLoginCount >= MAX_FAILURES) {
+            this.lockedUntil = now.plus(LOCK_DURATION);
+        }
+        this.updatedAt = now;
+    }
+
+    public void recordLoginSuccess(Instant now) {
+        this.failedLoginCount = 0;
+        this.lockedUntil = null;
+        this.lastLoginAt = now;
+        this.updatedAt = now;
     }
 }
