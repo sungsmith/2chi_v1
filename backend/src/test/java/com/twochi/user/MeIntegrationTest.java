@@ -32,12 +32,14 @@ class MeIntegrationTest {
     @Autowired private ObjectMapper om;
     @Autowired private UserRepository userRepository;
     @Autowired private ConsentLogRepository consentLogRepository;
+    @Autowired private com.twochi.user.repository.ProfileRepository profileRepository;
     @Autowired private RedisConnectionFactory redis;
 
     private String accessToken;
 
     @BeforeEach
     void setUp() throws Exception {
+        profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
         redis.getConnection().serverCommands().flushDb();
@@ -61,6 +63,7 @@ class MeIntegrationTest {
 
     @AfterEach
     void tearDown() {
+        profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
         redis.getConnection().serverCommands().flushDb();
@@ -88,5 +91,32 @@ class MeIntegrationTest {
         mockMvc.perform(get("/api/v1/users/me")
                 .header("Authorization", "Bearer tampered.token.here"))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void me_afterSignupBeforeOnboarding_onboardingCompletedFalse() throws Exception {
+        mockMvc.perform(get("/api/v1/users/me")
+                .header("Authorization", "Bearer " + accessToken))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.onboardingCompleted").value(false));
+    }
+
+    @Test
+    void me_afterOnboarding_onboardingCompletedTrue() throws Exception {
+        Map<String, Object> body = Map.of(
+            "target", "JOB_CHANGE",
+            "careerYear", 3,
+            "targetJobs", java.util.List.of("BACKEND")
+        );
+        mockMvc.perform(post("/api/v1/onboarding")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(body)))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/v1/users/me")
+                .header("Authorization", "Bearer " + accessToken))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.onboardingCompleted").value(true));
     }
 }
