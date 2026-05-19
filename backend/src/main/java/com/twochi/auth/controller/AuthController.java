@@ -10,6 +10,7 @@ import com.twochi.auth.service.RefreshTokenService;
 import com.twochi.auth.service.SignupService;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
+import com.twochi.user.domain.Profile;
 import com.twochi.user.domain.User;
 import com.twochi.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private final com.twochi.user.repository.ProfileRepository profileRepository;
 
     private final String cookieName;
     private final boolean cookieSecure;
@@ -48,6 +50,7 @@ public class AuthController {
         RefreshTokenService refreshTokenService,
         JwtTokenProvider jwtTokenProvider,
         UserRepository userRepository,
+        com.twochi.user.repository.ProfileRepository profileRepository,
         @Value("${app.refresh.cookie-name}") String cookieName,
         @Value("${app.refresh.cookie-secure}") boolean cookieSecure,
         @Value("${app.refresh.cookie-path}") String cookiePath,
@@ -58,6 +61,7 @@ public class AuthController {
         this.refreshTokenService = refreshTokenService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
         this.cookieName = cookieName;
         this.cookieSecure = cookieSecure;
         this.cookiePath = cookiePath;
@@ -100,9 +104,12 @@ public class AuthController {
         String newToken = rotated.newToken();
         String access = jwtTokenProvider.issue(user.getId(), user.getEmail(), user.getNickname(), user.getRole());
 
+        boolean onboardingCompleted = profileRepository.findById(user.getId())
+            .map(Profile::isOnboardingCompleted)
+            .orElse(false);
         LoginResponse response = new LoginResponse(
             access,
-            new LoginResponse.UserPayload(user.getId(), user.getEmail(), user.getNickname())
+            new LoginResponse.UserPayload(user.getId(), user.getEmail(), user.getNickname(), onboardingCompleted)
         );
         ResponseCookie cookie = buildRefreshCookie(newToken, cookieTtl);
         return ResponseEntity.ok()

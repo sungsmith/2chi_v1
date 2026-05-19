@@ -49,8 +49,8 @@ export function LoginForm() {
 
     setSubmitting(true);
     try {
-      await login(email, password);
-      router.push("/");
+      const user = await login(email, password);
+      router.push(user.onboardingCompleted ? "/" : "/onboarding");
     } catch (err) {
       if (err instanceof SignupApiError) {
         if (err.body.code === "INVALID_CREDENTIALS") {

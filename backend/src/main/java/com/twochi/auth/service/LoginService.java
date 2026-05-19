@@ -5,7 +5,9 @@ import com.twochi.auth.dto.LoginResponse;
 import com.twochi.auth.jwt.JwtTokenProvider;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
+import com.twochi.user.domain.Profile;
 import com.twochi.user.domain.User;
+import com.twochi.user.repository.ProfileRepository;
 import com.twochi.user.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,15 +23,18 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenService refreshTokenService;
+    private final ProfileRepository profileRepository;
 
     public LoginService(UserRepository userRepository,
                         PasswordEncoder passwordEncoder,
                         JwtTokenProvider jwtTokenProvider,
-                        RefreshTokenService refreshTokenService) {
+                        RefreshTokenService refreshTokenService,
+                        ProfileRepository profileRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.refreshTokenService = refreshTokenService;
+        this.profileRepository = profileRepository;
     }
 
     public record LoginResult(LoginResponse response, String refreshToken) {}
@@ -60,9 +65,12 @@ public class LoginService {
         String access = jwtTokenProvider.issue(user.getId(), user.getEmail(), user.getNickname(), user.getRole());
         String refresh = refreshTokenService.issue(user.getId());
 
+        boolean onboardingCompleted = profileRepository.findById(user.getId())
+            .map(Profile::isOnboardingCompleted)
+            .orElse(false);
         LoginResponse response = new LoginResponse(
             access,
-            new LoginResponse.UserPayload(user.getId(), user.getEmail(), user.getNickname())
+            new LoginResponse.UserPayload(user.getId(), user.getEmail(), user.getNickname(), onboardingCompleted)
         );
         return new LoginResult(response, refresh);
     }
