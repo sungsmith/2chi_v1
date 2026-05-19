@@ -30,6 +30,7 @@ export function StepCareer({ value, onChange }: Props) {
               key={y.value}
               type="button"
               onClick={() => onChange(y.value)}
+              aria-pressed={selected}
               style={{
                 padding: "var(--space-4)",
                 background: selected ? "var(--color-primary-50)" : "var(--color-surface-default)",

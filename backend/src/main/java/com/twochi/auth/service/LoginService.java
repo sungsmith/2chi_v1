@@ -75,6 +75,30 @@ public class LoginService {
         return new LoginResult(response, refresh);
     }
 
+    @Transactional
+    public LoginResult refresh(String oldRefreshToken) {
+        if (oldRefreshToken == null || oldRefreshToken.isBlank()) {
+            throw new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN);
+        }
+
+        RefreshTokenService.RotateResult rotated = refreshTokenService.rotate(oldRefreshToken);
+
+        User user = userRepository.findById(rotated.userId())
+            .filter(u -> u.getDeletedAt() == null)
+            .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
+
+        String access = jwtTokenProvider.issue(user.getId(), user.getEmail(), user.getNickname(), user.getRole());
+
+        boolean onboardingCompleted = profileRepository.findById(user.getId())
+            .map(Profile::isOnboardingCompleted)
+            .orElse(false);
+        LoginResponse response = new LoginResponse(
+            access,
+            new LoginResponse.UserPayload(user.getId(), user.getEmail(), user.getNickname(), onboardingCompleted)
+        );
+        return new LoginResult(response, rotated.newToken());
+    }
+
     private BusinessException lockedException(User user, Instant now) {
         return new BusinessException(
             ErrorCode.ACCOUNT_LOCKED,

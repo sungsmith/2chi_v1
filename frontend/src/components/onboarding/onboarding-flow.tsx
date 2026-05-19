@@ -35,8 +35,7 @@ export function OnboardingFlow() {
   const canNext =
     (current === 1 && !!target) ||
     (current === 2 && careerYear !== undefined) ||
-    (current === 3 && targetJobs.size > 0) ||
-    current === 4;
+    (current === 3 && targetJobs.size > 0);
 
   async function submit() {
     setSubmitting(true);

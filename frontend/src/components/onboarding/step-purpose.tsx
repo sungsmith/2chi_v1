@@ -22,6 +22,7 @@ export function StepPurpose({ value, onChange }: Props) {
               key={t}
               type="button"
               onClick={() => onChange(t)}
+              aria-pressed={selected}
               style={{
                 textAlign: "left",
                 padding: "var(--space-5)",
