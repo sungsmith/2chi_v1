@@ -1,6 +1,9 @@
+import { HomeBanner } from "@/components/home/home-banner";
+
 export default function Home() {
   return (
     <main style={{ padding: "var(--space-12)" }}>
+      <HomeBanner />
       <h1 style={{ fontFamily: "var(--font-family-hand)", fontSize: "var(--fs-page-title)" }}>
         2chi · 이취
       </h1>
