@@ -2,6 +2,7 @@ package com.twochi.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -30,6 +31,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(ErrorCode.VALIDATION_FAILED.status())
             .body(ErrorResponse.validation(traceId, fieldErrors));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException ex) {
+        String traceId = UUID.randomUUID().toString();
+        return ResponseEntity
+            .status(ErrorCode.VALIDATION_FAILED.status())
+            .body(ErrorResponse.of(ErrorCode.VALIDATION_FAILED, "요청 본문을 해석할 수 없습니다.", traceId));
     }
 
     @ExceptionHandler(Exception.class)
