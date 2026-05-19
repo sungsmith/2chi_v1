@@ -10,7 +10,16 @@ vi.mock("next/navigation", () => ({
   usePathname: () => mockPathname,
 }));
 
-let authMock = {
+type AuthUser = { userId: number; email: string; nickname: string; onboardingCompleted: boolean };
+type AuthMock = {
+  user: AuthUser | null;
+  initialized: boolean;
+  login: ReturnType<typeof vi.fn>;
+  logout: ReturnType<typeof vi.fn>;
+  refreshUser: ReturnType<typeof vi.fn>;
+};
+
+let authMock: AuthMock = {
   user: { userId: 1, email: "a@b.com", nickname: "alice", onboardingCompleted: true },
   initialized: true,
   login: vi.fn(),
