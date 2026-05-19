@@ -21,8 +21,10 @@ const { FakeApiError, pushMock, loginMock, logoutMock } = vi.hoisted(() => {
   };
 });
 
+let mockSearchParams = new URLSearchParams();
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => mockSearchParams,
 }));
 
 vi.mock("@/contexts/auth-context", () => ({
@@ -42,6 +44,7 @@ vi.mock("@/lib/api/auth", async (orig) => {
 beforeEach(() => {
   pushMock.mockReset();
   loginMock.mockReset();
+  mockSearchParams = new URLSearchParams();
 });
 
 afterEach(() => {
@@ -119,5 +122,35 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: /로그인/ }));
 
     expect(pushMock).toHaveBeenCalledWith("/onboarding");
+  });
+
+  test("from=%2Fme + onboardingCompleted=true → /me 로 이동", async () => {
+    mockSearchParams = new URLSearchParams("from=%2Fme");
+    loginMock.mockResolvedValueOnce({
+      userId: 1, email: "a@b.com", nickname: "alice", onboardingCompleted: true
+    });
+    const user = userEvent.setup();
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText(/이메일/), "a@b.com");
+    await user.type(screen.getByLabelText(/비밀번호/), "abc123");
+    await user.click(screen.getByRole("button", { name: /로그인/ }));
+
+    expect(pushMock).toHaveBeenCalledWith("/me");
+  });
+
+  test("from=javascript:alert + onboardingCompleted=true → / 로 안전 fallback", async () => {
+    mockSearchParams = new URLSearchParams("from=javascript%3Aalert(1)");
+    loginMock.mockResolvedValueOnce({
+      userId: 1, email: "a@b.com", nickname: "alice", onboardingCompleted: true
+    });
+    const user = userEvent.setup();
+    render(<LoginForm />);
+
+    await user.type(screen.getByLabelText(/이메일/), "a@b.com");
+    await user.type(screen.getByLabelText(/비밀번호/), "abc123");
+    await user.click(screen.getByRole("button", { name: /로그인/ }));
+
+    expect(pushMock).toHaveBeenCalledWith("/");
   });
 });
