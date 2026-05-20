@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .alert { display: flex; gap: 12px; padding: 12px 14px; border-radius: 10px; border: 1px solid; font-size: 13px; line-height: 1.5; margin-bottom: 10px; }
+  .alert .ico { width: 18px; height: 18px; flex: 0 0 auto; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; color: #fff; }
+  .alert b { color: inherit; }
+  .alert.info    { background: var(--color-semantic-info-bg);    border-color: var(--color-primary-200); color: var(--color-primary-700); }
+  .alert.success { background: var(--color-semantic-success-bg); border-color: var(--color-mint-200);   color: var(--color-mint-700); }
+  .alert.warning { background: var(--color-semantic-warning-bg); border-color: var(--color-yellow-200); color: var(--color-yellow-400); }
+  .alert.error   { background: var(--color-semantic-error-bg);   border-color: #FBC7CD; color: var(--color-semantic-error); }
+  .alert .ico.i  { background: var(--color-primary-600); }
+  .alert .ico.s  { background: var(--color-semantic-success); }
+  .alert .ico.w  { background: var(--color-yellow-400); }
+  .alert .ico.e  { background: var(--color-semantic-error); }
+</style></head>
+<body>
+  <div class="alert info"><span class="ico i">i</span><span><b>이 공고는 Kafka, MSA 경험을 우대해요.</b> 보완할 경험을 정리해볼까요?</span></div>
+  <div class="alert success"><span class="ico s">✓</span><span><b>자소서가 저장됐어요.</b> 다음에 이어 쓸 수 있어요.</span></div>
+  <div class="alert warning"><span class="ico w">!</span><span><b>이 표현은 내 이력에서 직접 확인되지 않았어요.</b> 검토해주세요.</span></div>
+  <div class="alert error"><span class="ico e">×</span><span><b>잠시 연결이 끊겼어요.</b> 잠시 후 다시 시도해주세요.</span></div>
+</body></html>

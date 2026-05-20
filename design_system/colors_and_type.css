@@ -1,0 +1,334 @@
+/* ============================================================
+   2chi (이취) · Colors + Type Tokens
+   Single source of truth — both BASE tokens and SEMANTIC defaults.
+
+   Load this file once at the root of any HTML you make for 2chi:
+     <link rel="stylesheet" href="colors_and_type.css">
+
+   Then use the CSS vars (--color-*, --fs-*, etc.) OR the
+   pre-styled semantic selectors at the bottom (h1, h2, p, code…).
+   ============================================================ */
+
+/* ---------- Webfonts ---------------------------------------- */
+
+/* Pretendard Variable — main UI face */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+/* JetBrains Mono — numeric / monospace */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* MemomentKkukkukk — hand-feel Korean type, emotional moments only.
+   Files live in /fonts. */
+@font-face {
+  font-family: "MemomentKkukkukk";
+  src: url("fonts/MemomentKkukkukkR.woff2") format("woff2"),
+       url("fonts/MemomentKkukkukkR.woff") format("woff"),
+       url("fonts/MemomentKkukkukk.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  /* === Brand · Periwinkle (primary) =========================== */
+  --color-primary-50:  #F2F4FF;
+  --color-primary-100: #E2E6FE;
+  --color-primary-200: #C7CEFB;
+  --color-primary-300: #A6B0F5;
+  --color-primary-400: #828FED;
+  --color-primary-500: #6471E0;   /* base */
+  --color-primary-600: #4E58CC;
+  --color-primary-700: #3B43A8;
+  --color-primary-800: #2A3082;
+  --color-primary-900: #1B205C;
+
+  /* === Secondary · Mint (매칭 · 성공) ========================= */
+  --color-mint-50:  #EEFBF6;
+  --color-mint-100: #D6F4E8;
+  --color-mint-200: #B0E9D3;
+  --color-mint-300: #80D8B7;
+  --color-mint-400: #54C39B;
+  --color-mint-500: #2FA980;   /* base */
+  --color-mint-600: #1F8865;
+  --color-mint-700: #166A50;
+
+  /* === Lavender (AI · 분석) =================================== */
+  --color-lavender-50:  #F6F3FE;
+  --color-lavender-100: #ECE5FD;
+  --color-lavender-200: #D8CBFA;
+  --color-lavender-300: #BCA8F4;
+  --color-lavender-400: #9F84EA;
+  --color-lavender-500: #8265DC;
+  --color-lavender-600: #6A4DC2;
+
+  /* === Pink (D-day · 강조) ==================================== */
+  --color-pink-50:  #FEF2F6;
+  --color-pink-100: #FCDCE7;
+  --color-pink-200: #F9BACC;
+  --color-pink-300: #F38FAD;
+  --color-pink-400: #E96B91;
+  --color-pink-500: #D94C77;
+
+  /* === Peach / Coral (보완 안내) ============================== */
+  --color-peach-50:  #FFF4EE;
+  --color-peach-100: #FFE2D2;
+  --color-peach-200: #FFC4A8;
+  --color-peach-300: #FFA178;
+  --color-peach-400: #F37F4D;
+
+  /* === Yellow (검토 필요 · 경고) ============================== */
+  --color-yellow-50:  #FFF9E5;
+  --color-yellow-100: #FEEFB9;
+  --color-yellow-200: #FCDF7E;
+  --color-yellow-300: #F5C947;
+  --color-yellow-400: #DDAA20;
+
+  /* === Semantic (alias of the above for clarity) ============== */
+  --color-semantic-success:    #2FA980;
+  --color-semantic-success-bg: #EEFBF6;
+  --color-semantic-warning:    #DDAA20;
+  --color-semantic-warning-bg: #FFF9E5;
+  --color-semantic-error:      #D94C5C;
+  --color-semantic-error-bg:   #FEF1F2;
+  --color-semantic-info:       #6471E0;
+  --color-semantic-info-bg:    #F2F4FF;
+
+  /* === Neutrals (warm — slightly creamy, not cool grey) ======= */
+  --color-neutral-0:   #FFFFFF;
+  --color-neutral-50:  #FAFAF7;
+  --color-neutral-100: #F4F4EF;
+  --color-neutral-200: #E8E7E0;
+  --color-neutral-300: #D5D4CB;
+  --color-neutral-400: #A8A79D;
+  --color-neutral-500: #7B7A72;
+  --color-neutral-600: #54534C;
+  --color-neutral-700: #393832;
+  --color-neutral-800: #25241F;
+  --color-neutral-900: #16150F;
+
+  /* === Surface · Border · Text aliases ======================== */
+  --color-bg:               #F8F8F4;   /* app cream */
+  --color-surface-default:  #FFFFFF;
+  --color-surface-soft:     #FAFAF7;
+  --color-surface-sunken:   #F2F2EC;
+  --color-surface-inverse:  #25241F;
+
+  --color-border-default:   #E8E7E0;
+  --color-border-strong:    #D5D4CB;
+  --color-border-subtle:    #F0EFE9;
+  --color-border-focus:     #6471E0;
+
+  --color-text-primary:     #25241F;
+  --color-text-secondary:   #54534C;
+  --color-text-muted:       #8A8980;
+  --color-text-disabled:    #BCBBB2;
+  --color-text-inverse:     #FFFFFF;
+  --color-text-brand:       #3B43A8;
+
+  /* === Focus ring ============================================= */
+  --focus-ring:        0 0 0 3px rgba(100,113,224,0.35);
+  --focus-ring-error:  0 0 0 3px rgba(217,76,92,0.30);
+
+  /* === Spacing scale ========================================== */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;    /* default card inner padding */
+  --space-8:  32px;    /* section gap */
+  --space-10: 40px;
+  --space-12: 48px;    /* page horizontal padding */
+  --space-16: 64px;    /* page vertical padding */
+
+  /* === Radius ================================================= */
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:  10px;   /* buttons · inputs */
+  --radius-lg:  14px;   /* cards */
+  --radius-xl:  20px;   /* modals · big panels */
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* === Shadow ================================================= */
+  --shadow-none: none;
+  --shadow-soft:     0 1px 2px rgba(37,36,31,0.04), 0 1px 1px rgba(37,36,31,0.03);
+  --shadow-card:     0 2px 4px rgba(37,36,31,0.04), 0 8px 24px -10px rgba(37,36,31,0.08);
+  --shadow-floating: 0 6px 16px -4px rgba(37,36,31,0.10), 0 20px 40px -16px rgba(37,36,31,0.12);
+  --shadow-modal:    0 24px 60px -20px rgba(37,36,31,0.30), 0 8px 24px -10px rgba(37,36,31,0.15);
+
+  /* === Type families ========================================== */
+  --font-family-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  --font-family-mono: "JetBrains Mono", "D2Coding", ui-monospace, monospace;
+  --font-family-hand: "MemomentKkukkukk", "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", cursive;
+
+  /* === Type scale ============================================
+     Titles (display / page / section / card) use the HAND font.
+     Body / button / label / data use Pretendard.
+     ============================================================ */
+  --fs-display:        48px;  --lh-display:       1.15; --fw-display: 400;
+  --fs-page-title:     36px;  --lh-page-title:    1.25; --fw-page-title: 400;
+  --fs-section-title:  28px;  --lh-section-title: 1.3;  --fw-section-title: 400;
+  --fs-card-title:     22px;  --lh-card-title:    1.3;  --fw-card-title: 400;
+  --fs-body:           15px;  --lh-body:          1.65; --fw-body: 400;
+  --fs-body-sm:        13px;  --lh-body-sm:       1.6;  --fw-body-sm: 400;
+  --fs-caption:        12px;  --lh-caption:       1.55; --fw-caption: 400;
+  --fs-button:         14px;  --lh-button:        1;    --fw-button: 600;
+  --fs-label:          13px;  --lh-label:         1.4;  --fw-label: 600;
+  --fs-helper:         12px;  --lh-helper:        1.5;  --fw-helper: 400;
+  --fs-chip:           12px;  --lh-chip:          1.2;  --fw-chip: 600;
+  --fs-data:           20px;  --lh-data:          1.2;  --fw-data: 700;
+  --fs-table-head:     12px;  --lh-table-head:    1.3;  --fw-table-head: 600;
+  --fs-table-cell:     13px;  --lh-table-cell:    1.5;  --fw-table-cell: 400;
+}
+
+/* ============================================================
+   SEMANTIC DEFAULTS
+   These set base styles on common elements so a fresh HTML
+   page looks "on-brand" without writing any extra CSS.
+   ============================================================ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+
+/* Titles — HAND font (MemomentKkukkukk) */
+h1 {
+  font-family: var(--font-family-hand);
+  font-size: var(--fs-page-title);
+  line-height: var(--lh-page-title);
+  font-weight: var(--fw-page-title);
+  letter-spacing: 0;
+  margin: 0 0 16px;
+  color: var(--color-text-primary);
+}
+h2 {
+  font-family: var(--font-family-hand);
+  font-size: var(--fs-section-title);
+  line-height: var(--lh-section-title);
+  font-weight: var(--fw-section-title);
+  letter-spacing: 0;
+  margin: 32px 0 12px;
+  color: var(--color-text-primary);
+}
+h3 {
+  font-family: var(--font-family-hand);
+  font-size: var(--fs-card-title);
+  line-height: var(--lh-card-title);
+  font-weight: var(--fw-card-title);
+  letter-spacing: 0;
+  margin: 24px 0 8px;
+  color: var(--color-text-primary);
+}
+h4 {
+  font-family: var(--font-family-sans);
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 18px 0 6px;
+  color: var(--color-text-primary);
+}
+h5, h6 {
+  font-family: var(--font-family-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin: 16px 0 4px;
+}
+
+/* Body */
+p {
+  margin: 0 0 12px;
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--color-text-primary);
+  text-wrap: pretty;
+}
+small {
+  font-size: var(--fs-caption);
+  color: var(--color-text-muted);
+}
+b, strong { font-weight: 700; }
+
+a {
+  color: var(--color-primary-600);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .12s ease, color .12s ease;
+}
+a:hover {
+  color: var(--color-primary-700);
+  border-bottom-color: currentColor;
+}
+
+/* Code / mono */
+code, kbd, samp {
+  font-family: var(--font-family-mono);
+  font-size: 0.92em;
+  background: var(--color-surface-sunken);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--color-primary-700);
+}
+pre {
+  font-family: var(--font-family-mono);
+  font-size: 13px;
+  background: var(--color-surface-sunken);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  overflow: auto;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+}
+pre code { background: none; padding: 0; }
+
+/* Utility classes mirroring the tokens */
+.text-primary   { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted     { color: var(--color-text-muted); }
+.text-brand     { color: var(--color-text-brand); }
+
+.font-sans { font-family: var(--font-family-sans); }
+.font-mono { font-family: var(--font-family-mono); }
+.font-hand { font-family: var(--font-family-hand); }
+
+/* Hand-style emphasis underline (mint squiggle) — for use on
+   <span class="hand-underline"> inside hero / display titles. */
+.hand-underline {
+  position: relative;
+  display: inline-block;
+}
+.hand-underline::after {
+  content: "";
+  position: absolute;
+  left: -2%; right: -2%;
+  bottom: -10px; height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'><path d='M2 8 Q 20 1, 40 7 T 80 7 T 120 7 T 160 7 T 198 7' stroke='%2354C39B' stroke-width='3' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+/* Focus visibility for interactive elements (default a11y) */
+:where(button, [role="button"], a, input, textarea, select):focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}

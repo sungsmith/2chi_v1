@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .field { display: flex; flex-direction: column; gap: 10px; }
+  .nm { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.06em; }
+  .ctl { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--color-text-primary); }
+  .ctl .box { width: 18px; height: 18px; border: 1.5px solid var(--color-border-strong); border-radius: 4px; background: #fff; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+  .ctl.radio .box { border-radius: 50%; }
+  .ctl.on .box { background: var(--color-primary-600); border-color: var(--color-primary-600); color: #fff; }
+  .ctl.on .box::after { content: "✓"; font-size: 11px; font-weight: 800; }
+  .ctl.radio.on .box { background: #fff; }
+  .ctl.radio.on .box::after { content: ""; width: 8px; height: 8px; background: var(--color-primary-600); border-radius: 50%; }
+  .switch { width: 34px; height: 20px; background: var(--color-neutral-200); border-radius: 999px; position: relative; flex: 0 0 auto; }
+  .switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; box-shadow: 0 1px 2px rgba(0,0,0,0.15); }
+  .switch.on { background: var(--color-primary-500); }
+  .switch.on::after { left: 16px; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="field">
+      <span class="nm">CHECKBOX</span>
+      <span class="ctl on"><span class="box"></span>약관 동의</span>
+      <span class="ctl"><span class="box"></span>마케팅 수신</span>
+      <span class="ctl"><span class="box"></span><span style="color:var(--color-text-disabled)">비활성</span></span>
+    </div>
+    <div class="field">
+      <span class="nm">RADIO</span>
+      <span class="ctl radio on"><span class="box"></span>이직 준비 중</span>
+      <span class="ctl radio"><span class="box"></span>취업 준비 중</span>
+      <span class="ctl radio"><span class="box"></span>아직 탐색 중</span>
+    </div>
+    <div class="field">
+      <span class="nm">SWITCH</span>
+      <span class="ctl"><span class="switch on"></span>이메일 알림</span>
+      <span class="ctl"><span class="switch on"></span>웹푸시 알림</span>
+      <span class="ctl"><span class="switch"></span>주간 요약</span>
+    </div>
+  </div>
+</body></html>

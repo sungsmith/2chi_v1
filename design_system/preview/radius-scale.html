@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  .cell { background: var(--color-primary-100); border: 1px solid var(--color-primary-200); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 6px; font-family: var(--font-family-mono); font-size: 10px; color: var(--color-primary-700); }
+  .cell .v { font-weight: 700; font-size: 11px; }
+  .cell .px { font-size: 9px; opacity: 0.7; }
+  .full { border-radius: 9999px; }
+  .meta { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; font-size: 11px; color: var(--color-text-secondary); }
+  .meta b { color: var(--color-text-primary); }
+  .meta div { font-family: var(--font-family-mono); font-size: 10.5px; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="cell" style="border-radius:4px"><span class="v">xs</span><span class="px">4</span></div>
+    <div class="cell" style="border-radius:6px"><span class="v">sm</span><span class="px">6</span></div>
+    <div class="cell" style="border-radius:10px"><span class="v">md</span><span class="px">10</span></div>
+    <div class="cell" style="border-radius:14px"><span class="v">lg</span><span class="px">14</span></div>
+    <div class="cell" style="border-radius:20px"><span class="v">xl</span><span class="px">20</span></div>
+    <div class="cell" style="border-radius:28px"><span class="v">2xl</span><span class="px">28</span></div>
+    <div class="cell full"><span class="v">full</span><span class="px">9999</span></div>
+  </div>
+  <div class="meta">
+    <div><b>md</b> · 버튼 · 인풋</div>
+    <div><b>lg</b> · 카드</div>
+    <div><b>xl · 2xl</b> · 모달 · 큰 패널</div>
+    <div><b>full</b> · 칩 · 아바타 · 토글</div>
+  </div>
+</body></html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { background: #fff; border: 1px solid var(--color-border-default); border-radius: 14px; padding: 18px 18px 16px; box-shadow: 0 1px 2px rgba(37,36,31,0.04), 0 1px 1px rgba(37,36,31,0.03); display: flex; flex-direction: column; gap: 10px; }
+  .card .head { display: flex; align-items: center; justify-content: space-between; }
+  .card .lbl { font-size: 12px; font-weight: 600; color: var(--color-text-secondary); }
+  .card .ico { width: 26px; height: 26px; border-radius: 6px; background: var(--color-primary-50); color: var(--color-primary-700); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; }
+  .card.mint .ico { background: var(--color-mint-50); color: var(--color-mint-700); }
+  .card.lav  .ico { background: var(--color-lavender-50); color: var(--color-lavender-600); }
+  .card.pink .ico { background: var(--color-pink-50); color: var(--color-pink-500); }
+  .card .val { display: flex; align-items: baseline; gap: 4px; letter-spacing: -0.025em; }
+  .card .val .num { font-size: 36px; font-weight: 800; line-height: 1; }
+  .card .val .unit { font-size: 14px; font-weight: 600; color: var(--color-text-muted); }
+  .card .foot { font-size: 11px; color: var(--color-text-muted); display: flex; gap: 6px; align-items: center; }
+  .card .foot b { color: var(--color-mint-700); font-weight: 700; }
+  .card .foot.down b { color: var(--color-semantic-error); }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="card mint">
+      <div class="head"><span class="lbl">내 작성 이력 완성도</span><span class="ico">◆</span></div>
+      <div class="val"><span class="num">72</span><span class="unit">%</span></div>
+      <div class="foot"><b>+8</b> 지난주 대비</div>
+    </div>
+    <div class="card">
+      <div class="head"><span class="lbl">자소서 작성 수</span><span class="ico">✎</span></div>
+      <div class="val"><span class="num">14</span><span class="unit">건</span></div>
+      <div class="foot">이번 달 <b>+5</b></div>
+    </div>
+    <div class="card lav">
+      <div class="head"><span class="lbl">진행 중인 지원</span><span class="ico">▣</span></div>
+      <div class="val"><span class="num">7</span><span class="unit">건</span></div>
+      <div class="foot">서류 3 · 코테 1 · 면접 3</div>
+    </div>
+    <div class="card pink">
+      <div class="head"><span class="lbl">JD 평균 매칭률</span><span class="ico">◎</span></div>
+      <div class="val"><span class="num">68</span><span class="unit">%</span></div>
+      <div class="foot down"><b>-2</b> 갭 보완 추천</div>
+    </div>
+  </div>
+</body></html>

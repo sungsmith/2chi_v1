@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+  .row:last-child { margin-bottom: 0; }
+  .row .nm { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); width: 56px; letter-spacing: 0.04em; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 10px; font-size: 13px; font-weight: 600; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+  .btn.primary   { background: var(--color-primary-600); color: #fff; }
+  .btn.secondary { background: #fff; color: var(--color-text-primary); border-color: var(--color-border-strong); }
+  .btn.tertiary  { background: var(--color-primary-50); color: var(--color-primary-700); }
+  .btn.ghost     { background: transparent; color: var(--color-text-secondary); }
+  .btn.danger    { background: var(--color-semantic-error); color: #fff; }
+  .btn.ai        { background: linear-gradient(135deg, var(--color-primary-500), var(--color-lavender-400)); color: #fff; padding-left: 30px; position: relative; }
+  .btn.ai::before { content: "✦"; position: absolute; left: 12px; font-size: 12px; }
+  .btn[disabled] { background: var(--color-neutral-200); color: var(--color-text-disabled); cursor: not-allowed; }
+  .btn.sm { height: 28px; padding: 0 10px; font-size: 12px; border-radius: 6px; }
+  .btn.lg { height: 44px; padding: 0 20px; font-size: 14px; }
+</style></head>
+<body>
+  <div class="row"><span class="nm">VARIANT</span>
+    <button class="btn primary">주요 액션</button>
+    <button class="btn secondary">보조</button>
+    <button class="btn tertiary">텍스트</button>
+    <button class="btn ghost">고스트</button>
+    <button class="btn danger">삭제</button>
+    <button class="btn" disabled>비활성</button>
+  </div>
+  <div class="row"><span class="nm">AI</span>
+    <button class="btn ai">AI 초안 만들어보기</button>
+    <button class="btn ai sm">AI 분석</button>
+  </div>
+  <div class="row"><span class="nm">SIZE</span>
+    <button class="btn primary lg">Large 44</button>
+    <button class="btn primary">Default 36</button>
+    <button class="btn primary sm">Small 28</button>
+  </div>
+</body></html>

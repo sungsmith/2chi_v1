@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .lbl { font-size: 12px; font-weight: 600; color: var(--color-text-primary); }
+  .lbl .req { color: var(--color-semantic-error); margin-left: 2px; }
+  .input { height: 36px; padding: 0 12px; border: 1px solid var(--color-border-strong); border-radius: 10px; font-size: 13px; background: #fff; color: var(--color-text-primary); font-family: inherit; }
+  .input.focus { border-color: var(--color-border-focus); box-shadow: 0 0 0 3px rgba(100,113,224,0.35); }
+  .input.error { border-color: var(--color-semantic-error); box-shadow: 0 0 0 3px rgba(217,76,92,0.25); }
+  .input[disabled] { background: var(--color-surface-soft); color: var(--color-text-disabled); }
+  .helper { font-size: 11px; color: var(--color-text-muted); }
+  .helper.error { color: var(--color-semantic-error); }
+  textarea.input { height: 64px; padding: 8px 12px; resize: none; line-height: 1.5; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="field">
+      <label class="lbl">이메일 <span class="req">*</span></label>
+      <input class="input" type="text" value="hello@2chi.app">
+      <span class="helper">로그인에 사용되는 이메일</span>
+    </div>
+    <div class="field">
+      <label class="lbl">닉네임 <span class="req">*</span></label>
+      <input class="input focus" type="text" value="소미">
+      <span class="helper">2~20자 · 한/영/숫자</span>
+    </div>
+    <div class="field">
+      <label class="lbl">비밀번호</label>
+      <input class="input error" type="password" value="••••">
+      <span class="helper error">8자 이상, 2종 이상 조합이 필요해요.</span>
+    </div>
+    <div class="field">
+      <label class="lbl">한 줄 소개</label>
+      <textarea class="input" disabled placeholder="비활성 상태"></textarea>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+  .nm { font-family: var(--font-family-mono); font-size: 12px; font-weight: 700; }
+  .hint { font-size: 11px; color: var(--color-text-muted); }
+  .scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 0; border-radius: 8px; overflow: hidden; border: 1px solid var(--color-border-default); }
+  .sw { height: 64px; padding: 5px 6px; font-family: var(--font-family-mono); font-size: 9px; display: flex; flex-direction: column; justify-content: space-between; }
+  .sw .step { font-weight: 700; font-size: 10px; }
+  .sw .hex  { opacity: 0.7; font-size: 8px; }
+</style></head>
+<body>
+  <div class="head"><span class="nm">neutral · warm (creamy, not cool grey)</span><span class="hint">cards · sidebars · text scale</span></div>
+  <div class="scale">
+    <div class="sw" style="background:#FFFFFF;border-right:1px solid #eee"><span class="step">0</span><span class="hex">FFFFFF</span></div>
+    <div class="sw" style="background:#FAFAF7"><span class="step">50</span><span class="hex">FAFAF7</span></div>
+    <div class="sw" style="background:#F4F4EF"><span class="step">100</span><span class="hex">F4F4EF</span></div>
+    <div class="sw" style="background:#E8E7E0"><span class="step">200</span><span class="hex">E8E7E0</span></div>
+    <div class="sw" style="background:#D5D4CB"><span class="step">300</span><span class="hex">D5D4CB</span></div>
+    <div class="sw" style="background:#A8A79D;color:#fff"><span class="step">400</span><span class="hex">A8A79D</span></div>
+    <div class="sw" style="background:#7B7A72;color:#fff"><span class="step">500</span><span class="hex">7B7A72</span></div>
+    <div class="sw" style="background:#54534C;color:#fff"><span class="step">600</span><span class="hex">54534C</span></div>
+    <div class="sw" style="background:#393832;color:#fff"><span class="step">700</span><span class="hex">393832</span></div>
+    <div class="sw" style="background:#25241F;color:#fff"><span class="step">800</span><span class="hex">25241F</span></div>
+    <div class="sw" style="background:#16150F;color:#fff"><span class="step">900</span><span class="hex">16150F</span></div>
+  </div>
+</body></html>

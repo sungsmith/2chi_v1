@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: center; }
+  .bars { display: flex; flex-direction: column; gap: 12px; }
+  .row { display: grid; grid-template-columns: 90px 1fr 40px; align-items: center; gap: 12px; font-size: 12px; }
+  .row .nm { color: var(--color-text-secondary); font-weight: 600; }
+  .row .pct { text-align: right; font-family: var(--font-family-mono); font-size: 11px; font-weight: 700; color: var(--color-text-primary); }
+  .track { height: 8px; background: var(--color-neutral-100); border-radius: 999px; overflow: hidden; }
+  .track > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary-500); }
+  .track.mint > span  { background: var(--color-mint-500); }
+  .track.lav  > span  { background: var(--color-lavender-500); }
+  .track.peach> span  { background: var(--color-peach-300); }
+  .ring-wrap { display: flex; align-items: center; gap: 14px; }
+  .ring { --p: 72; width: 92px; height: 92px; border-radius: 50%; background: conic-gradient(var(--color-primary-500) calc(var(--p) * 1%), var(--color-neutral-100) 0); display: grid; place-items: center; position: relative; }
+  .ring::after { content: ""; position: absolute; inset: 8px; background: #fff; border-radius: 50%; }
+  .ring > span { position: relative; z-index: 1; font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
+  .ring-meta .v { display: block; font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); margin-bottom: 4px; letter-spacing: 0.06em; }
+  .ring-meta .l { font-size: 13px; font-weight: 700; color: var(--color-text-primary); }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="bars">
+      <div class="row"><span class="nm">이력서</span><span class="track mint"><span style="width:90%"></span></span><span class="pct">90</span></div>
+      <div class="row"><span class="nm">경력 기술</span><span class="track"><span style="width:70%"></span></span><span class="pct">70</span></div>
+      <div class="row"><span class="nm">포트폴리오</span><span class="track peach"><span style="width:55%"></span></span><span class="pct">55</span></div>
+      <div class="row"><span class="nm">대외활동</span><span class="track lav"><span style="width:42%"></span></span><span class="pct">42</span></div>
+    </div>
+    <div class="ring-wrap">
+      <div class="ring" style="--p:72"><span>72%</span></div>
+      <div class="ring-meta"><span class="v">JD MATCH</span><span class="l">백엔드 평균</span></div>
+    </div>
+  </div>
+</body></html>

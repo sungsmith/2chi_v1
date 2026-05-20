@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 22px; }
+  .item { display: flex; flex-direction: column; gap: 6px; }
+  .lbl  { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.08em; }
+  .lbl b { color: var(--color-text-primary); font-weight: 600; }
+  .btn  { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 16px; border-radius: 10px; background: var(--color-primary-600); color: #fff; font-size: 14px; font-weight: 600; border: none; }
+  .form-lbl { font-size: 13px; font-weight: 600; }
+  .form-lbl .req { color: var(--color-semantic-error); }
+  .helper { font-size: 12px; color: var(--color-text-muted); }
+  .chip { display: inline-flex; padding: 3px 9px; border-radius: 999px; background: var(--color-primary-50); color: var(--color-primary-700); font-size: 12px; font-weight: 600; }
+  .data { font-family: var(--font-family-sans); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--color-text-primary); }
+  .data em { font-style: normal; font-family: var(--font-family-mono); font-size: 14px; font-weight: 700; color: var(--color-text-muted); margin-left: 4px; }
+  .th   { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--color-text-secondary); text-transform: uppercase; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="item"><span class="lbl"><b>Button</b> · 14 / 600</span><div><button class="btn">AI 초안 만들기</button></div></div>
+    <div class="item"><span class="lbl"><b>Label</b> · 13 / 600</span><div class="form-lbl">희망 포지션 <span class="req">*</span></div></div>
+    <div class="item"><span class="lbl"><b>Helper</b> · 12 / 400</span><div class="helper">2~20자, 한/영/숫자만 사용할 수 있어요.</div></div>
+    <div class="item"><span class="lbl"><b>Chip</b> · 12 / 600</span><div><span class="chip">진행중</span></div></div>
+    <div class="item"><span class="lbl"><b>Data</b> · 20 / 700 · sans</span><div class="data">82<em>%</em></div></div>
+    <div class="item"><span class="lbl"><b>Table head</b> · 12 / 600 · uppercase</span><div class="th">회사 · 전형 · 마감</div></div>
+  </div>
+</body></html>

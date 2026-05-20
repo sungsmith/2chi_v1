@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 20px 22px; }
+  .row { margin-bottom: 10px; }
+  .row:last-child { margin-bottom: 0; }
+  .head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .nm { font-family: var(--font-family-mono); font-size: 11px; font-weight: 700; }
+  .hint { font-size: 10.5px; color: var(--color-text-muted); }
+  .scale { display: grid; gap: 0; border-radius: 6px; overflow: hidden; border: 1px solid var(--color-border-default); }
+  .pink { grid-template-columns: repeat(6, 1fr); }
+  .peach { grid-template-columns: repeat(5, 1fr); }
+  .yellow { grid-template-columns: repeat(5, 1fr); }
+  .sw { height: 42px; padding: 4px 7px; font-family: var(--font-family-mono); font-size: 9px; display: flex; flex-direction: column; justify-content: space-between; }
+  .sw .step { font-weight: 700; font-size: 10px; }
+  .sw .hex  { opacity: 0.7; font-size: 8px; }
+</style></head>
+<body>
+  <div class="row">
+    <div class="head"><span class="nm">pink</span><span class="hint">D-day · 강조 · 알림 뱃지</span></div>
+    <div class="scale pink">
+      <div class="sw" style="background:#FEF2F6"><span class="step">50</span><span class="hex">FEF2F6</span></div>
+      <div class="sw" style="background:#FCDCE7"><span class="step">100</span><span class="hex">FCDCE7</span></div>
+      <div class="sw" style="background:#F9BACC"><span class="step">200</span><span class="hex">F9BACC</span></div>
+      <div class="sw" style="background:#F38FAD"><span class="step">300</span><span class="hex">F38FAD</span></div>
+      <div class="sw" style="background:#E96B91;color:#fff"><span class="step">400</span><span class="hex">E96B91</span></div>
+      <div class="sw" style="background:#D94C77;color:#fff"><span class="step">500</span><span class="hex">D94C77</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="head"><span class="nm">peach</span><span class="hint">갭 · 보완 안내 · 부족 역량</span></div>
+    <div class="scale peach">
+      <div class="sw" style="background:#FFF4EE"><span class="step">50</span><span class="hex">FFF4EE</span></div>
+      <div class="sw" style="background:#FFE2D2"><span class="step">100</span><span class="hex">FFE2D2</span></div>
+      <div class="sw" style="background:#FFC4A8"><span class="step">200</span><span class="hex">FFC4A8</span></div>
+      <div class="sw" style="background:#FFA178"><span class="step">300</span><span class="hex">FFA178</span></div>
+      <div class="sw" style="background:#F37F4D;color:#fff"><span class="step">400</span><span class="hex">F37F4D</span></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="head"><span class="nm">yellow</span><span class="hint">검토 필요 · 거짓 검증 강조</span></div>
+    <div class="scale yellow">
+      <div class="sw" style="background:#FFF9E5"><span class="step">50</span><span class="hex">FFF9E5</span></div>
+      <div class="sw" style="background:#FEEFB9"><span class="step">100</span><span class="hex">FEEFB9</span></div>
+      <div class="sw" style="background:#FCDF7E"><span class="step">200</span><span class="hex">FCDF7E</span></div>
+      <div class="sw" style="background:#F5C947"><span class="step">300</span><span class="hex">F5C947</span></div>
+      <div class="sw" style="background:#DDAA20;color:#fff"><span class="step">400</span><span class="hex">DDAA20</span></div>
+    </div>
+  </div>
+</body></html>
