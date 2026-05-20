@@ -5,6 +5,7 @@ import com.twochi.common.exception.ErrorCode;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.dto.JobPostingCreateRequest;
 import com.twochi.posting.dto.JobPostingPatchRequest;
+import com.twochi.posting.keyword.KeywordExtractor;
 import com.twochi.posting.repository.JobPostingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 public class JobPostingService {
 
     private final JobPostingRepository repository;
+    private final KeywordExtractor keywordExtractor;
 
     @Transactional(readOnly = true)
     public List<JobPosting> findAll(Long userId) {
@@ -26,11 +28,13 @@ public class JobPostingService {
     }
 
     public JobPosting create(Long userId, JobPostingCreateRequest req) {
+        List<String> extracted = keywordExtractor.extract(req.mainTasks(), req.requirements(), req.preferred());
+        String[] keywords = extracted.toArray(new String[0]);
         JobPosting p = JobPosting.create(
             userId, req.source(), req.company(), req.title(),
             req.jobRole(), req.requirements(), req.preferred(), req.mainTasks(),
             req.deadline(), req.sourceUrl(),
-            new String[0],  // keywords: Task 6 에서 LLM 추출로 채움
+            keywords,
             Instant.now()
         );
         return repository.save(p);
@@ -38,6 +42,14 @@ public class JobPostingService {
 
     public JobPosting patch(Long userId, Long id, JobPostingPatchRequest req) {
         JobPosting p = findOwned(userId, id);
+        boolean textChanged = req.mainTasks() != null || req.requirements() != null || req.preferred() != null;
+        String[] newKeywords = null;
+        if (textChanged) {
+            String mt = req.mainTasks() != null ? req.mainTasks() : p.getMainTasks();
+            String rq = req.requirements() != null ? req.requirements() : p.getRequirements();
+            String pf = req.preferred() != null ? req.preferred() : p.getPreferred();
+            newKeywords = keywordExtractor.extract(mt, rq, pf).toArray(new String[0]);
+        }
         p.update(
             req.company() != null ? req.company() : p.getCompany(),
             req.title() != null ? req.title() : p.getTitle(),
@@ -46,7 +58,7 @@ public class JobPostingService {
             req.preferred() != null ? req.preferred() : p.getPreferred(),
             req.mainTasks() != null ? req.mainTasks() : p.getMainTasks(),
             req.deadline() != null ? req.deadline() : p.getDeadline(),
-            null,  // keywords 재추출은 Task 6 에서
+            newKeywords,
             Instant.now()
         );
         return p;

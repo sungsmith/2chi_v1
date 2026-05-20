@@ -27,6 +27,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
 	implementation("org.jsoup:jsoup:1.18.3")
+	implementation("me.paulschwarz:spring-dotenv:4.0.0")
+	testImplementation("org.wiremock:wiremock-standalone:3.10.0")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	compileOnly("org.projectlombok:lombok")

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twochi.career.repository.CareerRepository;
 import com.twochi.career.repository.ProjectRepository;
 import com.twochi.consent.repository.ConsentLogRepository;
+import com.twochi.posting.keyword.KeywordExtractor;
 import com.twochi.posting.repository.JobPostingRepository;
 import com.twochi.user.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -12,20 +13,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
 import java.util.Map;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ActiveProfiles("test")
 class JobPostingIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
@@ -37,11 +44,13 @@ class JobPostingIntegrationTest {
     @Autowired private ProjectRepository projectRepository;
     @Autowired private JobPostingRepository jobPostingRepository;
     @Autowired private RedisConnectionFactory redis;
+    @MockBean private KeywordExtractor keywordExtractor;
 
     private String accessToken;
 
     @BeforeEach
     void setUp() throws Exception {
+        when(keywordExtractor.extract(any(), any(), any())).thenReturn(List.of());
         jobPostingRepository.deleteAll();
         projectRepository.deleteAll();
         careerRepository.deleteAll();
