@@ -1,6 +1,6 @@
 /* ============================================================
    이취 2chi · Dashboard (홈)
-   - Tokens from /tokens.css, base components from /doc.css
+   - Tokens: imported via globals.css → styles/tokens.css
    - Page-specific layout/components only here
 ============================================================ */
 
@@ -9,10 +9,12 @@
   overflow-x: hidden;
   background: var(--color-bg);
   color: var(--color-text-primary);
-  min-height: calc(100vh - 64px);
 }
 
-/* Ambient soft wash — very restrained, only at the top behind the greeting */
+/* Ambient soft wash — restrained, only at the top behind the greeting.
+   position: fixed intentional — creates viewport-attached ambient wash.
+   IMPORTANT: any transform/filter on an ancestor (.dash-page or <main>)
+   will confine these to that element. Verify after Task 8 visual check. */
 .dash-page::before {
   content: "";
   position: fixed;
@@ -535,7 +537,11 @@
   color: var(--color-pink-500);
 }
 
-/* Matching analysis */
+/* ----------------------------------------------------------------
+   NOTE: 매칭 패널 관련 클래스(.match*, .gap*)는 feat/5.3 에서 미사용.
+   feat/5.10/5.11 (AI 매칭 도메인) 에서 사용 예정. 1:1 복사 전략으로 보존.
+   .match-ring 의 --p 는 인라인 스타일로 주입 필요 (퍼센트 값).
+---------------------------------------------------------------- */
 .match {
   display: flex;
   flex-direction: column;
