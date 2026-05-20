@@ -14,7 +14,10 @@ public enum ErrorCode {
     UNAUTHENTICATED(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다."),
     INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다."),
     CAREER_NOT_FOUND(HttpStatus.NOT_FOUND, "경력 정보를 찾을 수 없습니다."),
-    PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "프로젝트를 찾을 수 없습니다.");
+    PROJECT_NOT_FOUND(HttpStatus.NOT_FOUND, "프로젝트를 찾을 수 없습니다."),
+    POSTING_NOT_FOUND(HttpStatus.NOT_FOUND, "채용공고를 찾을 수 없어요."),
+    UNSUPPORTED_PARSE_SITE(HttpStatus.UNPROCESSABLE_ENTITY, "이 사이트는 자동 파싱을 지원하지 않아요. 직접 작성으로 입력해주세요."),
+    PARSE_FAILED(HttpStatus.UNPROCESSABLE_ENTITY, "공고 정보를 가져오지 못했어요. 직접 작성해주세요.");
 
     private final HttpStatus status;
     private final String defaultMessage;
