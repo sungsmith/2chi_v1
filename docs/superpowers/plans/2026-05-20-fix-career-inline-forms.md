@@ -169,7 +169,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ```tsx
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { DateInput } from "./date-input";
 import type { CareerCreateRequest } from "@/lib/types/career";
 
@@ -199,7 +199,7 @@ export function NewCareerForm({ onSubmit, onCancel }: Props) {
     return e;
   }
 
-  const handleSubmit = useCallback(async () => {
+  async function handleSubmit() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
@@ -214,7 +214,7 @@ export function NewCareerForm({ onSubmit, onCancel }: Props) {
     } finally {
       setSaving(false);
     }
-  }, [company, position, startDate, endDate, onSubmit]);
+  }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === "Escape") {
@@ -309,7 +309,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ```tsx
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { DateInput } from "./date-input";
 import type { ProjectCreateRequest } from "@/lib/types/career";
 
@@ -338,7 +338,7 @@ export function NewProjectForm({ onSubmit, onCancel }: Props) {
     return e;
   }
 
-  const handleSubmit = useCallback(async () => {
+  async function handleSubmit() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
@@ -353,7 +353,7 @@ export function NewProjectForm({ onSubmit, onCancel }: Props) {
     } finally {
       setSaving(false);
     }
-  }, [title, periodStart, periodEnd, role, onSubmit]);
+  }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === "Escape") {
@@ -447,7 +447,7 @@ Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ```tsx
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import type { Metric } from "@/lib/types/career";
 
 type Props = {
@@ -479,7 +479,7 @@ export function NewMetricForm({ onSubmit, onCancel }: Props) {
     return e;
   }
 
-  const handleSubmit = useCallback(() => {
+  function handleSubmit() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
@@ -487,7 +487,7 @@ export function NewMetricForm({ onSubmit, onCancel }: Props) {
       ? { k: k.trim(), before: before.trim(), after: after.trim() }
       : { k: k.trim(), delta: delta.trim(), dir };
     onSubmit(metric);
-  }, [variant, k, before, after, delta, dir, onSubmit]);
+  }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === "Escape") {

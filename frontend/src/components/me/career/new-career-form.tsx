@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { DateInput } from "./date-input";
 import type { CareerCreateRequest } from "@/lib/types/career";
 
@@ -30,7 +30,7 @@ export function NewCareerForm({ onSubmit, onCancel }: Props) {
     return e;
   }
 
-  const handleSubmit = useCallback(async () => {
+  async function handleSubmit() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
@@ -45,7 +45,7 @@ export function NewCareerForm({ onSubmit, onCancel }: Props) {
     } finally {
       setSaving(false);
     }
-  }, [company, position, startDate, endDate, onSubmit]);
+  }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLFormElement>) {
     if (e.key === "Escape") {
