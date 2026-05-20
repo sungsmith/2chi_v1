@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .item { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-radius: 8px; background: var(--color-surface-soft); font-family: var(--font-family-mono); font-size: 11px; }
+  .item .nm { font-weight: 700; color: var(--color-text-primary); min-width: 90px; }
+  .item .v  { color: var(--color-text-muted); font-size: 10px; flex: 1; }
+  .item .demo { width: 80px; height: 26px; flex: 0 0 auto; }
+  .item .demo.b1     { border: 1px solid #E8E7E0; background: #fff; }
+  .item .demo.b2     { border: 2px solid #25241F; background: #fff; }
+  .item .demo.dashed { border: 1px dashed #D5D4CB; background: #fff; }
+  .item .demo.div    { border-bottom: 1px solid #F0EFE9; }
+  .focus { border-radius: 8px; padding: 18px; background: var(--color-surface-soft); display: flex; align-items: center; gap: 14px; margin-top: 10px; }
+  .focus .ring { width: 96px; height: 36px; background: #fff; border: 1px solid var(--color-primary-500); border-radius: 8px; box-shadow: 0 0 0 3px rgba(100,113,224,0.35); }
+  .focus .label { font-family: var(--font-family-mono); font-size: 11px; }
+  .focus .label b { color: var(--color-text-primary); }
+  .focus .label .v { color: var(--color-text-muted); font-size: 10px; display: block; margin-top: 2px; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="item"><span class="nm">border.1</span><span class="v">1px · #E8E7E0</span><span class="demo b1"></span></div>
+    <div class="item"><span class="nm">border.2</span><span class="v">2px · #25241F</span><span class="demo b2"></span></div>
+    <div class="item"><span class="nm">border.dashed</span><span class="v">1px dashed #D5D4CB</span><span class="demo dashed"></span></div>
+    <div class="item"><span class="nm">divider.soft</span><span class="v">1px · #F0EFE9</span><span class="demo div"></span></div>
+  </div>
+  <div class="focus">
+    <span class="ring"></span>
+    <div class="label"><b>focus.ring</b><span class="v">0 0 0 3px rgba(100,113,224,0.35) · 모든 인터랙티브</span></div>
+  </div>
+</body></html>

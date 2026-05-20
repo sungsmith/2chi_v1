@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .nm  { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); width: 70px; letter-spacing: 0.04em; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .badge.dot::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .b.gray    { background: var(--color-neutral-100); color: var(--color-text-secondary); }
+  .b.success { background: var(--color-semantic-success-bg); color: var(--color-semantic-success); }
+  .b.warning { background: var(--color-semantic-warning-bg); color: var(--color-yellow-400); }
+  .b.error   { background: var(--color-semantic-error-bg);   color: var(--color-semantic-error); }
+  .b.info    { background: var(--color-semantic-info-bg);    color: var(--color-primary-700); }
+  .b.lav     { background: var(--color-lavender-50); color: var(--color-lavender-600); }
+  .b.pink    { background: var(--color-pink-50); color: var(--color-pink-500); }
+  .b.dday    { background: var(--color-pink-100); color: var(--color-pink-500); font-family: var(--font-family-mono); font-weight: 700; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; border: 1px solid; }
+  .chip.kw  { background: var(--color-primary-50);  color: var(--color-primary-700);  border-color: var(--color-primary-100); }
+  .chip.match { background: var(--color-mint-50);  color: var(--color-mint-700);  border-color: var(--color-mint-100); }
+  .chip.match::before { content: "✓"; }
+  .chip.gap { background: var(--color-peach-50);   color: var(--color-peach-400); border-color: var(--color-peach-100); }
+  .chip.gap::before { content: "+"; font-weight: 800; }
+</style></head>
+<body>
+  <div class="row">
+    <span class="nm">BADGE</span>
+    <span class="badge b.gray dot" style="background:#F4F4EF;color:#54534C">대기</span>
+    <span class="badge b.info dot" style="background:#F2F4FF;color:#3B43A8">진행중</span>
+    <span class="badge b.success dot" style="background:#EEFBF6;color:#2FA980">매칭 완료</span>
+    <span class="badge b.warning dot" style="background:#FFF9E5;color:#DDAA20">검토 필요</span>
+    <span class="badge b.error dot" style="background:#FEF1F2;color:#D94C5C">제출 실패</span>
+    <span class="badge b.lav dot" style="background:#F6F3FE;color:#6A4DC2">AI 초안</span>
+  </div>
+  <div class="row">
+    <span class="nm">D-DAY</span>
+    <span class="badge b.dday" style="background:#FCDCE7;color:#D94C77">D-3</span>
+    <span class="badge b.dday" style="background:#FCDCE7;color:#D94C77">D-1</span>
+    <span class="badge b.dday" style="background:#FCDCE7;color:#D94C77">오늘</span>
+    <span class="badge b.dday" style="background:#F4F4EF;color:#54534C">D-12</span>
+  </div>
+  <div class="row" style="margin-bottom:0">
+    <span class="nm">KEYWORD</span>
+    <span class="chip kw">Spring Boot</span>
+    <span class="chip match">PostgreSQL</span>
+    <span class="chip match">Redis</span>
+    <span class="chip gap">Kafka</span>
+    <span class="chip gap">MSA 운영</span>
+  </div>
+</body></html>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .stack { display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px; align-items: center; }
+  .ai-result { background: #fff; border: 1px solid var(--color-border-default); border-radius: 12px; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: var(--color-text-primary); }
+  .ai-result .hd { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.08em; margin-bottom: 8px; }
+  .kw-flag      { background: var(--color-yellow-100); border-bottom: 2px dashed var(--color-yellow-400); padding: 0 3px; cursor: help; }
+  .kw-confirmed { background: var(--color-mint-50);    border-bottom: 2px solid var(--color-mint-400); padding: 0 3px; }
+  .chips { display: flex; flex-direction: column; gap: 8px; }
+  .vchip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; border: 1px dashed; align-self: flex-start; }
+  .vchip.q  { background: var(--color-yellow-50); color: var(--color-yellow-400); border-color: var(--color-yellow-300); }
+  .vchip.ok { background: var(--color-mint-50);   color: var(--color-mint-700);   border-color: var(--color-mint-300); border-style: solid; }
+  .vchip::before { font-family: var(--font-family-mono); font-weight: 800; font-size: 11px; }
+  .vchip.q::before  { content: "?"; }
+  .vchip.ok::before { content: "✓"; }
+  .lgnd { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.04em; }
+</style></head>
+<body>
+  <div class="stack">
+    <div class="ai-result">
+      <div class="hd">AI 초안 — 검토 표시</div>
+      입사 후 <span class="kw-confirmed">PostgreSQL</span> 운영 경험을 살려, 결제 시스템의
+      <span class="kw-flag">대용량 트래픽 처리</span> 안정성을 한 단계 끌어올리고 싶습니다.
+      특히 <span class="kw-flag">Kafka 기반의 비동기 처리</span> 경험을 다지고…
+    </div>
+    <div class="chips">
+      <span class="vchip ok">이력에서 직접 확인</span>
+      <span class="vchip q">이력에 없는 표현</span>
+      <span class="lgnd">노란 점선 = 검토 필요 · 민트 = 확정</span>
+    </div>
+  </div>
+</body></html>

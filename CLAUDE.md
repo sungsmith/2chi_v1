@@ -96,26 +96,36 @@ main                          # 안정 버전 (직접 커밋 금지)
 
 ## 7. 디자인 시스템 참조 규칙
 
-**모든 프론트엔드/디자인 작업은 `design_system/` 디렉토리 내부 자료를 1차 레퍼런스로 한다.** 코드를 짜기 전에 해당 페이지·컴포넌트 레퍼런스를 먼저 읽고 시작할 것. 추측으로 UI 구성·레이아웃·문구를 만들지 말 것.
+**모든 프론트엔드/디자인 작업은 `design_system/` 디렉토리 내부 자료를 1차 레퍼런스로 한다.** 코드를 짜기 전에 해당 컴포넌트·페이지 레퍼런스를 먼저 읽고 시작할 것. 추측으로 UI 구성·레이아웃·문구를 만들지 말 것.
+
+**정책 — 두 source 분리**:
+- **디자인 시스템 (HOW: 토큰·컴포넌트·시각·톤)** — Claude Design hand-off 번들 (`design_system/README.md` + `colors_and_type.css` + `preview/` + `ui_kits/web/`)
+- **화면 (WHAT: IA·흐름·페이지별 위젯 배치)** — wireframes (`design_system/scraps/wireframes-v0.1.html`)
 
 핵심 파일 (작업 전 반드시 확인):
-- `design_system/tokens.css` — 색상·타이포·스페이싱·반경·그림자 토큰 (CSS 변수)
-- `design_system/doc.css` — **베이스 컴포넌트** (`.btn` / `.badge` / `.input` / `.card` / 샘플 chrome 등 800줄). 모든 페이지에서 활용. frontend 에 통합되어 globals 으로 로드됨.
-- `design_system/index.html` — 컴포넌트 스펙 전체 (00~12섹션)
-- `design_system/uploads/2chi_v1_wireframes_v0.1.html` — **전체 화면 흐름·IA 와이어프레임**. 새 기능/페이지 작업 시작 시 가장 먼저 열어 해당 섹션을 확인.
-- `design_system/pages/{기능}.html` (+ `.css`, `.jsx`) — 페이지별 시안. 신규 페이지 구현 시 동명 파일 존재 여부 먼저 확인하고, 있으면 그것을 정답지로 사용.
-  - 현재 보유: `onboarding`, `dashboard`, `career`, `posting-new` (지속 추가 예정)
+- `design_system/README.md` — **톤·시각·iconography·voice 가이드** (1차 정답지, 212줄)
+- `design_system/colors_and_type.css` — 토큰·폰트·heading·utility classes (frontend 의 globals.css 에 통합됨)
+- `design_system/preview/{영역}.html` — **컴포넌트별 spec 카드 27개** (buttons / cards-kpi / form-inputs / form-toggles / badges-chips / alerts / colors-* / type-* / spacing/radius/shadow / iconography / logo / mascot-cloud / stickers-tape / tone-keywords / ai-verify / progress / bubbles-tone / border-divider)
+- `design_system/ui_kits/web/{index.html, kit.css, kit-screens.css}` — **통합 UI kit** (frontend 의 kit.css 와 동기화)
+- `design_system/scraps/wireframes-v0.1.html` — 화면 흐름·IA
+- `design_system/SKILL.md` — Claude Code skill (`/skill 2chi-design` invoke)
+- `design_system/scraps/source-{기능}.{css,jsx}` — 옛 page 구현 source (역사적 참조용, 정답지 아님)
 
 작업 절차 (필수):
-1. 작업 대상 페이지/기능 식별 → `design_system/pages/{기능}.*` 존재 확인
-2. `uploads/2chi_v1_wireframes_v0.1.html` 에서 해당 섹션 흐름 파악
-3. `tokens.css` / `doc.css` / `index.html` 의 토큰·베이스 컴포넌트·전체 스펙 확인 — 시안 jsx 가 `.btn`, `.badge` 등 doc.css 클래스를 사용한다면 frontend 의 globals.css 에 통합된 doc.css 가 자동 적용됨 (별도 매핑 작업 불필요)
-4. 위 자료에 없는 요소를 임의로 추가하지 말 것. 누락된 경우 사용자에게 질문.
+1. **시각 가이드 확인** — `design_system/README.md` 의 §3 CONTENT FUNDAMENTALS, §4 VISUAL FOUNDATIONS, §5 ICONOGRAPHY 의 톤·색·타입·doodle·iconography 규칙
+2. **컴포넌트 spec 확인** — 사용할 위젯이 있는 `preview/*.html` (예: 버튼 작업 시 `preview/buttons.html`)
+3. **화면 흐름 확인** — `scraps/wireframes-v0.1.html` 의 해당 §섹션 (대시보드 §2 / 내정보 §3 / 채용공고 등록 §4 / 자소서 §5·§6 / 캘린더 §7 / 지원 §8 / 기업분석 §9)
+4. **통합 UI kit 참조** — `ui_kits/web/index.html` 의 실제 화면 데모 (필요 시)
+5. 위 자료에 없는 요소를 임의로 추가하지 말 것. 누락된 경우 사용자에게 질문.
 
 필수 준수:
-- 색상: `var(--color-*)` 토큰만 사용. 하드코딩 hex 금지.
-- 타이포: Pretendard Variable (본문) / MemomentKkukkukk (타이틀·감성 포인트만)
-- 아이콘: 기능 아이콘 → Lucide / 장식 아이콘 → custom SVG
-- 감성 요소(테이프·메모·손글씨)는 빈 상태·환영·온보딩 화면에만. 자소서·이력서·데이터 테이블에는 사용 금지.
-- spacing: `var(--space-*)` 토큰 사용
+- 색상: `var(--color-*)` 토큰만 사용 (colors_and_type.css 가 정의). 하드코딩 hex 금지.
+- 타이포: **Pretendard Variable (UI/body/data)** + **MemomentKkukkukk (titles only, 1~2 places/screen)** + **JetBrains Mono (eyebrows/dates/percentages)**. 본문 hand 폰트 사용 금지.
+- 아이콘: Lucide-style line icons (1.8 stroke, round caps), 24×24 viewBox. 컴포넌트별 인라인 SVG `const Ico = { ... }` 패턴.
+- 감성 요소 (washi tape / mascot cloud / hand-underline / memo paper) — 환영·온보딩·빈 상태 화면에만. 자소서·이력서·데이터 테이블에는 금지.
+- spacing: `var(--space-*)` 토큰
+- radius: `var(--radius-{md|lg|xl|full})` 토큰 (square corners 금지)
+- 컴포넌트명: PascalCase / 파일명: kebab-case
+- **톤 키워드** (`정리·연결·안심·준비·성장·맞춤·검토`) — UI 문구·CTA 작성 시 2개 이상 hit 권장
+- **카피 톤**: 해요체·청유형 (합쇼체·명령형 금지). 사용자는 "내", 시스템 페르소나는 "이취가 …해드릴게요"
 - 컴포넌트명: PascalCase / 파일명: kebab-case

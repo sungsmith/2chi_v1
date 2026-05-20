@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 26px 22px; }
+  .stage { display: flex; gap: 18px; align-items: center; justify-content: center; }
+  .tape  { display: inline-block; width: 84px; height: 22px; transform: rotate(-6deg); border-left: 1px dashed rgba(0,0,0,0.06); border-right: 1px dashed rgba(0,0,0,0.06); }
+  .tape.yellow { background: repeating-linear-gradient(-8deg, rgba(252,223,126,0.85) 0 6px, rgba(252,223,126,0.6) 6px 12px); }
+  .tape.mint   { background: repeating-linear-gradient(-8deg, rgba(176,233,211,0.85) 0 6px, rgba(176,233,211,0.6) 6px 12px); transform: rotate(7deg); }
+  .tape.pink   { background: repeating-linear-gradient(-8deg, rgba(249,186,204,0.85) 0 6px, rgba(249,186,204,0.6) 6px 12px); transform: rotate(-12deg); }
+  .tape.lav    { background: repeating-linear-gradient(-8deg, rgba(216,203,250,0.85) 0 6px, rgba(216,203,250,0.6) 6px 12px); transform: rotate(4deg); }
+  .memo { background: linear-gradient(180deg,#FFFEF8 0%,#FFFDF1 100%); border: 1px solid #F0EAD1; border-radius: 10px; box-shadow: 0 1px 2px rgba(37,36,31,0.04); padding: 14px 18px; font-family: var(--font-family-hand); font-size: 17px; line-height: 1.4; color: var(--color-text-primary); position: relative; max-width: 200px; }
+  .memo::before { content: ""; position: absolute; top: -10px; left: 50%; transform: translateX(-50%) rotate(-6deg); width: 56px; height: 16px; background: repeating-linear-gradient(-8deg, rgba(216,203,250,0.85) 0 5px, rgba(216,203,250,0.6) 5px 10px); }
+  .sticker { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; border: 1.5px dashed currentColor; background: #fff; }
+  .sticker.lav  { color: var(--color-lavender-600); }
+  .sticker.mint { color: var(--color-mint-700); }
+  .stickers { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; justify-content: center; }
+  .tapes { display: flex; gap: 10px; justify-content: center; margin-bottom: 18px; }
+</style></head>
+<body>
+  <div class="tapes">
+    <span class="tape yellow"></span>
+    <span class="tape mint"></span>
+    <span class="tape pink"></span>
+    <span class="tape lav"></span>
+  </div>
+  <div class="stage">
+    <div class="memo">작은 행동이<br>큰 변화를 만들어요</div>
+    <div class="memo" style="background:#F6F3FE;border-color:#D8CBFA">수정하면서<br>나만의 답을<br>만들어요 ♡</div>
+  </div>
+  <div class="stickers">
+    <span class="sticker lav">AI 초안</span>
+    <span class="sticker mint">매칭 완료</span>
+    <span class="sticker" style="color:#F37F4D">보완 추천</span>
+  </div>
+</body></html>

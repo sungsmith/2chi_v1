@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .stack { display: grid; gap: 14px; }
+  .surfaces { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .surf { padding: 12px; border-radius: 10px; border: 1px solid var(--color-border-default); font-family: var(--font-family-mono); font-size: 10px; display: flex; flex-direction: column; gap: 4px; }
+  .surf .v { color: var(--color-text-muted); font-size: 9px; }
+  .surf.bg     { background:#F8F8F4; }
+  .surf.def    { background:#FFFFFF; }
+  .surf.soft   { background:#FAFAF7; }
+  .surf.sunk   { background:#F2F2EC; }
+  .text { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background:#fff; padding: 12px; border-radius: 10px; border: 1px solid var(--color-border-default); }
+  .text > div { font-size: 11px; }
+  .text > div .nm { font-family: var(--font-family-mono); font-size: 9.5px; color: var(--color-text-muted); display: block; margin-bottom: 3px; letter-spacing: 0.04em; }
+  .tx-pri   { color: #25241F; font-weight: 600; }
+  .tx-sec   { color: #54534C; font-weight: 500; }
+  .tx-mut   { color: #8A8980; }
+  .tx-dis   { color: #BCBBB2; }
+</style></head>
+<body>
+  <div class="stack">
+    <div class="surfaces">
+      <div class="surf bg"><b>bg</b><span class="v">#F8F8F4</span></div>
+      <div class="surf def"><b>surface.default</b><span class="v">#FFFFFF</span></div>
+      <div class="surf soft"><b>surface.soft</b><span class="v">#FAFAF7</span></div>
+      <div class="surf sunk"><b>surface.sunken</b><span class="v">#F2F2EC</span></div>
+    </div>
+    <div class="text">
+      <div><span class="nm">text.primary</span><span class="tx-pri">텍스트 본문</span></div>
+      <div><span class="nm">text.secondary</span><span class="tx-sec">텍스트 본문</span></div>
+      <div><span class="nm">text.muted</span><span class="tx-mut">텍스트 본문</span></div>
+      <div><span class="nm">text.disabled</span><span class="tx-dis">텍스트 본문</span></div>
+    </div>
+  </div>
+</body></html>

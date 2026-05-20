@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid; }
+  .dot { width: 22px; height: 22px; border-radius: 999px; flex: 0 0 auto; }
+  .nm  { font-family: var(--font-family-mono); font-size: 11px; font-weight: 700; }
+  .hex { font-family: var(--font-family-mono); font-size: 10px; opacity: 0.75; margin-top: 1px; }
+  .use { font-size: 11px; margin-left: auto; opacity: 0.85; }
+
+  .success { background:#EEFBF6; border-color:#B0E9D3; color:#166A50; }
+  .success .dot { background:#2FA980; }
+  .warning { background:#FFF9E5; border-color:#FCDF7E; color:#705a0a; }
+  .warning .dot { background:#DDAA20; }
+  .error { background:#FEF1F2; border-color:#FBC7CD; color:#a01e2d; }
+  .error .dot { background:#D94C5C; }
+  .info { background:#F2F4FF; border-color:#C7CEFB; color:#3B43A8; }
+  .info .dot { background:#6471E0; }
+</style></head>
+<body>
+  <div class="grid">
+    <div class="row success"><span class="dot"></span><span><span class="nm">success</span><div class="hex">2FA980</div></span><span class="use">저장 · 합격</span></div>
+    <div class="row warning"><span class="dot"></span><span><span class="nm">warning</span><div class="hex">DDAA20</div></span><span class="use">검토 필요</span></div>
+    <div class="row error"><span class="dot"></span><span><span class="nm">error</span><div class="hex">D94C5C</div></span><span class="use">제출 실패</span></div>
+    <div class="row info"><span class="dot"></span><span><span class="nm">info</span><div class="hex">6471E0</div></span><span class="use">안내 · 팁</span></div>
+  </div>
+</body></html>
