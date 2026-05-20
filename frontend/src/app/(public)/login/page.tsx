@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { LoginForm } from "@/components/login/login-form";
 
 export const metadata = {
@@ -10,7 +11,9 @@ export default function LoginPage() {
       <h1 style={{ fontFamily: "var(--font-family-hand)", fontSize: "var(--fs-page-title)", marginBottom: "var(--space-8)" }}>
         로그인
       </h1>
-      <LoginForm />
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
     </main>
   );
 }

@@ -2,7 +2,7 @@
 
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { TextField } from "../ui/text-field";
 import { Button } from "../ui/button";
 import { useAuth } from "@/contexts/auth-context";
@@ -10,6 +10,7 @@ import { SignupApiError } from "@/lib/api/auth";
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -49,8 +50,11 @@ export function LoginForm() {
 
     setSubmitting(true);
     try {
-      const user = await login(email, password);
-      router.push(user.onboardingCompleted ? "/" : "/onboarding");
+      const u = await login(email, password);
+      const from = searchParams.get("from");
+      const safeFrom = from && from.startsWith("/") ? from : null;
+      const dest = u.onboardingCompleted ? (safeFrom ?? "/") : "/onboarding";
+      router.push(dest);
     } catch (err) {
       if (err instanceof SignupApiError) {
         if (err.body.code === "INVALID_CREDENTIALS") {
