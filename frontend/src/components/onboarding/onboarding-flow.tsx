@@ -86,7 +86,7 @@ export function OnboardingFlow() {
   }
 
   return (
-    <div className="onb-shell">
+    <>
       <BrandPanel />
 
       <section className="onb-right">
@@ -154,6 +154,6 @@ export function OnboardingFlow() {
           onDismiss={dismissWelcome}
         />
       )}
-    </div>
+    </>
   );
 }
