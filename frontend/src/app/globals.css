@@ -1,8 +1,9 @@
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
-@import "../styles/tokens.css";
-@import "../styles/doc.css";
+@import "../styles/colors_and_type.css";
+@import "../styles/kit.css";
 
+/* Override MemomentKkukkukk @font-face with /fonts/ absolute path
+   (colors_and_type.css uses a relative "fonts/" path for design-system use;
+   frontend serves the files from /public/fonts/ at the root.) */
 @font-face {
   font-family: "MemomentKkukkukk";
   src: url("/fonts/MemomentKkukkukkR.woff2") format("woff2"),
@@ -10,19 +11,4 @@
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-}
-
-html, body {
-  padding: 0;
-  margin: 0;
-  font-family: var(--font-family-sans);
-  font-size: var(--fs-body);
-  line-height: var(--lh-body);
-  color: var(--color-text-primary);
-  background: var(--color-bg);
-  -webkit-font-smoothing: antialiased;
-}
-
-* {
-  box-sizing: border-box;
 }
