@@ -159,4 +159,32 @@ describe("CareerContent", () => {
     // 폼 사라짐
     await waitFor(() => expect(screen.queryByLabelText(/회사명/)).not.toBeInTheDocument());
   });
+
+  test("프로젝트 추가 — 저장 성공 → createProject 호출", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    createProjectMock.mockResolvedValue({
+      id: 300, careerHistoryId: 100, title: "신규 프로젝트",
+      periodStart: null, periodEnd: null, role: null,
+      techStack: [], structureType: "PRAR",
+      prar: { problem: null, rootCause: null, approach: null, result: null },
+      metrics: [], orderIndex: 1,
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("(주)현재회사")).toBeInTheDocument());
+
+    // 회사 카드의 "프로젝트 추가" 버튼 (이미 defaultOpen=true)
+    await user.click(screen.getByRole("button", { name: /프로젝트 추가/ }));
+    await user.type(await screen.findByLabelText(/프로젝트 이름/), "신규 프로젝트");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(createProjectMock).toHaveBeenCalledWith(100, {
+        title: "신규 프로젝트",
+        periodStart: null,
+        periodEnd: null,
+        role: null,
+      });
+    });
+  });
 });
