@@ -38,3 +38,6 @@ frontend/.pnpm-debug.log*
 postgres_data/
 minio_data/
 redis_data/
+
+# ===== Superpowers brainstorm session (visual companion) =====
+.superpowers/
