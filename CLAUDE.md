@@ -100,6 +100,7 @@ main                          # 안정 버전 (직접 커밋 금지)
 
 핵심 파일 (작업 전 반드시 확인):
 - `design_system/tokens.css` — 색상·타이포·스페이싱·반경·그림자 토큰 (CSS 변수)
+- `design_system/doc.css` — **베이스 컴포넌트** (`.btn` / `.badge` / `.input` / `.card` / 샘플 chrome 등 800줄). 모든 페이지에서 활용. frontend 에 통합되어 globals 으로 로드됨.
 - `design_system/index.html` — 컴포넌트 스펙 전체 (00~12섹션)
 - `design_system/uploads/2chi_v1_wireframes_v0.1.html` — **전체 화면 흐름·IA 와이어프레임**. 새 기능/페이지 작업 시작 시 가장 먼저 열어 해당 섹션을 확인.
 - `design_system/pages/{기능}.html` (+ `.css`, `.jsx`) — 페이지별 시안. 신규 페이지 구현 시 동명 파일 존재 여부 먼저 확인하고, 있으면 그것을 정답지로 사용.
@@ -108,7 +109,7 @@ main                          # 안정 버전 (직접 커밋 금지)
 작업 절차 (필수):
 1. 작업 대상 페이지/기능 식별 → `design_system/pages/{기능}.*` 존재 확인
 2. `uploads/2chi_v1_wireframes_v0.1.html` 에서 해당 섹션 흐름 파악
-3. `tokens.css` / `index.html` 의 토큰·컴포넌트 스펙 확인
+3. `tokens.css` / `doc.css` / `index.html` 의 토큰·베이스 컴포넌트·전체 스펙 확인 — 시안 jsx 가 `.btn`, `.badge` 등 doc.css 클래스를 사용한다면 frontend 의 globals.css 에 통합된 doc.css 가 자동 적용됨 (별도 매핑 작업 불필요)
 4. 위 자료에 없는 요소를 임의로 추가하지 말 것. 누락된 경우 사용자에게 질문.
 
 필수 준수:

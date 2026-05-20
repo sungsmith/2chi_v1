@@ -58,7 +58,7 @@ describe("OnboardingFlow", () => {
     expect(next).toBeDisabled();
   });
 
-  test("4단계 완료 + [완료] → fetch 호출 + push('/')", async () => {
+  test("4단계 완료 + [시작하기] → fetch 호출 + WelcomeModal 표시 → [대시보드로 이동] 클릭 → push('/')", async () => {
     fetchMock.mockResolvedValueOnce(new Response("{}", { status: 200 }));
     refreshUserMock.mockResolvedValueOnce(undefined);
 
@@ -75,7 +75,8 @@ describe("OnboardingFlow", () => {
     await user.click(screen.getByRole("button", { name: /Infra \/ Cloud/ }));
     await clickNext(user);
 
-    await user.click(screen.getByRole("button", { name: /^완료/ }));
+    // 시작하기 클릭 → submit
+    await user.click(screen.getByRole("button", { name: /^시작하기/ }));
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [, init] = fetchMock.mock.calls[0];
@@ -85,6 +86,14 @@ describe("OnboardingFlow", () => {
     expect(body.targetJobs).toEqual(expect.arrayContaining(["BACKEND", "INFRA_CLOUD"]));
 
     expect(refreshUserMock).toHaveBeenCalled();
+
+    // 이 시점에 push 아직 호출 안 됨 — WelcomeModal 표시
+    expect(pushMock).not.toHaveBeenCalled();
+
+    // WelcomeModal "대시보드로 이동" 클릭
+    const dashboardBtn = await screen.findByRole("button", { name: /대시보드로 이동/ });
+    await user.click(dashboardBtn);
+
     expect(pushMock).toHaveBeenCalledWith("/");
   });
 
@@ -103,7 +112,7 @@ describe("OnboardingFlow", () => {
     await clickNext(user);
     await user.click(screen.getByRole("button", { name: /Backend/ }));
     await clickNext(user);
-    await user.click(screen.getByRole("button", { name: /^완료/ }));
+    await user.click(screen.getByRole("button", { name: /^시작하기/ }));
 
     expect(await screen.findByText(/입력값이 유효하지 않습니다/)).toBeInTheDocument();
   });

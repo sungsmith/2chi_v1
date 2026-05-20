@@ -1,5 +1,6 @@
 "use client";
 
+import "./onboarding.css";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
@@ -18,7 +19,7 @@ export default function OnboardingPage() {
   if (!initialized || !user || user.onboardingCompleted) return null;
 
   return (
-    <main style={{ maxWidth: 720, margin: "0 auto", padding: "var(--space-12) var(--space-6)" }}>
+    <main className="onb-stage">
       <OnboardingFlow />
     </main>
   );
