@@ -108,4 +108,55 @@ describe("CareerContent", () => {
       expect(patchProjectMock).toHaveBeenCalledWith(100, 200, { prar: { problem: "월말 정산 TPS 한계" } });
     });
   });
+
+  test("회사 추가 — 빈 값 시 검증 에러, createCareer 호출 없음", async () => {
+    fetchCareersMock.mockResolvedValue([]);
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    // 폼 노출 확인
+    const companyInput = await screen.findByLabelText(/회사명/);
+    expect(companyInput).toBeInTheDocument();
+
+    // 빈 값으로 저장 시도
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    expect(await screen.findByText(/회사명을 입력해주세요/)).toBeInTheDocument();
+    expect(createCareerMock).not.toHaveBeenCalled();
+  });
+
+  test("회사 추가 — 마스킹 적용 + 저장 성공 + 리스트 refetch", async () => {
+    fetchCareersMock.mockResolvedValue([]);
+    createCareerMock.mockResolvedValue({
+      id: 999, company: "(주)신규", position: null,
+      startDate: "2024-01-01", endDate: null, isCurrent: true,
+      summary: null, orderIndex: 0, projects: [],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.type(await screen.findByLabelText(/회사명/), "(주)신규");
+
+    const startInput = screen.getByLabelText(/시작일/);
+    await user.type(startInput, "20240101");
+    expect(startInput).toHaveValue("2024-01-01");
+
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(createCareerMock).toHaveBeenCalledWith({
+        company: "(주)신규",
+        position: undefined,
+        startDate: "2024-01-01",
+        endDate: null,
+      });
+    });
+
+    // 폼 사라짐
+    await waitFor(() => expect(screen.queryByLabelText(/회사명/)).not.toBeInTheDocument());
+  });
 });
