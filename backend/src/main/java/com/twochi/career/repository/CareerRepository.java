@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface CareerRepository extends JpaRepository<Career, Long> {
 
-    List<Career> findAllByUserIdOrderByDisplayOrderDesc(Long userId);
+    List<Career> findAllByUserIdOrderByOrderIndexDesc(Long userId);
 
     Optional<Career> findByIdAndUserId(Long id, Long userId);
 
-    @Query("SELECT COALESCE(MAX(c.displayOrder), -1) FROM Career c WHERE c.userId = :userId")
-    int findMaxDisplayOrderByUserId(Long userId);
+    @Query("SELECT COALESCE(MAX(c.orderIndex), -1) FROM Career c WHERE c.userId = :userId")
+    int findMaxOrderIndexByUserId(Long userId);
 }

@@ -9,12 +9,15 @@ import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
-    List<Project> findAllByCareerIdOrderByDisplayOrderDesc(Long careerId);
+    List<Project> findAllByCareerHistoryIdOrderByOrderIndexDesc(Long careerHistoryId);
 
-    Optional<Project> findByIdAndCareerId(Long id, Long careerId);
+    Optional<Project> findByIdAndCareerHistoryId(Long id, Long careerHistoryId);
 
-    @Query("SELECT COALESCE(MAX(p.displayOrder), -1) FROM Project p WHERE p.careerId = :careerId")
-    int findMaxDisplayOrderByCareerId(Long careerId);
+    /** 권한 가드용 — userId 와 함께 검증. */
+    Optional<Project> findByIdAndUserId(Long id, Long userId);
 
-    void deleteAllByCareerId(Long careerId);
+    @Query("SELECT COALESCE(MAX(p.orderIndex), -1) FROM Project p WHERE p.careerHistoryId = :careerHistoryId")
+    int findMaxOrderIndexByCareerHistoryId(Long careerHistoryId);
+
+    void deleteAllByCareerHistoryId(Long careerHistoryId);
 }
