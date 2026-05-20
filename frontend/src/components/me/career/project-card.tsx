@@ -5,8 +5,9 @@ import { ChevronRight, Trash } from "../icons";
 import { PrarCell } from "./prar-cell";
 import { MetricChip } from "./metric-chip";
 import { TechTag } from "./tech-tag";
+import { NewMetricForm } from "./new-metric-form";
 import { patchProject } from "@/lib/api/career";
-import type { Project, Metric, ProjectPatchRequest } from "@/lib/types/career";
+import type { Project, ProjectPatchRequest } from "@/lib/types/career";
 
 type Props = {
   project: Project;
@@ -20,6 +21,7 @@ type Props = {
 export function ProjectCard({ project, careerId, defaultOpen = false, onChange, onDelete, onError }: Props) {
   const [open, setOpen] = useState(defaultOpen);
   const [saving, setSaving] = useState(false);
+  const [addingMetric, setAddingMetric] = useState(false);
 
   async function autosave(patch: ProjectPatchRequest) {
     setSaving(true);
@@ -43,8 +45,8 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
         className="pj-head"
         role="button"
         tabIndex={0}
-        onClick={() => setOpen((o) => !o)}
-        onKeyDown={(e) => { if (e.key === "Enter") setOpen((o) => !o); }}
+        onClick={() => setOpen((o) => { if (o) setAddingMetric(false); return !o; })}
+        onKeyDown={(e) => { if (e.key === "Enter") setOpen((o) => { if (o) setAddingMetric(false); return !o; }); }}
         style={{ cursor: "pointer" }}
       >
         <span className="chev"><ChevronRight size={14} /></span>
@@ -125,20 +127,22 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
                   }}
                 />
               ))}
-              <MetricChip
-                variant="add"
-                onAdd={() => {
-                  const label = window.prompt("성과 지표 (예: TPS)");
-                  if (!label) return;
-                  const before = window.prompt(`${label} — 전 (예: 500)`);
-                  if (!before) return;
-                  const after = window.prompt(`${label} — 후 (예: 2000)`);
-                  if (!after) return;
-                  const newMetric: Metric = { k: label, before, after };
-                  autosave({ metrics: [...project.metrics, newMetric] });
-                }}
-              />
+              {!addingMetric && (
+                <MetricChip
+                  variant="add"
+                  onAdd={() => setAddingMetric(true)}
+                />
+              )}
             </div>
+            {addingMetric && (
+              <NewMetricForm
+                onSubmit={(m) => {
+                  autosave({ metrics: [...project.metrics, m] });
+                  setAddingMetric(false);
+                }}
+                onCancel={() => setAddingMetric(false)}
+              />
+            )}
           </div>
         </div>
       )}

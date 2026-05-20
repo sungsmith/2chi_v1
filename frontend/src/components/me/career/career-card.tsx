@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Pencil, Trash, Plus } from "../icons";
 import { ProjectCard } from "./project-card";
 import { updateCareer, deleteCareer, createProject, deleteProject } from "@/lib/api/career";
-import type { Career, Project } from "@/lib/types/career";
+import type { Career, Project, ProjectCreateRequest } from "@/lib/types/career";
+import { NewProjectForm } from "./new-project-form";
 
 type Props = {
   career: Career;
@@ -23,6 +24,7 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
     startDate: career.startDate,
     endDate: career.endDate,
   });
+  const [addingProject, setAddingProject] = useState(false);
 
   async function saveEdit() {
     try {
@@ -49,18 +51,11 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
     }
   }
 
-  async function handleAddProject() {
-    const title = window.prompt("프로젝트 이름");
-    if (!title) return;
-    const periodStart = window.prompt("시작일 (YYYY-MM-DD)") || null;
+  async function handleAddProject(req: ProjectCreateRequest) {
     try {
-      const newProject = await createProject(career.id, {
-        title,
-        periodStart,
-        periodEnd: null,
-        role: null,
-      });
+      const newProject = await createProject(career.id, req);
       onChange({ ...career, projects: [newProject, ...career.projects] });
+      setAddingProject(false);
     } catch (err) {
       onError(err instanceof Error ? err.message : "프로젝트 추가에 실패했어요.");
     }
@@ -97,7 +92,7 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
           border: "1px solid var(--color-border-default)",
         }}
       >
-        <div style={{ flex: 1, cursor: editing ? "default" : "pointer" }} onClick={() => !editing && setOpen((o) => !o)}>
+        <div style={{ flex: 1, cursor: editing ? "default" : "pointer" }} onClick={() => !editing && setOpen((o) => { if (o) setAddingProject(false); return !o; })}>
           {editing ? (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <input value={draft.company} onChange={(e) => setDraft({ ...draft, company: e.target.value })} placeholder="회사명" style={{ padding: 8 }} />
@@ -154,9 +149,16 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
               onError={onError}
             />
           ))}
-          <button className="btn ghost" onClick={handleAddProject} style={{ marginTop: 8 }}>
-            <Plus size={14} /> 프로젝트 추가
-          </button>
+          {!addingProject ? (
+            <button className="btn ghost" onClick={() => setAddingProject(true)} style={{ marginTop: 8 }}>
+              <Plus size={14} /> 프로젝트 추가
+            </button>
+          ) : (
+            <NewProjectForm
+              onSubmit={handleAddProject}
+              onCancel={() => setAddingProject(false)}
+            />
+          )}
         </div>
       )}
     </section>

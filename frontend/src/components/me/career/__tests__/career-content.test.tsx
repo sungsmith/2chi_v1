@@ -15,12 +15,14 @@ vi.mock("@/contexts/auth-context", () => ({ useAuth: () => authMock }));
 
 const fetchCareersMock = vi.fn();
 const patchProjectMock = vi.fn();
+const createCareerMock = vi.fn();
+const createProjectMock = vi.fn();
 vi.mock("@/lib/api/career", () => ({
   fetchCareers: (...args: unknown[]) => fetchCareersMock(...args),
-  createCareer: vi.fn(),
+  createCareer: (...args: unknown[]) => createCareerMock(...args),
   updateCareer: vi.fn(),
   deleteCareer: vi.fn(),
-  createProject: vi.fn(),
+  createProject: (...args: unknown[]) => createProjectMock(...args),
   patchProject: (...args: unknown[]) => patchProjectMock(...args),
   deleteProject: vi.fn(),
 }));
@@ -52,6 +54,8 @@ const sampleCareer: Career = {
 beforeEach(() => {
   fetchCareersMock.mockReset();
   patchProjectMock.mockReset();
+  createCareerMock.mockReset();
+  createProjectMock.mockReset();
 });
 
 afterEach(() => {
@@ -102,6 +106,138 @@ describe("CareerContent", () => {
 
     await waitFor(() => {
       expect(patchProjectMock).toHaveBeenCalledWith(100, 200, { prar: { problem: "월말 정산 TPS 한계" } });
+    });
+  });
+
+  test("회사 추가 — 빈 값 시 검증 에러, createCareer 호출 없음", async () => {
+    fetchCareersMock.mockResolvedValue([]);
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    // 폼 노출 확인
+    const companyInput = await screen.findByLabelText(/회사명/);
+    expect(companyInput).toBeInTheDocument();
+
+    // 빈 값으로 저장 시도
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    expect(await screen.findByText(/회사명을 입력해주세요/)).toBeInTheDocument();
+    expect(createCareerMock).not.toHaveBeenCalled();
+  });
+
+  test("회사 추가 — 마스킹 적용 + 저장 성공 + 리스트 refetch", async () => {
+    fetchCareersMock.mockResolvedValue([]);
+    createCareerMock.mockResolvedValue({
+      id: 999, company: "(주)신규", position: null,
+      startDate: "2024-01-01", endDate: null, isCurrent: true,
+      summary: null, orderIndex: 0, projects: [],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.type(await screen.findByLabelText(/회사명/), "(주)신규");
+
+    const startInput = screen.getByLabelText(/시작일/);
+    await user.type(startInput, "20240101");
+    expect(startInput).toHaveValue("2024-01-01");
+
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(createCareerMock).toHaveBeenCalledWith({
+        company: "(주)신규",
+        position: undefined,
+        startDate: "2024-01-01",
+        endDate: null,
+      });
+    });
+
+    // 폼 사라짐
+    await waitFor(() => expect(screen.queryByLabelText(/회사명/)).not.toBeInTheDocument());
+  });
+
+  test("프로젝트 추가 — 저장 성공 → createProject 호출", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    createProjectMock.mockResolvedValue({
+      id: 300, careerHistoryId: 100, title: "신규 프로젝트",
+      periodStart: null, periodEnd: null, role: null,
+      techStack: [], structureType: "PRAR",
+      prar: { problem: null, rootCause: null, approach: null, result: null },
+      metrics: [], orderIndex: 1,
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("(주)현재회사")).toBeInTheDocument());
+
+    // 회사 카드의 "프로젝트 추가" 버튼 (이미 defaultOpen=true)
+    await user.click(screen.getByRole("button", { name: /프로젝트 추가/ }));
+    await user.type(await screen.findByLabelText(/프로젝트 이름/), "신규 프로젝트");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(createProjectMock).toHaveBeenCalledWith(100, {
+        title: "신규 프로젝트",
+        periodStart: null,
+        periodEnd: null,
+        role: null,
+      });
+    });
+  });
+
+  test("메트릭 추가 — compare 저장 → patchProject 호출", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    patchProjectMock.mockResolvedValue({
+      ...sampleCareer.projects[0],
+      metrics: [{ k: "TPS", before: "500", after: "2000" }],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("주문 정산 시스템")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /성과 지표 추가/ }));
+
+    await user.type(await screen.findByLabelText(/지표/), "TPS");
+    await user.type(screen.getByLabelText(/^전/), "500");
+    await user.type(screen.getByLabelText(/^후/), "2000");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(patchProjectMock).toHaveBeenCalledWith(100, 200, {
+        metrics: [{ k: "TPS", before: "500", after: "2000" }],
+      });
+    });
+  });
+
+  test("메트릭 추가 — delta 토글 + 저장 → patchProject 호출 (dir 기본 up)", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    patchProjectMock.mockResolvedValue({
+      ...sampleCareer.projects[0],
+      metrics: [{ k: "매출", delta: "₩2,000,000", dir: "up" }],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("주문 정산 시스템")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /성과 지표 추가/ }));
+
+    // delta 라디오 토글
+    await user.click(await screen.findByLabelText(/증감 \(Δ\)/));
+    // before/after 사라지고 delta/방향 노출
+    expect(screen.queryByLabelText(/^전/)).not.toBeInTheDocument();
+
+    // "증감" 은 라디오와 필드 둘 다 매치되므로 textbox role 로 명시
+    await user.type(screen.getByRole("textbox", { name: /지표/ }), "매출");
+    await user.type(screen.getByRole("textbox", { name: /^증감/ }), "₩2,000,000");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(patchProjectMock).toHaveBeenCalledWith(100, 200, {
+        metrics: [{ k: "매출", delta: "₩2,000,000", dir: "up" }],
+      });
     });
   });
 });

@@ -7,12 +7,14 @@ import { CareerCard } from "./career-card";
 import { AssistantNote } from "./assistant-note";
 import { Plus } from "../icons";
 import { fetchCareers, createCareer } from "@/lib/api/career";
-import type { Career } from "@/lib/types/career";
+import type { Career, CareerCreateRequest } from "@/lib/types/career";
+import { NewCareerForm } from "./new-career-form";
 
 export function CareerContent() {
   const { user } = useAuth();
   const [careers, setCareers] = useState<Career[] | null>(null);
   const [error, setError] = useState<string | undefined>();
+  const [addingCareer, setAddingCareer] = useState(false);
 
   useEffect(() => {
     fetchCareers()
@@ -28,18 +30,12 @@ export function CareerContent() {
     setCareers((prev) => prev ? prev.filter((c) => c.id !== id) : prev);
   }
 
-  async function handleAddCareer() {
-    const company = window.prompt("회사명");
-    if (!company) return;
-    const position = window.prompt("직책 (예: 백엔드 개발자)") || undefined;
-    const startDate = window.prompt("입사일 (YYYY-MM-DD)");
-    if (!startDate) return;
+  async function handleAddCareer(req: CareerCreateRequest) {
     try {
-      const created = await createCareer({ company, position, startDate, endDate: null });
-      setCareers((prev) => {
-        const withProjects: Career = { ...created, projects: created.projects ?? [] };
-        return prev ? [withProjects, ...prev] : [withProjects];
-      });
+      const created = await createCareer(req);
+      const withProjects: Career = { ...created, projects: created.projects ?? [] };
+      setCareers((prev) => prev ? [withProjects, ...prev] : [withProjects]);
+      setAddingCareer(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "회사 추가에 실패했어요.");
     }
@@ -83,9 +79,16 @@ export function CareerContent() {
                 onError={setError}
               />
             ))}
-            <button className="btn" onClick={handleAddCareer} style={{ marginTop: 12 }}>
-              <Plus size={14} /> 회사 추가
-            </button>
+            {!addingCareer ? (
+              <button className="btn" onClick={() => setAddingCareer(true)} style={{ marginTop: 12 }}>
+                <Plus size={14} /> 회사 추가
+              </button>
+            ) : (
+              <NewCareerForm
+                onSubmit={handleAddCareer}
+                onCancel={() => setAddingCareer(false)}
+              />
+            )}
           </>
         )}
       </div>
