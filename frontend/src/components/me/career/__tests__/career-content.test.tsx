@@ -187,4 +187,57 @@ describe("CareerContent", () => {
       });
     });
   });
+
+  test("메트릭 추가 — compare 저장 → patchProject 호출", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    patchProjectMock.mockResolvedValue({
+      ...sampleCareer.projects[0],
+      metrics: [{ k: "TPS", before: "500", after: "2000" }],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("주문 정산 시스템")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /성과 지표 추가/ }));
+
+    await user.type(await screen.findByLabelText(/지표/), "TPS");
+    await user.type(screen.getByLabelText(/^전/), "500");
+    await user.type(screen.getByLabelText(/^후/), "2000");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(patchProjectMock).toHaveBeenCalledWith(100, 200, {
+        metrics: [{ k: "TPS", before: "500", after: "2000" }],
+      });
+    });
+  });
+
+  test("메트릭 추가 — delta 토글 + 저장 → patchProject 호출 (dir 기본 up)", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    patchProjectMock.mockResolvedValue({
+      ...sampleCareer.projects[0],
+      metrics: [{ k: "매출", delta: "₩2,000,000", dir: "up" }],
+    });
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("주문 정산 시스템")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /성과 지표 추가/ }));
+
+    // delta 라디오 토글
+    await user.click(await screen.findByLabelText(/증감 \(Δ\)/));
+    // before/after 사라지고 delta/방향 노출
+    expect(screen.queryByLabelText(/^전/)).not.toBeInTheDocument();
+
+    // "증감" 은 라디오와 필드 둘 다 매치되므로 textbox role 로 명시
+    await user.type(screen.getByRole("textbox", { name: /지표/ }), "매출");
+    await user.type(screen.getByRole("textbox", { name: /^증감/ }), "₩2,000,000");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(patchProjectMock).toHaveBeenCalledWith(100, 200, {
+        metrics: [{ k: "매출", delta: "₩2,000,000", dir: "up" }],
+      });
+    });
+  });
 });
