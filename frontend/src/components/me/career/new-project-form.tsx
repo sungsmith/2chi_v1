@@ -26,6 +26,9 @@ export function NewProjectForm({ onSubmit, onCancel }: Props) {
     if (!title.trim()) e.title = "프로젝트 이름을 입력해주세요";
     if (periodStart && !ISO_RE.test(periodStart)) e.periodStart = "날짜 형식이 올바르지 않아요 (YYYY-MM-DD)";
     if (periodEnd && !ISO_RE.test(periodEnd)) e.periodEnd = "날짜 형식이 올바르지 않아요 (YYYY-MM-DD)";
+    else if (periodEnd && periodStart && ISO_RE.test(periodStart) && periodEnd < periodStart) {
+      e.periodEnd = "종료일은 시작일과 같거나 이후여야 해요";
+    }
     return e;
   }
 

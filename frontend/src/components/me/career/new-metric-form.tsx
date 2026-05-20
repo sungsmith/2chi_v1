@@ -61,8 +61,8 @@ export function NewMetricForm({ onSubmit, onCancel }: Props) {
         display: "grid", gap: 10,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <span className="lbl">타입</span>
+      <div role="group" aria-labelledby="nm-variant-lbl" style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <span id="nm-variant-lbl" className="lbl">타입</span>
         <label style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
           <input
             type="radio" name="metric-variant"
@@ -131,8 +131,8 @@ export function NewMetricForm({ onSubmit, onCancel }: Props) {
             {errors.delta && <div className="helper error">{errors.delta}</div>}
           </div>
           <div className="field">
-            <span className="lbl">방향</span>
-            <div style={{ display: "flex", gap: 12, paddingTop: 6 }}>
+            <span id="nm-dir-lbl" className="lbl">방향</span>
+            <div role="group" aria-labelledby="nm-dir-lbl" style={{ display: "flex", gap: 12, paddingTop: 6 }}>
               <label style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
                 <input type="radio" name="metric-dir" checked={dir === "up"} onChange={() => setDir("up")} />
                 ↑ 증가

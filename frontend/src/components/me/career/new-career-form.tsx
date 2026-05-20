@@ -27,6 +27,9 @@ export function NewCareerForm({ onSubmit, onCancel }: Props) {
     if (!startDate) e.startDate = "시작일을 입력해주세요";
     else if (!ISO_RE.test(startDate)) e.startDate = "날짜 형식이 올바르지 않아요 (YYYY-MM-DD)";
     if (endDate && !ISO_RE.test(endDate)) e.endDate = "날짜 형식이 올바르지 않아요 (YYYY-MM-DD)";
+    else if (endDate && ISO_RE.test(startDate) && endDate < startDate) {
+      e.endDate = "종료일은 시작일과 같거나 이후여야 해요";
+    }
     return e;
   }
 
