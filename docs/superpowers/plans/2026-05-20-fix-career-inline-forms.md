@@ -747,8 +747,9 @@ Expected: 5 passed + 2 failed (회사 추가 폼 미통합 상태).
 
 `frontend/src/components/me/career/career-content.tsx` 의 다음을 변경:
 
-(a) 파일 상단 import 블록에 다음 한 줄을 추가 (`fetchCareers, createCareer` 임포트는 이미 존재):
+(a) 파일 상단 import 블록을 다음과 같이 갱신 (기존 `Career` 타입 임포트에 `CareerCreateRequest` 추가 + `NewCareerForm` 추가):
 ```tsx
+import type { Career, CareerCreateRequest } from "@/lib/types/career";
 import { NewCareerForm } from "./new-career-form";
 ```
 
@@ -759,12 +760,7 @@ const [addingCareer, setAddingCareer] = useState(false);
 
 (c) line 31~46 의 `handleAddCareer` 함수를 다음으로 교체:
 ```tsx
-async function handleAddCareer(req: {
-  company: string;
-  position?: string;
-  startDate: string;
-  endDate?: string | null;
-}) {
+async function handleAddCareer(req: CareerCreateRequest) {
   try {
     const created = await createCareer(req);
     const withProjects: Career = { ...created, projects: created.projects ?? [] };
@@ -857,8 +853,9 @@ Expected: 7 passed + 1 failed.
 
 `frontend/src/components/me/career/career-card.tsx` 의 다음을 변경:
 
-(a) 파일 상단 import 블록에 다음 한 줄을 추가 (`ProjectCard` 임포트는 이미 존재):
+(a) 파일 상단 import 블록을 다음과 같이 갱신 (기존 타입 임포트에 `ProjectCreateRequest` 추가 + `NewProjectForm` 추가):
 ```tsx
+import type { Career, Project, ProjectCreateRequest } from "@/lib/types/career";
 import { NewProjectForm } from "./new-project-form";
 ```
 
@@ -869,12 +866,7 @@ const [addingProject, setAddingProject] = useState(false);
 
 (c) line 52~67 의 `handleAddProject` 함수를 다음으로 교체:
 ```tsx
-async function handleAddProject(req: {
-  title: string;
-  periodStart?: string | null;
-  periodEnd?: string | null;
-  role?: string | null;
-}) {
+async function handleAddProject(req: ProjectCreateRequest) {
   try {
     const newProject = await createProject(career.id, req);
     onChange({ ...career, projects: [newProject, ...career.projects] });

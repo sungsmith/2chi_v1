@@ -7,7 +7,7 @@ import { CareerCard } from "./career-card";
 import { AssistantNote } from "./assistant-note";
 import { Plus } from "../icons";
 import { fetchCareers, createCareer } from "@/lib/api/career";
-import type { Career } from "@/lib/types/career";
+import type { Career, CareerCreateRequest } from "@/lib/types/career";
 import { NewCareerForm } from "./new-career-form";
 
 export function CareerContent() {
@@ -30,12 +30,7 @@ export function CareerContent() {
     setCareers((prev) => prev ? prev.filter((c) => c.id !== id) : prev);
   }
 
-  async function handleAddCareer(req: {
-    company: string;
-    position?: string;
-    startDate: string;
-    endDate?: string | null;
-  }) {
+  async function handleAddCareer(req: CareerCreateRequest) {
     try {
       const created = await createCareer(req);
       const withProjects: Career = { ...created, projects: created.projects ?? [] };
