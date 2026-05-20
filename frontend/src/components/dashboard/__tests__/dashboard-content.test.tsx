@@ -1,4 +1,4 @@
-import { describe, expect, test, vi, beforeEach } from "vitest";
+import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { DashboardContent } from "../dashboard-content";
 
@@ -42,6 +42,10 @@ beforeEach(() => {
     logout: vi.fn(),
     refreshUser: vi.fn(),
   };
+});
+
+afterEach(() => {
+  vi.useRealTimers();
 });
 
 describe("DashboardContent", () => {

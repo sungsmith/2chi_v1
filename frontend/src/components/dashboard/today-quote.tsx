@@ -1,6 +1,6 @@
 export function TodayQuote() {
   return (
-    <aside className="greet-aside today-quote" aria-hidden="false">
+    <aside className="greet-aside today-quote">
       <span className="mascot-cloud" aria-hidden="true" />
       <div className="copy">
         <small>오늘의 한 줄</small>
