@@ -45,8 +45,8 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
         className="pj-head"
         role="button"
         tabIndex={0}
-        onClick={() => setOpen((o) => !o)}
-        onKeyDown={(e) => { if (e.key === "Enter") setOpen((o) => !o); }}
+        onClick={() => setOpen((o) => { if (o) setAddingMetric(false); return !o; })}
+        onKeyDown={(e) => { if (e.key === "Enter") setOpen((o) => { if (o) setAddingMetric(false); return !o; }); }}
         style={{ cursor: "pointer" }}
       >
         <span className="chev"><ChevronRight size={14} /></span>

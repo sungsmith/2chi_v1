@@ -92,7 +92,7 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
           border: "1px solid var(--color-border-default)",
         }}
       >
-        <div style={{ flex: 1, cursor: editing ? "default" : "pointer" }} onClick={() => !editing && setOpen((o) => !o)}>
+        <div style={{ flex: 1, cursor: editing ? "default" : "pointer" }} onClick={() => !editing && setOpen((o) => { if (o) setAddingProject(false); return !o; })}>
           {editing ? (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <input value={draft.company} onChange={(e) => setDraft({ ...draft, company: e.target.value })} placeholder="회사명" style={{ padding: 8 }} />
