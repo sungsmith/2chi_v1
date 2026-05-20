@@ -1,11 +1,10 @@
 import "./dashboard.css";
+import { DashboardContent } from "@/components/dashboard/dashboard-content";
 
 export default function DashboardPage() {
   return (
     <section className="dash-page">
-      <div className="dash-main">
-        <p>Dashboard placeholder — Task 1</p>
-      </div>
+      <DashboardContent />
     </section>
   );
 }
