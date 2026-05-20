@@ -15,12 +15,14 @@ vi.mock("@/contexts/auth-context", () => ({ useAuth: () => authMock }));
 
 const fetchCareersMock = vi.fn();
 const patchProjectMock = vi.fn();
+const createCareerMock = vi.fn();
+const createProjectMock = vi.fn();
 vi.mock("@/lib/api/career", () => ({
   fetchCareers: (...args: unknown[]) => fetchCareersMock(...args),
-  createCareer: vi.fn(),
+  createCareer: (...args: unknown[]) => createCareerMock(...args),
   updateCareer: vi.fn(),
   deleteCareer: vi.fn(),
-  createProject: vi.fn(),
+  createProject: (...args: unknown[]) => createProjectMock(...args),
   patchProject: (...args: unknown[]) => patchProjectMock(...args),
   deleteProject: vi.fn(),
 }));
@@ -52,6 +54,8 @@ const sampleCareer: Career = {
 beforeEach(() => {
   fetchCareersMock.mockReset();
   patchProjectMock.mockReset();
+  createCareerMock.mockReset();
+  createProjectMock.mockReset();
 });
 
 afterEach(() => {
