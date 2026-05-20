@@ -96,12 +96,20 @@ main                          # 안정 버전 (직접 커밋 금지)
 
 ## 7. 디자인 시스템 참조 규칙
 
-모든 프론트엔드 컴포넌트는 `design_system/` 폴더를 기준으로 구현한다.
+**모든 프론트엔드/디자인 작업은 `design_system/` 디렉토리 내부 자료를 1차 레퍼런스로 한다.** 코드를 짜기 전에 해당 페이지·컴포넌트 레퍼런스를 먼저 읽고 시작할 것. 추측으로 UI 구성·레이아웃·문구를 만들지 말 것.
 
-핵심 파일:
+핵심 파일 (작업 전 반드시 확인):
 - `design_system/tokens.css` — 색상·타이포·스페이싱·반경·그림자 토큰 (CSS 변수)
 - `design_system/index.html` — 컴포넌트 스펙 전체 (00~12섹션)
-- `design_system/pages/onboarding.html` — 온보딩 페이지 레퍼런스
+- `design_system/uploads/2chi_v1_wireframes_v0.1.html` — **전체 화면 흐름·IA 와이어프레임**. 새 기능/페이지 작업 시작 시 가장 먼저 열어 해당 섹션을 확인.
+- `design_system/pages/{기능}.html` (+ `.css`, `.jsx`) — 페이지별 시안. 신규 페이지 구현 시 동명 파일 존재 여부 먼저 확인하고, 있으면 그것을 정답지로 사용.
+  - 현재 보유: `onboarding`, `dashboard`, `career`, `posting-new` (지속 추가 예정)
+
+작업 절차 (필수):
+1. 작업 대상 페이지/기능 식별 → `design_system/pages/{기능}.*` 존재 확인
+2. `uploads/2chi_v1_wireframes_v0.1.html` 에서 해당 섹션 흐름 파악
+3. `tokens.css` / `index.html` 의 토큰·컴포넌트 스펙 확인
+4. 위 자료에 없는 요소를 임의로 추가하지 말 것. 누락된 경우 사용자에게 질문.
 
 필수 준수:
 - 색상: `var(--color-*)` 토큰만 사용. 하드코딩 hex 금지.

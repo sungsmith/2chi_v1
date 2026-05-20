@@ -1,15 +1,10 @@
-import { HomeBanner } from "@/components/home/home-banner";
+import "./dashboard.css";
+import { DashboardContent } from "@/components/dashboard/dashboard-content";
 
-export default function Home() {
+export default function DashboardPage() {
   return (
-    <section style={{ padding: "var(--space-12)" }}>
-      <HomeBanner />
-      <h1 style={{ fontFamily: "var(--font-family-hand)", fontSize: "var(--fs-page-title)" }}>
-        2chi · 이취
-      </h1>
-      <p style={{ color: "var(--color-text-secondary)" }}>
-        취업·이직 올인원 워크스페이스. v1 셋업 완료.
-      </p>
+    <section className="dash-page">
+      <DashboardContent />
     </section>
   );
 }
