@@ -96,7 +96,7 @@ export function DateInput({
   const isValidIso = /^\d{4}-\d{2}-\d{2}$/.test(value);
 
   return (
-    <div style={{ display: "inline-flex", alignItems: "stretch", gap: 4, width: "100%" }}>
+    <div style={{ position: "relative", display: "inline-flex", alignItems: "stretch", gap: 4, width: "100%" }}>
       <input
         id={id}
         className={`input${error ? " error" : ""}`}
