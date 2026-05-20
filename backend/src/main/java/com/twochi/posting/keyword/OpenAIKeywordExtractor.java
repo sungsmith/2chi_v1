@@ -41,6 +41,9 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
             );
         }
         this.client = RestClient.builder()
+            // HTTP/1.1 강제: JDK HttpClient 기본 (HTTP/2) 가 api.openai.com 과
+            // RST_STREAM 충돌 — SimpleClientHttpRequestFactory 는 HttpURLConnection
+            // 기반 (HTTP/1.1) 이라 안정적.
             .requestFactory(new SimpleClientHttpRequestFactory())
             .baseUrl(apiUrl)
             .defaultHeader("Authorization", "Bearer " + apiKey)
