@@ -240,4 +240,36 @@ describe("CareerContent", () => {
       });
     });
   });
+
+  test("회사 추가 — endDate < startDate 검증 에러, createCareer 호출 없음", async () => {
+    fetchCareersMock.mockResolvedValue([]);
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.type(await screen.findByLabelText(/회사명/), "(주)예시");
+    await user.type(screen.getByLabelText(/시작일/), "20240301");
+    await user.type(screen.getByLabelText(/종료일/), "20240101");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    expect(await screen.findByText(/종료일은 시작일과 같거나 이후여야 해요/)).toBeInTheDocument();
+    expect(createCareerMock).not.toHaveBeenCalled();
+  });
+
+  test("프로젝트 추가 — periodEnd < periodStart 검증 에러, createProject 호출 없음", async () => {
+    fetchCareersMock.mockResolvedValue([sampleCareer]);
+    const user = userEvent.setup();
+    render(<CareerContent />);
+    await waitFor(() => expect(screen.getByText("(주)현재회사")).toBeInTheDocument());
+
+    await user.click(screen.getByRole("button", { name: /프로젝트 추가/ }));
+    await user.type(await screen.findByLabelText(/프로젝트 이름/), "테스트");
+    await user.type(screen.getByLabelText(/시작일/), "20240601");
+    await user.type(screen.getByLabelText(/종료일/), "20240501");
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    expect(await screen.findByText(/종료일은 시작일과 같거나 이후여야 해요/)).toBeInTheDocument();
+    expect(createProjectMock).not.toHaveBeenCalled();
+  });
 });
