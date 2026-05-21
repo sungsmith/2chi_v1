@@ -86,7 +86,8 @@ class CoverLetterAiServiceTest {
         assertThatThrownBy(() ->
             service.generateDraft(1L, posting, ItemType.MOTIVATION, "Q", 500, null)
         )
-        .isInstanceOf(com.twochi.common.exception.BusinessException.class)
-        .hasMessageContaining("AI 초안 생성에 실패");
+        .isInstanceOfSatisfying(com.twochi.common.exception.BusinessException.class, ex ->
+            assertThat(ex.code())
+                .isEqualTo(com.twochi.common.exception.ErrorCode.AI_DRAFT_FAILED));
     }
 }
