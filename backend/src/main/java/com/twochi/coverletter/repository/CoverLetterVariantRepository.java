@@ -17,4 +17,6 @@ public interface CoverLetterVariantRepository extends JpaRepository<CoverLetterV
     List<CoverLetterVariant> findAllActiveByUserId(Long userId);
 
     Optional<CoverLetterVariant> findByIdAndUserIdAndDeletedAtIsNull(Long id, Long userId);
+
+    long countByUserIdAndPostingIdAndDeletedAtIsNull(Long userId, Long postingId);
 }
