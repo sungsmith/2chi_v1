@@ -1,5 +1,7 @@
 package com.twochi.coverletter.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
 import com.twochi.coverletter.domain.CoverLetterVariant;
@@ -22,6 +24,7 @@ public class CoverLetterVariantService {
     private final CoverLetterVariantRepository repository;
     private final JobPostingRepository postingRepository;
     private final CoverLetterAiService aiService;
+    private final ObjectMapper objectMapper;
 
     @Transactional(readOnly = true)
     public List<VariantListGroupedResponse> listGrouped(Long userId) {
@@ -32,21 +35,30 @@ public class CoverLetterVariantService {
         Map<Long, JobPosting> postingMap = new HashMap<>();
         for (var p : postingRepository.findAllById(postingIds)) postingMap.put(p.getId(), p);
 
+        // posting_id 별로 그룹 + 그룹 최근 updatedAt 추적
         Map<Long, List<CoverLetterVariant>> grouped = new LinkedHashMap<>();
+        Map<Long, java.time.Instant> latestPerGroup = new HashMap<>();
         for (var v : variants) {
             grouped.computeIfAbsent(v.getPostingId(), k -> new ArrayList<>()).add(v);
+            java.time.Instant prev = latestPerGroup.get(v.getPostingId());
+            if (prev == null || v.getUpdatedAt().isAfter(prev)) {
+                latestPerGroup.put(v.getPostingId(), v.getUpdatedAt());
+            }
         }
 
+        // 그룹을 최근 수정 우선으로 정렬 (latestPerGroup desc)
+        List<Long> orderedKeys = new ArrayList<>(grouped.keySet());
+        orderedKeys.sort((a, b) -> latestPerGroup.get(b).compareTo(latestPerGroup.get(a)));
+
         List<VariantListGroupedResponse> result = new ArrayList<>();
-        for (var entry : grouped.entrySet()) {
-            Long pid = entry.getKey();
+        for (Long pid : orderedKeys) {
             JobPosting p = pid == null ? null : postingMap.get(pid);
             VariantListGroupedResponse.PostingRef ref = new VariantListGroupedResponse.PostingRef(
                 pid,
                 p == null ? "(공고 없음)" : p.getCompany(),
                 p == null ? "" : p.getTitle()
             );
-            List<VariantSummaryResponse> summaries = entry.getValue().stream()
+            List<VariantSummaryResponse> summaries = grouped.get(pid).stream()
                 .map(VariantSummaryResponse::from).toList();
             result.add(new VariantListGroupedResponse(ref, summaries));
         }
@@ -135,24 +147,12 @@ public class CoverLetterVariantService {
         return new ValidationResponse(count, charOk, matched, matched.size(), matched.size() >= 3);
     }
 
-    static String buildValidationJson(String text, Integer charLimit, String[] keywords) {
+    String buildValidationJson(String text, Integer charLimit, String[] keywords) {
         ValidationResponse vr = buildValidation(text, charLimit, keywords);
-        StringBuilder sb = new StringBuilder("{");
-        sb.append("\"charCount\":").append(vr.charCount()).append(",");
-        sb.append("\"charLimitOk\":").append(vr.charLimitOk()).append(",");
-        sb.append("\"matchedKeywords\":[");
-        for (int i = 0; i < vr.matchedKeywords().size(); i++) {
-            if (i > 0) sb.append(",");
-            sb.append("\"").append(escape(vr.matchedKeywords().get(i))).append("\"");
+        try {
+            return objectMapper.writeValueAsString(vr);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("validation_json 직렬화 실패", e);
         }
-        sb.append("],");
-        sb.append("\"matchCount\":").append(vr.matchCount()).append(",");
-        sb.append("\"matchOk\":").append(vr.matchOk());
-        sb.append("}");
-        return sb.toString();
-    }
-
-    private static String escape(String s) {
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
     }
 }

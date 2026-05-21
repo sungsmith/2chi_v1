@@ -190,14 +190,39 @@ class CoverLetterVariantIntegrationTest {
 
     @Test
     void get_grouped_returns_by_posting_with_recent_first() throws Exception {
+        // posting 두 개 생성
+        JobPosting p2 = JobPosting.create(
+            userId, JobPosting.Source.MANUAL,
+            "(주)다른회사", "프론트엔드", "프론트",
+            "React", "Next.js 우대", "UI 구현",
+            LocalDate.of(2026, 7, 31), null,
+            new String[]{"React", "Next.js"},
+            Instant.now()
+        );
+        Long postingId2 = postingRepo.save(p2).getId();
+
+        // 첫 posting 의 variant
         long v1 = createVariant();
-        long v2 = createVariant();
+        // 두번째 posting 의 variant (더 최근 — postingId2 그룹이 앞에 와야)
+        Thread.sleep(10);
+        String body = om.writeValueAsString(Map.of(
+            "postingId", postingId2,
+            "itemType", "MOTIVATION",
+            "question", "Q",
+            "charLimit", 500
+        ));
+        MvcResult r = mockMvc.perform(post("/api/v1/cover-letter-variants")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON).content(body))
+            .andExpect(status().isCreated())
+            .andReturn();
 
         mockMvc.perform(get("/api/v1/cover-letter-variants/grouped")
                 .header("Authorization", "Bearer " + accessToken))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].posting.id").value(postingId.intValue()))
-            .andExpect(jsonPath("$[0].variants.length()").value(2));
+            // 첫번째 그룹이 최근 작성된 posting2
+            .andExpect(jsonPath("$[0].posting.id").value(postingId2.intValue()))
+            .andExpect(jsonPath("$[1].posting.id").value(postingId.intValue()));
     }
 
     @Test
