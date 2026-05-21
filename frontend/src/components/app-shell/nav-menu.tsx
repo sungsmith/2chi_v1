@@ -7,7 +7,7 @@ const MENUS = [
   { href: "/", label: "대시보드" },
   { href: "/me", label: "내 정보" },
   { href: "/applications", label: "지원 현황" },
-  { href: "/cover-letters/master", label: "이직 / 취업" },
+  { href: "/cover-letters", label: "이직 / 취업" },
   { href: "/company/postings", label: "기업" },
 ] as const;
 

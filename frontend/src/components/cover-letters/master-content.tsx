@@ -1,3 +1,5 @@
+// DEPRECATED: 5.6 마스터 자소서 v1 폐기. 사용자 진입은 /cover-letters 로 redirect.
+// BE 인프라(encryptor·entity·service)는 보존. v2/v3 의 "잘된 자소서 저장" 에서 재활용 후보.
 "use client";
 
 import { useEffect, useState } from "react";

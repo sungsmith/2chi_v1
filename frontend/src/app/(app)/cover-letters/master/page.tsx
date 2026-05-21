@@ -1,7 +1,5 @@
-import { CoverLetterMasterContent } from "@/components/cover-letters/master-content";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "자소서 마스터 · 2chi" };
-
-export default function CoverLetterMasterPage() {
-  return <CoverLetterMasterContent />;
+export default function MasterDeprecatedPage() {
+  redirect("/cover-letters");
 }
