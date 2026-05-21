@@ -1,9 +1,11 @@
-package com.twochi.auth;
+package com.twochi.posting.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twochi.career.repository.CareerRepository;
+import com.twochi.career.repository.ProjectRepository;
 import com.twochi.consent.repository.ConsentLogRepository;
+import com.twochi.posting.repository.JobPostingRepository;
 import com.twochi.user.repository.UserRepository;
-import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,29 +20,34 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
-class LogoutIntegrationTest {
+class PostingParseControllerTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper om;
     @Autowired private UserRepository userRepository;
     @Autowired private ConsentLogRepository consentLogRepository;
+    @Autowired private com.twochi.user.repository.ProfileRepository profileRepository;
+    @Autowired private CareerRepository careerRepository;
+    @Autowired private ProjectRepository projectRepository;
+    @Autowired private JobPostingRepository jobPostingRepository;
     @Autowired private RedisConnectionFactory redis;
 
-    private String refreshToken;
+    private String accessToken;
 
     @BeforeEach
     void setUp() throws Exception {
+        jobPostingRepository.deleteAll();
+        projectRepository.deleteAll();
+        careerRepository.deleteAll();
+        profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
         redis.getConnection().serverCommands().flushDb();
@@ -52,42 +59,45 @@ class LogoutIntegrationTest {
             "ageConfirmed", true,
             "consents", Map.of("terms", true, "privacy", true, "marketing", false)
         );
-        mockMvc.perform(post("/api/v1/auth/signup").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(signup)));
+        mockMvc.perform(post("/api/v1/auth/signup")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(signup)));
 
         MvcResult login = mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(Map.of("email", "alice@example.com", "password", "Pass1234!"))))
             .andReturn();
-        Matcher m = Pattern.compile("refresh_token=([^;]+)").matcher(login.getResponse().getHeader("Set-Cookie"));
-        if (m.find()) refreshToken = m.group(1);
+        accessToken = om.readTree(login.getResponse().getContentAsString()).get("accessToken").asText();
     }
 
     @AfterEach
     void tearDown() {
+        jobPostingRepository.deleteAll();
+        projectRepository.deleteAll();
+        careerRepository.deleteAll();
+        profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
         redis.getConnection().serverCommands().flushDb();
     }
 
     @Test
-    void logout_validCookie_clearsCookieAndRemovesFromRedis() throws Exception {
-        MvcResult result = mockMvc.perform(post("/api/v1/auth/logout")
-                .cookie(new Cookie("refresh_token", refreshToken)))
-            .andExpect(status().isNoContent())
-            .andReturn();
-
-        String setCookie = result.getResponse().getHeader("Set-Cookie");
-        assertThat(setCookie).contains("refresh_token=");
-        assertThat(setCookie).contains("Max-Age=0");
-
-        mockMvc.perform(post("/api/v1/auth/refresh")
-                .cookie(new Cookie("refresh_token", refreshToken)))
-            .andExpect(status().isUnauthorized());
+    void parse_unsupportedDomain_returns422() throws Exception {
+        Map<String, String> req = Map.of("url", "https://example.com/x");
+        mockMvc.perform(post("/api/v1/postings/parse")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(req)))
+            .andExpect(status().isUnprocessableEntity())
+            .andExpect(jsonPath("$.code").value("UNSUPPORTED_PARSE_SITE"));
     }
 
     @Test
-    void logout_withoutCookie_isIdempotent() throws Exception {
-        mockMvc.perform(post("/api/v1/auth/logout"))
-            .andExpect(status().isNoContent());
+    void parse_unauthenticated_returns401() throws Exception {
+        Map<String, String> req = Map.of("url", "https://example.com/x");
+        mockMvc.perform(post("/api/v1/postings/parse")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(req)))
+            .andExpect(status().isUnauthorized());
     }
 }

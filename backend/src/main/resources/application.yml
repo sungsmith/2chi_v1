@@ -27,6 +27,11 @@ spring:
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:changeme}
 
+openai:
+  api-url: ${OPENAI_API_URL:https://api.openai.com/v1/chat/completions}
+  api-key: ${OPENAI_API_KEY:}
+  model: ${OPENAI_MODEL:gpt-4o-mini}
+
 server:
   port: ${SERVER_PORT:8080}
 

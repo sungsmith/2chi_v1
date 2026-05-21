@@ -26,6 +26,9 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+	implementation("org.jsoup:jsoup:1.18.3")
+	implementation("me.paulschwarz:spring-dotenv:4.0.0")
+	testImplementation("org.wiremock:wiremock-standalone:3.10.0")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.flywaydb:flyway-database-postgresql")
 	compileOnly("org.projectlombok:lombok")
@@ -39,4 +42,10 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// spring-dotenv 는 working directory 의 .env 를 읽음. repo 의 .env 는 root 에 있고
+// gradle bootRun 의 기본 workingDir 은 backend/ 라 못 찾으므로 root 로 강제.
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	workingDir = rootDir.parentFile
 }

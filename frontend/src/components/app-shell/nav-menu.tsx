@@ -8,7 +8,7 @@ const MENUS = [
   { href: "/me", label: "내 정보" },
   { href: "/applications", label: "지원 현황" },
   { href: "/cover-letter", label: "이직 / 취업" },
-  { href: "/jobs", label: "기업" },
+  { href: "/company/postings", label: "기업" },
 ] as const;
 
 export function NavMenu() {
