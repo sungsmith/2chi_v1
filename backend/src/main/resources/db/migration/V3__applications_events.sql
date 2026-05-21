@@ -17,8 +17,8 @@ CREATE TABLE applications (
     current_stage   VARCHAR(30)  NOT NULL,
     current_result  VARCHAR(20)  NOT NULL,
     memo            TEXT,
-    created_at      TIMESTAMP    NOT NULL,
-    updated_at      TIMESTAMP    NOT NULL
+    created_at      TIMESTAMPTZ  NOT NULL,
+    updated_at      TIMESTAMPTZ  NOT NULL
 );
 
 CREATE UNIQUE INDEX uq_application_user_posting
@@ -34,8 +34,8 @@ CREATE TABLE events (
     event_date      DATE        NOT NULL,
     event_time      TIME,
     memo            TEXT,
-    created_at      TIMESTAMP   NOT NULL,
-    updated_at      TIMESTAMP   NOT NULL
+    created_at      TIMESTAMPTZ NOT NULL,
+    updated_at      TIMESTAMPTZ NOT NULL
 );
 
 CREATE INDEX ix_event_application ON events (application_id);

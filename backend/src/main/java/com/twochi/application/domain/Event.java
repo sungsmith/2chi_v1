@@ -35,7 +35,7 @@ public class Event {
     @Column(columnDefinition = "TEXT")
     private String memo;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)
