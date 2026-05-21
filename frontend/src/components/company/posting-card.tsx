@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { KeywordChipList } from "./keyword-chip-list";
 import { PostingCtaModal } from "@/components/cover-letters/posting-cta-modal";
+import { fetchAnalysisByCompany } from "@/lib/api/company-analysis";
 import type { JobPosting } from "@/lib/types/posting";
 
 type Props = {
@@ -13,6 +15,20 @@ type Props = {
 
 export function PostingCard({ posting, onEdit, onDelete }: Props) {
   const [ctaOpen, setCtaOpen] = useState(false);
+  const router = useRouter();
+
+  async function handleAnalysisClick() {
+    try {
+      const ref = await fetchAnalysisByCompany(posting.company);
+      if (ref.id !== null) {
+        router.push(`/company/analysis/${ref.id}`);
+      } else {
+        router.push(`/company/analysis/new?company=${encodeURIComponent(posting.company)}`);
+      }
+    } catch {
+      router.push(`/company/analysis/new?company=${encodeURIComponent(posting.company)}`);
+    }
+  }
 
   return (
     <article
@@ -50,6 +66,9 @@ export function PostingCard({ posting, onEdit, onDelete }: Props) {
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         <button className="btn ghost" onClick={() => setCtaOpen(true)} style={{ fontSize: 13 }}>
           ✍ 자소서 작성
+        </button>
+        <button className="btn ghost" onClick={handleAnalysisClick} type="button" style={{ fontSize: 13 }}>
+          🏢 기업분석
         </button>
         <button className="btn ghost" onClick={onEdit}>편집</button>
         <button className="btn ghost" onClick={onDelete} style={{ color: "var(--color-semantic-error)" }}>

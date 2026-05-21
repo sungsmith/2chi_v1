@@ -1,12 +1,14 @@
 "use client";
 
 import { ITEM_TYPE_LABELS, ITEM_TYPE_QUESTIONS, type ItemType } from "@/lib/types/cover-letter";
+import type { ByCompanyResponse } from "@/lib/types/company-analysis";
 
 type Props = {
   itemType: ItemType;
   charLimit: number;
   postingCompany: string;
   postingTitle: string;
+  analysisRef: ByCompanyResponse | null;
   userRequest: string;
   onUserRequestChange: (v: string) => void;
   onGenerate: () => void;
@@ -17,6 +19,7 @@ type Props = {
 
 export function WriteInputPanel({
   itemType, charLimit, postingCompany, postingTitle,
+  analysisRef,
   userRequest, onUserRequestChange,
   onGenerate, generating, hasDraft, readOnly,
 }: Props) {
@@ -39,9 +42,25 @@ export function WriteInputPanel({
         </div>
         <div>
           <div className="lbl">기업분석 연결</div>
-          <select className="input" disabled style={{ marginTop: 4 }}>
-            <option>곧 추가 예정</option>
-          </select>
+          {analysisRef === null ? (
+            <select className="input" disabled style={{ marginTop: 4 }}>
+              <option>불러오는 중…</option>
+            </select>
+          ) : analysisRef.id !== null ? (
+            <select className="input" defaultValue={String(analysisRef.id)} disabled style={{ marginTop: 4 }}>
+              <option value={analysisRef.id}>{analysisRef.company} 분석 (자동 선택)</option>
+            </select>
+          ) : (
+            <div style={{ marginTop: 4 }}>
+              <select className="input" disabled>
+                <option>해당 회사 분석 없음</option>
+              </select>
+              <a href={`/company/analysis/new?company=${encodeURIComponent(postingCompany)}`}
+                 style={{ fontSize: 12, color: "var(--color-primary-600)", marginTop: 4, display: "inline-block" }}>
+                + 이 회사 분석 만들기
+              </a>
+            </div>
+          )}
         </div>
         <div style={{ gridColumn: "span 2" }}>
           <div className="lbl">사용자 요청사항</div>
