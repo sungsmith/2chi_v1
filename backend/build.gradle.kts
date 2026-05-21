@@ -43,3 +43,9 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+// spring-dotenv 는 working directory 의 .env 를 읽음. repo 의 .env 는 root 에 있고
+// gradle bootRun 의 기본 workingDir 은 backend/ 라 못 찾으므로 root 로 강제.
+tasks.named<org.springframework.boot.gradle.tasks.run.BootRun>("bootRun") {
+	workingDir = rootDir.parentFile
+}
