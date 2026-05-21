@@ -1,2 +1,6 @@
 openai:
   api-key: test-key-noop
+
+master-answer:
+  encryption-key: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  encryption-salt: "deadbeefcafebabe"
