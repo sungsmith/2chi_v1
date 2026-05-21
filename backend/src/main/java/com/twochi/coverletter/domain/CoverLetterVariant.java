@@ -36,6 +36,7 @@ public class CoverLetterVariant {
     @Column(name = "analysis_id")
     private Long analysisId;
 
+    /** 5.7 에서는 항상 null. 스키마 보존 (v2 의 마스터 연동 기능 대비). */
     @Column(name = "master_id")
     private Long masterId;
 
