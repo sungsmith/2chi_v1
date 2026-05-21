@@ -30,6 +30,15 @@ public class JobPostingController {
         return ResponseEntity.ok(all.stream().map(JobPostingResponse::from).toList());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<JobPostingResponse> getOne(
+        @AuthenticationPrincipal AuthenticatedUser principal,
+        @PathVariable Long id
+    ) {
+        JobPosting p = service.findOwned(principal.userId(), id);
+        return ResponseEntity.ok(JobPostingResponse.from(p));
+    }
+
     @PostMapping
     public ResponseEntity<JobPostingResponse> create(
         @AuthenticationPrincipal AuthenticatedUser principal,
