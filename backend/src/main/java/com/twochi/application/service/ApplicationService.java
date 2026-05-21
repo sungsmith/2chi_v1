@@ -13,6 +13,7 @@ import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +43,12 @@ public class ApplicationService {
         Application app = Application.create(
             userId, postingId, posting.getCompany(), posting.getTitle(), now
         );
-        applicationRepository.save(app);
+        try {
+            applicationRepository.saveAndFlush(app);
+        } catch (DataIntegrityViolationException e) {
+            // existsBy ↔ save 사이 race: UNIQUE 제약 위반은 409 로 변환
+            throw new BusinessException(ErrorCode.APPLICATION_ALREADY_EXISTS);
+        }
 
         if (posting.getDeadline() != null) {
             Event docEvent = Event.create(
@@ -70,7 +76,8 @@ public class ApplicationService {
         Stage stage, Result result, String memo, String company, String role
     ) {
         Application app = findOwned(userId, applicationId);
-        app.update(stage, result, memo, company, role, Instant.now());
+        Instant now = Instant.now();
+        app.update(stage, result, memo, company, role, now);
         return app;
     }
 
