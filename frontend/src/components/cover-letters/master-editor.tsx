@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ITEM_TYPE_LABELS, type CoverLetterMaster, type ItemType, type MasterRequest } from "@/lib/types/cover-letter";
 
 type Props = {
@@ -30,14 +30,6 @@ export function MasterEditor({
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | undefined>();
-
-  useEffect(() => {
-    setTitle(master?.title ?? "");
-    setMasterAnswer(master?.masterAnswer ?? "");
-    setCharLimitHint(master?.charLimitHint != null ? String(master.charLimitHint) : "");
-    setIsDefault(isNew ? !defaultExistsForType : master.isDefault);
-    setError(undefined);
-  }, [master, isNew, defaultExistsForType]);
 
   async function handleSave() {
     if (!masterAnswer.trim()) {
