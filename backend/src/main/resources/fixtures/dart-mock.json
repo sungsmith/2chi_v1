@@ -1,0 +1,26 @@
+{
+  "(주)테크컴퍼니": {
+    "businessArea": "결제·정산 SaaS",
+    "mainProducts": ["TC-Pay", "TC-Settle", "TC-Analytics"],
+    "revenue": "2025년 약 380억",
+    "employees": 120,
+    "location": "서울 강남구",
+    "sourceUrl": "https://opendart.fss.or.kr/disclosureinfo/mock/techcompany"
+  },
+  "삼성전자": {
+    "businessArea": "반도체·디스플레이·가전·모바일",
+    "mainProducts": ["Galaxy", "Exynos", "Bespoke"],
+    "revenue": "2024년 약 300조",
+    "employees": 270000,
+    "location": "수원시 영통구",
+    "sourceUrl": "https://opendart.fss.or.kr/disclosureinfo/mock/samsung"
+  },
+  "네이버": {
+    "businessArea": "검색·커머스·핀테크·콘텐츠",
+    "mainProducts": ["검색", "쇼핑", "페이", "웹툰"],
+    "revenue": "2024년 약 9조",
+    "employees": 4300,
+    "location": "성남시 분당구",
+    "sourceUrl": "https://opendart.fss.or.kr/disclosureinfo/mock/naver"
+  }
+}
