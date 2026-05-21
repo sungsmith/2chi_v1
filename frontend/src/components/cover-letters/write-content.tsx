@@ -9,7 +9,9 @@ import {
   createVariant, fetchVariant, patchVariant,
 } from "@/lib/api/cover-letter";
 import { fetchPosting } from "@/lib/api/posting";
+import { fetchAnalysisByCompany } from "@/lib/api/company-analysis";
 import type { JobPosting } from "@/lib/types/posting";
+import type { ByCompanyResponse } from "@/lib/types/company-analysis";
 import {
   type CoverLetterVariant, type ItemType, ITEM_TYPE_QUESTIONS,
 } from "@/lib/types/cover-letter";
@@ -27,6 +29,7 @@ export function CoverLetterWriteContent(props: Props) {
   const router = useRouter();
   const [variant, setVariant] = useState<CoverLetterVariant | null>(null);
   const [posting, setPosting] = useState<JobPosting | null>(null);
+  const [analysisRef, setAnalysisRef] = useState<ByCompanyResponse | null>(null);
   const [userEdit, setUserEdit] = useState("");
   const [userRequest, setUserRequest] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -59,6 +62,14 @@ export function CoverLetterWriteContent(props: Props) {
     }
   }, [props]);
 
+  useEffect(() => {
+    if (posting?.company) {
+      fetchAnalysisByCompany(posting.company)
+        .then(setAnalysisRef)
+        .catch(() => setAnalysisRef({ id: null, company: posting.company }));
+    }
+  }, [posting]);
+
   async function handleGenerate() {
     if (props.mode !== "new") return;
     setGenerating(true);
@@ -66,6 +77,7 @@ export function CoverLetterWriteContent(props: Props) {
     try {
       const created = await createVariant({
         postingId: props.postingId,
+        analysisId: analysisRef?.id ?? undefined,
         itemType: props.itemType,
         question: ITEM_TYPE_QUESTIONS[props.itemType],
         charLimit: props.charLimit,
@@ -130,6 +142,7 @@ export function CoverLetterWriteContent(props: Props) {
         charLimit={charLimit}
         postingCompany={postingCompany}
         postingTitle={postingTitle}
+        analysisRef={analysisRef}
         userRequest={userRequest}
         onUserRequestChange={setUserRequest}
         onGenerate={handleGenerate}

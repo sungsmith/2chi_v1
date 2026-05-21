@@ -16,6 +16,12 @@ vi.mock("@/lib/api/posting", () => ({
   deletePosting: (...a: unknown[]) => deleteMock(...a),
   parsePosting: (...a: unknown[]) => parseMock(...a),
 }));
+vi.mock("@/lib/api/company-analysis", () => ({
+  fetchAnalysisByCompany: vi.fn().mockResolvedValue({ id: null, company: "" }),
+}));
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn(), back: vi.fn(), replace: vi.fn() }),
+}));
 
 const samplePosting: JobPosting = {
   id: 1, source: "MANUAL",

@@ -20,7 +20,9 @@ public enum ErrorCode {
     PARSE_FAILED(HttpStatus.UNPROCESSABLE_ENTITY, "공고 정보를 가져오지 못했어요. 직접 작성해주세요."),
     MASTER_NOT_FOUND(HttpStatus.NOT_FOUND, "마스터 자소서를 찾을 수 없어요."),
     VARIANT_NOT_FOUND(HttpStatus.NOT_FOUND, "자소서 변형본을 찾을 수 없어요."),
-    AI_DRAFT_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "AI 초안 생성에 실패했어요. 잠시 후 다시 시도해주세요.");
+    AI_DRAFT_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "AI 초안 생성에 실패했어요. 잠시 후 다시 시도해주세요."),
+    ANALYSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "기업분석을 찾을 수 없어요."),
+    ANALYSIS_GENERATION_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "기업분석 생성에 실패했어요. 잠시 후 다시 시도해주세요.");
 
     private final HttpStatus status;
     private final String defaultMessage;
