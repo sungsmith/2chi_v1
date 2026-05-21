@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ITEM_TYPE_LABELS, ITEM_TYPE_ORDER, type ItemType } from "@/lib/types/cover-letter";
 
@@ -23,8 +23,17 @@ export function PostingCtaModal({ postingId, postingCompany, onClose }: Props) {
     router.push(`/cover-letters/variants/new?postingId=${postingId}&itemType=${itemType}&charLimit=${n}`);
   }
 
+  // ESC 키로 닫기 (a11y)
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
-    <div onClick={onClose} style={{
+    <div onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="cta-modal-title" style={{
       position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)",
       display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100,
     }}>
@@ -33,7 +42,7 @@ export function PostingCtaModal({ postingId, postingCompany, onClose }: Props) {
         borderRadius: "var(--radius-lg)",
         padding: 24, width: 480, maxWidth: "90vw",
       }}>
-        <h3 style={{ margin: "0 0 4px 0", fontSize: 16, fontWeight: 700 }}>
+        <h3 id="cta-modal-title" style={{ margin: "0 0 4px 0", fontSize: 16, fontWeight: 700 }}>
           {postingCompany} — 자소서 항목 선택
         </h3>
         <div style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: 16 }}>
