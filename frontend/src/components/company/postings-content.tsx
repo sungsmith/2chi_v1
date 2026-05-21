@@ -55,8 +55,9 @@ export function PostingsContent() {
     }
   }
 
-  function handleParseFailed(reason: string) {
+  function handleParseFailed(reason: string, url: string) {
     setParseFailedNotice(reason);
+    setParseFailedUrl(url);
     setTab("manual");
   }
 
@@ -92,7 +93,7 @@ export function PostingsContent() {
         marginBottom: 32,
       }}>
         {tab === "url" && (
-          <PostingUrlForm onSubmit={handleCreate} onParseFailed={(r) => handleParseFailed(r)} />
+          <PostingUrlForm onSubmit={handleCreate} onParseFailed={handleParseFailed} />
         )}
         {tab === "manual" && (
           <PostingManualForm

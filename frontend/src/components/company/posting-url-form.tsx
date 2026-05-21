@@ -8,7 +8,7 @@ import type { JobPostingCreateRequest } from "@/lib/types/posting";
 type Props = {
   onSubmit: (req: JobPostingCreateRequest) => Promise<void>;
   onCancel?: () => void;
-  onParseFailed: (reason: string) => void;  // → parent 가 manual 탭으로 전환
+  onParseFailed: (reason: string, url: string) => void;  // → parent 가 manual 탭으로 전환 + URL 보존
 };
 
 export function PostingUrlForm({ onSubmit, onCancel, onParseFailed }: Props) {
@@ -36,7 +36,7 @@ export function PostingUrlForm({ onSubmit, onCancel, onParseFailed }: Props) {
       setParsed(true);
     } catch (err) {
       const msg = err instanceof Error ? err.message : "자동 파싱이 안 되는 사이트예요. 직접 작성으로 입력해주세요.";
-      onParseFailed(msg);
+      onParseFailed(msg, url.trim());
     } finally {
       setParsing(false);
     }
