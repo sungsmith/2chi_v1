@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { KeywordChipList } from "./keyword-chip-list";
+import { PostingCtaModal } from "@/components/cover-letters/posting-cta-modal";
 import type { JobPosting } from "@/lib/types/posting";
 
 type Props = {
@@ -10,6 +12,8 @@ type Props = {
 };
 
 export function PostingCard({ posting, onEdit, onDelete }: Props) {
+  const [ctaOpen, setCtaOpen] = useState(false);
+
   return (
     <article
       style={{
@@ -44,11 +48,21 @@ export function PostingCard({ posting, onEdit, onDelete }: Props) {
         <KeywordChipList keywords={posting.keywords} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <button className="btn ghost" onClick={() => setCtaOpen(true)} style={{ fontSize: 13 }}>
+          ✍ 자소서 작성
+        </button>
         <button className="btn ghost" onClick={onEdit}>편집</button>
         <button className="btn ghost" onClick={onDelete} style={{ color: "var(--color-semantic-error)" }}>
           삭제
         </button>
       </div>
+      {ctaOpen && (
+        <PostingCtaModal
+          postingId={posting.id}
+          postingCompany={posting.company}
+          onClose={() => setCtaOpen(false)}
+        />
+      )}
     </article>
   );
 }
