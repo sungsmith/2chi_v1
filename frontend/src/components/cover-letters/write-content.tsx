@@ -8,6 +8,8 @@ import { WriteValidationPanel } from "./write-validation-panel";
 import {
   createVariant, fetchVariant, patchVariant,
 } from "@/lib/api/cover-letter";
+import { fetchPosting } from "@/lib/api/posting";
+import type { JobPosting } from "@/lib/types/posting";
 import {
   type CoverLetterVariant, type ItemType, ITEM_TYPE_QUESTIONS,
 } from "@/lib/types/cover-letter";
@@ -24,6 +26,7 @@ type Props = NewProps | EditProps;
 export function CoverLetterWriteContent(props: Props) {
   const router = useRouter();
   const [variant, setVariant] = useState<CoverLetterVariant | null>(null);
+  const [posting, setPosting] = useState<JobPosting | null>(null);
   const [userEdit, setUserEdit] = useState("");
   const [userRequest, setUserRequest] = useState("");
   const [generating, setGenerating] = useState(false);
@@ -40,8 +43,19 @@ export function CoverLetterWriteContent(props: Props) {
           setVariant(v);
           setUserEdit(v.userEdit ?? "");
           setUserRequest(v.userRequest ?? "");
+          // edit 모드에서도 keywords 매칭 강화 위해 posting fetch
+          if (v.postingId != null) {
+            fetchPosting(v.postingId)
+              .then(setPosting)
+              .catch(() => { /* keyword 매칭만 영향, 무시 */ });
+          }
         })
         .catch((e) => setError(e instanceof Error ? e.message : "자소서를 불러오지 못했어요."));
+    } else {
+      // new 모드: 입력 패널 표시용 + keywords 실시간 매칭용 posting fetch
+      fetchPosting(props.postingId)
+        .then(setPosting)
+        .catch((e) => setError(e instanceof Error ? e.message : "공고 정보를 불러오지 못했어요."));
     }
   }, [props]);
 
@@ -90,12 +104,12 @@ export function CoverLetterWriteContent(props: Props) {
 
   const itemType = variant?.itemType ?? newPostingPreview?.itemType ?? "MOTIVATION";
   const charLimit = variant?.charLimit ?? newPostingPreview?.charLimit ?? 500;
-  const postingCompany = variant?.postingCompany ?? "(공고 정보 로딩 중)";
-  const postingTitle = variant?.postingTitle ?? "";
+  // posting 정보: variant 의 응답이 1순위, 별도 fetch 한 posting 이 2순위
+  const postingCompany = variant?.postingCompany ?? posting?.company ?? "(공고 정보 로딩 중)";
+  const postingTitle = variant?.postingTitle ?? posting?.title ?? "";
 
-  // postingKeywords 는 variant 에 없어 v1 에서는 빈 배열.
-  // TODO(5.7 후속): GET /postings/{id} 로 keywords fetch 후 실시간 매칭 강화.
-  const postingKeywords: string[] = [];
+  // 실시간 JD 키워드 매칭 — posting fetch 결과의 keywords 사용
+  const postingKeywords: string[] = posting?.keywords ?? [];
 
   return (
     <section style={{ padding: 32 }}>

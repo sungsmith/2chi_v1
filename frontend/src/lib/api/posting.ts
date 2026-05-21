@@ -13,6 +13,11 @@ export async function fetchPostings(): Promise<JobPosting[]> {
   return res.json();
 }
 
+export async function fetchPosting(id: number): Promise<JobPosting> {
+  const res = await http(`${BASE}/${id}`);
+  return res.json();
+}
+
 export async function createPosting(req: JobPostingCreateRequest): Promise<JobPosting> {
   const res = await http(BASE, {
     method: "POST",
