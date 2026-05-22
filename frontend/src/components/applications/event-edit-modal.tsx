@@ -84,7 +84,7 @@ export function EventEditModal({ event, onClose, onChanged }: Props) {
         </div>
         <div style={{ marginBottom: 10 }}>
           <label style={{ display: "block", fontSize: 12, fontWeight: 600, marginBottom: 4 }}>일자</label>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} aria-label="일자" />
         </div>
         <div style={{ marginBottom: 10 }}>
           <label style={{ display: "block", fontSize: 12, fontWeight: 600, marginBottom: 4 }}>시간 (선택)</label>

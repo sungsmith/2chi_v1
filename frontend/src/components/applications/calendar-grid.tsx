@@ -1,6 +1,7 @@
 "use client";
 
 import type { EventListItem } from "@/lib/types/application";
+import { toLocalIso } from "@/lib/utils/date";
 import { DayCell } from "./day-cell";
 
 type Props = {
@@ -27,7 +28,7 @@ export function CalendarGrid({ year, month, events, onEventClick, onDayClick }: 
   for (let i = 0; i < 42; i++) {
     const d = new Date(gridStart);
     d.setDate(gridStart.getDate() + i);
-    const iso = d.toISOString().slice(0, 10);
+    const iso = toLocalIso(d);
     const isCurrent = d.getMonth() === month - 1;
     const isToday = d.getTime() === today.getTime();
     const dayEvents = events.filter((ev) => ev.eventDate === iso);

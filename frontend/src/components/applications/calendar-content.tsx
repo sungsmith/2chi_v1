@@ -8,6 +8,7 @@ import { CalendarGrid } from "./calendar-grid";
 import { EventEditModal } from "./event-edit-modal";
 import { EventCreateModal } from "./event-create-modal";
 import { fetchEvents, fetchApplications } from "@/lib/api/application";
+import { toLocalIso } from "@/lib/utils/date";
 import type { EventListItem, ApplicationSummary } from "@/lib/types/application";
 
 type Props = { month?: string };
@@ -28,7 +29,7 @@ function monthBounds(year: number, month: number): { from: string; to: string } 
   start.setDate(first.getDate() - first.getDay());
   const end = new Date(start);
   end.setDate(start.getDate() + 41);
-  return { from: start.toISOString().slice(0, 10), to: end.toISOString().slice(0, 10) };
+  return { from: toLocalIso(start), to: toLocalIso(end) };
 }
 
 export function CalendarContent({ month }: Props) {

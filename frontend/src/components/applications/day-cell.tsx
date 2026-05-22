@@ -1,6 +1,7 @@
 "use client";
 
 import type { EventListItem } from "@/lib/types/application";
+import { toLocalIso } from "@/lib/utils/date";
 import { EventChip } from "./event-chip";
 
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
 };
 
 export function DayCell({ date, isCurrentMonth, isToday, events, onEventClick, onDayClick }: Props) {
-  const iso = date.toISOString().slice(0, 10);
+  const iso = toLocalIso(date);
   return (
     <div
       onClick={() => onDayClick(iso)}
