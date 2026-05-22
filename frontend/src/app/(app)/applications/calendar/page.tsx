@@ -1,5 +1,9 @@
 import { CalendarContent } from "@/components/applications/calendar-content";
 
+export const metadata = {
+  title: "캘린더 · 2chi",
+};
+
 type Props = {
   searchParams: Promise<{ month?: string }>;
 };
