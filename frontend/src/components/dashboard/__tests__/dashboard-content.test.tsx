@@ -2,6 +2,10 @@ import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { DashboardContent } from "../dashboard-content";
 
+vi.mock("@/lib/api/application", () => ({
+  fetchEvents: vi.fn().mockResolvedValue([]),
+}));
+
 type AuthUser = { userId: number; email: string; nickname: string; onboardingCompleted: boolean };
 type AuthMock = {
   user: AuthUser | null;
@@ -88,34 +92,27 @@ describe("DashboardContent", () => {
     expect(within(inProgressCard!).getByText("7", { selector: ".num" })).toBeInTheDocument();
   });
 
-  test("UpcomingPanel — Mock 일정 4건 회사명·시간 노출", () => {
+  test("UpcomingPanel — 빈 응답 시 안내 메시지 노출", async () => {
+    vi.useRealTimers();
     render(<DashboardContent />);
-    expect(screen.getByText("(주)테크컴퍼니")).toBeInTheDocument();
-    expect(screen.getByText("네이버")).toBeInTheDocument();
-    expect(screen.getByText("카카오")).toBeInTheDocument();
-    expect(screen.getByText("토스")).toBeInTheDocument();
-    expect(screen.getByText("14:00")).toBeInTheDocument();
-    expect(screen.getByText("23:59")).toBeInTheDocument();
+    expect(await screen.findByText(/다가오는 일정이 없어요/)).toBeInTheDocument();
   });
 
-  test("Shortcuts 4개 — 앞 2개 작동, 뒤 2개 aria-disabled", () => {
+  test("Shortcuts 4개 — 모두 활성화 + 실제 라우트 매칭", () => {
     render(<DashboardContent />);
-    // 작동 — 자소서 작성 / 채용공고 등록
     const coverLetter = screen.getByText("자소서 작성").closest("a");
-    expect(coverLetter).toHaveAttribute("href", "/cover-letter");
+    expect(coverLetter).toHaveAttribute("href", "/cover-letters");
     const jobs = screen.getByText("채용공고 등록").closest("a");
-    expect(jobs).toHaveAttribute("href", "/jobs");
-    // disabled — 기업분석 / 캘린더
-    // "캘린더 보기"는 UpcomingPanel에도 존재하므로 role="link" 요소 중에서 찾기
-    const company = screen.getByText("기업분석 시작").closest('[role="link"]');
-    expect(company).toHaveAttribute("aria-disabled", "true");
+    expect(jobs).toHaveAttribute("href", "/company/postings");
+    const company = screen.getByText("기업분석 시작").closest("a");
+    expect(company).toHaveAttribute("href", "/company/analysis");
+    // "캘린더 보기"는 UpcomingPanel에도 존재하므로 Shortcuts 의 a[href="/applications/calendar"] 만 검사
     const calendarLinks = screen
       .getAllByText("캘린더 보기")
-      .map((el) => el.closest('[role="link"]'))
-      .filter(Boolean);
+      .map((el) => el.closest("a"))
+      .filter((a): a is HTMLAnchorElement => !!a && a.getAttribute("href") === "/applications/calendar");
     expect(calendarLinks.length).toBeGreaterThanOrEqual(1);
-    expect(calendarLinks[0]).toHaveAttribute("aria-disabled", "true");
-    // "준비중" 배지 2개
-    expect(screen.getAllByText("준비중")).toHaveLength(2);
+    // "준비중" 배지 없음 (모두 활성화)
+    expect(screen.queryByText("준비중")).toBeNull();
   });
 });

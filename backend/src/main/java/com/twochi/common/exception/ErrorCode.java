@@ -22,7 +22,10 @@ public enum ErrorCode {
     VARIANT_NOT_FOUND(HttpStatus.NOT_FOUND, "자소서 변형본을 찾을 수 없어요."),
     AI_DRAFT_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "AI 초안 생성에 실패했어요. 잠시 후 다시 시도해주세요."),
     ANALYSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "기업분석을 찾을 수 없어요."),
-    ANALYSIS_GENERATION_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "기업분석 생성에 실패했어요. 잠시 후 다시 시도해주세요.");
+    ANALYSIS_GENERATION_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "기업분석 생성에 실패했어요. 잠시 후 다시 시도해주세요."),
+    APPLICATION_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 지원한 공고입니다."),
+    APPLICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "지원을 찾을 수 없어요."),
+    EVENT_NOT_FOUND(HttpStatus.NOT_FOUND, "일정을 찾을 수 없어요.");
 
     private final HttpStatus status;
     private final String defaultMessage;

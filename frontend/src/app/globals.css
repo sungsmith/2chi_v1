@@ -12,3 +12,36 @@
   font-style: normal;
   font-display: swap;
 }
+
+:root {
+  /* 5.8 지원 stage 색상 토큰 (EventType 기준) */
+  --color-stage-doc:     #6c8aff;
+  --color-stage-coding:  #ffaa42;
+  --color-stage-int1:    #4ec9b0;
+  --color-stage-int2:    #5fb1a3;
+  --color-stage-exec:    #c084fc;
+  --color-stage-nego:    #f59e0b;
+  --color-stage-pass:    #4ade80;
+  --color-stage-fail:    #94a3b8;
+  --color-stage-etc:     #a3a3a3;
+}
+
+/* 5.8 stage chip 공통 */
+.stg-doc, .stg-coding, .stg-int1, .stg-int2, .stg-exec,
+.stg-nego, .stg-pass, .stg-fail, .stg-etc {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+  font-size: 11px;
+  color: #fff;
+  white-space: nowrap;
+}
+.stg-doc    { background: var(--color-stage-doc); }
+.stg-coding { background: var(--color-stage-coding); }
+.stg-int1   { background: var(--color-stage-int1); }
+.stg-int2   { background: var(--color-stage-int2); }
+.stg-exec   { background: var(--color-stage-exec); }
+.stg-nego   { background: var(--color-stage-nego); }
+.stg-pass   { background: var(--color-stage-pass); }
+.stg-fail   { background: var(--color-stage-fail); }
+.stg-etc    { background: var(--color-stage-etc); }

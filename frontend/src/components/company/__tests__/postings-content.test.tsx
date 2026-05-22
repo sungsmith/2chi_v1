@@ -16,6 +16,10 @@ vi.mock("@/lib/api/posting", () => ({
   deletePosting: (...a: unknown[]) => deleteMock(...a),
   parsePosting: (...a: unknown[]) => parseMock(...a),
 }));
+vi.mock("@/lib/api/application", () => ({
+  fetchApplications: vi.fn().mockResolvedValue([]),
+  createApplication: vi.fn(),
+}));
 vi.mock("@/lib/api/company-analysis", () => ({
   fetchAnalysisByCompany: vi.fn().mockResolvedValue({ id: null, company: "" }),
 }));

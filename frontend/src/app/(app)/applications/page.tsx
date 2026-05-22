@@ -1,32 +1,14 @@
+import { ApplicationsContent } from "@/components/applications/applications-content";
+
 export const metadata = {
   title: "지원 현황 · 2chi",
 };
 
-export default function ApplicationsPage() {
-  return (
-    <section
-      style={{
-        maxWidth: 720,
-        margin: "0 auto",
-        padding: "var(--space-12) var(--space-6)",
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: "var(--font-family-hand)",
-          fontSize: "var(--fs-page-title)",
-        }}
-      >
-        지원 현황
-      </h1>
-      <p
-        style={{
-          color: "var(--color-text-secondary)",
-          marginTop: "var(--space-4)",
-        }}
-      >
-        이 기능은 다음 단계에 구현됩니다.
-      </p>
-    </section>
-  );
+type Props = {
+  searchParams: Promise<{ stage?: string; result?: string; sort?: string }>;
+};
+
+export default async function ApplicationsPage({ searchParams }: Props) {
+  const sp = await searchParams;
+  return <ApplicationsContent stage={sp.stage} result={sp.result} sort={sp.sort} />;
 }
