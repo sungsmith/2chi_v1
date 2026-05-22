@@ -184,6 +184,14 @@ class ApplicationIntegrationTest {
         mockMvc.perform(get("/api/v1/applications?stage=PASSED")
                 .header("Authorization", "Bearer " + accessToken))
             .andExpect(jsonPath("$.length()").value(0));
+        // result 필터: 매칭
+        mockMvc.perform(get("/api/v1/applications?result=IN_PROGRESS")
+                .header("Authorization", "Bearer " + accessToken))
+            .andExpect(jsonPath("$.length()").value(1));
+        // result 필터: 안 맞는
+        mockMvc.perform(get("/api/v1/applications?result=PASSED")
+                .header("Authorization", "Bearer " + accessToken))
+            .andExpect(jsonPath("$.length()").value(0));
     }
 
     @Test

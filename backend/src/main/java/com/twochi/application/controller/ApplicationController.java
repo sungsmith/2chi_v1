@@ -73,7 +73,7 @@ public class ApplicationController {
     public ResponseEntity<ApplicationResponse> patch(
         @AuthenticationPrincipal AuthenticatedUser principal,
         @PathVariable Long id,
-        @RequestBody ApplicationPatchRequest req
+        @Valid @RequestBody ApplicationPatchRequest req
     ) {
         Application app = service.patch(
             principal.userId(), id,
