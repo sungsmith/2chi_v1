@@ -13,7 +13,6 @@ import {
   KPI_COMPLETENESS_MOCK,
   KPI_COVER_LETTERS_MOCK,
   KPI_IN_PROGRESS_MOCK,
-  UPCOMING_MOCK,
 } from "@/lib/mock/dashboard";
 
 export function DashboardContent() {
@@ -30,7 +29,7 @@ export function DashboardContent() {
         <KpiInProgress data={KPI_IN_PROGRESS_MOCK} />
       </div>
       <div className="dual-grid">
-        <UpcomingPanel items={UPCOMING_MOCK} />
+        <UpcomingPanel />
         <TodayQuote />
       </div>
       <Shortcuts />

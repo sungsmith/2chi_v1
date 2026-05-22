@@ -2,6 +2,10 @@ import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import { DashboardContent } from "../dashboard-content";
 
+vi.mock("@/lib/api/application", () => ({
+  fetchEvents: vi.fn().mockResolvedValue([]),
+}));
+
 type AuthUser = { userId: number; email: string; nickname: string; onboardingCompleted: boolean };
 type AuthMock = {
   user: AuthUser | null;
@@ -88,14 +92,10 @@ describe("DashboardContent", () => {
     expect(within(inProgressCard!).getByText("7", { selector: ".num" })).toBeInTheDocument();
   });
 
-  test("UpcomingPanel — Mock 일정 4건 회사명·시간 노출", () => {
+  test("UpcomingPanel — 빈 응답 시 안내 메시지 노출", async () => {
+    vi.useRealTimers();
     render(<DashboardContent />);
-    expect(screen.getByText("(주)테크컴퍼니")).toBeInTheDocument();
-    expect(screen.getByText("네이버")).toBeInTheDocument();
-    expect(screen.getByText("카카오")).toBeInTheDocument();
-    expect(screen.getByText("토스")).toBeInTheDocument();
-    expect(screen.getByText("14:00")).toBeInTheDocument();
-    expect(screen.getByText("23:59")).toBeInTheDocument();
+    expect(await screen.findByText(/다가오는 일정이 없어요/)).toBeInTheDocument();
   });
 
   test("Shortcuts 4개 — 앞 2개 작동, 뒤 2개 aria-disabled", () => {

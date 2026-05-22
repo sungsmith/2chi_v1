@@ -7,6 +7,7 @@ import { PostingManualForm } from "./posting-manual-form";
 import { PostingCard } from "./posting-card";
 import { PostingEditModal } from "./posting-edit-modal";
 import { fetchPostings, createPosting, patchPosting, deletePosting } from "@/lib/api/posting";
+import { fetchApplications } from "@/lib/api/application";
 import type { JobPosting, JobPostingCreateRequest, JobPostingPatchRequest } from "@/lib/types/posting";
 
 export function PostingsContent() {
@@ -16,10 +17,16 @@ export function PostingsContent() {
   const [parseFailedNotice, setParseFailedNotice] = useState<string | undefined>();
   const [parseFailedUrl, setParseFailedUrl] = useState<string | undefined>();
   const [editing, setEditing] = useState<JobPosting | null>(null);
+  const [appMap, setAppMap] = useState<Record<number, number>>({});  // postingId → applicationId
 
   useEffect(() => {
-    fetchPostings()
-      .then(setPostings)
+    Promise.all([fetchPostings(), fetchApplications()])
+      .then(([ps, apps]) => {
+        setPostings(ps);
+        const m: Record<number, number> = {};
+        for (const a of apps) m[a.postingId] = a.id;
+        setAppMap(m);
+      })
       .catch((e) => setError(e instanceof Error ? e.message : "공고를 불러오지 못했어요."));
   }, []);
 
@@ -117,8 +124,12 @@ export function PostingsContent() {
         postings.map((p) => (
           <PostingCard
             key={p.id} posting={p}
+            applicationId={appMap[p.id] ?? null}
             onEdit={() => setEditing(p)}
             onDelete={() => handleDelete(p.id)}
+            onApplied={(postingId, applicationId) =>
+              setAppMap((prev) => ({ ...prev, [postingId]: applicationId }))
+            }
           />
         ))
       )}
