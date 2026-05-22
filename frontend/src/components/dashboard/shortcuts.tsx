@@ -15,26 +15,28 @@ const ITEMS: ShortcutItem[] = [
     sub: "AI 초안 → 수정본 흐름",
     toneCls: "primary",
     icon: <Sparkle size={16} />,
-    href: "/cover-letter",
+    href: "/cover-letters",
   },
   {
     label: "채용공고 등록",
     sub: "URL 붙여넣기 · 직접 작성",
     toneCls: "tone-1",
     icon: <Plus size={16} />,
-    href: "/jobs",
+    href: "/company/postings",
   },
   {
     label: "기업분석 시작",
     sub: "컬처 · 도메인 · 기술 스택",
     toneCls: "tone-2",
     icon: <Building />,
+    href: "/company/analysis",
   },
   {
     label: "캘린더 보기",
     sub: "월·주·일 전형 일정",
     toneCls: "tone-3",
     icon: <Calendar />,
+    href: "/applications/calendar",
   },
 ];
 
