@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { fetchApplication, patchApplication, deleteApplication,
-         createEvent, patchEvent, deleteEvent } from "@/lib/api/application";
-import type { Application, ApplicationEvent, Stage, Result, EventType } from "@/lib/types/application";
+         createEvent, deleteEvent } from "@/lib/api/application";
+import type { Application, Stage, Result, EventType } from "@/lib/types/application";
 import { STAGE_LABEL, RESULT_LABEL, EVENT_TYPE_LABEL } from "@/lib/types/application";
 
 const STAGES: Stage[] = ["DOC_SUBMITTED","CODING_TEST","FIRST_INTERVIEW","SECOND_INTERVIEW","EXEC_INTERVIEW","NEGOTIATION","PASSED","FAILED"];

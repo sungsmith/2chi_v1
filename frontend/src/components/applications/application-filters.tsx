@@ -1,7 +1,7 @@
 "use client";
 
 import type { ApplicationSummary, Stage, Result } from "@/lib/types/application";
-import { STAGE_LABEL, RESULT_LABEL, EVENT_TYPE_TOKEN_CLASS, STAGE_TO_EVENT_TYPE } from "@/lib/types/application";
+import { STAGE_LABEL, RESULT_LABEL } from "@/lib/types/application";
 
 const STAGES: Stage[] = [
   "DOC_SUBMITTED", "CODING_TEST",

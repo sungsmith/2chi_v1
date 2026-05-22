@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { ApplicationSummary } from "@/lib/types/application";
-import { STAGE_LABEL, RESULT_LABEL, EVENT_TYPE_TOKEN_CLASS, EVENT_TYPE_LABEL, STAGE_TO_EVENT_TYPE } from "@/lib/types/application";
+import { STAGE_LABEL, RESULT_LABEL, EVENT_TYPE_TOKEN_CLASS, STAGE_TO_EVENT_TYPE } from "@/lib/types/application";
 
 type Props = {
   apps: ApplicationSummary[];
