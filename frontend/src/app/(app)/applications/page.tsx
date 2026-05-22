@@ -1,5 +1,9 @@
 import { ApplicationsContent } from "@/components/applications/applications-content";
 
+export const metadata = {
+  title: "지원 현황 · 2chi",
+};
+
 type Props = {
   searchParams: Promise<{ stage?: string; result?: string; sort?: string }>;
 };
