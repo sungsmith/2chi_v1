@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createEvent } from "@/lib/api/application";
+import { toLocalIso } from "@/lib/utils/date";
 import type { ApplicationSummary, EventType } from "@/lib/types/application";
 import { EVENT_TYPE_LABEL } from "@/lib/types/application";
 
@@ -17,7 +18,7 @@ type Props = {
 export function EventCreateModal({ apps, initialDate, onClose, onCreated }: Props) {
   const [appId, setAppId] = useState<number | null>(apps[0]?.id ?? null);
   const [type, setType] = useState<EventType>("FIRST_INTERVIEW");
-  const [date, setDate] = useState(initialDate ?? new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(initialDate ?? toLocalIso(new Date()));
   const [time, setTime] = useState("");
   const [memo, setMemo] = useState("");
   const [saving, setSaving] = useState(false);
