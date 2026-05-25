@@ -22,4 +22,13 @@ describe("Greeting", () => {
     // 2026-05-20 은 수요일
     expect(screen.getByText(/2026 · 05 · 20 수요일 · 오늘의 준비 현황/)).toBeInTheDocument();
   });
+
+  test("renders memo-paper aside with mascot wave + 오늘의 한 줄", () => {
+    render(<Greeting nickname="소미" showTags={true} todayQuote="이번 주는 1차 면접 두 곳,\n차근히 준비해봐요." />);
+    const aside = document.querySelector("aside.greet-aside.memo-paper");
+    expect(aside).not.toBeNull();
+    expect(aside?.querySelector(".tape.mint")).not.toBeNull();
+    expect(aside?.querySelector(".mascot-cloud.wave, .mascot-cloud.md.wave")).not.toBeNull();
+    expect(aside?.textContent).toContain("오늘의 한 줄");
+  });
 });

@@ -7,12 +7,12 @@ import { KpiCompleteness } from "./kpi-completeness";
 import { KpiCoverLetters } from "./kpi-cover-letters";
 import { KpiInProgress } from "./kpi-in-progress";
 import { UpcomingPanel } from "./upcoming-panel";
-import { TodayQuote } from "./today-quote";
 import { Shortcuts } from "./shortcuts";
 import {
   KPI_COMPLETENESS_MOCK,
   KPI_COVER_LETTERS_MOCK,
   KPI_IN_PROGRESS_MOCK,
+  TODAY_QUOTE_MOCK,
 } from "@/lib/mock/dashboard";
 
 export function DashboardContent() {
@@ -22,7 +22,11 @@ export function DashboardContent() {
   return (
     <div className="dash-main">
       <HomeBanner />
-      <Greeting nickname={user.nickname} showTags={user.onboardingCompleted} />
+      <Greeting
+        nickname={user.nickname}
+        showTags={user.onboardingCompleted}
+        todayQuote={TODAY_QUOTE_MOCK}
+      />
       <div className="kpi-grid">
         <KpiCompleteness data={KPI_COMPLETENESS_MOCK} />
         <KpiCoverLetters data={KPI_COVER_LETTERS_MOCK} />
@@ -30,7 +34,6 @@ export function DashboardContent() {
       </div>
       <div className="dual-grid">
         <UpcomingPanel />
-        <TodayQuote />
       </div>
       <Shortcuts />
     </div>

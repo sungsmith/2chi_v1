@@ -167,3 +167,5 @@ export const GAPS_MOCK: Gap[] = [
   { name: "대용량 트래픽 처리 (TPS 5K+)", sub: "관련 프로젝트 정량 결과 보완 추천",     hit: "4건" },
   { name: "관측성(Observability) 도구",   sub: "Datadog · Grafana · OpenTelemetry",     hit: "3건" },
 ];
+
+export const TODAY_QUOTE_MOCK = "이번 주는 1차 면접 두 곳,\n차근히 준비해봐요.";
