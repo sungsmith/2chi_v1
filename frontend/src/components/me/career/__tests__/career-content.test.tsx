@@ -113,9 +113,9 @@ describe("CareerContent", () => {
     fetchCareersMock.mockResolvedValue([]);
     const user = userEvent.setup();
     render(<CareerContent />);
-    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText(/회사 추가/)[0]).toBeInTheDocument());
 
-    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.click(screen.getAllByRole("button", { name: /회사 추가/ })[0]);
     // 폼 노출 확인
     const companyInput = await screen.findByLabelText(/회사명/);
     expect(companyInput).toBeInTheDocument();
@@ -136,9 +136,9 @@ describe("CareerContent", () => {
     });
     const user = userEvent.setup();
     render(<CareerContent />);
-    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText(/회사 추가/)[0]).toBeInTheDocument());
 
-    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.click(screen.getAllByRole("button", { name: /회사 추가/ })[0]);
     await user.type(await screen.findByLabelText(/회사명/), "(주)신규");
 
     const startInput = screen.getByLabelText(/시작일/);
@@ -245,9 +245,9 @@ describe("CareerContent", () => {
     fetchCareersMock.mockResolvedValue([]);
     const user = userEvent.setup();
     render(<CareerContent />);
-    await waitFor(() => expect(screen.getByText(/회사 추가/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getAllByText(/회사 추가/)[0]).toBeInTheDocument());
 
-    await user.click(screen.getByRole("button", { name: /회사 추가/ }));
+    await user.click(screen.getAllByRole("button", { name: /회사 추가/ })[0]);
     await user.type(await screen.findByLabelText(/회사명/), "(주)예시");
     await user.type(screen.getByLabelText(/시작일/), "20240301");
     await user.type(screen.getByLabelText(/종료일/), "20240101");

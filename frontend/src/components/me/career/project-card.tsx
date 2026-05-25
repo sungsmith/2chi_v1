@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight, Trash } from "../icons";
+import { ChevronRight } from "../icons";
+import { Edit } from "@/components/ui/icons";
 import { PrarCell } from "./prar-cell";
 import { MetricChip } from "./metric-chip";
 import { TechTag } from "./tech-tag";
@@ -39,28 +40,33 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
   const prarFilledCount = [project.prar.problem, project.prar.rootCause, project.prar.approach, project.prar.result]
     .filter((v) => v !== null && v !== "").length;
 
+  const prarStatus = prarFilledCount === 4
+    ? { label: `PRAR 4/4`, tone: "" }
+    : { label: `PRAR ${prarFilledCount}/4`, tone: "warn" };
+
+  const period = `${project.periodStart ?? "—"} ~ ${project.periodEnd ?? "진행중"}`;
+
+  const tags = project.techStack.map((t) => ({ label: t, tone: "" }));
+
   return (
-    <article className={`pj-card ${open ? "open" : ""}`} style={{ marginBottom: 12 }}>
+    <div className={"pj-row" + (open ? " open" : "")}>
       <div
-        className="pj-head"
+        className="pj-row-head"
         role="button"
         tabIndex={0}
         onClick={() => setOpen((o) => { if (o) setAddingMetric(false); return !o; })}
         onKeyDown={(e) => { if (e.key === "Enter") setOpen((o) => { if (o) setAddingMetric(false); return !o; }); }}
-        style={{ cursor: "pointer" }}
       >
         <span className="chev"><ChevronRight size={14} /></span>
-        <div className="pj-title-block">
-          <div className="pj-title">
+        <div className="pj-row-info">
+          <div className="pj-row-title">
             <span>{project.title}</span>
             <span className="tag-row">
-              {project.techStack.map((t, i) => <TechTag key={i} label={t} />)}
+              {tags.map((t, i) => <TechTag key={i} label={t.label} />)}
             </span>
           </div>
-          <div className="pj-meta">
-            <span className="dur">
-              {project.periodStart ?? "—"} ~ {project.periodEnd ?? "진행중"}
-            </span>
+          <div className="pj-row-meta">
+            <span>{period}</span>
             {project.role && (
               <>
                 <span className="sep" />
@@ -69,17 +75,19 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
             )}
           </div>
         </div>
-        <div className="pj-mini-actions" onClick={(e) => e.stopPropagation()}>
-          <span className="pill">PRAR {prarFilledCount}/4</span>
-          {saving && <span style={{ fontSize: 11, color: "var(--color-text-muted)" }}>저장중…</span>}
-          <button className="iconbtn" type="button" aria-label="삭제" onClick={onDelete}>
-            <Trash />
-          </button>
-        </div>
+        <span className={"prar-pill " + (prarStatus.tone || "")}>{prarStatus.label}</span>
+        <button
+          className="iconbtn-sm"
+          type="button"
+          aria-label="삭제"
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+        >
+          <Edit size={12} />편집
+        </button>
       </div>
 
       {open && (
-        <div className="pj-body">
+        <div className="pj-row-body">
           <div className="prar-grid">
             <PrarCell
               tone="p" glyph="P" ko="문제" en="PROBLEM"
@@ -107,45 +115,38 @@ export function ProjectCard({ project, careerId, defaultOpen = false, onChange, 
             />
           </div>
 
-          <div className="metrics">
-            <div className="metrics-head">
-              <span className="lbl">
-                <span className="glyph">#</span>
-                정량 성과
-              </span>
-              <span className="hint">숫자 변화·금액·사용자 수처럼 비교 가능한 값을 권장합니다</span>
-            </div>
-            <div className="metric-row">
-              {project.metrics.map((m, i) => (
-                <MetricChip
-                  key={i}
-                  variant="metric"
-                  metric={m}
-                  onDelete={() => {
-                    const next = project.metrics.filter((_, j) => j !== i);
-                    autosave({ metrics: next });
-                  }}
-                />
-              ))}
-              {!addingMetric && (
-                <MetricChip
-                  variant="add"
-                  onAdd={() => setAddingMetric(true)}
-                />
-              )}
-            </div>
-            {addingMetric && (
-              <NewMetricForm
-                onSubmit={(m) => {
-                  autosave({ metrics: [...project.metrics, m] });
-                  setAddingMetric(false);
+          <div className="metrics-strip">
+            <span className="metric-label">정량 성과</span>
+            {project.metrics.map((m, i) => (
+              <MetricChip
+                key={i}
+                variant="metric"
+                metric={m}
+                onDelete={() => {
+                  const next = project.metrics.filter((_, j) => j !== i);
+                  autosave({ metrics: next });
                 }}
-                onCancel={() => setAddingMetric(false)}
+              />
+            ))}
+            {!addingMetric && (
+              <MetricChip
+                variant="add"
+                onAdd={() => setAddingMetric(true)}
               />
             )}
+            {saving && <span style={{ fontSize: 11, color: "var(--color-text-muted)" }}>저장중…</span>}
           </div>
+          {addingMetric && (
+            <NewMetricForm
+              onSubmit={(m) => {
+                autosave({ metrics: [...project.metrics, m] });
+                setAddingMetric(false);
+              }}
+              onCancel={() => setAddingMetric(false)}
+            />
+          )}
         </div>
       )}
-    </article>
+    </div>
   );
 }
