@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .stack { display: flex; flex-direction: column; gap: 18px; }
+  .row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .av { display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 700; letter-spacing: -0.01em; flex: 0 0 auto; }
+  .av.xs { width: 22px; height: 22px; font-size: 10px; }
+  .av.sm { width: 30px; height: 30px; font-size: 12px; }
+  .av.md { width: 40px; height: 40px; font-size: 14px; }
+  .av.lg { width: 56px; height: 56px; font-size: 18px; }
+  .av.lav  { background: var(--color-lavender-200); color: var(--color-lavender-600); }
+  .av.mint { background: var(--color-mint-200);     color: var(--color-mint-700); }
+  .av.peri { background: var(--color-primary-200);  color: var(--color-primary-700); }
+  .av.peach{ background: var(--color-peach-200);    color: var(--color-peach-400); }
+  .av.pink { background: var(--color-pink-200);     color: var(--color-pink-500); }
+  .av-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px; border-radius: 999px; border: 1px solid var(--color-border-default); background: #fff; }
+  .av-pill .nm { font-size: 13px; font-weight: 600; }
+  .av-pill .caret { color: var(--color-text-muted); font-size: 10px; }
+  .stack-avs { display: flex; }
+  .stack-avs .av { box-shadow: 0 0 0 2px #fff; margin-left: -8px; }
+  .stack-avs .av:first-child { margin-left: 0; }
+  .stack-avs .more { background: var(--color-neutral-100); color: var(--color-text-secondary); font-family: var(--font-family-mono); font-size: 10px; font-weight: 700; }
+  .lbl { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.06em; width: 88px; }
+</style></head>
+<body>
+  <div class="stack">
+    <div class="row">
+      <span class="lbl">SIZES</span>
+      <span class="av xs lav">소</span>
+      <span class="av sm lav">소</span>
+      <span class="av md lav">소</span>
+      <span class="av lg lav">소</span>
+    </div>
+    <div class="row">
+      <span class="lbl">TONES</span>
+      <span class="av md lav">L</span>
+      <span class="av md mint">M</span>
+      <span class="av md peri">P</span>
+      <span class="av md peach">P</span>
+      <span class="av md pink">P</span>
+    </div>
+    <div class="row">
+      <span class="lbl">USER PILL</span>
+      <span class="av-pill"><span class="av sm lav">소</span><span class="nm">김소미</span><span class="caret">▾</span></span>
+    </div>
+    <div class="row">
+      <span class="lbl">STACK</span>
+      <div class="stack-avs">
+        <span class="av sm lav">소</span>
+        <span class="av sm mint">민</span>
+        <span class="av sm peri">제</span>
+        <span class="av sm more">+12</span>
+      </div>
+    </div>
+  </div>
+</body></html>

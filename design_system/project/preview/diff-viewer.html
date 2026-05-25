@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 18px; background: var(--color-bg); }
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: stretch; }
+
+  /* BEFORE — muted, lower visual weight */
+  .pane.before {
+    background: var(--color-surface-soft);
+    border: 1px solid var(--color-border-default);
+    border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .pane.before .hd { background: var(--color-surface-default); }
+
+  /* AFTER — primary white card, stronger shadow + AI-tinted header */
+  .pane.after {
+    background: #fff;
+    border: 1px solid var(--color-border-default);
+    border-radius: 12px; overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 8px 20px -6px rgba(37,36,31,0.12), 0 2px 6px -2px rgba(37,36,31,0.05);
+  }
+  .pane.after .hd {
+    background: var(--color-lavender-50);
+    border-bottom: 1px solid var(--color-lavender-200);
+  }
+
+  .hd {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .eyebrow {
+    font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 4px;
+    background: var(--color-surface-soft); color: var(--color-text-muted);
+  }
+  .pane.after .eyebrow { background: var(--color-lavender-100); color: var(--color-lavender-600); }
+  .ttl { font-size: 13px; font-weight: 700; color: var(--color-text-primary); letter-spacing: -0.005em; }
+  .badge {
+    margin-left: auto;
+    font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 999px;
+    background: var(--color-lavender-100); color: var(--color-lavender-600);
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  .body { padding: 12px 14px; font-size: 13px; line-height: 1.65; flex: 1; }
+  .body p { margin: 0 0 6px; }
+  .del { text-decoration: line-through; color: var(--color-semantic-error); opacity: 0.7; }
+  .ins { background: var(--color-mint-100); color: var(--color-mint-700); padding: 1px 4px; border-radius: 3px; font-weight: 600; }
+
+  .ftr {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    border-top: 1px solid var(--color-border-default);
+    font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-muted);
+  }
+  .ftr b { color: var(--color-text-primary); }
+  .ftr .actions { margin-left: auto; display: flex; gap: 6px; }
+  .ftr button {
+    height: 28px; padding: 0 10px; border-radius: 6px; font-family: inherit;
+    font-size: 11.5px; font-weight: 600; cursor: pointer; border: 1px solid transparent;
+  }
+  .ftr button.ghost { background: transparent; border-color: var(--color-border-strong); color: var(--color-text-secondary); }
+  .ftr button.confirm { background: var(--color-primary-600); color: #fff; }
+</style></head>
+<body>
+  <div class="stage">
+    <section class="pane before">
+      <header class="hd">
+        <span class="eyebrow">Before</span>
+        <span class="ttl">원본</span>
+      </header>
+      <div class="body">
+        <p>결제 시스템의 안정성을 끌어올리고 싶습니다.</p>
+        <p class="del">대용량 트래픽 처리 안정성을 한 단계 끌어올리고 싶습니다.</p>
+        <p>사이드 프로젝트로 식권 정산 API에서 캐시 적중률을 23 → 71%까지 끌어올린 경험이 있고, 평균 응답을 340ms → 110ms로 줄였습니다.</p>
+        <p class="del">Kafka 기반의 비동기 처리와 MSA 운영 경험을 추가로 다지고 싶다는 갈증을 느꼈고…</p>
+      </div>
+      <footer class="ftr">
+        <span>2026.05.10 저장</span>
+        <div class="actions"><button class="ghost">유지</button></div>
+      </footer>
+    </section>
+
+    <section class="pane after">
+      <header class="hd">
+        <span class="eyebrow">After</span>
+        <span class="ttl">AI 다시 쓰기</span>
+        <span class="badge">
+          <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4z"/></svg>
+          AI · 검토 필요
+        </span>
+      </header>
+      <div class="body">
+        <p>결제 시스템의 안정성을 끌어올리고 싶습니다.</p>
+        <p><span class="ins">결제·정산 도메인의 트래픽 안정화에 직접 기여하고 싶습니다.</span></p>
+        <p>사이드 프로젝트로 식권 정산 API에서 캐시 적중률을 23 → 71%까지 끌어올린 경험이 있고, 평균 응답을 340ms → 110ms로 줄였습니다.</p>
+        <p><span class="ins">이 과정에서 다져둔 PostgreSQL · Redis 운영 경험을 이어가며,<br>앞으로는 Kafka 기반 비동기 처리도 함께 익혀가고 싶습니다.</span></p>
+      </div>
+      <footer class="ftr">
+        <span>변경 <b>3</b> · 삭제 <b>2</b> · 추가 <b>2</b></span>
+        <div class="actions">
+          <button class="ghost">원본 유지</button>
+          <button class="confirm">새 버전 적용</button>
+        </div>
+      </footer>
+    </section>
+  </div>
+</body></html>

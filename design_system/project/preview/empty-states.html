@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px 22px; background: var(--color-bg); }
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .empty { background: #fff; border: 1px dashed var(--color-border-strong); border-radius: 14px; padding: 28px 22px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+  .empty .mascot {
+    width: 64px; height: 64px;
+    background-image: url("../assets/mascot-default.png");
+    background-size: contain; background-position: center; background-repeat: no-repeat;
+  }
+  .empty .mascot.wave { background-image: url("../assets/mascot-wave.png"); }
+  .empty .ttl { font-family: var(--font-family-hand); font-size: 22px; line-height: 1.2; font-weight: 400; }
+  .empty .desc { font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.5; max-width: 30ch; }
+  .empty .cta { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; background: var(--color-primary-600); color: #fff; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+  .empty.scribbled { background: linear-gradient(180deg, #FFFEF8 0%, #FFFDF1 100%); border: 1px solid #F0EAD1; border-style: dashed; }
+</style></head>
+<body>
+  <div class="stage">
+    <div class="empty">
+      <span class="mascot"></span>
+      <div class="ttl">첫 자소서를 작성해볼까요?</div>
+      <div class="desc">공고 하나를 등록해두면<br>AI가 내 이력을 활용해 초안을 만들어줘요.</div>
+      <button class="cta">+ 자소서 작성하기</button>
+    </div>
+    <div class="empty scribbled">
+      <span class="mascot wave"></span>
+      <div class="ttl">아직 등록한 공고가 없어요</div>
+      <div class="desc">URL만 붙여넣으면 회사명·마감일까지<br>자동으로 정리해드려요.</div>
+      <button class="cta" style="background:#fff;color:var(--color-primary-700);border:1px solid var(--color-border-strong)">URL 붙여넣기</button>
+    </div>
+  </div>
+</body></html>

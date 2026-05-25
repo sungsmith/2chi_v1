@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .stack { display: flex; flex-direction: column; gap: 8px; }
+
+  /* Single restrained pattern — white bg, neutral border, small left rule */
+  .banner {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px 10px 16px;
+    background: #fff;
+    border: 1px solid var(--color-border-default);
+    border-left: 3px solid var(--color-neutral-300);
+    border-radius: 10px;
+    font-size: 12.5px; line-height: 1.5; color: var(--color-text-primary);
+  }
+  .banner .ico {
+    width: 18px; height: 18px; flex: 0 0 auto;
+    color: var(--color-text-muted); display: inline-flex; align-items: center;
+  }
+  .banner .body { flex: 1; min-width: 0; }
+  .banner .body b { font-weight: 700; }
+  .banner .action {
+    background: transparent; border: 1px solid var(--color-border-default);
+    padding: 5px 10px; border-radius: 6px;
+    font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+    color: var(--color-text-primary);
+  }
+  .banner .action:hover { background: var(--color-surface-soft); border-color: var(--color-border-strong); }
+  .banner .x {
+    background: none; border: none; cursor: pointer; opacity: 0.55;
+    width: 26px; height: 26px; display: grid; place-items: center;
+    color: var(--color-text-muted); border-radius: 6px;
+  }
+  .banner .x:hover { opacity: 1; background: var(--color-surface-soft); }
+
+  /* Tone signal lives only in the left rule + icon color — body stays neutral. */
+  .banner.info   { border-left-color: var(--color-primary-500); }
+  .banner.info   .ico { color: var(--color-primary-600); }
+  .banner.warn   { border-left-color: var(--color-yellow-400); }
+  .banner.warn   .ico { color: var(--color-yellow-400); }
+  .banner.update { border-left-color: var(--color-lavender-500); }
+  .banner.update .ico { color: var(--color-lavender-600); }
+</style></head>
+<body>
+  <div class="stack">
+    <div class="banner info">
+      <span class="ico">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </span>
+      <span class="body"><b>사람인 OpenAPI 점검 중 (5/22 14:00–16:00)</b> · 점검 동안 URL 자동 파싱이 지연될 수 있어요. 직접 작성으로도 등록 가능해요.</span>
+      <button class="action">자세히</button>
+      <button class="x" aria-label="닫기">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="banner warn">
+      <span class="ico">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <span class="body"><b>마이페이지에서 알림 설정을 완료해주세요.</b> 채용공고 마감 D-3 알림이 꺼져 있어요.</span>
+      <button class="action">설정으로</button>
+    </div>
+    <div class="banner update">
+      <span class="ico">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4z"/></svg>
+      </span>
+      <span class="body"><b>AI 자소서 v2 톤 업데이트</b> · 표현 강도를 줄이고 사실 기반 표현을 강화했어요. 5월 22일부터 새 초안에 적용돼요.</span>
+      <button class="action">바뀐 점 보기</button>
+      <button class="x" aria-label="닫기">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</body></html>

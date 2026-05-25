@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+  .drop {
+    border: 2px dashed var(--color-border-strong); border-radius: 14px;
+    padding: 22px; text-align: center; background: var(--color-surface-soft);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .drop.active { border-color: var(--color-primary-400); background: var(--color-primary-50); }
+  .drop .ico { width: 38px; height: 38px; border-radius: 10px; background: #fff; display: grid; place-items: center; color: var(--color-primary-600); border: 1px solid var(--color-border-default); }
+  .drop .ttl { font-size: 14px; font-weight: 700; }
+  .drop .ttl b { color: var(--color-primary-700); border-bottom: 1px dashed currentColor; cursor: pointer; }
+  .drop .hint { font-size: 11.5px; color: var(--color-text-muted); line-height: 1.5; }
+  .file-row { display: grid; grid-template-columns: 32px 1fr auto; gap: 10px; align-items: center; padding: 9px 10px; background: #fff; border: 1px solid var(--color-border-default); border-radius: 8px; }
+  .file-row .ext { width: 32px; height: 32px; border-radius: 6px; background: var(--color-primary-50); color: var(--color-primary-700); font-family: var(--font-family-mono); font-size: 10px; font-weight: 700; display: grid; place-items: center; }
+  .file-row .meta { font-size: 12.5px; font-weight: 600; min-width: 0; }
+  .file-row .meta .sub { font-size: 11px; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 2px; }
+  .file-row .x { background: none; border: none; cursor: pointer; color: var(--color-text-muted); width: 28px; height: 28px; border-radius: 6px; display: grid; place-items: center; }
+  .file-row .x:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+  .file-row .progress { height: 4px; background: var(--color-neutral-100); border-radius: 999px; overflow: hidden; margin-top: 6px; }
+  .file-row .progress > span { display: block; height: 100%; background: var(--color-primary-500); border-radius: 999px; }
+  .uploading { display: flex; flex-direction: column; gap: 6px; }
+</style></head>
+<body>
+  <div class="stage">
+    <div class="drop active">
+      <span class="ico">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </span>
+      <div class="ttl">파일을 끌어다 놓거나 <b>업로드하기</b></div>
+      <div class="hint">PDF · DOCX · 최대 10MB<br>스캔 PDF는 직접 입력을 권장해요</div>
+    </div>
+    <div class="uploading">
+      <div class="file-row">
+        <span class="ext">PDF</span>
+        <div class="meta">소미_이력서_v3.pdf<span class="sub">완료 · 1.2 MB · 항목 자동 매핑 완료</span></div>
+        <button class="x" aria-label="삭제">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="file-row">
+        <span class="ext">DOC</span>
+        <div class="meta">경력기술서_2026Q2.docx<span class="sub" style="color:var(--color-primary-700)">업로드 중 · 62%</span>
+          <div class="progress"><span style="width:62%"></span></div>
+        </div>
+        <button class="x" aria-label="취소">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</body></html>

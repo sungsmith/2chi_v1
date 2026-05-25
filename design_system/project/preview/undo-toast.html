@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  /* Undo toast — single bar with a clear primary action */
+  .undo {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 10px 10px 14px;
+    background: var(--color-neutral-800); color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px -8px rgba(37,36,31,0.30);
+    position: relative; overflow: hidden;
+  }
+  .undo .body { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; font-size: 13px; }
+  .undo .body b { font-weight: 700; }
+  .undo .countdown {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.18); border-top-color: var(--color-pink-300);
+    flex: 0 0 auto; animation: spin 5s linear; transform-origin: center;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .undo .action {
+    background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.18);
+    padding: 6px 12px; border-radius: 8px; font-family: inherit;
+    font-size: 12.5px; font-weight: 700; cursor: pointer; flex: 0 0 auto;
+  }
+  .undo .action:hover { background: rgba(255,255,255,0.08); }
+  .undo .close {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.6); width: 28px; height: 28px;
+    border-radius: 6px; display: grid; place-items: center; flex: 0 0 auto;
+  }
+  .undo .close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+  .undo .progress {
+    position: absolute; bottom: 0; left: 0; height: 2px;
+    background: var(--color-pink-400); width: 62%;
+  }
+
+  .undo.light {
+    background: #fff; color: var(--color-text-primary);
+    border: 1px solid var(--color-border-default);
+    box-shadow: 0 8px 20px -6px rgba(37,36,31,0.12);
+  }
+  .undo.light .action { color: var(--color-primary-700); border-color: var(--color-primary-200); background: var(--color-primary-50); }
+  .undo.light .action:hover { background: var(--color-primary-100); }
+  .undo.light .countdown { border-color: var(--color-neutral-200); border-top-color: var(--color-primary-500); }
+  .undo.light .close { color: var(--color-text-muted); }
+  .undo.light .close:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+  .undo.light .progress { background: var(--color-primary-300); }
+</style></head>
+<body>
+  <div class="stack">
+    <div class="undo">
+      <span class="body">
+        <b>휴지통으로 옮겼어요</b>
+        <span style="opacity:0.65">· 카카오 백엔드 자소서</span>
+      </span>
+      <button class="action">실행 취소</button>
+      <span class="countdown"></span>
+      <button class="close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+      <span class="progress"></span>
+    </div>
+
+    <div class="undo light">
+      <span class="body">
+        <b>5건의 변경을 적용했어요</b>
+        <span style="color:var(--color-text-muted)">· 자소서 톤 맞추기</span>
+      </span>
+      <button class="action">되돌리기</button>
+      <button class="close" aria-label="닫기">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+      </button>
+      <span class="progress"></span>
+    </div>
+  </div>
+</body></html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 24px 22px; }
+  .stack { display: flex; flex-direction: column; gap: 20px; }
+  .crumb { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--color-text-muted); }
+  .crumb a {
+    padding: 4px 8px; border-radius: 6px; color: inherit; text-decoration: none; border-bottom: none;
+    transition: background .12s, color .12s;
+  }
+  .crumb a:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+  .crumb .sep { color: var(--color-text-disabled); display: inline-flex; }
+  .crumb .current { color: var(--color-text-primary); font-weight: 700; padding: 4px 8px; }
+  .crumb .ico { display: inline-flex; color: var(--color-text-muted); }
+
+  .lbl { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.06em; }
+</style></head>
+<body>
+  <div class="stack">
+    <span class="lbl">DEFAULT</span>
+    <nav class="crumb">
+      <a href="#"><span class="ico"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg></span></a>
+      <span class="sep"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+      <a href="#">이직 / 취업</a>
+      <span class="sep"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+      <a href="#">자소서</a>
+      <span class="sep"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+      <span class="current">카카오 X 결제·정산 백엔드</span>
+    </nav>
+
+    <span class="lbl">WITH BACK</span>
+    <nav class="crumb">
+      <a href="#" style="display:inline-flex;align-items:center;gap:4px">
+        <span class="ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="11 6 5 12 11 18"/></svg></span>
+        뒤로
+      </a>
+      <span style="width:1px;height:14px;background:var(--color-border-default);margin:0 8px"></span>
+      <a href="#">기업</a>
+      <span class="sep"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+      <a href="#">채용공고</a>
+      <span class="sep"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg></span>
+      <span class="current">새 공고 등록</span>
+    </nav>
+  </div>
+</body></html>

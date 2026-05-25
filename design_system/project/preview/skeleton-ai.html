@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .panel { background: #fff; border: 1px solid var(--color-border-default); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .panel .hd { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 600; color: var(--color-text-secondary); }
+  .panel .hd .ai { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; background: linear-gradient(135deg, var(--color-primary-500), var(--color-lavender-400)); color: #fff; font-size: 10px; font-weight: 700; }
+  /* Skeleton lines */
+  .sk { background: linear-gradient(90deg, var(--color-neutral-100) 0%, var(--color-neutral-200) 50%, var(--color-neutral-100) 100%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 6px; height: 14px; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  /* AI shimmer uses lavender→periwinkle */
+  .sk.ai { background: linear-gradient(90deg, var(--color-lavender-50) 0%, var(--color-lavender-200) 50%, var(--color-lavender-50) 100%); background-size: 200% 100%; }
+  .w-90 { width: 90%; } .w-70 { width: 70%; } .w-40 { width: 40%; } .w-60 { width: 60%; }
+  .ai-process { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: var(--color-lavender-50); border: 1px solid var(--color-lavender-200); border-radius: 10px; }
+  .ai-spin { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--color-lavender-200); border-top-color: var(--color-lavender-500); animation: spin 0.9s linear infinite; flex: 0 0 auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .ai-process .ttl { font-size: 13px; font-weight: 700; color: var(--color-lavender-600); }
+  .ai-process .desc { font-size: 11.5px; color: var(--color-lavender-600); opacity: 0.85; margin-top: 2px; }
+  .ai-process .pct { margin-left: auto; font-family: var(--font-family-mono); font-size: 12px; font-weight: 700; color: var(--color-lavender-600); }
+</style></head>
+<body>
+  <div class="stage">
+    <div class="panel">
+      <div class="hd">자소서 카드 · 로딩</div>
+      <div class="sk w-60"></div>
+      <div class="sk w-90" style="height:10px"></div>
+      <div class="sk w-70" style="height:10px"></div>
+      <div style="display:flex;gap:6px;margin-top:4px"><span class="sk" style="width:60px;height:18px;border-radius:999px"></span><span class="sk" style="width:48px;height:18px;border-radius:999px"></span></div>
+    </div>
+    <div class="panel">
+      <div class="hd">AI 초안 생성 중 <span class="ai">✦ AI</span></div>
+      <div class="sk ai w-90"></div>
+      <div class="sk ai w-70" style="height:10px"></div>
+      <div class="sk ai w-40" style="height:10px"></div>
+      <div class="ai-process">
+        <span class="ai-spin"></span>
+        <div>
+          <div class="ttl">맞춤 자소서를 만드는 중…</div>
+          <div class="desc">이력 + 공고 + 기업분석을 한 번에 정리하고 있어요.</div>
+        </div>
+        <span class="pct">42%</span>
+      </div>
+    </div>
+  </div>
+</body></html>

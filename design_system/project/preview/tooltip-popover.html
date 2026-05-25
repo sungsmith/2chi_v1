@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); }
+  .stage { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+  .group { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .group small { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.06em; }
+
+  /* TOOLTIP — inline ⓘ trigger + dark tip */
+  .info-trigger {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 13px; font-weight: 600; color: var(--color-text-primary);
+    padding: 4px 6px; border-radius: 6px; cursor: help;
+  }
+  .info-trigger:hover { background: var(--color-surface-soft); }
+  .info-trigger .help-ico {
+    color: var(--color-text-muted);
+    display: inline-flex; align-items: center;
+  }
+  .info-trigger:hover .help-ico { color: var(--color-primary-600); }
+
+  .tip-wrap { position: relative; display: inline-block; }
+  .tip {
+    position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    padding: 8px 10px; background: var(--color-neutral-800); color: #fff;
+    border-radius: 7px; font-size: 12px; font-weight: 500; max-width: 240px;
+    box-shadow: 0 8px 20px -6px rgba(37,36,31,0.20);
+    white-space: nowrap;
+  }
+  .tip.multi { white-space: normal; min-width: 200px; line-height: 1.5; }
+  .tip::before {
+    content: ""; position: absolute; top: -4px; left: 50%; transform: translateX(-50%) rotate(45deg);
+    width: 8px; height: 8px; background: var(--color-neutral-800);
+  }
+
+  /* POPOVER — light, less shadow than before */
+  .pop {
+    background: #fff; border: 1px solid var(--color-border-default);
+    border-radius: 12px;
+    box-shadow: 0 12px 28px -8px rgba(37,36,31,0.14), 0 4px 8px -2px rgba(37,36,31,0.06);
+    padding: 14px 16px; max-width: 280px;
+  }
+  .pop .step {
+    font-family: var(--font-family-mono); font-size: 10px;
+    color: var(--color-text-muted); margin-bottom: 6px; letter-spacing: 0.06em;
+  }
+  .pop .ttl {
+    font-family: var(--font-family-sans); font-size: 14px; font-weight: 700;
+    letter-spacing: -0.01em; margin-bottom: 4px; color: var(--color-text-primary);
+  }
+  .pop .body { font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.55; text-wrap: pretty; }
+  .pop .actions { margin-top: 12px; display: flex; gap: 6px; justify-content: flex-end; }
+  .pop .actions button { border: none; padding: 6px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; cursor: pointer; font-family: inherit; }
+  .pop .actions .next  { background: var(--color-primary-600); color: #fff; }
+  .pop .actions .skip  { background: transparent; color: var(--color-text-muted); }
+</style></head>
+<body>
+  <div class="stage">
+    <div class="group">
+      <small>TOOLTIP · INLINE HELP</small>
+      <div class="tip-wrap">
+        <span class="info-trigger">
+          매칭률이란?
+          <span class="help-ico">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 4"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+        </span>
+        <div class="tip multi">내 이력 키워드 ∩ JD 키워드 / JD 키워드 수 × 100. 단순 일치, 가중치는 v2.</div>
+      </div>
+    </div>
+
+    <div class="group">
+      <small>POPOVER · COACH STEP</small>
+      <div class="pop">
+        <div class="step">TIP · 2 / 5</div>
+        <div class="ttl">검토 표시는 어떻게 봐요?</div>
+        <div class="body">노란 점선은 이력에 직접 없는 표현, 민트 밑줄은 확정된 표현이에요. 호버하면 어느 항목에서 가져온 표현인지 확인할 수 있어요.</div>
+        <div class="actions">
+          <button class="skip">건너뛰기</button>
+          <button class="next">다음</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body></html>

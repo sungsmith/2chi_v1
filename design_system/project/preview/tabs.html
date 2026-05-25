@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .stage { display: flex; flex-direction: column; gap: 14px; }
+  /* Underline tabs (used on dashboard / detail pages) */
+  .tabs-underline { display: flex; gap: 4px; border-bottom: 1px solid var(--color-border-default); }
+  .tabs-underline a {
+    position: relative; padding: 12px 14px; font-size: 13.5px; font-weight: 500;
+    color: var(--color-text-secondary); text-decoration: none; border-bottom: none;
+  }
+  .tabs-underline a:hover { color: var(--color-text-primary); }
+  .tabs-underline a.active { color: var(--color-text-primary); font-weight: 700; }
+  .tabs-underline a.active::after { content: ""; position: absolute; left: 14px; right: 14px; bottom: -1px; height: 2px; background: var(--color-primary-500); border-radius: 2px 2px 0 0; }
+  .tabs-underline a .n { font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-muted); margin-left: 4px; font-weight: 700; }
+  .tabs-underline a.active .n { color: var(--color-primary-700); }
+
+  /* Segmented (filters, view mode) */
+  .seg { display: inline-flex; background: var(--color-neutral-100); padding: 3px; border-radius: 10px; }
+  .seg button {
+    padding: 6px 14px; font-size: 12.5px; font-weight: 600; border: none; background: transparent;
+    border-radius: 7px; color: var(--color-text-secondary); cursor: pointer; font-family: inherit;
+  }
+  .seg button.active { background: #fff; color: var(--color-text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+</style></head>
+<body>
+  <div class="stage">
+    <div class="tabs-underline">
+      <a class="active" href="#">전체 <span class="n">14</span></a>
+      <a href="#">진행중 <span class="n">7</span></a>
+      <a href="#">완료 <span class="n">5</span></a>
+      <a href="#">휴지통 <span class="n">2</span></a>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span class="mono">VIEW MODE</span>
+      <div class="seg">
+        <button>연</button>
+        <button class="active">월</button>
+        <button>주</button>
+        <button>일</button>
+      </div>
+    </div>
+  </div>
+</body></html>

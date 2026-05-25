@@ -1,0 +1,495 @@
+/* ============================================================
+   2chi · Web UI Kit — 내 정보 (Me) screen styles
+============================================================ */
+
+.me-shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 32px 80px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: flex-start;
+}
+
+/* ---------- Sidebar (shared pattern for clusters with 3+ sub-pages) ---------- */
+.side-nav {
+  position: sticky; top: 76px;
+  background: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 16px 12px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.side-nav .crumb {
+  font-family: var(--font-family-mono);
+  font-size: 10.5px; font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 10px 12px;
+  border-bottom: 1px dashed var(--color-border-default);
+  margin-bottom: 6px;
+}
+.side-nav .nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  font-size: 13.5px; font-weight: 500; color: var(--color-text-secondary);
+  cursor: pointer; background: none; border: none; font-family: inherit;
+  text-align: left; transition: background .12s, color .12s; width: 100%;
+}
+.side-nav .nav-item:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+.side-nav .nav-item.active { background: var(--color-primary-50); color: var(--color-primary-700); font-weight: 700; }
+.side-nav .nav-item .pill {
+  margin-left: auto; font-family: var(--font-family-mono);
+  font-size: 9.5px; font-weight: 700;
+  padding: 2px 6px; border-radius: 999px;
+  background: var(--color-primary-100); color: var(--color-primary-700);
+  letter-spacing: 0.04em;
+}
+.side-nav .nav-item.active .pill { background: var(--color-primary-600); color: #fff; }
+
+/* Pill on .nav-item — meaning is consistent across all sidebars:
+   PILL = 현재 활성/진행 중인 항목 수 (active count, not total).
+   - 채용공고 "8"  → 마감되지 않은 공고 수
+   - 대시보드 "7"  → 전형 진행 중 지원 수 (합격/불합격 제외)
+   - 경력기술 "PRAR" → label (not a count)
+   Hover the pill for an explicit description (native title attribute). */
+.side-nav .nav-item .pill[title] { cursor: help; }
+
+/* ---------- Main column ---------- */
+.me-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+.pg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding: 0 2px; }
+.pg-head .lead { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.pg-head .eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-family-mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--color-text-muted);
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.pg-head .eyebrow::before { content: ""; width: 20px; height: 1px; background: currentColor; opacity: 0.5; }
+.pg-head h1 {
+  margin: 0; font-family: var(--font-family-hand);
+  font-size: 38px; line-height: 1.2; font-weight: 400;
+}
+.pg-head .sub { margin: 0; font-size: 13.5px; color: var(--color-text-secondary); line-height: 1.6; max-width: 56ch; }
+.pg-head .head-actions { display: flex; gap: 8px; }
+
+/* ============================================================
+   Generic me-section card (used by Profile + Portfolio)
+============================================================ */
+.me-section {
+  background: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-soft);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.me-section .sec-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; }
+.me-section .sec-head .head-r { display: flex; gap: 6px; }
+.me-section .sec-title {
+  font-family: var(--font-family-hand); font-size: 24px; font-weight: 400;
+  line-height: 1.2; margin: 0;
+}
+
+/* ---- Profile sub-section heads (inside the single page) ---- */
+.sub-section-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 4px 0 6px;
+}
+.sub-section-head .head-l { display: flex; align-items: center; gap: 12px; }
+.sub-section-head .num {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--color-surface-soft);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
+  display: grid; place-items: center;
+  letter-spacing: 0.04em;
+}
+.sub-section-head .ttl { font-family: var(--font-family-sans); font-weight: 700; font-size: 15px; color: var(--color-text-primary); letter-spacing: -0.01em; }
+.sub-section-head .sub { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
+
+.sub-divider {
+  height: 1px; background: var(--color-border-subtle);
+  margin: 12px -4px 8px;
+}
+
+.btn-text {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 8px; border-radius: 6px;
+  background: transparent; border: none;
+  color: var(--color-primary-700); font-family: inherit;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.btn-text:hover { background: var(--color-primary-50); }
+
+/* ============================================================
+   List rows (학력 · 자격증 · 경험 · 포트폴리오)
+============================================================ */
+.list { display: flex; flex-direction: column; gap: 8px; }
+.list-row {
+  display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center;
+  gap: 12px; padding: 12px 14px;
+  background: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  transition: background .12s, border-color .12s;
+}
+.list-row:hover { background: var(--color-surface-soft); }
+.list-row .badge-ico {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: inline-grid; place-items: center;
+  background: var(--color-primary-50); color: var(--color-primary-700);
+}
+.list-row.mint  .badge-ico { background: var(--color-mint-50);    color: var(--color-mint-700); }
+.list-row.lav   .badge-ico { background: var(--color-lavender-50); color: var(--color-lavender-600); }
+.list-row.peach .badge-ico { background: var(--color-peach-50);   color: var(--color-peach-400); }
+.list-row .body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.list-row .nm { font-size: 14px; font-weight: 700; letter-spacing: -0.005em; }
+.list-row .meta { font-size: 12px; color: var(--color-text-muted); }
+.list-row .actions { display: inline-flex; gap: 4px; }
+.list-row .iconbtn {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid transparent; background: transparent; cursor: pointer;
+  color: var(--color-text-muted); display: grid; place-items: center;
+}
+.list-row .iconbtn:hover { background: #fff; color: var(--color-text-primary); border-color: var(--color-border-default); }
+.list-row .kind-pill {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+  letter-spacing: 0.04em;
+}
+.list-row .kind-pill.file { background: var(--color-mint-50); color: var(--color-mint-700); }
+
+/* ============================================================
+   Form (기초 정보 block)
+============================================================ */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+.form-grid .fld { display: flex; flex-direction: column; gap: 6px; }
+.form-grid .fld.full { grid-column: span 2; }
+.form-grid .lbl { font-size: 12.5px; font-weight: 700; color: var(--color-text-primary); display: inline-flex; align-items: center; gap: 6px; }
+.form-grid .lbl .req { color: var(--color-semantic-error); }
+.form-grid .input, .form-grid textarea {
+  height: 38px; padding: 0 12px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-md);
+  background: #fff; font-family: inherit; font-size: 13.5px;
+  color: var(--color-text-primary);
+}
+.form-grid textarea { height: auto; min-height: 80px; padding: 10px 12px; resize: vertical; line-height: 1.5; }
+.form-grid .input:focus, .form-grid textarea:focus {
+  outline: none; border-color: var(--color-border-focus); box-shadow: var(--focus-ring);
+}
+.form-grid .input-w-ico { position: relative; }
+.form-grid .input-w-ico .ico { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); }
+.form-grid .input-w-ico .input { padding-left: 32px; }
+.form-grid .helper { font-size: 11.5px; color: var(--color-text-muted); }
+
+/* ============================================================
+   CAREER · hierarchy
+   Level 1: company band (border-top accent + flat panel, no card-in-card)
+   Level 2: project row (light divider, indented; selectable)
+   Level 3: PRAR cells (inside the project body)
+============================================================ */
+
+/* Company band — flat panel, lifts above the sunken workspace bg */
+.co-band {
+  background: var(--color-surface-default);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.co-band-head {
+  display: grid; grid-template-columns: 40px 1fr auto;
+  gap: 14px; align-items: center;
+  padding: 14px 20px;
+  background: var(--color-surface-soft);
+  border-bottom: 1px solid var(--color-border-default);
+}
+.co-band .co-mark {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--color-primary-600); color: #fff;
+  display: grid; place-items: center;
+  font-family: var(--font-family-hand); font-size: 22px; font-weight: 400; line-height: 1;
+}
+.co-band .co-mark.lav { background: var(--color-lavender-500); }
+.co-band .co-band-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.co-band .nm { font-size: 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+.co-band .nm .pill {
+  font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 999px;
+  background: var(--color-mint-50); color: var(--color-mint-700);
+  border: 1px solid var(--color-mint-100);
+}
+.co-band .nm .pill.past {
+  background: var(--color-surface-default); color: var(--color-text-muted); border-color: var(--color-border-default);
+}
+.co-band .meta { font-size: 12px; color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.co-band .meta .sep { width: 3px; height: 3px; background: currentColor; opacity: 0.6; border-radius: 50%; }
+.co-band .role { color: var(--color-text-secondary); font-weight: 600; }
+.co-band .co-band-actions { display: inline-flex; gap: 6px; }
+.co-band-body { padding: 8px 20px 18px; }
+
+/* Project rows — table-like, no nested card */
+.pj-list {
+  display: flex; flex-direction: column;
+  border-top: 1px dashed var(--color-border-default);
+  margin-top: 4px;
+}
+.pj-row {
+  display: flex; flex-direction: column;
+  border-bottom: 1px dashed var(--color-border-default);
+}
+.pj-row:last-child { border-bottom: none; }
+.pj-row-head {
+  display: grid; grid-template-columns: 16px 1fr auto auto;
+  gap: 12px; align-items: center;
+  padding: 14px 8px; cursor: pointer;
+}
+.pj-row-head:hover { background: var(--color-surface-soft); }
+.pj-row.open .pj-row-head { background: transparent; }
+.pj-row .chev { color: var(--color-text-muted); display: inline-flex; transition: transform .15s; }
+.pj-row.open .chev { transform: rotate(90deg); color: var(--color-primary-700); }
+.pj-row-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.pj-row-title { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; flex-wrap: wrap; }
+.pj-row-meta { font-size: 12px; color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pj-row-meta .sep { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.6; }
+.pj-row-meta .num { color: var(--color-text-primary); font-weight: 700; }
+
+.tag-row { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.tech-tag {
+  display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 4px;
+  background: var(--color-primary-50); color: var(--color-primary-700);
+  font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 600;
+  border: 1px solid var(--color-primary-100);
+}
+.tech-tag.mint  { background: var(--color-mint-50);  color: var(--color-mint-700);  border-color: var(--color-mint-100); }
+.tech-tag.lav   { background: var(--color-lavender-50); color: var(--color-lavender-600); border-color: var(--color-lavender-100); }
+.tech-tag.peach { background: var(--color-peach-50); color: var(--color-peach-400); border-color: var(--color-peach-100); }
+
+.prar-pill {
+  font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  background: var(--color-mint-50); color: var(--color-mint-700); border: 1px solid var(--color-mint-100);
+}
+.prar-pill.warn { background: var(--color-yellow-50); color: var(--color-yellow-400); border-color: var(--color-yellow-200); }
+
+.iconbtn-sm {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 28px; padding: 0 10px; border-radius: 7px;
+  background: transparent; border: 1px solid var(--color-border-default);
+  color: var(--color-text-secondary); cursor: pointer; font-family: inherit;
+  font-size: 11.5px; font-weight: 600;
+}
+.iconbtn-sm:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+
+/* Project body — PRAR as 2x2 grid, each cell tone-tinted */
+.pj-row-body {
+  padding: 4px 8px 16px 36px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.prar-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.prar-cell {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: var(--color-surface-soft);
+}
+.prar-cell.p  { background: var(--color-peach-50); }
+.prar-cell.r1 { background: var(--color-yellow-50); }
+.prar-cell.a  { background: var(--color-primary-50); }
+.prar-cell.r2 { background: var(--color-mint-50); }
+.prar-cell .cell-head {
+  display: flex; align-items: center; gap: 10px;
+}
+.prar-cell .glyph {
+  width: 22px; height: 22px; border-radius: 5px;
+  display: grid; place-items: center;
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 800;
+  background: rgba(255,255,255,0.7);
+  color: var(--color-text-secondary);
+}
+.prar-cell.p  .glyph { background: var(--color-peach-100);   color: var(--color-peach-400); }
+.prar-cell.r1 .glyph { background: var(--color-yellow-100);  color: var(--color-yellow-400); }
+.prar-cell.a  .glyph { background: var(--color-primary-100); color: var(--color-primary-700); }
+.prar-cell.r2 .glyph { background: var(--color-mint-100);    color: var(--color-mint-700); }
+.prar-cell .cell-title {
+  display: inline-flex; align-items: baseline; gap: 6px;
+}
+.prar-cell .ko { font-size: 13px; font-weight: 700; color: var(--color-text-primary); }
+.prar-cell .en {
+  font-family: var(--font-family-mono); font-size: 10px;
+  color: var(--color-text-muted); letter-spacing: 0.08em;
+}
+.prar-cell .cell-count {
+  margin-left: auto;
+  font-family: var(--font-family-mono); font-size: 11px;
+  color: var(--color-text-muted);
+}
+.prar-cell .ta {
+  width: 100%; border: none; outline: none; background: transparent;
+  resize: none; padding: 0;
+  font-family: inherit; font-size: 13px;
+  color: var(--color-text-primary); line-height: 1.65;
+}
+.prar-cell .ta::placeholder { color: var(--color-text-disabled); }
+
+/* Metrics — inline strip, not its own boxed card */
+.metrics-strip {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  padding: 8px 10px;
+  background: var(--color-surface-soft);
+  border-radius: 8px;
+}
+.metrics-strip .metric-label {
+  font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700;
+  color: var(--color-text-secondary); letter-spacing: 0.06em;
+  text-transform: uppercase; padding-right: 8px;
+  border-right: 1px solid var(--color-border-default);
+  margin-right: 4px;
+}
+.metric-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 4px 9px; background: #fff;
+  border: 1px solid var(--color-border-default); border-radius: 6px;
+  font-size: 11.5px;
+}
+.metric-chip .k { color: var(--color-text-muted); font-weight: 600; font-size: 10.5px; }
+.metric-chip .v { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; }
+.metric-chip .arrow { color: var(--color-text-muted); }
+.metric-chip .down { color: var(--color-semantic-error); }
+.metric-add {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 9px; background: transparent;
+  border: 1px dashed var(--color-border-strong); border-radius: 6px;
+  font-family: inherit; font-size: 11px; font-weight: 600;
+  color: var(--color-text-secondary); cursor: pointer;
+}
+.metric-add:hover { border-color: var(--color-primary-300); color: var(--color-primary-700); border-style: solid; }
+
+.add-proj-sm {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px dashed var(--color-border-strong); border-radius: 7px;
+  font-family: inherit; font-size: 12px; font-weight: 600;
+  color: var(--color-text-secondary); cursor: pointer;
+  align-self: flex-start; margin-top: 12px;
+}
+.add-proj-sm:hover { background: var(--color-primary-50); color: var(--color-primary-700); border-color: var(--color-primary-300); border-style: solid; }
+
+/* ============================================================
+   CAREER · workspace structure
+   - career-meta:   inline meta line (not a card)
+   - info-banner:   restrained notice (white bg + colored left rule)
+   - work-section:  "회사 경력" section header marking editable area
+   - add-company-row: dashed CTA replacing the yellow paper page-foot
+============================================================ */
+
+/* Inline meta — sits where CtxStrip used to be */
+.career-meta {
+  display: flex; align-items: center; gap: 12px;
+  padding: 4px 4px 0; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--color-text-secondary);
+}
+.career-meta .meta-item { display: inline-flex; align-items: center; gap: 6px; }
+.career-meta .meta-item .sw { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary-400); }
+.career-meta .meta-item .sw.lav  { background: var(--color-lavender-400); }
+.career-meta .meta-item .sw.mint { background: var(--color-mint-400); }
+.career-meta .meta-item b { color: var(--color-text-primary); font-weight: 700; }
+.career-meta .meta-sep { width: 1px; height: 12px; background: var(--color-border-default); }
+.career-meta .meta-edit {
+  margin-left: auto; font-size: 11.5px; font-weight: 700;
+  color: var(--color-text-muted); display: inline-flex; align-items: center; gap: 3px;
+  border-bottom: none; padding: 4px 6px; border-radius: 5px;
+}
+.career-meta .meta-edit:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+
+/* Compact info banner — neutral border, no colored left rule.
+   Tone signal lives only in the icon color. */
+.info-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px 10px 14px;
+  background: #fff;
+  border: 1px solid var(--color-border-default);
+  border-radius: 10px;
+  font-size: 12.5px; line-height: 1.55; color: var(--color-text-primary);
+}
+.info-banner .ico {
+  width: 18px; height: 18px; flex: 0 0 auto;
+  color: var(--color-text-muted); display: inline-flex; align-items: center;
+}
+.info-banner.lav .ico { color: var(--color-lavender-600); }
+.info-banner .body { flex: 1; min-width: 0; }
+.info-banner .body b { font-weight: 700; }
+.info-banner .body .miss { color: var(--color-semantic-error); font-weight: 700; }
+.info-banner .x {
+  background: none; border: none; cursor: pointer; opacity: 0.55;
+  width: 24px; height: 24px; display: grid; place-items: center;
+  color: var(--color-text-muted); border-radius: 6px;
+}
+.info-banner .x:hover { opacity: 1; background: var(--color-surface-soft); }
+.info-banner .banner-action {
+  font-size: 11.5px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 10px; border-radius: 6px;
+  color: var(--color-text-secondary); border-bottom: none;
+  border: 1px solid var(--color-border-default); background: #fff;
+}
+.info-banner .banner-action:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+.info-banner.assistant .mascot-cloud { transform: scale(0.85); transform-origin: center; flex: 0 0 auto; margin: -4px 0 -4px -2px; }
+
+/* Workspace section — clearly bounded editable canvas */
+.work-section {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 16px 18px 22px;
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  margin-top: 6px;
+}
+.work-section-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 2px 2px 12px;
+  border-bottom: 1px solid var(--color-border-default);
+}
+.work-title {
+  margin: 0; font-family: var(--font-family-sans);
+  font-size: 14px; font-weight: 700; letter-spacing: 0;
+  color: var(--color-text-primary);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.work-title .work-count {
+  font-family: var(--font-family-mono); font-size: 11px;
+  padding: 2px 7px; border-radius: 999px;
+  background: #fff; color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+  font-weight: 700;
+}
+.work-actions { display: inline-flex; gap: 6px; }
+
+/* Add-company dashed row — replaces the yellow page-foot card */
+.add-company-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 18px;
+  background: transparent;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-family: inherit; font-size: 13.5px; font-weight: 700;
+  color: var(--color-text-secondary); cursor: pointer;
+  text-align: left;
+}
+.add-company-row .hint {
+  margin-left: auto; font-weight: 400; font-size: 11.5px;
+  color: var(--color-text-muted);
+}
+.add-company-row:hover { background: var(--color-primary-50); color: var(--color-primary-700); border-color: var(--color-primary-300); border-style: solid; }
+.add-company-row:hover .hint { color: var(--color-primary-700); opacity: 0.7; }

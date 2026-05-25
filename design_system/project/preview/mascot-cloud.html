@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; }
+  .row { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; justify-content: center; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .item .nm { font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.06em; }
+  .cloud {
+    display: inline-block;
+    background-size: contain; background-position: center; background-repeat: no-repeat;
+  }
+  .cloud.sm { width: 36px; height: 36px; }
+  .cloud.md { width: 56px; height: 56px; }
+  .cloud.lg { width: 80px; height: 80px; }
+  .cloud.wave    { background-image: url("../assets/mascot-wave.png"); }
+  .cloud.default { background-image: url("../assets/mascot-default.png"); }
+  .cloud.happy   { background-image: url("../assets/mascot-happy.png"); }
+  .cloud.think   { background-image: url("../assets/mascot-think.png"); }
+  .cloud.excited { background-image: url("../assets/mascot-excited.png"); }
+  .cloud.sleep   { background-image: url("../assets/mascot-sleep.png"); }
+</style></head>
+<body>
+  <div class="row">
+    <div class="item"><span class="cloud lg default"></span><span class="nm">default</span></div>
+    <div class="item"><span class="cloud lg wave"></span><span class="nm">wave</span></div>
+    <div class="item"><span class="cloud lg happy"></span><span class="nm">happy</span></div>
+    <div class="item"><span class="cloud lg think"></span><span class="nm">think</span></div>
+    <div class="item"><span class="cloud lg excited"></span><span class="nm">excited</span></div>
+    <div class="item"><span class="cloud lg sleep"></span><span class="nm">sleep</span></div>
+  </div>
+  <div class="row" style="margin-top: 18px">
+    <div class="item"><span class="cloud sm default"></span><span class="nm">sm 36px</span></div>
+    <div class="item"><span class="cloud md default"></span><span class="nm">md 56px</span></div>
+    <div class="item"><span class="cloud lg default"></span><span class="nm">lg 80px</span></div>
+  </div>
+</body></html>

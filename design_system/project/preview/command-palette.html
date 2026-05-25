@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="_card.css">
+<style>
+  body { padding: 22px; background: var(--color-bg); display: grid; place-items: start center; }
+  .palette {
+    width: 100%; max-width: 600px;
+    background: #fff; border: 1px solid var(--color-border-default); border-radius: 14px;
+    box-shadow: 0 24px 60px -20px rgba(37,36,31,0.30), 0 8px 24px -10px rgba(37,36,31,0.15);
+    overflow: hidden;
+  }
+  .pal-search { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--color-border-subtle); }
+  .pal-search .ico { color: var(--color-text-muted); display: inline-flex; }
+  .pal-search input { border: none; outline: none; flex: 1; font-family: inherit; font-size: 15px; background: transparent; }
+  .pal-search input::placeholder { color: var(--color-text-disabled); }
+  .pal-search .kbd { font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-muted); padding: 3px 7px; border: 1px solid var(--color-border-default); border-radius: 5px; background: var(--color-surface-soft); }
+  .pal-list { padding: 6px; max-height: 220px; overflow: auto; }
+  .pal-section { padding: 6px 10px 4px; font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
+  .opt { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 7px; font-size: 13px; cursor: pointer; }
+  .opt:hover, .opt.hover { background: var(--color-primary-50); color: var(--color-primary-700); }
+  .opt:hover .lico, .opt.hover .lico { color: var(--color-primary-700); }
+  .opt .lico { width: 16px; height: 16px; color: var(--color-text-muted); display: inline-flex; flex: 0 0 auto; }
+  .opt .nm { flex: 1; }
+  .opt .nm em { font-style: normal; background: var(--color-yellow-100); color: var(--color-text-primary); padding: 0 2px; border-radius: 3px; }
+  .opt .shortcut { font-family: var(--font-family-mono); font-size: 10.5px; color: var(--color-text-muted); }
+  .opt .shortcut .kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--color-border-default); border-radius: 4px; background: var(--color-surface-soft); margin-left: 2px; }
+  .pal-foot { padding: 8px 14px; border-top: 1px solid var(--color-border-subtle); font-family: var(--font-family-mono); font-size: 10px; color: var(--color-text-muted); display: flex; gap: 14px; }
+  .pal-foot .kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--color-border-default); border-radius: 4px; background: var(--color-surface-soft); margin: 0 3px; color: var(--color-text-secondary); }
+</style></head>
+<body>
+  <div class="palette">
+    <div class="pal-search">
+      <span class="ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+      <input value="자소서" placeholder="공고, 자소서, 회사를 검색하거나 명령을 입력하세요…">
+      <span class="kbd">⌘ K</span>
+    </div>
+    <div class="pal-list">
+      <div class="pal-section">자소서</div>
+      <div class="opt hover">
+        <span class="lico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10.5 17.5l-2 .5.5-2 5-5 1.5 1.5z"/></svg></span>
+        <span class="nm">새 <em>자소서</em> 작성하기</span>
+        <span class="shortcut"><span class="kbd">⌘</span><span class="kbd">N</span></span>
+      </div>
+      <div class="opt">
+        <span class="lico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <span class="nm">카카오 X 결제·정산 <em>자소서</em></span>
+        <span class="shortcut">변형본 3개</span>
+      </div>
+      <div class="opt">
+        <span class="lico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <span class="nm">네이버 신입 백엔드 <em>자소서</em></span>
+        <span class="shortcut">D-3</span>
+      </div>
+      <div class="pal-section">바로가기</div>
+      <div class="opt">
+        <span class="lico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        <span class="nm">채용공고 URL 등록하기</span>
+        <span class="shortcut"><span class="kbd">U</span></span>
+      </div>
+      <div class="opt">
+        <span class="lico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+        <span class="nm">캘린더로 이동</span>
+        <span class="shortcut"><span class="kbd">G</span><span class="kbd">C</span></span>
+      </div>
+    </div>
+    <div class="pal-foot">
+      <span><span class="kbd">↑↓</span> 이동</span>
+      <span><span class="kbd">↵</span> 선택</span>
+      <span><span class="kbd">esc</span> 닫기</span>
+    </div>
+  </div>
+</body></html>
