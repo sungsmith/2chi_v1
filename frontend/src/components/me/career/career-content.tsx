@@ -45,7 +45,7 @@ export function CareerContent() {
 
   return (
     <section className="career-page">
-      <PageHeader title="경력기술" subtitle="회사 단위로 묶고, 프로젝트 안에 PRAR 4단으로 채워요." />
+      <PageHeader section="career" />
 
       {error && (
         <div role="alert" style={{
