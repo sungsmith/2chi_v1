@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { PageHeader } from "../page-header";
 import { CareerCard } from "./career-card";
 import { AssistantNote } from "./assistant-note";
-import { Plus, Sparkle, ArrowRight } from "../icons";
+import { Plus, Sparkle, ArrowRight } from "@/components/ui/icons";
 import { fetchCareers, createCareer } from "@/lib/api/career";
 import type { Career, CareerCreateRequest } from "@/lib/types/career";
 import { NewCareerForm } from "./new-career-form";

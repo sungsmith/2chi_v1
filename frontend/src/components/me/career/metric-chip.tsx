@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "../icons";
+import { Plus } from "@/components/ui/icons";
 import type { Metric } from "@/lib/types/career";
 
 type Props =

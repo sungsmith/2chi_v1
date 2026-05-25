@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight } from "../icons";
-import { Edit } from "@/components/ui/icons";
+import { ChevronRight, Edit } from "@/components/ui/icons";
 import { PrarCell } from "./prar-cell";
 import { MetricChip } from "./metric-chip";
 import { TechTag } from "./tech-tag";

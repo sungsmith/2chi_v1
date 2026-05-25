@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus } from "../icons";
-import { Edit } from "@/components/ui/icons";
+import { Plus, Edit } from "@/components/ui/icons";
 import { ProjectCard } from "./project-card";
 import { updateCareer, deleteCareer, createProject, deleteProject } from "@/lib/api/career";
 import type { Career, Project, ProjectCreateRequest } from "@/lib/types/career";
