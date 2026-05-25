@@ -697,3 +697,51 @@ html, body { background: var(--color-bg); }
 .banner.warn   .ico { color: var(--color-yellow-400); }
 .banner.update { border-left-color: var(--color-lavender-500); }
 .banner.update .ico { color: var(--color-lavender-600); }
+
+/* ============================================================
+   Dashboard page shell (.dash-page / .dash-main)
+   — ported from (app)/dashboard.css on deletion (Task 6)
+============================================================ */
+.dash-page {
+  position: relative;
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+.dash-page::before {
+  content: "";
+  position: fixed;
+  top: -340px; right: -240px;
+  width: 820px; height: 820px;
+  background:
+    radial-gradient(closest-side, var(--color-primary-100), transparent 70%),
+    radial-gradient(closest-side at 30% 70%, var(--color-lavender-100), transparent 75%);
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+.dash-page::after {
+  content: "";
+  position: fixed;
+  top: 120px; left: -260px;
+  width: 640px; height: 640px;
+  background: radial-gradient(closest-side, var(--color-mint-100), transparent 70%);
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.dash-main {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+@media (max-width: 720px) {
+  .dash-main { padding: 24px 16px 56px; gap: 20px; }
+}
