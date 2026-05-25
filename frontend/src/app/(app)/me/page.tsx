@@ -1,12 +1,14 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { PageHeader } from "@/components/me/page-header";
+import { CoachBanner } from "@/components/me/coach-banner";
+import { ProfileView } from "@/components/me/profile-view";
+import { PROFILE_MOCK } from "@/lib/mock/me";
 
 export default function MePage() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/me/career");
-  }, [router]);
-  return null;
+  return (
+    <>
+      <PageHeader section="profile" />
+      <CoachBanner />
+      <ProfileView data={PROFILE_MOCK} />
+    </>
+  );
 }
