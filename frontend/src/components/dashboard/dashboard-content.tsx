@@ -7,12 +7,15 @@ import { KpiCompleteness } from "./kpi-completeness";
 import { KpiCoverLetters } from "./kpi-cover-letters";
 import { KpiInProgress } from "./kpi-in-progress";
 import { UpcomingPanel } from "./upcoming-panel";
+import { MatchPanel } from "./match-panel";
 import { Shortcuts } from "./shortcuts";
 import {
   KPI_COMPLETENESS_MOCK,
   KPI_COVER_LETTERS_MOCK,
   KPI_IN_PROGRESS_MOCK,
   TODAY_QUOTE_MOCK,
+  MATCH_RING_MOCK,
+  GAPS_MOCK,
 } from "@/lib/mock/dashboard";
 
 export function DashboardContent() {
@@ -34,6 +37,7 @@ export function DashboardContent() {
       </div>
       <div className="dual-grid">
         <UpcomingPanel />
+        <MatchPanel ring={MATCH_RING_MOCK} gaps={GAPS_MOCK} />
       </div>
       <Shortcuts />
     </div>

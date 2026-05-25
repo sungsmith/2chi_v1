@@ -1,5 +1,5 @@
 import type { KpiCompletenessData } from "@/lib/mock/dashboard";
-import { Layers } from "./icons";
+import { Layers } from "@/components/ui/icons";
 
 type Props = { data: KpiCompletenessData };
 
@@ -9,7 +9,7 @@ export function KpiCompleteness({ data }: Props) {
       <div className="kpi-head">
         <span className="lbl">내 작성 이력 완성도</span>
         <span className="ico">
-          <Layers />
+          <Layers size={16} />
         </span>
       </div>
       <div className="kpi-value">

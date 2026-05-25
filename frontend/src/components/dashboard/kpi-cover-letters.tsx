@@ -1,5 +1,5 @@
 import type { KpiCoverLettersData } from "@/lib/mock/dashboard";
-import { FileEdit } from "./icons";
+import { FileEdit } from "@/components/ui/icons";
 
 type Props = { data: KpiCoverLettersData };
 
@@ -9,7 +9,7 @@ export function KpiCoverLetters({ data }: Props) {
       <div className="kpi-head">
         <span className="lbl">자소서 작성 수</span>
         <span className="ico">
-          <FileEdit />
+          <FileEdit size={16} />
         </span>
       </div>
       <div className="kpi-value">
