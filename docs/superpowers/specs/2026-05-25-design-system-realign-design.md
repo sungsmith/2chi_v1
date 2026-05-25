@@ -84,10 +84,8 @@
    - 기존 selector specificity 충돌 시 보강
 3. `frontend/public/mascot-{default,wave,happy,think,excited,sleep}.png` ← `design_system/project/assets/mascot-*.png` 복사 (6장)
 4. `frontend/src/components/ui/icons.tsx` ← `design_system/project/ui_kits/web/kit-icons.jsx` 의 `Ico` 카탈로그를 TSX 로 옮김. 기존 cluster-local `icons.tsx` 4개는 2단계에서 점진 교체
-5. `frontend/src/components/ui/` 신규 공용 컴포넌트 (정의만 추가, 사용처는 2단계 PR 에서):
-   - `mascot-cloud.tsx` — `<span className="mascot-cloud {size} {expression}"/>` 래퍼
-   - `modal.tsx`, `toast.tsx`, `undo-toast.tsx`, `dropdown-select.tsx`, `date-picker.tsx`, `tag-input.tsx`, `tooltip-popover.tsx`, `tabs.tsx`, `breadcrumb.tsx`, `stepper.tsx`, `pagination-filters.tsx`, `empty-state.tsx`, `skeleton-ai.tsx`, `error-state.tsx`, `command-palette.tsx`, `inline-edit.tsx`, `file-upload.tsx`, `avatar.tsx`, `banner.tsx`, `diff-viewer.tsx`, `progress.tsx`
-   - 각 컴포넌트는 `kit.css` 클래스를 그대로 사용. props 시그니처는 mock JSX 또는 `preview/*.html` 참조
+
+> **공용 컴포넌트 21개 (modal·toast·dropdown-select·date-picker·tag-input·stepper·tabs·breadcrumb·mascot-cloud 등)** 는 1단계 PR scope 에서 제외. **각 화면 PR 에서 그 화면이 실제 사용할 때 정의** 한다. 사용처 없이 미리 만들면 props 시그니처가 추측 기반이 되어 2단계에서 다시 손보게 되고, 의미있는 TDD 도 불가능 (YAGNI). 화면 PR 마다 그 화면이 도입하는 공용 컴포넌트는 각 PR description 에 명시해서 다른 PR 과 중복 작업 회피.
 
 ### 4.2 검증
 
@@ -101,7 +99,7 @@
 
 - 화면별 마크업 변경
 - 마스코트의 실제 화면 사용
-- 신규 컴포넌트의 첫 사용
+- 공용 컴포넌트 21개 정의 (각 화면 PR 에서 첫 사용 시 정의)
 
 ---
 
