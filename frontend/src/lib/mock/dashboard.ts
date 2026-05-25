@@ -141,3 +141,29 @@ export const UPCOMING_MOCK: ScheduleItem[] = [
     dday: "D-6",
   },
 ];
+
+export type MatchRing = {
+  percent: number;
+  position: string;
+  metricLabel: string;
+  description: string;
+};
+
+export type Gap = {
+  name: string;
+  sub: string;
+  hit: string;
+};
+
+export const MATCH_RING_MOCK: MatchRing = {
+  percent: 68,
+  position: "희망 포지션 · 백엔드",
+  metricLabel: "JD 평균 매칭률",
+  description: "최근 등록한 채용공고 8건을 기준으로, 이력과 키워드 매칭을 비교했어요.",
+};
+
+export const GAPS_MOCK: Gap[] = [
+  { name: "Kafka / MSA 운영 경험",        sub: "결제·정산 도메인 공고에서 자주 언급",   hit: "5건" },
+  { name: "대용량 트래픽 처리 (TPS 5K+)", sub: "관련 프로젝트 정량 결과 보완 추천",     hit: "4건" },
+  { name: "관측성(Observability) 도구",   sub: "Datadog · Grafana · OpenTelemetry",     hit: "3건" },
+];
