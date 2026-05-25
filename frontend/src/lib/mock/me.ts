@@ -59,3 +59,31 @@ export const PROFILE_MOCK: ProfileSnapshot = {
   ],
   resume: { filename: "kim-somi-resume-v3.pdf", updatedAt: "2026-05-10" },
 };
+
+export type PortfolioLink = {
+  title: string;
+  url: string;
+  kind: "github" | "notion" | "blog" | "other";
+};
+
+export type PortfolioFile = {
+  filename: string;
+  size: string;
+  uploadedAt: string;
+};
+
+export type PortfolioSnapshot = {
+  links: PortfolioLink[];
+  files: PortfolioFile[];
+};
+
+export const PORTFOLIO_MOCK: PortfolioSnapshot = {
+  links: [
+    { title: "GitHub",      url: "https://github.com/somi-kim",           kind: "github" },
+    { title: "기술 블로그", url: "https://somi.dev",                       kind: "blog" },
+    { title: "Notion 정리", url: "https://www.notion.so/somi/tech-notes", kind: "notion" },
+  ],
+  files: [
+    { filename: "portfolio-2026q2.pdf", size: "2.4MB",  uploadedAt: "2026-05-08" },
+  ],
+};
