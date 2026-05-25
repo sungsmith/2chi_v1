@@ -1,10 +1,12 @@
 "use client";
 
+import { MascotCloud } from "@/components/ui/mascot-cloud";
 import { GREETING_TAGS } from "@/lib/mock/dashboard";
 
 type Props = {
   nickname: string;
   showTags: boolean;
+  todayQuote?: string;
 };
 
 function formatGreetingDate(now: Date): string {
@@ -21,7 +23,7 @@ function formatGreetingDate(now: Date): string {
   return `${year} · ${month} · ${day} ${weekday} · 오늘의 준비 현황`;
 }
 
-export function Greeting({ nickname, showTags }: Props) {
+export function Greeting({ nickname, showTags, todayQuote }: Props) {
   const dateLabel = formatGreetingDate(new Date());
 
   return (
@@ -50,6 +52,24 @@ export function Greeting({ nickname, showTags }: Props) {
           </div>
         )}
       </div>
+      {todayQuote && (
+        <aside className="greet-aside memo-paper">
+          <span
+            className="tape mint"
+            style={{ top: "-10px", left: "50%", transform: "translateX(-50%) rotate(-4deg)" }}
+          />
+          <MascotCloud size="md" expression="wave" />
+          <small>오늘의 한 줄</small>
+          <div className="memo-copy">
+            {todayQuote.split("\n").map((line, i, arr) => (
+              <span key={i}>
+                {line}
+                {i < arr.length - 1 && <br />}
+              </span>
+            ))}
+          </div>
+        </aside>
+      )}
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Sparkle, Plus, Building, Calendar } from "./icons";
+import { Sparkle, Plus, Building, Calendar } from "@/components/ui/icons";
 
 type ShortcutItem = {
   label: string;

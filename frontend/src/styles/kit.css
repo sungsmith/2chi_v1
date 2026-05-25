@@ -658,3 +658,90 @@ html, body { background: var(--color-bg); }
 .sub-tabs .active .pill {
   background: var(--color-primary-100); color: var(--color-primary-700);
 }
+
+/* ============================================================
+   Banner (info · warn · update) — 본 가이드는 preview/banner.html 기반
+============================================================ */
+.banner {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px 10px 16px;
+  background: #fff;
+  border: 1px solid var(--color-border-default);
+  border-left: 3px solid var(--color-neutral-300);
+  border-radius: 10px;
+  font-size: 12.5px; line-height: 1.5; color: var(--color-text-primary);
+}
+.banner .ico {
+  width: 18px; height: 18px; flex: 0 0 auto;
+  color: var(--color-text-muted); display: inline-flex; align-items: center;
+}
+.banner .body { flex: 1; min-width: 0; }
+.banner .body b { font-weight: 700; }
+.banner .action {
+  background: transparent; border: 1px solid var(--color-border-default);
+  padding: 5px 10px; border-radius: 6px;
+  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+  color: var(--color-text-primary);
+}
+.banner .action:hover { background: var(--color-surface-soft); border-color: var(--color-border-strong); }
+.banner .x {
+  background: none; border: none; cursor: pointer; opacity: 0.55;
+  width: 26px; height: 26px; display: grid; place-items: center;
+  color: var(--color-text-muted); border-radius: 6px;
+}
+.banner .x:hover { opacity: 1; background: var(--color-surface-soft); }
+
+.banner.info   { border-left-color: var(--color-primary-500); }
+.banner.info   .ico { color: var(--color-primary-600); }
+.banner.warn   { border-left-color: var(--color-yellow-400); }
+.banner.warn   .ico { color: var(--color-yellow-400); }
+.banner.update { border-left-color: var(--color-lavender-500); }
+.banner.update .ico { color: var(--color-lavender-600); }
+
+/* ============================================================
+   Dashboard page shell (.dash-page / .dash-main)
+   — ported from (app)/dashboard.css on deletion (Task 6)
+============================================================ */
+.dash-page {
+  position: relative;
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+.dash-page::before {
+  content: "";
+  position: fixed;
+  top: -340px; right: -240px;
+  width: 820px; height: 820px;
+  background:
+    radial-gradient(closest-side, var(--color-primary-100), transparent 70%),
+    radial-gradient(closest-side at 30% 70%, var(--color-lavender-100), transparent 75%);
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+.dash-page::after {
+  content: "";
+  position: fixed;
+  top: 120px; left: -260px;
+  width: 640px; height: 640px;
+  background: radial-gradient(closest-side, var(--color-mint-100), transparent 70%);
+  filter: blur(80px);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.dash-main {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 36px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+@media (max-width: 720px) {
+  .dash-main { padding: 24px 16px 56px; gap: 20px; }
+}

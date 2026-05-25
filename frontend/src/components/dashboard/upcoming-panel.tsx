@@ -6,7 +6,7 @@ import type { EventListItem } from "@/lib/types/application";
 import { fetchEvents } from "@/lib/api/application";
 import { EVENT_TYPE_LABEL, EVENT_TYPE_TOKEN_CLASS } from "@/lib/types/application";
 import { toLocalIso } from "@/lib/utils/date";
-import { Calendar, ArrowRight } from "./icons";
+import { Calendar, ArrowRight } from "@/components/ui/icons";
 
 function dday(eventDate: string): string {
   const today = new Date();
@@ -35,10 +35,10 @@ export function UpcomingPanel() {
   return (
     <section className="panel">
       <div className="panel-head">
-        <div className="title">
+        <h2 className="title">
           <span className="ico"><Calendar size={16} /></span>
           다가오는 일정
-        </div>
+        </h2>
         <Link href="/applications/calendar" className="more">
           캘린더 보기 <ArrowRight />
         </Link>
