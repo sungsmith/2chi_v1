@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { BrandPanel } from "@/components/onboarding/brand-panel";
 import { LoginForm } from "@/components/login/login-form";
 
 export const metadata = {
@@ -7,13 +8,11 @@ export const metadata = {
 
 export default function LoginPage() {
   return (
-    <main style={{ maxWidth: 480, margin: "0 auto", padding: "var(--space-12) var(--space-6)" }}>
-      <h1 style={{ fontFamily: "var(--font-family-hand)", fontSize: "var(--fs-page-title)", marginBottom: "var(--space-8)" }}>
-        로그인
-      </h1>
+    <div className="auth-shell">
+      <BrandPanel />
       <Suspense fallback={null}>
         <LoginForm />
       </Suspense>
-    </main>
+    </div>
   );
 }

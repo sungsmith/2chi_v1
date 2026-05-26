@@ -55,7 +55,7 @@ describe("LoginForm", () => {
   test("빈 폼 submit 시 이메일·비번 에러, login 미호출", async () => {
     render(<LoginForm />);
 
-    const form = screen.getByRole("button", { name: /로그인/ }).closest("form")!;
+    const form = screen.getByRole("button", { name: /^로그인$/ }).closest("form")!;
     fireEvent.submit(form);
 
     expect(await screen.findByText("이메일을 입력해주세요.")).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "abc123");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(loginMock).toHaveBeenCalledWith("a@b.com", "abc123");
     expect(pushMock).toHaveBeenCalledWith("/");
@@ -88,7 +88,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "wrong");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(await screen.findByText("이메일 또는 비밀번호가 올바르지 않습니다.")).toBeInTheDocument();
   });
@@ -105,7 +105,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "wrong");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(await screen.findByText(/10분 후 다시 시도/)).toBeInTheDocument();
   });
@@ -119,7 +119,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "abc123");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(pushMock).toHaveBeenCalledWith("/onboarding");
   });
@@ -134,7 +134,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "abc123");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(pushMock).toHaveBeenCalledWith("/me");
   });
@@ -149,7 +149,7 @@ describe("LoginForm", () => {
 
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "abc123");
-    await user.click(screen.getByRole("button", { name: /로그인/ }));
+    await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(pushMock).toHaveBeenCalledWith("/");
   });
