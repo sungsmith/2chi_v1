@@ -780,6 +780,23 @@ html, body { background: var(--color-bg); }
   overflow: auto;
 }
 
+/* ============================================================
+   Mp cluster — shell + side-nav
+   (Ported from kit-account.css for task 1)
+============================================================ */
+
+/* Grid shell: side-nav (240px) + main */
+.mp-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* Main content column */
+.mp-main {
+  overflow: auto;
+}
+
 /* Crumb label above nav items */
 .side-nav .crumb {
   font-family: var(--font-family-mono);
