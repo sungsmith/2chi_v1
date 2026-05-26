@@ -1,32 +1,25 @@
 "use client";
 
-import { ApplicationsHeader } from "./applications-header";
+// CalendarHeader: ap-head section (title + add-event button).
+// The cal-toolbar (month nav + view seg) lives inside CalendarContent.
 
 type Props = {
-  year: number;
-  month: number;  // 1-12
-  onPrev: () => void;
-  onNext: () => void;
-  onToday: () => void;
   onAddEvent: () => void;
 };
 
-export function CalendarHeader({ year, month, onPrev, onNext, onToday, onAddEvent }: Props) {
+export function CalendarHeader({ onAddEvent }: Props) {
   return (
-    <>
-      <ApplicationsHeader />
-      <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        marginBottom: 14,
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <button className="btn ghost" style={{ fontSize: 13 }} onClick={onPrev} aria-label="이전 달">‹</button>
-          <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700 }}>{year}년 {month}월</h3>
-          <button className="btn ghost" style={{ fontSize: 13 }} onClick={onNext} aria-label="다음 달">›</button>
-          <button className="btn ghost" style={{ fontSize: 12, marginLeft: 8 }} onClick={onToday}>오늘</button>
-        </div>
-        <button className="btn" onClick={onAddEvent} style={{ fontSize: 13 }}>+ 일정 추가</button>
+    <section className="ap-head">
+      <div>
+        <h1>캘린더</h1>
+        <div className="sub">전형 단계별 색상으로 일정을 한눈에 확인하세요.</div>
       </div>
-    </>
+      <div className="actions">
+        <button className="btn secondary sm" onClick={onAddEvent}>
+          <svg viewBox="0 0 24 24" width={12} height={12} fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: "-1px", marginRight: 4 }}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          일정 추가
+        </button>
+      </div>
+    </section>
   );
 }
