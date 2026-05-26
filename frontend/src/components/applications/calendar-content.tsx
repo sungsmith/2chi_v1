@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { CalendarLegend } from "./calendar-legend";
 import { CalendarMonth } from "./calendar-month";
 import { CalendarYear } from "./calendar-year";
+import { CalendarWeek } from "./calendar-week";
+import { CalendarDay } from "./calendar-day";
 import { EventEditModal } from "./event-edit-modal";
 import { EventCreateModal } from "./event-create-modal";
 import { fetchEvents, fetchApplications } from "@/lib/api/application";
@@ -157,8 +159,20 @@ export function CalendarContent({ month }: Props) {
             }}
           />
         )}
-        {view === "week"  && <div style={{ padding: 32, color: "var(--color-text-secondary)", textAlign: "center" }}>준비중</div>}
-        {view === "day"   && <div style={{ padding: 32, color: "var(--color-text-secondary)", textAlign: "center" }}>준비중</div>}
+        {view === "week"  && (
+          <CalendarWeek
+            date={new Date(year, mo - 1, 1)}
+            events={events ?? []}
+            onOpenEvt={() => {}}
+          />
+        )}
+        {view === "day"   && (
+          <CalendarDay
+            date={new Date(year, mo - 1, 1)}
+            events={events ?? []}
+            onOpenEvt={() => {}}
+          />
+        )}
       </section>
 
       {editingEvent && (
