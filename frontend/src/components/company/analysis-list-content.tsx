@@ -16,11 +16,17 @@ export function AnalysisListContent() {
   }, []);
 
   return (
-    <section style={{ padding: 32 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 700, margin: 0 }}>기업분석</h2>
-        <Link href="/company/analysis/new" className="btn">+ 새 기업분석</Link>
-      </div>
+    <>
+      <section className="co-head">
+        <div>
+          <h1>기업분석</h1>
+          <div className="sub">DART · 뉴스 · 채용 페이지를 한 번에 정리한 회사별 카드를 모아둡니다.</div>
+        </div>
+        <Link href="/company/analysis/new" className="btn primary">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          {" "}회사 분석 추가
+        </Link>
+      </section>
 
       {error && (
         <div role="alert" style={{
@@ -30,6 +36,15 @@ export function AnalysisListContent() {
         }}>{error}</div>
       )}
 
+      <div className="posting-toolbar">
+        <label className="search">
+          <span className="ico">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input placeholder="회사명 검색…" readOnly />
+        </label>
+      </div>
+
       {items === null ? (
         <div style={{ color: "var(--color-text-secondary)" }}>불러오는 중…</div>
       ) : items.length === 0 ? (
@@ -37,33 +52,51 @@ export function AnalysisListContent() {
           아직 분석한 기업이 없어요. 첫 분석을 만들어보세요.
         </div>
       ) : (
-        <div style={{ display: "grid", gap: 12 }}>
+        <div className="posting-table">
+          <div className="posting-row head" style={{ gridTemplateColumns: "1fr 120px 100px 100px 80px 32px" }}>
+            <div>회사</div>
+            <div>분석</div>
+            <div>매칭률</div>
+            <div>연결 공고</div>
+            <div />
+            <div />
+          </div>
           {items.map((it) => {
             const expired = it.expiresInDays < 0;
+            const tagLabel = expired ? "만료됨" : `D-${it.expiresInDays}`;
+            const fresh = it.expiresInDays >= 27;
             return (
-              <Link key={it.id} href={`/company/analysis/${it.id}`}
-                style={{
-                  display: "block",
-                  padding: "14px 16px",
-                  background: "var(--color-surface-default)",
-                  border: "1px solid var(--color-border-default)",
-                  borderRadius: "var(--radius-lg)",
-                  textDecoration: "none",
-                  color: "var(--color-text-primary)",
-                }}>
-                <div style={{ fontSize: 15, fontWeight: 700 }}>{it.company}</div>
-                <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginTop: 4 }}>
-                  {it.generatedAt.slice(0, 10)} 생성 · {expired ? (
-                    <span style={{ color: "var(--color-semantic-error)" }}>만료됨</span>
-                  ) : (
-                    <>D-{it.expiresInDays}</>
-                  )}
+              <Link
+                key={it.id}
+                href={`/company/analysis/${it.id}`}
+                className="posting-row"
+                style={{ gridTemplateColumns: "1fr 120px 100px 100px 80px 32px", display: "grid", textDecoration: "none", color: "inherit" }}
+              >
+                <div className="body">
+                  <div className="nm">{it.company}</div>
+                  <div className="meta">DART · 뉴스 · 인재상</div>
                 </div>
+                <div>
+                  <span className={"src-pill " + (fresh ? "saramin" : "")}>{tagLabel}</span>
+                </div>
+                <div>
+                  <span className="match-mini">
+                    <span className="bar"><span style={{ width: "0%" }} /></span>
+                    —
+                  </span>
+                </div>
+                <div style={{ fontFamily: "var(--font-family-mono)", fontSize: 11, fontWeight: 700 }}>—</div>
+                <div />
+                <button className="more" onClick={(e) => e.stopPropagation()}>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" />
+                  </svg>
+                </button>
               </Link>
             );
           })}
         </div>
       )}
-    </section>
+    </>
   );
 }
