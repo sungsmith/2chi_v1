@@ -51,15 +51,19 @@ describe("CalendarContent", () => {
 
   it("event chip 클릭 시 EventEditModal open", async () => {
     render(<CalendarContent month="2026-05" />);
-    const chip = await screen.findByLabelText(/1차 면접 \(주\)테크/);
+    // CalendarMonth renders inline cal-evt divs (no role="button"); match by text content
+    const chip = await screen.findByText(/1차 면접.*\(주\)테크/);
     fireEvent.click(chip);
     expect(await screen.findByText("일정 편집")).toBeInTheDocument();
   });
 
-  it("+ 일정 추가 클릭 시 EventCreateModal open", async () => {
+  it("일정 추가 클릭 시 EventCreateModal open", async () => {
     render(<CalendarContent month="2026-05" />);
-    await screen.findByLabelText(/1차 면접/);
-    fireEvent.click(screen.getByText("+ 일정 추가"));
-    expect(await screen.findByText("+ 일정 추가", { selector: "h3" })).toBeInTheDocument();
+    // Wait for events to render before interacting
+    await screen.findByText(/1차 면접/);
+    fireEvent.click(screen.getByRole("button", { name: /일정 추가/ }));
+    // EventCreateModal h3 reads "일정 추가" (no leading "+")
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    expect(await screen.findByText("일정 추가", { selector: "h3" })).toBeInTheDocument();
   });
 });

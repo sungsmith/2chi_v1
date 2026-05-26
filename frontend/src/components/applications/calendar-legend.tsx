@@ -1,17 +1,23 @@
-import type { EventType } from "@/lib/types/application";
-import { EVENT_TYPE_LABEL, EVENT_TYPE_TOKEN_CLASS } from "@/lib/types/application";
-
-const TYPES: EventType[] = [
-  "DOC_DEADLINE","CODING_TEST","FIRST_INTERVIEW","SECOND_INTERVIEW",
-  "EXEC_INTERVIEW","NEGOTIATION","PASSED","FAILED","ETC",
+// CalendarLegend: stage-legend section — matches mock STAGE_LEGEND pattern.
+const ITEMS = [
+  { cls: "doc",  label: "서류" },
+  { cls: "code", label: "코딩테스트" },
+  { cls: "int1", label: "1차면접" },
+  { cls: "int2", label: "2차면접" },
+  { cls: "exec", label: "임원면접" },
+  { cls: "ok",   label: "합격" },
+  { cls: "fail", label: "불합격" },
 ];
 
 export function CalendarLegend() {
   return (
-    <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10, fontSize: 11 }}>
-      {TYPES.map((t) => (
-        <span key={t}><span className={EVENT_TYPE_TOKEN_CLASS[t]}>{EVENT_TYPE_LABEL[t]}</span></span>
+    <section className="stage-legend">
+      {ITEMS.map((item) => (
+        <span key={item.cls} className="item">
+          <span className={"dot " + item.cls} />
+          {item.label}
+        </span>
       ))}
-    </div>
+    </section>
   );
 }

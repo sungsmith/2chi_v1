@@ -1,11 +1,25 @@
 "use client";
 
 import type { EventListItem } from "@/lib/types/application";
+import { EVENT_TYPE_LABEL } from "@/lib/types/application";
 import { toLocalIso } from "@/lib/utils/date";
-import { EventChip } from "./event-chip";
+
+// Map EventType → cal-evt stage modifier class
+const EVENT_TYPE_STAGE_CLASS: Record<string, string> = {
+  DOC_DEADLINE: "doc",
+  CODING_TEST: "code",
+  FIRST_INTERVIEW: "int1",
+  SECOND_INTERVIEW: "int2",
+  EXEC_INTERVIEW: "exec",
+  NEGOTIATION: "exec",
+  PASSED: "ok",
+  FAILED: "fail",
+  ETC: "",
+};
 
 type Props = {
   date: Date;
+  dow: number; // 0=Sun … 6=Sat
   isCurrentMonth: boolean;
   isToday: boolean;
   events: EventListItem[];
@@ -13,29 +27,27 @@ type Props = {
   onDayClick: (date: string) => void;
 };
 
-export function DayCell({ date, isCurrentMonth, isToday, events, onEventClick, onDayClick }: Props) {
+export function DayCell({ date, dow, isCurrentMonth, isToday, events, onEventClick, onDayClick }: Props) {
   const iso = toLocalIso(date);
   return (
     <div
+      className={"cal-day" + (!isCurrentMonth ? " mute" : "") + (isToday ? " today" : "")}
       onClick={() => onDayClick(iso)}
-      style={{
-        minHeight: 100, padding: 4,
-        background: isToday ? "#fff8d6" : "var(--color-surface-default)",
-        border: "1px solid var(--color-border-default)",
-        opacity: isCurrentMonth ? 1 : 0.4,
-        cursor: "pointer",
-        display: "flex", flexDirection: "column",
-      }}
     >
-      <div style={{ fontSize: 11, color: "var(--color-text-secondary)", marginBottom: 2 }}>
-        {date.getDate()}
-        {isToday && <span style={{ marginLeft: 4, fontWeight: 700, color: "var(--color-text-brand)" }}>(오늘)</span>}
-      </div>
-      {events.map((ev) => (
-        <span key={ev.id} onClick={(e) => e.stopPropagation()}>
-          <EventChip event={ev} onClick={() => onEventClick(ev)} />
-        </span>
+      <span className={"num" + (dow === 0 ? " sun" : dow === 6 ? " sat" : "")}>{date.getDate()}</span>
+      {events.slice(0, 2).map((ev) => (
+        <div
+          key={ev.id}
+          className={"cal-evt " + (EVENT_TYPE_STAGE_CLASS[ev.type] ?? "")}
+          onClick={(e) => { e.stopPropagation(); onEventClick(ev); }}
+        >
+          <span className="time">{ev.eventTime ? ev.eventTime.slice(0, 5) : ""}</span>
+          <span>{EVENT_TYPE_LABEL[ev.type]} {ev.company}</span>
+        </div>
       ))}
+      {events.length > 2 && (
+        <div className="cal-evt more">+ {events.length - 2}건 더보기</div>
+      )}
     </div>
   );
 }
