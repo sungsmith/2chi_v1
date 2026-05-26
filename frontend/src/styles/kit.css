@@ -1467,3 +1467,183 @@ html, body { background: var(--color-bg); }
 ============================================================ */
 .cl-shell { display: flex; flex-direction: column; min-height: calc(100vh - 56px); }
 .cl-main { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+
+/* ============================================================
+   Cover-letters list page (cl-list-head / cl-toolbar / cl-grid / cl-card)
+   Ported from mock kit-cl.css — Task 2 (ClListView + ClCard)
+============================================================ */
+.cl-list-head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 16px;
+}
+.cl-list-head h1 {
+  margin: 0; font-family: var(--font-family-hand);
+  font-size: 36px; line-height: 1.2; font-weight: 400;
+}
+.cl-list-head .sub { font-size: 13.5px; color: var(--color-text-secondary); margin-top: 4px; }
+
+.cl-toolbar {
+  display: flex; align-items: center; gap: 8px;
+}
+.cl-toolbar .search {
+  display: flex; align-items: center; gap: 8px;
+  flex: 1; max-width: 320px;
+  padding: 0 12px; height: 36px;
+  background: #fff; border: 1px solid var(--color-border-default);
+  border-radius: 8px;
+}
+.cl-toolbar .search:focus-within { border-color: var(--color-primary-400); box-shadow: var(--focus-ring); }
+.cl-toolbar .search input { border: none; outline: none; flex: 1; font-family: inherit; font-size: 13px; background: transparent; }
+.cl-toolbar .search .ico { color: var(--color-text-muted); display: inline-flex; }
+
+.cl-filter-chips { display: flex; gap: 6px; }
+.cl-filter-chips button {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 12px; border-radius: 8px;
+  background: #fff; border: 1px solid var(--color-border-default);
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--color-text-secondary); cursor: pointer;
+}
+.cl-filter-chips button:hover { background: var(--color-surface-soft); }
+.cl-filter-chips button.active {
+  background: var(--color-primary-50); color: var(--color-primary-700);
+  border-color: var(--color-primary-200);
+}
+.cl-filter-chips button .n {
+  font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700;
+  padding: 1px 5px; border-radius: 4px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+}
+.cl-filter-chips button.active .n { background: var(--color-primary-100); color: var(--color-primary-700); }
+
+.cl-sort { margin-left: auto; }
+.cl-sort .seg {
+  display: inline-flex; background: var(--color-neutral-100);
+  padding: 3px; border-radius: 8px;
+}
+.cl-sort .seg button {
+  padding: 5px 10px; font-size: 12px; font-weight: 600;
+  border: none; background: transparent;
+  border-radius: 5px; color: var(--color-text-secondary);
+  cursor: pointer; font-family: inherit;
+}
+.cl-sort .seg button.active {
+  background: #fff; color: var(--color-text-primary);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+.cl-section-title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-family-sans);
+  font-size: 13px; font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  padding: 8px 2px;
+}
+.cl-section-title .count {
+  font-family: var(--font-family-mono); font-size: 11px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+  padding: 2px 7px; border-radius: 999px; font-weight: 700;
+  letter-spacing: 0;
+}
+
+.cl-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+
+.cl-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow-soft);
+  display: flex; flex-direction: column; gap: 10px;
+  cursor: pointer;
+  transition: box-shadow .15s, transform .15s, border-color .15s;
+}
+.cl-card:hover {
+  box-shadow: var(--shadow-card);
+  transform: translateY(-1px);
+  border-color: var(--color-primary-200);
+}
+.cl-card.disabled {
+  cursor: default; opacity: 0.7;
+}
+.cl-card.disabled:hover {
+  box-shadow: var(--shadow-soft); transform: none; border-color: var(--color-border-default);
+}
+
+.cl-card-head {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 12px; color: var(--color-text-muted);
+}
+.cl-card-meta {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; gap: 8px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cl-card-meta .co { color: var(--color-text-secondary); font-weight: 700; }
+.cl-card-meta .sep { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: 0.5; flex: 0 0 auto; }
+.cl-card-head .more {
+  width: 26px; height: 26px; border-radius: 6px;
+  border: none; background: transparent; flex: 0 0 auto;
+  color: var(--color-text-muted); cursor: pointer;
+  display: grid; place-items: center;
+}
+.cl-card-head .more:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
+.cl-card-head .more:disabled { cursor: default; }
+
+.cl-card .title {
+  font-family: var(--font-family-sans);
+  font-size: 15px; font-weight: 700; letter-spacing: -0.01em;
+  line-height: 1.35;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cl-card .match {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 0 4px;
+}
+.cl-card .match-bar {
+  flex: 1; height: 6px; background: var(--color-neutral-100);
+  border-radius: 999px; overflow: hidden;
+}
+.cl-card .match-bar > span {
+  display: block; height: 100%; border-radius: 999px;
+  background: var(--color-primary-500);
+}
+.cl-card .match .pct {
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
+  color: var(--color-text-primary);
+  min-width: 36px; text-align: right;
+}
+
+.cl-card-foot {
+  display: flex; align-items: center; gap: 6px;
+  padding-top: 8px; border-top: 1px dashed var(--color-border-subtle);
+}
+.cl-card-foot .updated {
+  font-size: 11.5px; color: var(--color-text-muted);
+  margin-left: auto;
+}
+.cl-card-foot .badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px; border-radius: 999px;
+  font-size: 11px; font-weight: 700;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+}
+.cl-card-foot .badge.dday {
+  background: var(--color-pink-100); color: var(--color-pink-500);
+  font-family: var(--font-family-mono);
+}
+.cl-card-foot .badge.master {
+  background: var(--color-mint-50); color: var(--color-mint-700);
+}
+.cl-card-foot .badge.draft {
+  background: var(--color-yellow-50); color: var(--color-yellow-400);
+}
+.cl-card-foot .badge.done {
+  background: var(--color-neutral-100); color: var(--color-text-secondary);
+}
