@@ -3640,3 +3640,91 @@ html, body { background: var(--color-bg); }
 }
 .mp-social-tile.on .status { color: var(--color-mint-700); }
 .mp-social-tile .actions { margin-top: auto; }
+
+/* Toggle switch (noti-settings-row) */
+.switch {
+  width: 36px; height: 20px;
+  background: var(--color-neutral-200);
+  border-radius: 999px; position: relative;
+  cursor: default; flex: 0 0 auto;
+  transition: background .12s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 16px; height: 16px; background: #fff; border-radius: 50%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15); transition: left .12s;
+}
+.switch.on { background: var(--color-primary-500); }
+.switch.on::after { left: 18px; }
+
+/* Web-push permission card (마이페이지 → 알림 설정) */
+.push-card {
+  background: #fff;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: grid; grid-template-columns: 56px 1fr auto;
+  gap: 14px; align-items: center;
+}
+.push-card.granted { border-color: var(--color-mint-200); background: var(--color-mint-50); }
+.push-card.blocked { border-color: var(--color-yellow-200); background: var(--color-yellow-50); }
+.push-card .ico {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--color-lavender-50); color: var(--color-lavender-600);
+  display: grid; place-items: center;
+}
+.push-card.granted .ico { background: var(--color-mint-100); color: var(--color-mint-700); }
+.push-card.blocked .ico { background: var(--color-yellow-100); color: var(--color-yellow-400); }
+.push-card .body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.push-card .ttl { font-size: 14px; font-weight: 700; }
+.push-card .desc { font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.55; }
+.push-card .desc b { color: var(--color-text-primary); font-weight: 700; }
+.push-card .actions { display: flex; gap: 6px; flex: 0 0 auto; }
+.push-card .status-pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+}
+.push-card.granted .status-pill { background: var(--color-mint-100); color: var(--color-mint-700); }
+.push-card.blocked .status-pill { background: var(--color-yellow-100); color: var(--color-yellow-400); }
+
+/* OS-native-style push permission prompt (mock) */
+.push-prompt-backdrop {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(37,36,31,0.30);
+  pointer-events: none;
+}
+.push-prompt {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 201;
+  width: 380px; max-width: calc(100vw - 32px);
+  background: #fff;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px -12px rgba(37,36,31,0.30), 0 6px 18px -4px rgba(37,36,31,0.15);
+  padding: 14px 16px;
+  display: grid; grid-template-columns: 32px 1fr;
+  gap: 12px; align-items: center;
+  pointer-events: auto;
+}
+.push-prompt .browser-ico {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--color-neutral-100); color: var(--color-text-secondary);
+  display: grid; place-items: center;
+}
+.push-prompt .head { font-size: 13px; font-weight: 700; color: var(--color-text-primary); }
+.push-prompt .desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; line-height: 1.4; }
+.push-prompt .desc .origin {
+  font-family: var(--font-family-mono); font-size: 11px;
+  background: var(--color-surface-soft); padding: 1px 5px; border-radius: 3px;
+}
+.push-prompt .row { grid-column: span 2; display: flex; gap: 6px; margin-top: 6px; }
+.push-prompt .row button {
+  flex: 1; height: 32px; padding: 0 12px; border-radius: 6px;
+  font-size: 12.5px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--color-border-default);
+  background: #fff; color: var(--color-text-primary);
+}
+.push-prompt .row .deny:hover { background: var(--color-surface-soft); }
+.push-prompt .row .allow { background: var(--color-primary-600); border-color: var(--color-primary-600); color: #fff; }
+.push-prompt .row .allow:hover { background: var(--color-primary-700); }
