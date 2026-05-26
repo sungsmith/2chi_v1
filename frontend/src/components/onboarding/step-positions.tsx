@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { TargetJob } from "@/lib/enums/target-job";
-import { Code, Server, Cloud, Gear, Layout, Check } from "./icons";
+import { Code, Server, Cloud, Gear, Layout, Check } from "@/components/ui/icons";
 
 type Item = { job: TargetJob; name: string; desc: string; icon: ReactNode; tone: number };
 
@@ -33,19 +33,15 @@ export function StepPositions({ value, onToggle }: Props) {
               className={`position-card tone-${it.tone}${selected ? " selected" : ""}`}
               onClick={() => onToggle(it.job)}
             >
-              <div className="ico">{it.icon}</div>
-              <div>
-                <div className="name">{it.name}</div>
-                <div className="desc">{it.desc}</div>
-              </div>
+              <span className="ico">{it.icon}</span>
+              <span>
+                <span className="name">{it.name}</span>
+                <span className="desc">{it.desc}</span>
+              </span>
               <span className="check"><Check size={11} /></span>
             </button>
           );
         })}
-      </div>
-      <div className="position-foot">
-        <span className="badge info dot">선택됨</span>
-        <span className="count">{value.size}개 직무</span>
       </div>
     </div>
   );

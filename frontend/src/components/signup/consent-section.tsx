@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { Checkbox } from "../ui/checkbox";
 import { SignupErrors } from "@/lib/validation/signup";
 
 type Props = {
@@ -14,67 +12,75 @@ type Props = {
 };
 
 export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChange, errors }: Props) {
+  const agreeAll = ageConfirmed && terms && privacy && marketing;
+
+  function toggleAll() {
+    const next = !agreeAll;
+    onChange("ageConfirmed", next);
+    onChange("terms", next);
+    onChange("privacy", next);
+    onChange("marketing", next);
+  }
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-      <Checkbox
-        name="ageConfirmed"
-        checked={ageConfirmed}
-        onChange={(e) => onChange("ageConfirmed", e.target.checked)}
-        required
-        label="만 14세 이상입니다."
-      />
-      {errors.ageConfirmed && (
-        <span style={{ color: "var(--color-semantic-error)", fontSize: "var(--fs-helper)" }}>
-          {errors.ageConfirmed}
-        </span>
-      )}
+    <div className="auth-terms">
+      <div className={"all" + (agreeAll ? " on" : "")} onClick={toggleAll} role="checkbox" aria-checked={agreeAll} tabIndex={0}>
+        <span className={"box" + (agreeAll ? " on" : "")} />
+        전체 동의
+      </div>
 
-      <Checkbox
-        name="terms"
-        checked={terms}
-        onChange={(e) => onChange("terms", e.target.checked)}
-        required
-        label={
-          <>
-            <Link href="/terms" target="_blank" style={{ color: "var(--color-text-brand)", textDecoration: "underline" }}>
-              서비스 이용 약관
-            </Link>
-            에 동의합니다.
-          </>
-        }
-      />
-      {errors.terms && (
-        <span style={{ color: "var(--color-semantic-error)", fontSize: "var(--fs-helper)" }}>
-          {errors.terms}
-        </span>
-      )}
+      <div
+        className={"item" + (terms ? " on" : "") + (errors.terms ? " err" : "")}
+        onClick={() => onChange("terms", !terms)}
+        role="checkbox"
+        aria-checked={terms}
+        tabIndex={0}
+      >
+        <span className="box" />
+        <span className="req">[필수]</span>
+        서비스 이용약관
+        <a className="view" href="/terms" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>보기</a>
+      </div>
+      {errors.terms && <span className="helper error">{errors.terms}</span>}
 
-      <Checkbox
-        name="privacy"
-        checked={privacy}
-        onChange={(e) => onChange("privacy", e.target.checked)}
-        required
-        label={
-          <>
-            <Link href="/privacy" target="_blank" style={{ color: "var(--color-text-brand)", textDecoration: "underline" }}>
-              개인정보 수집·이용
-            </Link>
-            에 동의합니다.
-          </>
-        }
-      />
-      {errors.privacy && (
-        <span style={{ color: "var(--color-semantic-error)", fontSize: "var(--fs-helper)" }}>
-          {errors.privacy}
-        </span>
-      )}
+      <div
+        className={"item" + (privacy ? " on" : "") + (errors.privacy ? " err" : "")}
+        onClick={() => onChange("privacy", !privacy)}
+        role="checkbox"
+        aria-checked={privacy}
+        tabIndex={0}
+      >
+        <span className="box" />
+        <span className="req">[필수]</span>
+        개인정보 수집·이용 동의
+        <a className="view" href="/privacy" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>보기</a>
+      </div>
+      {errors.privacy && <span className="helper error">{errors.privacy}</span>}
 
-      <Checkbox
-        name="marketing"
-        checked={marketing}
-        onChange={(e) => onChange("marketing", e.target.checked)}
-        label="(선택) 마케팅 정보 수신에 동의합니다."
-      />
+      <div
+        className={"item" + (ageConfirmed ? " on" : "") + (errors.ageConfirmed ? " err" : "")}
+        onClick={() => onChange("ageConfirmed", !ageConfirmed)}
+        role="checkbox"
+        aria-checked={ageConfirmed}
+        tabIndex={0}
+      >
+        <span className="box" />
+        <span className="req">[필수]</span>
+        만 14세 이상 확인
+      </div>
+      {errors.ageConfirmed && <span className="helper error">{errors.ageConfirmed}</span>}
+
+      <div
+        className={"item" + (marketing ? " on" : "")}
+        onClick={() => onChange("marketing", !marketing)}
+        role="checkbox"
+        aria-checked={marketing}
+        tabIndex={0}
+      >
+        <span className="box" />
+        <span className="opt">[선택]</span>
+        마케팅 정보 수신 동의
+      </div>
     </div>
   );
 }

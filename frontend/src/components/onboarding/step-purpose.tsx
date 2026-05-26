@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Target } from "@/lib/enums/target";
-import { Briefcase, Move, Check } from "./icons";
+import { Briefcase, Move, Check } from "@/components/ui/icons";
 
 type Item = { target: Target; title: string; desc: string; icon: ReactNode; tone: string };
 
@@ -19,7 +19,7 @@ export function StepPurpose({ value, onChange }: Props) {
       <div className="eyebrow">STEP 1 / 4</div>
       <h2>지금 어떤 준비를 하고 있나요?</h2>
       <p className="sub">처음이라도 괜찮아요. 이취가 준비 흐름을 같이 정리해드릴게요.</p>
-      <div className="onb-choice-grid cols-2">
+      <div className="onb-choice-grid">
         {ITEMS.map((it) => {
           const selected = value === it.target;
           return (
@@ -27,14 +27,15 @@ export function StepPurpose({ value, onChange }: Props) {
               key={it.target}
               type="button"
               aria-pressed={selected}
+              data-tone={it.tone}
               className={`onb-choice${selected ? " selected" : ""}`}
               onClick={() => onChange(it.target)}
             >
-              <div className="icon-wrap" data-tone={it.tone}>{it.icon}</div>
-              <div>
-                <div className="title">{it.title}</div>
-                <div className="desc">{it.desc}</div>
-              </div>
+              <span className="icon-wrap">{it.icon}</span>
+              <span>
+                <span className="title">{it.title}</span>
+                <span className="desc">{it.desc}</span>
+              </span>
               <span className="check"><Check size={12} /></span>
             </button>
           );

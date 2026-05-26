@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkle } from "./icons";
+import { Sparkle } from "@/components/ui/icons";
 
 const CAREERS = [
   { value: 0, num: "신입", lbl: "0년" },

@@ -1,4 +1,4 @@
-import { Check } from "./icons";
+import { Check } from "@/components/ui/icons";
 
 const STEPS = [
   { num: 1, label: "준비 단계" },

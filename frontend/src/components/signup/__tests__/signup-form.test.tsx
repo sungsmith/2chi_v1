@@ -23,7 +23,7 @@ describe("SignupForm", () => {
 
     // click via fireEvent to bypass jsdom native HTML5 validation which would
     // prevent the submit event from reaching React's onSubmit handler
-    fireEvent.submit(screen.getByRole("button", { name: /가입하기/ }).closest("form")!);
+    fireEvent.submit(screen.getByRole("button", { name: /회원가입/ }).closest("form")!);
 
     expect(await screen.findByText("이메일을 입력해주세요.")).toBeInTheDocument();
     expect(screen.getByText("비밀번호를 입력해주세요.")).toBeInTheDocument();
@@ -57,11 +57,12 @@ describe("SignupForm", () => {
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "123456");
     await user.type(screen.getByLabelText(/닉네임/), "alice");
-    await user.click(screen.getByLabelText(/만 14세 이상/));
-    await user.click(screen.getByRole("checkbox", { name: /서비스 이용 약관.*동의/ }));
-    await user.click(screen.getByRole("checkbox", { name: /개인정보 수집·이용.*동의/ }));
+    // auth-terms: div[role=checkbox] — click by accessible name (text content)
+    await user.click(screen.getByRole("checkbox", { name: /만 14세 이상 확인/ }));
+    await user.click(screen.getByRole("checkbox", { name: /서비스 이용약관/ }));
+    await user.click(screen.getByRole("checkbox", { name: /개인정보 수집·이용 동의/ }));
 
-    await user.click(screen.getByRole("button", { name: /가입하기/ }));
+    await user.click(screen.getByRole("button", { name: /회원가입/ }));
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [, init] = fetchMock.mock.calls[0];
@@ -90,10 +91,10 @@ describe("SignupForm", () => {
     await user.type(screen.getByLabelText(/이메일/), "a@b.com");
     await user.type(screen.getByLabelText(/비밀번호/), "123456");
     await user.type(screen.getByLabelText(/닉네임/), "alice");
-    await user.click(screen.getByLabelText(/만 14세 이상/));
-    await user.click(screen.getByRole("checkbox", { name: /서비스 이용 약관.*동의/ }));
-    await user.click(screen.getByRole("checkbox", { name: /개인정보 수집·이용.*동의/ }));
-    await user.click(screen.getByRole("button", { name: /가입하기/ }));
+    await user.click(screen.getByRole("checkbox", { name: /만 14세 이상 확인/ }));
+    await user.click(screen.getByRole("checkbox", { name: /서비스 이용약관/ }));
+    await user.click(screen.getByRole("checkbox", { name: /개인정보 수집·이용 동의/ }));
+    await user.click(screen.getByRole("button", { name: /회원가입/ }));
 
     expect(await screen.findByText("이미 가입된 이메일입니다.")).toBeInTheDocument();
   });

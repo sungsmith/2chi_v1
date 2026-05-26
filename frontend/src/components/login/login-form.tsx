@@ -3,8 +3,6 @@
 import { FormEvent, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { TextField } from "../ui/text-field";
-import { Button } from "../ui/button";
 import { useAuth } from "@/contexts/auth-context";
 import { SignupApiError } from "@/lib/api/auth";
 
@@ -77,55 +75,70 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
+    <div className="auth-card">
+      <div className="brand">
+        <img src="/logo.svg" alt="이취 (2chi)" />
+        <div>
+          <h1>다시 만나서 반가워요</h1>
+          <p className="sub">이메일로 로그인하거나 소셜 계정으로 빠르게 들어오세요.</p>
+        </div>
+      </div>
+
       {topError && (
-        <div
-          role="alert"
-          style={{
-            padding: "var(--space-3) var(--space-4)",
-            background: "var(--color-semantic-error-bg)",
-            color: "var(--color-semantic-error)",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--fs-body-sm)",
-          }}
-        >
-          {topError}
+        <div role="alert" style={{ marginBottom: 4 }}>
+          <span className="helper error">{topError}</span>
         </div>
       )}
 
-      <TextField
-        ref={emailRef}
-        label="이메일"
-        type="email"
-        name="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        error={emailError}
-        required
-        autoComplete="email"
-      />
-      <TextField
-        ref={passwordRef}
-        label="비밀번호"
-        type="password"
-        name="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        error={passwordError}
-        required
-        autoComplete="current-password"
-      />
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="field">
+          <label className="lbl" htmlFor="login-email">이메일</label>
+          <input
+            ref={emailRef}
+            id="login-email"
+            className={"input" + (emailError ? " error" : "")}
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+          {emailError && <span className="helper error">{emailError}</span>}
+        </div>
+        <div className="field">
+          <label className="lbl" htmlFor="login-password">비밀번호</label>
+          <input
+            ref={passwordRef}
+            id="login-password"
+            className={"input" + (passwordError ? " error" : "")}
+            type="password"
+            name="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+          {passwordError && <span className="helper error">{passwordError}</span>}
+        </div>
+        <div className="row">
+          <span className="check" aria-hidden="true" />
+          <Link className="link" href="/reset-password">비밀번호 재설정</Link>
+        </div>
+        <button type="submit" className="primary-btn" disabled={submitting}>
+          {submitting ? "처리중…" : "로그인"}
+        </button>
+      </form>
 
-      <Button type="submit" disabled={submitting}>
-        {submitting ? "처리중…" : "로그인"}
-      </Button>
+      <div className="auth-divider">소셜 로그인</div>
+      <div className="auth-social">
+        <button type="button" disabled><span className="ico kakao">K</span>카카오로 로그인</button>
+        <button type="button" disabled><span className="ico naver">N</span>네이버로 로그인</button>
+        <button type="button" disabled><span className="ico google">G</span>Google로 로그인</button>
+      </div>
 
-      <p style={{ fontSize: "var(--fs-body-sm)", color: "var(--color-text-secondary)", marginTop: "var(--space-2)" }}>
-        회원이 아니신가요?{" "}
-        <Link href="/signup" style={{ color: "var(--color-text-brand)" }}>
-          회원가입
-        </Link>
-      </p>
-    </form>
+      <div className="auth-foot">
+        아직 이취 회원이 아니신가요?
+        <Link href="/signup">회원가입</Link>
+      </div>
+    </div>
   );
 }
