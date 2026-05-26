@@ -3516,3 +3516,38 @@ html, body { background: var(--color-bg); }
   font-family: var(--font-family-mono); font-size: 10.5px;
   color: var(--color-text-muted);
 }
+
+/* ── Error routes (404 / 500) ───────────────────────────────── */
+.err-shell {
+  min-height: calc(100vh - 56px);
+  display: grid; place-items: center;
+  padding: 40px 24px;
+  background: var(--color-bg);
+}
+.err-card {
+  background: #fff; border: 1px solid var(--color-border-default);
+  border-radius: 16px; padding: 32px 32px 28px;
+  box-shadow: var(--shadow-card);
+  width: 460px; max-width: 100%;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  text-align: center;
+}
+.err-card .mascot-cloud { margin-bottom: 4px; }
+.err-card .code {
+  font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700; color: var(--color-text-muted);
+  text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px;
+  background: var(--color-surface-soft);
+}
+.err-card .code.err {
+  background: var(--color-semantic-error-bg); color: var(--color-semantic-error);
+}
+.err-card h2 {
+  font-family: var(--font-family-sans); font-size: 18px; font-weight: 700;
+  letter-spacing: -0.01em; line-height: 1.35; margin: 0;
+}
+.err-card p {
+  font-size: 13px; color: var(--color-text-secondary);
+  line-height: 1.6; margin: 0; max-width: 40ch; text-wrap: pretty;
+}
+.err-card .actions { display: flex; gap: 6px; margin-top: 4px; }
