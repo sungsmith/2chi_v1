@@ -21,29 +21,40 @@ describe("AnalysisCreateForm", () => {
     expect(screen.getByDisplayValue("(주)테크")).toBeInTheDocument();
   });
 
-  test("URL 추가 버튼 → row 증가 (최대 5)", async () => {
+  test("검색 버튼 클릭 → DART 후보 목록 표시", async () => {
     const user = userEvent.setup();
     render(<AnalysisCreateForm />);
 
-    const addBtn = screen.getByRole("button", { name: /URL 추가/ });
-    expect(addBtn).toHaveTextContent("1/5");
-    const inputs = screen.getAllByPlaceholderText(/example/);
-    await user.type(inputs[0], "https://a.com");
-    await user.click(addBtn);
-    expect(screen.getAllByPlaceholderText(/example/).length).toBeGreaterThanOrEqual(2);
+    await user.click(screen.getByRole("button", { name: /검색/ }));
+    expect(screen.getByText("동명 기업 후보 · 3")).toBeInTheDocument();
+    expect(screen.getByText("주식회사 카카오")).toBeInTheDocument();
   });
 
-  test("회사명 + URL 으로 제출 → API call + navigate", async () => {
-    createMock.mockResolvedValue({ id: 99, company: "(주)테크", summaryJson: "{}", sourceUrls: [], generatedAt: "x", generatedBy: "y", expiresInDays: 30 });
+  test("후보 선택 후 분석 시작 → API call + navigate", async () => {
+    createMock.mockResolvedValue({ id: 99, company: "주식회사 카카오", summaryJson: "{}", sourceUrls: [], generatedAt: "x", generatedBy: "y", expiresInDays: 30 });
     const user = userEvent.setup();
     render(<AnalysisCreateForm />);
 
-    await user.type(screen.getByLabelText(/회사명/), "(주)테크");
-    await user.click(screen.getByRole("button", { name: /분석 생성/ }));
+    await user.click(screen.getByRole("button", { name: /검색/ }));
+    await user.click(screen.getByRole("button", { name: /선택하고 분석 시작/ }));
+
+    await waitFor(() => expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
+      company: "주식회사 카카오",
+    })));
+    expect(pushMock).toHaveBeenCalledWith("/company/analysis/99");
+  });
+
+  test("직접 입력으로 분석 시작 → API call + navigate", async () => {
+    createMock.mockResolvedValue({ id: 42, company: "(주)테크", summaryJson: "{}", sourceUrls: [], generatedAt: "x", generatedBy: "y", expiresInDays: 30 });
+    const user = userEvent.setup();
+    render(<AnalysisCreateForm />);
+
+    await user.type(screen.getByRole("textbox", { name: /회사명/ }), "(주)테크");
+    await user.click(screen.getByRole("button", { name: /분석 시작/ }));
 
     await waitFor(() => expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
       company: "(주)테크",
     })));
-    expect(pushMock).toHaveBeenCalledWith("/company/analysis/99");
+    expect(pushMock).toHaveBeenCalledWith("/company/analysis/42");
   });
 });

@@ -1,124 +1,95 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { KeywordChipList } from "./keyword-chip-list";
-import { PostingCtaModal } from "@/components/cover-letters/posting-cta-modal";
-import { fetchAnalysisByCompany } from "@/lib/api/company-analysis";
-import { createApplication } from "@/lib/api/application";
+import Link from "next/link";
 import type { JobPosting } from "@/lib/types/posting";
 
 type Props = {
   posting: JobPosting;
-  applicationId: number | null;     // null 이면 미지원 상태
+  applicationId: number | null;
   onEdit: () => void;
   onDelete: () => void;
   onApplied: (postingId: number, applicationId: number) => void;
 };
 
-export function PostingCard({ posting, applicationId, onEdit, onDelete, onApplied }: Props) {
-  const [ctaOpen, setCtaOpen] = useState(false);
-  const [appLoading, setAppLoading] = useState(false);
-  const [appError, setAppError] = useState<string | undefined>();
-  const router = useRouter();
+function computeDday(deadline: string | null): { label: string; soon: boolean; closed: boolean } {
+  if (!deadline) return { label: "—", soon: false, closed: false };
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const d = new Date(deadline);
+  d.setHours(0, 0, 0, 0);
+  const diff = Math.round((d.getTime() - now.getTime()) / 86400000);
+  if (diff < 0) return { label: "마감", soon: false, closed: true };
+  if (diff === 0) return { label: "D-day", soon: true, closed: false };
+  return { label: `D-${diff}`, soon: diff <= 3, closed: false };
+}
 
-  async function handleAnalysisClick() {
-    try {
-      const ref = await fetchAnalysisByCompany(posting.company);
-      if (ref.id !== null) {
-        router.push(`/company/analysis/${ref.id}`);
-      } else {
-        router.push(`/company/analysis/new?company=${encodeURIComponent(posting.company)}`);
-      }
-    } catch {
-      router.push(`/company/analysis/new?company=${encodeURIComponent(posting.company)}`);
-    }
-  }
+function formatAdded(createdAt: string): string {
+  const now = new Date();
+  const d = new Date(createdAt);
+  const diffMs = now.getTime() - d.getTime();
+  const days = Math.floor(diffMs / 86400000);
+  if (days === 0) return "오늘";
+  if (days < 7) return `${days}일 전`;
+  if (days < 30) return `${Math.floor(days / 7)}주 전`;
+  return `${Math.floor(days / 30)}개월 전`;
+}
 
-  async function handleApplyClick() {
-    if (applicationId !== null) {
-      router.push("/applications");
-      return;
-    }
-    setAppLoading(true);
-    setAppError(undefined);
-    try {
-      const created = await createApplication({ postingId: posting.id });
-      onApplied(posting.id, created.id);
-    } catch (e) {
-      setAppError(e instanceof Error ? e.message : "지원 등록에 실패했어요.");
-    } finally {
-      setAppLoading(false);
-    }
-  }
+function srcLabel(source: string): string {
+  if (source === "SARAMIN") return "사람인";
+  if (source === "URL") return "URL";
+  return "직접 작성";
+}
 
-  const applied = applicationId !== null;
+function srcClass(source: string): string {
+  if (source === "SARAMIN") return "saramin";
+  if (source === "URL") return "url";
+  return "manual";
+}
+
+export function PostingCard({ posting, onEdit }: Props) {
+  const { label: ddayLabel, soon, closed } = computeDday(posting.deadline);
+  const added = formatAdded(posting.createdAt);
 
   return (
-    <article
-      style={{
-        padding: 16,
-        background: "var(--color-surface-default)",
-        border: "1px solid var(--color-border-default)",
-        borderRadius: "var(--radius-lg)",
-        display: "grid",
-        gridTemplateColumns: "1fr auto",
-        gap: 16,
-        alignItems: "center",
-        marginBottom: 12,
-      }}
+    <Link
+      href={`/company/postings/${posting.id}`}
+      className={`posting-row${closed ? " closed" : ""}`}
+      style={{ textDecoration: "none", color: "inherit" }}
     >
-      <div style={{ minWidth: 0 }}>
-        <div style={{ fontSize: 12, color: "var(--color-text-muted)", marginBottom: 4 }}>
-          {posting.company}
+      <div className="body">
+        <div className="nm">{posting.title}</div>
+        <div className="meta">
+          <span className="co">{posting.company}</span>
+          <span className="sep" />
+          <span>{posting.jobRole ?? "직무 미입력"}</span>
         </div>
-        <div
-          style={{ fontSize: 16, fontWeight: 700, marginBottom: 6, overflow: "hidden",
-                   textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}
-          onClick={onEdit}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => { if (e.key === "Enter") onEdit(); }}
-        >
-          {posting.title}
-        </div>
-        <div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginBottom: 8 }}>
-          {posting.jobRole ?? "직무 미입력"} · {posting.deadline ? `~${posting.deadline}` : "마감일 미정"}
-        </div>
-        <KeywordChipList keywords={posting.keywords} />
-        {appError && (
-          <div role="alert" style={{ marginTop: 8, fontSize: 12, color: "var(--color-semantic-error)" }}>
-            {appError}
-          </div>
-        )}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <button
-          className={applied ? "btn" : "btn ghost"}
-          onClick={handleApplyClick}
-          disabled={appLoading}
-          style={{ fontSize: 13 }}
-        >
-          {applied ? "✓ 지원 중" : "✅ 지원함"}
-        </button>
-        <button className="btn ghost" onClick={() => setCtaOpen(true)} style={{ fontSize: 13 }}>
-          ✍ 자소서 작성
-        </button>
-        <button className="btn ghost" onClick={handleAnalysisClick} type="button" style={{ fontSize: 13 }}>
-          🏢 기업분석
-        </button>
-        <button className="btn ghost" onClick={onEdit}>편집</button>
-        <button className="btn ghost" onClick={onDelete} style={{ color: "var(--color-semantic-error)" }}>
-          삭제
-        </button>
+      <div>
+        <span className={`src-pill ${srcClass(posting.source)}`}>
+          {srcLabel(posting.source)}
+        </span>
       </div>
-      {ctaOpen && (
-        <PostingCtaModal
-          postingId={posting.id}
-          postingCompany={posting.company}
-          onClose={() => setCtaOpen(false)}
-        />
-      )}
-    </article>
+      <div>
+        {/* match% 필드가 JobPosting 타입에 없어 생략 */}
+        <span style={{ fontSize: 11.5, color: "var(--color-text-muted)" }}>—</span>
+      </div>
+      <div>
+        <span className={`dday-pill${closed ? " closed" : soon ? "" : " cool"}`}>{ddayLabel}</span>
+      </div>
+      <div style={{ fontSize: 11.5, color: "var(--color-text-muted)" }}>{added}</div>
+      <button
+        className="more"
+        aria-label="더보기"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onEdit();
+        }}
+      >
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+        </svg>
+      </button>
+    </Link>
   );
 }
