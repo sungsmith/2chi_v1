@@ -66,7 +66,25 @@ describe("PostingCard", () => {
     expect(link).toHaveAttribute("href", "/company/postings/10");
   });
 
-  // TODO Task 9: 지원 흐름(createApplication)은 카드에서 제거됨 — 추후 detail 화면 테스트로 이동
-  it.skip("미지원 카드: ✅지원함 클릭 시 createApplication 호출 + onApplied", () => {});
-  it.skip("이미 지원한 카드: ✓ 지원 중 클릭 시 router.push", () => {});
+  it("마감된 공고 카드에 closed 클래스 적용", () => {
+    const closedPosting = { ...POSTING, deadline: "2020-01-01" };
+    const { container } = render(<PostingCard
+      posting={closedPosting as never}
+      applicationId={null}
+      onEdit={vi.fn()} onDelete={vi.fn()}
+      onApplied={vi.fn()}
+    />);
+    expect(container.querySelector(".posting-row.closed")).toBeInTheDocument();
+  });
+
+  it("D-day 필이 마감 공고는 '마감' 표시", () => {
+    const closedPosting = { ...POSTING, deadline: "2020-01-01" };
+    render(<PostingCard
+      posting={closedPosting as never}
+      applicationId={null}
+      onEdit={vi.fn()} onDelete={vi.fn()}
+      onApplied={vi.fn()}
+    />);
+    expect(screen.getByText("마감")).toBeInTheDocument();
+  });
 });

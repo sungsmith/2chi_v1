@@ -89,9 +89,16 @@ describe("PostingsContent", () => {
     expect(screen.getByRole("button", { name: /마감/ })).toBeInTheDocument();
   });
 
-  // TODO Task 9: create flow (URL 파싱 / 직접 작성) 은 /company/postings/new 라우트로 이동 — 해당 페이지 테스트에서 커버
-  test.skip("직접 작성 → 저장 → 리스트 prepend", () => {});
-  test.skip("URL 파싱 실패 시 manual 탭 자동 전환 + 배너", () => {});
-  // TODO Task 9: keyword chip 은 PostingCard 에서 제거됨 — posting-detail 에서 커버
-  test.skip("기존 리스트 표시 + keyword chip", () => {});
+  test("검색어 입력 시 일치하지 않는 공고 숨김", async () => {
+    fetchMock.mockResolvedValue([samplePosting]);
+    const user = userEvent.setup();
+    render(<PostingsContent />);
+    await screen.findByText("백엔드 개발자");
+
+    const searchInput = screen.getByRole("textbox", { name: /채용공고 검색/ });
+    await user.type(searchInput, "프론트");
+    await waitFor(() => {
+      expect(screen.queryByText("백엔드 개발자")).not.toBeInTheDocument();
+    });
+  });
 });
