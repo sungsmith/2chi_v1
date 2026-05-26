@@ -58,7 +58,7 @@ FE PR #23 (`feat/mypage-cluster`) 이 UI mock-only 로 머지된 상태. 그 moc
 | 7 | locked 3개(계정 보안 알림) override 시도 → 400 SETTING_LOCKED | DB 에 row 만들지 않음. enum 의 `locked` 플래그로 거부 |
 | 8 | `password_changed_at` 컬럼 신규 추가 + 기존 사용자 `created_at` 으로 backfill | mock 의 "마지막 변경 90일" 표시를 위해 필요. backfill 로 기존 사용자도 의미있는 값 보장 |
 | 9 | PII 익명화 + 30일 hard delete cron + 복구(restore-on-login) → v2 | PR A 폭발 방지. v1 의 첫 30일은 PII 보존되지만, PIPA "지체 없이" 는 30일까지 운영 사유 통상 인정 |
-| 10 | JWT token revocation → v2 (known limitation) | revocation list infra 부재. 비밀번호 변경/탈퇴 후 기존 토큰이 만료 전까지 유효. FE 가 비밀번호 변경 직후 자체 로그아웃 유도하면 실용적 회피 가능 |
+| 10 | JWT 무효화 — 탈퇴는 login + refresh 차단으로 access window 캡 (최대 ~15분), 비밀번호 변경 token revocation 은 v2 | revocation list infra 부재. `JwtAuthenticationFilter` 는 claims-only 라 매 요청 DB 조회는 비용. login/refresh 에서 deleted_at 체크하면 자연스럽게 token 만료 후 차단 |
 
 ---
 
@@ -130,8 +130,9 @@ public class UserNotiSetting {
 
 ### 4.6 Auth 변경 (`com.twochi.auth`)
 
-- **`AuthService.login`** — `user.deleted_at != null` 체크 + grace window 분기 (410 GONE)
-- **`JwtAuthenticationFilter`** — 토큰 검증 후 user 조회 시 `deleted_at` 체크 (401 USER_WITHDRAWN)
+- **`LoginService.login`** — `findByEmail` 로 변경(현재는 `findByEmailAndDeletedAtIsNull` 라 deleted 사용자가 INVALID_CREDENTIALS 받음) + `deleted_at != null` 체크 + grace window 분기 (410 `USER_WITHDRAWN_GRACE`)
+- **`RefreshTokenService.refresh`** — refresh 시 user 의 `deleted_at` 체크. 탈퇴됐으면 새 access token 발급 거부 (410 `USER_WITHDRAWN_GRACE`)
+- **`JwtAuthenticationFilter`** — **변경 없음** (claims-only 유지). 탈퇴 직후 기존 access token 은 만료(~15분) 까지 유효. refresh 차단으로 자연스럽게 access window 캡
 
 ### 4.7 ErrorCode 추가 (`com.twochi.common.exception.ErrorCode`)
 
@@ -182,8 +183,8 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 - `service/UserQueryService.java` (응답 shape 확장)
 - `dto/MeResponse.java` (3 필드 추가)
 - `domain/User.java` (컬럼 + 메서드 추가)
-- `auth/jwt/JwtAuthenticationFilter.java` (deleted_at 체크)
-- `auth/service/AuthService.java` (login 분기)
+- `auth/service/LoginService.java` (deleted_at 분기 — `findByEmailAndDeletedAtIsNull` → `findByEmail` 변경 포함)
+- `auth/service/RefreshTokenService.java` (refresh 시 deleted_at 체크)
 - `common/exception/ErrorCode.java` (8 code 추가)
 
 ---
@@ -192,18 +193,21 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 
 ### 5.1 GET /api/v1/users/me (응답 확장)
 
+기존 shape: `{ userId, email, nickname, role, onboardingCompleted }`. 다음 3 필드 추가:
+
 ```json
 {
-  "id": 1,
+  "userId": 1,
   "email": "somi@example.com",
   "nickname": "김소미",
   "role": "USER",
+  "onboardingCompleted": true,
   "joinedAt": "2026-04-08T05:30:00Z",
   "passwordChangedAt": "2026-02-26T05:30:00Z",
   "plan": "free"
 }
 ```
-- `plan` 은 v1 에서 항상 `"free"` (billing 미구현, hardcode/enum). v2 billing 도입 시 실제 컬럼 추가
+- `plan` 은 v1 에서 항상 `"free"` (billing 미구현, hardcode). v2 billing 도입 시 실제 컬럼 추가
 - `passwordChangedAt` 이 `joinedAt` 과 같으면 FE 는 "한 번도 변경하지 않음" 으로 표시 (backfill 의미 반영)
 
 ### 5.2 PATCH /api/v1/users/me
@@ -297,34 +301,49 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 
 ## 6. Login Block 메커니즘
 
-### 6.1 보호 endpoint 접근 (`JwtAuthenticationFilter`)
+### 6.1 보호 endpoint 접근 (변경 없음)
 
-토큰 검증 후 user 조회 직후:
-```java
-if (user.getDeletedAt() != null) {
-    writeErrorResponse(response, 401, ErrorCode.USER_WITHDRAWN);
-    return;
-}
-```
+`JwtAuthenticationFilter` 는 **claims-only 유지**. 탈퇴 직후 기존 access token 은 만료(~15분) 까지 유효. 매 요청 DB 조회 비용을 피하기 위한 의도적 선택. 자연스러운 invalidate 는 token 만료 + refresh 차단 조합으로 달성 (§6.3).
 
-### 6.2 로그인 시도 (`AuthService.login`)
+### 6.2 로그인 시도 (`LoginService.login`)
+
+기존 `findByEmailAndDeletedAtIsNull` 를 `findByEmail` 로 변경 후 명시적 분기:
 
 ```java
-User user = userRepository.findByEmail(email).orElseThrow(...);
+User user = userRepository.findByEmail(req.email())
+    .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_CREDENTIALS));
 
 if (user.getDeletedAt() != null) {
     Instant graceUntil = user.getDeletedAt().plus(Duration.ofDays(30));
     if (Instant.now().isBefore(graceUntil)) {
         // 410 GONE — 30일 유예 내. 복구 path 는 v2
-        throw new BusinessException(ErrorCode.USER_WITHDRAWN_GRACE,
-            Map.of("graceUntil", graceUntil.toString()));
-    } else {
-        // 30일 경과 — 그러나 hard delete cron 이 v2 이므로 PR A 에서는 발생 불가 (방어적)
-        throw new BusinessException(ErrorCode.USER_WITHDRAWN);
+        throw new BusinessException(ErrorCode.USER_WITHDRAWN_GRACE);
     }
+    // 30일 경과 — hard delete cron 이 v2 이므로 PR A 에서는 발생 불가 (방어적)
+    throw new BusinessException(ErrorCode.USER_WITHDRAWN);
 }
-// 정상 로그인 진행
+// 정상 로그인 진행 (기존 로직)
 ```
+
+`graceUntil` 응답 body 노출은 `BusinessException` 의 detail/message 패턴 따라 — 기존 코드의 detail 전달 메커니즘에 맞춰 plan 에서 구현.
+
+### 6.3 Refresh 시도 (`RefreshTokenService.refresh`)
+
+refresh 시 user 의 `deleted_at` 체크. 탈퇴됐으면 새 access token 발급 거부:
+
+```java
+User user = userRepository.findById(userId)
+    .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
+
+if (user.getDeletedAt() != null) {
+    throw new BusinessException(ErrorCode.USER_WITHDRAWN_GRACE);
+}
+// 정상 refresh 진행
+```
+
+이 조합으로 탈퇴 사용자 access window 자동 캡: **token TTL ≤ 15분**.
+
+복구 (restore) endpoint 는 PR A 스코프 외 — v2 의 30일 cron 작업에 같이.
 
 복구(restore) endpoint 는 PR A 스코프 외 — v2 의 30일 cron 작업에 같이.
 
@@ -368,7 +387,7 @@ if (user.getDeletedAt() != null) {
 |---|---|
 | `password_changed_at` backfill 시 `created_at` 사용 → "마지막 변경" 이 가입 시점. FE 가 "3개월 전" 같은 텍스트 표시 시 부정확 | PR description 에 backfill 의미 명시. FE 는 `passwordChangedAt == createdAt` 이면 "한 번도 변경하지 않음" 표시 |
 | 기존 GET /me 응답 shape 변경 (필드 3개 추가) | 외부 consumer 없음 (FE 단일). 기존 strict 테스트는 같은 PR 에서 갱신 |
-| JWT 무효화 안 됨 → 비밀번호 변경/탈퇴 직후에도 옛 토큰 유효 | v1 known limitation. FE 가 비밀번호 변경 성공 후 자체 로그아웃 + 재로그인 유도. PR description 에 명시 |
+| JWT 무효화: 비밀번호 변경 후 옛 토큰 만료 전까지 유효. 탈퇴 후 옛 토큰도 ~15분간 유효 (refresh 차단으로 cap) | v1 known limitation. FE 가 비밀번호 변경 / 탈퇴 직후 자체 로그아웃 + 재로그인/리다이렉트 유도. PR description 에 명시 |
 | `user_noti_setting.setting_id` VARCHAR 가 enum 키와 어긋날 위험 (enum 이름 변경 시) | 단위 테스트로 모든 enum 키가 DB write/read 사이클 통과 검증. 키 변경 시 마이그레이션 필수 (룰 명시) |
 | 첫 30일 PII 보존 (v2 cron 미구현 상태) | PIPA "지체 없이" 의 30일 운영 사유 통상 인정. v2 cron 작업 이슈에 backref |
 
@@ -388,7 +407,7 @@ if (user.getDeletedAt() != null) {
 | 이메일 변경 endpoint | v2 (메일 인증 인프라 같이) |
 | 30일 cron — PII 익명화 + hard delete | v2 (별도 batch job issue) |
 | 복구 (restore-on-login within 30 days) | v2 (cron 작업과 같이) |
-| JWT token revocation | v2 (revocation list infra) — PR description known limitation |
+| JWT 즉시 token revocation (비밀번호 변경 시) | v2 (revocation list infra) — PR description known limitation. PR A 에선 탈퇴만 refresh 차단으로 cap |
 | 2FA | v2 (mock "곧 출시" 표시) |
 | 데이터 내보내기 (JSON+PDF) | v2 (mock disabled button) |
 
