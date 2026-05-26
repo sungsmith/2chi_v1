@@ -86,7 +86,7 @@ export function ProfileMenu() {
           }}
         >
           <Link
-            href="/me"
+            href="/mypage"
             role="menuitem"
             onClick={() => setOpen(false)}
             style={menuItemStyle}
