@@ -2820,3 +2820,11 @@ html, body { background: var(--color-bg); }
 .ca-rail-posting .nm { font-size: 12.5px; font-weight: 700; }
 .ca-rail-posting .meta { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--color-text-muted); }
 .ca-rail-posting .dday { font-family: var(--font-family-mono); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; background: var(--color-pink-100); color: var(--color-pink-500); margin-left: auto; }
+
+/* ── Applications cluster shell ── */
+.ap-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 56px);
+}
+.ap-main { overflow: auto; }
