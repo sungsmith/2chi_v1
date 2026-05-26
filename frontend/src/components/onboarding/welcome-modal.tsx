@@ -2,7 +2,7 @@
 
 import { Target, TARGET_META } from "@/lib/enums/target";
 import { TargetJob, TARGET_JOB_META } from "@/lib/enums/target-job";
-import { Arrow } from "./icons";
+import { ArrowRight } from "@/components/ui/icons";
 
 type Props = {
   target: Target;
@@ -39,7 +39,7 @@ export function WelcomeModal({ target, careerYear, targetJobs, onDismiss }: Prop
           <div className="row"><b>직무</b><span>{positionLabel}</span></div>
         </div>
         <button type="button" className="btn primary lg" style={{ width: "100%" }} onClick={onDismiss}>
-          대시보드로 이동 <Arrow dir="right" />
+          대시보드로 이동 <ArrowRight />
         </button>
       </div>
     </div>

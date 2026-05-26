@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { TargetJob } from "@/lib/enums/target-job";
-import { Code, Server, Cloud, Gear, Layout, Check } from "./icons";
+import { Code, Server, Cloud, Gear, Layout, Check } from "@/components/ui/icons";
 
 type Item = { job: TargetJob; name: string; desc: string; icon: ReactNode; tone: number };
 

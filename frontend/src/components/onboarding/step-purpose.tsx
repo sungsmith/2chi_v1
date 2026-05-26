@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { Target } from "@/lib/enums/target";
-import { Briefcase, Move, Check } from "./icons";
+import { Briefcase, Move, Check } from "@/components/ui/icons";
 
 type Item = { target: Target; title: string; desc: string; icon: ReactNode; tone: string };
 

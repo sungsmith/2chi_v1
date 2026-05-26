@@ -13,7 +13,7 @@ import { StepCareer } from "./step-career";
 import { StepPositions } from "./step-positions";
 import { StepRecap } from "./step-recap";
 import { WelcomeModal } from "./welcome-modal";
-import { Arrow } from "./icons";
+import { ArrowLeft, ArrowRight } from "@/components/ui/icons";
 
 export function OnboardingFlow() {
   const router = useRouter();
@@ -120,7 +120,7 @@ export function OnboardingFlow() {
             disabled={current === 1 || submitting}
             onClick={handlePrev}
           >
-            <Arrow dir="left" /> 이전
+            <ArrowLeft /> 이전
           </button>
           <div className="onb-footer-right">
             <button
@@ -140,7 +140,7 @@ export function OnboardingFlow() {
               {current === 4
                 ? submitting ? "처리중…" : "시작하기"
                 : "다음"}
-              <Arrow dir="right" />
+              <ArrowRight />
             </button>
           </div>
         </div>

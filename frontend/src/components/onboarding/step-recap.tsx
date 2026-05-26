@@ -2,8 +2,7 @@
 
 import type { Target } from "@/lib/enums/target";
 import type { TargetJob } from "@/lib/enums/target-job";
-import { Sparkle, Edit } from "./icons";
-import { Calendar } from "@/components/ui/icons";
+import { Sparkle, Edit, Calendar } from "@/components/ui/icons";
 
 type Props = {
   target: Target | undefined;
