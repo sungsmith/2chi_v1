@@ -49,19 +49,21 @@ describe("CalendarContent", () => {
     expect(replaceMock).toHaveBeenCalledWith("/applications/calendar?month=2026-04");
   });
 
-  it.skip("event chip 클릭 시 EventEditModal open", async () => {
-    // TODO Task 9: cal-evt div[aria-label] → findByRole("button") 로 갱신
+  it("event chip 클릭 시 EventEditModal open", async () => {
     render(<CalendarContent month="2026-05" />);
-    const chip = await screen.findByRole("button", { name: /1차 면접 \(주\)테크/ });
+    // CalendarMonth renders inline cal-evt divs (no role="button"); match by text content
+    const chip = await screen.findByText(/1차 면접.*\(주\)테크/);
     fireEvent.click(chip);
     expect(await screen.findByText("일정 편집")).toBeInTheDocument();
   });
 
-  it.skip("일정 추가 클릭 시 EventCreateModal open", async () => {
-    // TODO Task 9: 이벤트 로드 대기 → findByText 로 갱신
+  it("일정 추가 클릭 시 EventCreateModal open", async () => {
     render(<CalendarContent month="2026-05" />);
-    await screen.findByRole("button", { name: /1차 면접/ });
+    // Wait for events to render before interacting
+    await screen.findByText(/1차 면접/);
     fireEvent.click(screen.getByRole("button", { name: /일정 추가/ }));
-    expect(await screen.findByText("+ 일정 추가", { selector: "h3" })).toBeInTheDocument();
+    // EventCreateModal h3 reads "일정 추가" (no leading "+")
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+    expect(await screen.findByText("일정 추가", { selector: "h3" })).toBeInTheDocument();
   });
 });
