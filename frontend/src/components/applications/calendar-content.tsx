@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CalendarLegend } from "./calendar-legend";
 import { CalendarMonth } from "./calendar-month";
+import { CalendarYear } from "./calendar-year";
 import { EventEditModal } from "./event-edit-modal";
 import { EventCreateModal } from "./event-create-modal";
 import { fetchEvents, fetchApplications } from "@/lib/api/application";
@@ -144,7 +145,18 @@ export function CalendarContent({ month }: Props) {
             />
           )
         )}
-        {view === "year"  && <div style={{ padding: 32, color: "var(--color-text-secondary)", textAlign: "center" }}>준비중</div>}
+        {view === "year"  && (
+          <CalendarYear
+            year={year}
+            events={events ?? []}
+            onPickDate={(d) => {
+              const y = d.getFullYear();
+              const m = String(d.getMonth() + 1).padStart(2, "0");
+              router.replace(`/applications/calendar?month=${y}-${m}`);
+              setView("month");
+            }}
+          />
+        )}
         {view === "week"  && <div style={{ padding: 32, color: "var(--color-text-secondary)", textAlign: "center" }}>준비중</div>}
         {view === "day"   && <div style={{ padding: 32, color: "var(--color-text-secondary)", textAlign: "center" }}>준비중</div>}
       </section>
