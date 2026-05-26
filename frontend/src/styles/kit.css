@@ -633,7 +633,7 @@ html, body { background: var(--color-bg); }
   border-bottom: 1px solid var(--color-border-default);
   margin-bottom: 24px;
 }
-.sub-tabs button, .sub-tabs a.tab {
+.sub-tabs button, .sub-tabs a.tab, .sub-tabs a.sub-tab {
   position: relative; padding: 10px 16px;
   font-family: inherit; font-size: 14px; font-weight: 500;
   color: var(--color-text-secondary); cursor: pointer;
@@ -642,9 +642,9 @@ html, body { background: var(--color-bg); }
   display: inline-flex; align-items: center; gap: 8px;
   text-decoration: none; border-bottom: none;
 }
-.sub-tabs button:hover, .sub-tabs a.tab:hover { color: var(--color-text-primary); }
-.sub-tabs button.active, .sub-tabs a.tab.active { color: var(--color-text-primary); font-weight: 700; }
-.sub-tabs button.active::after, .sub-tabs a.tab.active::after {
+.sub-tabs button:hover, .sub-tabs a.tab:hover, .sub-tabs a.sub-tab:hover { color: var(--color-text-primary); }
+.sub-tabs button.active, .sub-tabs a.tab.active, .sub-tabs a.sub-tab.active { color: var(--color-text-primary); font-weight: 700; }
+.sub-tabs button.active::after, .sub-tabs a.tab.active::after, .sub-tabs a.sub-tab.active::after {
   content: ""; position: absolute; left: 16px; right: 16px; bottom: -1px;
   height: 2px; background: var(--color-primary-500);
   border-radius: 2px 2px 0 0;
@@ -1460,3 +1460,10 @@ html, body { background: var(--color-bg); }
 }
 .pf-type-chip.active .ico { background: var(--color-primary-100); color: var(--color-primary-700); }
 .pf-type-chip .lbl { font-size: 11.5px; font-weight: 700; }
+
+/* ============================================================
+   Cover-letters cluster shell (cl-shell / cl-main)
+   From mock kit-cl.css — used by cover-letters layout.tsx
+============================================================ */
+.cl-shell { display: flex; flex-direction: column; min-height: calc(100vh - 56px); }
+.cl-main { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
