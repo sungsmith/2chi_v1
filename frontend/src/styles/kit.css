@@ -763,6 +763,35 @@ html, body { background: var(--color-bg); }
   overflow: auto;
 }
 
+/* ============================================================
+   Co cluster — shell + side-nav crumb
+   (Ported from kit-company.css for task 1)
+============================================================ */
+
+/* Grid shell: side-nav (240px) + main */
+.co-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: calc(100vh - 56px);
+}
+
+/* Main content column */
+.co-main {
+  overflow: auto;
+}
+
+/* Crumb label above nav items */
+.side-nav .crumb {
+  font-family: var(--font-family-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 0 12px 8px;
+  margin-bottom: 4px;
+}
+
 /* Side nav panel */
 .side-nav {
   position: sticky;
