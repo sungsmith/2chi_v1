@@ -6,7 +6,8 @@ import { PORTFOLIO_MOCK } from "@/lib/mock/me";
 describe("PortfolioView", () => {
   it("renders link list with titles + urls", () => {
     render(<PortfolioView data={PORTFOLIO_MOCK} />);
-    expect(screen.getByText("GitHub")).toBeInTheDocument();
+    // "GitHub" 는 link title + kind-pill 양쪽에 등장
+    expect(screen.getAllByText("GitHub").length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("기술 블로그")).toBeInTheDocument();
     expect(screen.getAllByRole("link").length).toBeGreaterThanOrEqual(3);
   });

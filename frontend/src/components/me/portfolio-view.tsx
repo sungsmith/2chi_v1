@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { Edit, FileEdit, Link as LinkIco } from "@/components/ui/icons";
 import type { PortfolioSnapshot, PortfolioLink, PortfolioFile } from "@/lib/mock/me";
+import { PortfolioModal, type PortfolioLinkType } from "./portfolio-modal";
 
 type Props = { data: PortfolioSnapshot };
 
@@ -13,21 +17,6 @@ const NotionSvg = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
     <polyline points="14 2 14 8 20 8" />
-  </svg>
-);
-
-const TrashSvg = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="3 6 5 6 21 6" />
-    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-  </svg>
-);
-
-const DownloadSvg = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="7 10 12 15 17 10" />
-    <line x1="12" y1="15" x2="12" y2="3" />
   </svg>
 );
 
@@ -51,6 +40,13 @@ function LinkBadgeIcon({ kind }: { kind: PortfolioLink["kind"] }) {
   return <LinkIco size={18} />;
 }
 
+function kindPillLabel(kind: PortfolioLink["kind"]): string {
+  if (kind === "github") return "GitHub";
+  if (kind === "notion") return "Notion";
+  if (kind === "blog") return "Blog";
+  return "링크";
+}
+
 function LinkRow({ link }: { link: PortfolioLink }) {
   return (
     <a className={`list-row${linkToneClass(link.kind)}`} href={link.url} target="_blank" rel="noreferrer">
@@ -61,10 +57,9 @@ function LinkRow({ link }: { link: PortfolioLink }) {
         <div className="nm">{link.title}</div>
         <div className="meta">{link.url}</div>
       </div>
-      <span className="kind-pill">링크</span>
+      <span className="kind-pill">{kindPillLabel(link.kind)}</span>
       <div className="actions">
         <button className="iconbtn" aria-label="편집"><Edit size={14} /></button>
-        <button className="iconbtn" aria-label="삭제"><TrashSvg /></button>
       </div>
     </a>
   );
@@ -80,14 +75,14 @@ function FileRow({ file }: { file: PortfolioFile }) {
       </div>
       <span className="kind-pill file">파일</span>
       <div className="actions">
-        <button className="iconbtn" aria-label="다운로드"><DownloadSvg /></button>
-        <button className="iconbtn" aria-label="삭제"><TrashSvg /></button>
+        <button className="iconbtn" aria-label="편집"><Edit size={14} /></button>
       </div>
     </div>
   );
 }
 
 export function PortfolioView({ data }: Props) {
+  const [modalType, setModalType] = useState<PortfolioLinkType | null>(null);
   const isEmpty = data.links.length === 0 && data.files.length === 0;
 
   return (
@@ -95,10 +90,10 @@ export function PortfolioView({ data }: Props) {
       <div className="sec-head">
         <div className="sec-title">포트폴리오</div>
         <div className="head-r">
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalType("github")}>
             <LinkIco size={13} /> 링크 추가
           </button>
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalType("file")}>
             <UploadSvg />
             파일 업로드
           </button>
@@ -117,6 +112,9 @@ export function PortfolioView({ data }: Props) {
             <FileRow key={file.filename} file={file} />
           ))}
         </div>
+      )}
+      {modalType && (
+        <PortfolioModal initialType={modalType} onClose={() => setModalType(null)} />
       )}
     </section>
   );

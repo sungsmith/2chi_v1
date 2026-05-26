@@ -9,29 +9,10 @@ type Props = {
   todayQuote?: string;
 };
 
-function formatGreetingDate(now: Date): string {
-  const parts = new Intl.DateTimeFormat("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    weekday: "long",
-  }).formatToParts(now);
-  const year = parts.find((p) => p.type === "year")?.value ?? "";
-  const month = parts.find((p) => p.type === "month")?.value ?? "";
-  const day = parts.find((p) => p.type === "day")?.value ?? "";
-  const weekday = parts.find((p) => p.type === "weekday")?.value ?? "";
-  return `${year} · ${month} · ${day} ${weekday} · 오늘의 준비 현황`;
-}
-
 export function Greeting({ nickname, showTags, todayQuote }: Props) {
-  const dateLabel = formatGreetingDate(new Date());
-
   return (
     <section className="greet">
       <div className="greet-text">
-        <div className="greet-meta" suppressHydrationWarning>
-          {dateLabel}
-        </div>
         <h1>
           안녕하세요, {nickname}님
           <span className="wave" role="img" aria-label="hi">
