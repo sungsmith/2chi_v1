@@ -28,9 +28,28 @@ describe("WriteValidationPanel", () => {
     }
   });
 
-  test("v2 예정 카드 두 개 표시", () => {
+  test("AI 검증 v2 예정 플레이스홀더 패널 렌더", () => {
     render(<WriteValidationPanel userEdit="" charLimit={100} postingKeywords={[]} />);
-    const v2 = screen.getAllByText(/v2 예정/);
-    expect(v2.length).toBe(2);
+    expect(screen.getByText(/AI 검증/)).toBeInTheDocument();
+    expect(screen.getByText(/v2 예정/)).toBeInTheDocument();
+  });
+
+  test("매칭/보완 키워드 칩 렌더", async () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <WriteValidationPanel
+          userEdit="Spring Boot MSA"
+          charLimit={200}
+          postingKeywords={["Spring Boot", "MSA", "Kafka"]}
+        />
+      );
+      act(() => { vi.advanceTimersByTime(600); });
+      expect(screen.getByText("Spring Boot")).toBeInTheDocument();
+      expect(screen.getByText("MSA")).toBeInTheDocument();
+      expect(screen.getByText("Kafka")).toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

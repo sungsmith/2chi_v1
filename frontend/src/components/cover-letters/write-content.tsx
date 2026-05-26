@@ -124,56 +124,60 @@ export function CoverLetterWriteContent(props: Props) {
   const postingKeywords: string[] = posting?.keywords ?? [];
 
   return (
-    <section style={{ padding: 32 }}>
-      <div style={{ fontSize: 13, color: "var(--color-text-muted)", marginBottom: 12 }}>
-        자소서 &gt; {postingCompany} &gt; {variant?.question ?? ITEM_TYPE_QUESTIONS[itemType]}
-      </div>
-
+    <div>
       {error && (
-        <div role="alert" style={{
-          marginBottom: 16, padding: "10px 14px",
-          background: "var(--color-semantic-error-bg)", color: "var(--color-semantic-error)",
-          borderRadius: "var(--radius-md)", fontSize: 13,
-        }}>{error}</div>
+        <div role="alert" className="alert error" style={{ marginBottom: 16 }}>
+          {error}
+        </div>
       )}
-
-      <WriteInputPanel
-        itemType={itemType}
-        charLimit={charLimit}
-        postingCompany={postingCompany}
-        postingTitle={postingTitle}
-        analysisRef={analysisRef}
-        userRequest={userRequest}
-        onUserRequestChange={setUserRequest}
-        onGenerate={handleGenerate}
-        generating={generating}
-        hasDraft={variant !== null}
-        readOnly={variant !== null}
-      />
-
-      {variant && (
-        <>
-          <WriteDualPane
-            aiDraft={variant.aiDraft ?? ""}
-            userEdit={userEdit}
-            onUserEditChange={setUserEdit}
-            aiModel={variant.aiModel}
+      <div className="cl-edit-shell">
+        <div className="cl-edit-main">
+          <WriteInputPanel
+            itemType={itemType}
+            charLimit={charLimit}
+            postingCompany={postingCompany}
+            postingTitle={postingTitle}
+            analysisRef={analysisRef}
+            userRequest={userRequest}
+            onUserRequestChange={setUserRequest}
+            onGenerate={handleGenerate}
+            generating={generating}
+            hasDraft={variant !== null}
+            readOnly={variant !== null}
           />
+
+          {variant && (
+            <>
+              <WriteDualPane
+                aiDraft={variant.aiDraft ?? ""}
+                userEdit={userEdit}
+                onUserEditChange={setUserEdit}
+                aiModel={variant.aiModel}
+              />
+              <div className="q-foot" style={{ justifyContent: "flex-end" }}>
+                <div className="q-actions">
+                  <button className="btn ghost" onClick={() => handleSave("DRAFT")} disabled={saving}>
+                    임시 저장
+                  </button>
+                  <button className="btn" onClick={() => handleSave("COMPLETED")} disabled={saving}>
+                    완료 저장
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        <aside className="cl-side">
           <WriteValidationPanel
             userEdit={userEdit}
             charLimit={charLimit}
             postingKeywords={postingKeywords}
+            postingCompany={postingCompany}
+            postingTitle={postingTitle}
           />
-          <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", marginTop: 16 }}>
-            <button className="btn ghost" onClick={() => handleSave("DRAFT")} disabled={saving}>
-              임시 저장
-            </button>
-            <button className="btn" onClick={() => handleSave("COMPLETED")} disabled={saving}>
-              완료 저장
-            </button>
-          </div>
-        </>
-      )}
-    </section>
+        </aside>
+      </div>
+    </div>
   );
 }
