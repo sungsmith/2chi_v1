@@ -1,9 +1,8 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { TextField } from "../ui/text-field";
-import { Button } from "../ui/button";
 import { ConsentSection } from "./consent-section";
 import {
   validateEmail,
@@ -124,85 +123,103 @@ export function SignupForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
+    <div className="auth-card">
+      <div className="brand">
+        <img src="/logo.svg" alt="이취 (2chi)" />
+        <div>
+          <h1>한 번에 정리되는 지원 흐름,<br />지금 시작해요</h1>
+          <p className="sub">이메일로 가입하거나 소셜 계정으로 1초 만에 시작할 수 있어요.</p>
+        </div>
+      </div>
+
       {successMessage && (
-        <div
-          role="status"
-          style={{
-            padding: "var(--space-3) var(--space-4)",
-            background: "var(--color-semantic-success-bg)",
-            color: "var(--color-semantic-success)",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--fs-body-sm)",
-          }}
-        >
+        <div role="status" className="helper" style={{ color: "var(--color-semantic-success)" }}>
           {successMessage}
         </div>
       )}
       {topError && (
-        <div
-          role="alert"
-          style={{
-            padding: "var(--space-3) var(--space-4)",
-            background: "var(--color-semantic-error-bg)",
-            color: "var(--color-semantic-error)",
-            borderRadius: "var(--radius-md)",
-            fontSize: "var(--fs-body-sm)",
-          }}
-        >
-          {topError}
+        <div role="alert">
+          <span className="helper error">{topError}</span>
         </div>
       )}
 
-      <TextField
-        ref={emailRef}
-        label="이메일"
-        type="email"
-        name="email"
-        value={state.email}
-        onChange={(e) => handleField("email", e.target.value)}
-        onBlur={() => handleBlur("email")}
-        error={errors.email}
-        required
-        autoComplete="email"
-      />
-      <TextField
-        ref={passwordRef}
-        label="비밀번호"
-        type="password"
-        name="password"
-        value={state.password}
-        onChange={(e) => handleField("password", e.target.value)}
-        onBlur={() => handleBlur("password")}
-        error={errors.password}
-        required
-        autoComplete="new-password"
-      />
-      <TextField
-        ref={nicknameRef}
-        label="닉네임"
-        type="text"
-        name="nickname"
-        value={state.nickname}
-        onChange={(e) => handleField("nickname", e.target.value)}
-        onBlur={() => handleBlur("nickname")}
-        error={errors.nickname}
-        helper="2~20자, 한글/영문/숫자 및 -, _"
-        required
-      />
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="field">
+          <label className="lbl" htmlFor="signup-email">이메일</label>
+          <input
+            ref={emailRef}
+            id="signup-email"
+            className={"input" + (errors.email ? " error" : "")}
+            type="email"
+            name="email"
+            value={state.email}
+            onChange={(e) => handleField("email", e.target.value)}
+            onBlur={() => handleBlur("email")}
+            placeholder="hello@2chi.app"
+            autoComplete="email"
+          />
+          <span className={"helper" + (errors.email ? " error" : "")}>
+            {errors.email ?? "로그인에 사용되는 이메일"}
+          </span>
+        </div>
+        <div className="field">
+          <label className="lbl" htmlFor="signup-password">비밀번호</label>
+          <input
+            ref={passwordRef}
+            id="signup-password"
+            className={"input" + (errors.password ? " error" : "")}
+            type="password"
+            name="password"
+            value={state.password}
+            onChange={(e) => handleField("password", e.target.value)}
+            onBlur={() => handleBlur("password")}
+            placeholder="••••••••"
+            autoComplete="new-password"
+          />
+          {errors.password && <span className="helper error">{errors.password}</span>}
+          {!errors.password && <span className="helper">8자 이상, 영문/숫자/특수문자 중 2종 이상</span>}
+        </div>
+        <div className="field">
+          <label className="lbl" htmlFor="signup-nickname">닉네임</label>
+          <input
+            ref={nicknameRef}
+            id="signup-nickname"
+            className={"input" + (errors.nickname ? " error" : "")}
+            type="text"
+            name="nickname"
+            value={state.nickname}
+            onChange={(e) => handleField("nickname", e.target.value)}
+            onBlur={() => handleBlur("nickname")}
+            placeholder="2~20자, 한/영/숫자"
+          />
+          {errors.nickname && <span className="helper error">{errors.nickname}</span>}
+        </div>
 
-      <ConsentSection
-        ageConfirmed={state.ageConfirmed}
-        terms={state.terms}
-        privacy={state.privacy}
-        marketing={state.marketing}
-        onChange={(key, value) => handleField(key, value)}
-        errors={errors}
-      />
+        <ConsentSection
+          ageConfirmed={state.ageConfirmed}
+          terms={state.terms}
+          privacy={state.privacy}
+          marketing={state.marketing}
+          onChange={(key, value) => handleField(key, value)}
+          errors={errors}
+        />
 
-      <Button type="submit" disabled={submitting}>
-        {submitting ? "처리중…" : "가입하기"}
-      </Button>
-    </form>
+        <button type="submit" className="primary-btn" disabled={submitting}>
+          {submitting ? "처리중…" : "회원가입"}
+        </button>
+      </form>
+
+      <div className="auth-divider">간편 가입</div>
+      <div className="auth-social">
+        <button type="button" disabled><span className="ico kakao">K</span>카카오로 시작</button>
+        <button type="button" disabled><span className="ico naver">N</span>네이버로 시작</button>
+        <button type="button" disabled><span className="ico google">G</span>Google로 시작</button>
+      </div>
+
+      <div className="auth-foot">
+        이미 회원이신가요?
+        <Link href="/login">로그인</Link>
+      </div>
+    </div>
   );
 }
