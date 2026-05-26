@@ -3771,3 +3771,23 @@ html, body { background: var(--color-bg); }
 .push-prompt .row .deny:hover { background: var(--color-surface-soft); }
 .push-prompt .row .allow { background: var(--color-primary-600); border-color: var(--color-primary-600); color: #fff; }
 .push-prompt .row .allow:hover { background: var(--color-primary-700); }
+
+/* ============================================================
+   Danger zone — account withdrawal
+============================================================ */
+.mp-danger {
+  background: #fff;
+  border: 1px solid var(--color-semantic-error);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.mp-danger .danger-ttl {
+  font-size: 14px; font-weight: 700;
+  color: var(--color-semantic-error);
+}
+.mp-danger .danger-row {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 12px; align-items: center;
+}
+.mp-danger .danger-row .desc { font-size: 12.5px; color: var(--color-text-secondary); line-height: 1.55; }
