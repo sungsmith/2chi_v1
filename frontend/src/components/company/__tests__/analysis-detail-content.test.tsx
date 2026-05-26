@@ -27,15 +27,33 @@ const sample = {
 beforeEach(() => { fetchMock.mockReset(); createMock.mockReset(); });
 
 describe("AnalysisDetailContent", () => {
-  test("3 카드 렌더링", async () => {
+  test("헤더에 회사명 + 신선도 pill 렌더링", async () => {
     fetchMock.mockResolvedValue(sample);
     render(<AnalysisDetailContent id={1} />);
     await waitFor(() => expect(screen.getByText("(주)테크컴퍼니")).toBeInTheDocument());
-    expect(screen.getByText(/결제·정산 SaaS/)).toBeInTheDocument();
-    expect(screen.getByText(/고객 중심/)).toBeInTheDocument();
-    expect(screen.getByText(/포인트 A/)).toBeInTheDocument();
+    expect(screen.getByText(/분석 완료 · D-28/)).toBeInTheDocument();
+  });
+
+  test("회사 개요 카드: 사업 영역 + 매출 + 임직원 렌더링", async () => {
+    fetchMock.mockResolvedValue(sample);
+    render(<AnalysisDetailContent id={1} />);
+    await waitFor(() => expect(screen.getByText(/결제·정산 SaaS/)).toBeInTheDocument());
+    expect(screen.getByText(/380억/)).toBeInTheDocument();
+    expect(screen.getByText(/120명/)).toBeInTheDocument();
+  });
+
+  test("인재상 카드: talent_profile 키워드 칩 렌더링", async () => {
+    fetchMock.mockResolvedValue(sample);
+    render(<AnalysisDetailContent id={1} />);
+    await waitFor(() => expect(screen.getByText("고객 중심")).toBeInTheDocument());
+    expect(screen.getByText("데이터 기반")).toBeInTheDocument();
+  });
+
+  test("활용 포인트 카드: action_points 렌더링", async () => {
+    fetchMock.mockResolvedValue(sample);
+    render(<AnalysisDetailContent id={1} />);
+    await waitFor(() => expect(screen.getByText(/포인트 A/)).toBeInTheDocument());
     expect(screen.getByText(/포인트 B/)).toBeInTheDocument();
-    expect(screen.getByText(/D-28/)).toBeInTheDocument();
   });
 
   test("재분석 클릭 → createOrReplace API call", async () => {
@@ -45,7 +63,7 @@ describe("AnalysisDetailContent", () => {
     render(<AnalysisDetailContent id={1} />);
     await screen.findByText("(주)테크컴퍼니");
 
-    await user.click(screen.getByRole("button", { name: /재분석/ }));
+    await user.click(screen.getByRole("button", { name: /다시 분석/ }));
     await waitFor(() => expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
       company: "(주)테크컴퍼니",
     })));
