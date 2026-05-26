@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import { Edit, FileEdit, Link as LinkIco } from "@/components/ui/icons";
 import type { PortfolioSnapshot, PortfolioLink, PortfolioFile } from "@/lib/mock/me";
+import { PortfolioModal, type PortfolioLinkType } from "./portfolio-modal";
 
 type Props = { data: PortfolioSnapshot };
 
@@ -78,6 +82,7 @@ function FileRow({ file }: { file: PortfolioFile }) {
 }
 
 export function PortfolioView({ data }: Props) {
+  const [modalType, setModalType] = useState<PortfolioLinkType | null>(null);
   const isEmpty = data.links.length === 0 && data.files.length === 0;
 
   return (
@@ -85,10 +90,10 @@ export function PortfolioView({ data }: Props) {
       <div className="sec-head">
         <div className="sec-title">포트폴리오</div>
         <div className="head-r">
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalType("github")}>
             <LinkIco size={13} /> 링크 추가
           </button>
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalType("file")}>
             <UploadSvg />
             파일 업로드
           </button>
@@ -107,6 +112,9 @@ export function PortfolioView({ data }: Props) {
             <FileRow key={file.filename} file={file} />
           ))}
         </div>
+      )}
+      {modalType && (
+        <PortfolioModal initialType={modalType} onClose={() => setModalType(null)} />
       )}
     </section>
   );
