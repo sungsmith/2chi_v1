@@ -2,6 +2,7 @@
 
 import { Target, TARGET_META } from "@/lib/enums/target";
 import { TargetJob, TARGET_JOB_META } from "@/lib/enums/target-job";
+import { Arrow } from "./icons";
 
 type Props = {
   target: Target;
@@ -26,9 +27,7 @@ export function WelcomeModal({ target, careerYear, targetJobs, onDismiss }: Prop
   return (
     <div className="onb-welcome" onClick={onDismiss}>
       <div className="card" onClick={(e) => e.stopPropagation()}>
-        <span className="mascot-cloud lg">
-          <span className="blush" />
-        </span>
+        <span className="mascot-cloud lg happy" />
         <h3>준비 다 됐어요!</h3>
         <p>
           이제 흐름에 맞춰<br />
@@ -40,7 +39,7 @@ export function WelcomeModal({ target, careerYear, targetJobs, onDismiss }: Prop
           <div className="row"><b>직무</b><span>{positionLabel}</span></div>
         </div>
         <button type="button" className="btn primary lg" style={{ width: "100%" }} onClick={onDismiss}>
-          대시보드로 이동
+          대시보드로 이동 <Arrow dir="right" />
         </button>
       </div>
     </div>
