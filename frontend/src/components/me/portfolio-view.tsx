@@ -16,21 +16,6 @@ const NotionSvg = () => (
   </svg>
 );
 
-const TrashSvg = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="3 6 5 6 21 6" />
-    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-  </svg>
-);
-
-const DownloadSvg = () => (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-    <polyline points="7 10 12 15 17 10" />
-    <line x1="12" y1="15" x2="12" y2="3" />
-  </svg>
-);
-
 const UploadSvg = () => (
   <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -51,6 +36,13 @@ function LinkBadgeIcon({ kind }: { kind: PortfolioLink["kind"] }) {
   return <LinkIco size={18} />;
 }
 
+function kindPillLabel(kind: PortfolioLink["kind"]): string {
+  if (kind === "github") return "GitHub";
+  if (kind === "notion") return "Notion";
+  if (kind === "blog") return "Blog";
+  return "링크";
+}
+
 function LinkRow({ link }: { link: PortfolioLink }) {
   return (
     <a className={`list-row${linkToneClass(link.kind)}`} href={link.url} target="_blank" rel="noreferrer">
@@ -61,10 +53,9 @@ function LinkRow({ link }: { link: PortfolioLink }) {
         <div className="nm">{link.title}</div>
         <div className="meta">{link.url}</div>
       </div>
-      <span className="kind-pill">링크</span>
+      <span className="kind-pill">{kindPillLabel(link.kind)}</span>
       <div className="actions">
         <button className="iconbtn" aria-label="편집"><Edit size={14} /></button>
-        <button className="iconbtn" aria-label="삭제"><TrashSvg /></button>
       </div>
     </a>
   );
@@ -80,8 +71,7 @@ function FileRow({ file }: { file: PortfolioFile }) {
       </div>
       <span className="kind-pill file">파일</span>
       <div className="actions">
-        <button className="iconbtn" aria-label="다운로드"><DownloadSvg /></button>
-        <button className="iconbtn" aria-label="삭제"><TrashSvg /></button>
+        <button className="iconbtn" aria-label="편집"><Edit size={14} /></button>
       </div>
     </div>
   );
