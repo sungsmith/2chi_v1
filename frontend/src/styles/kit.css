@@ -3568,3 +3568,48 @@ html, body { background: var(--color-bg); }
   line-height: 1.6; margin: 0; max-width: 40ch; text-wrap: pretty;
 }
 .err-card .actions { display: flex; gap: 6px; margin-top: 4px; }
+
+/* ============================================================
+   마이페이지 — AccountView selectors
+   (Ported from kit-account.css for task 2)
+============================================================ */
+.mp-head h1 {
+  margin: 0; font-family: var(--font-family-hand);
+  font-size: 32px; line-height: 1.2; font-weight: 400;
+}
+.mp-head .sub { font-size: 13.5px; color: var(--color-text-secondary); margin-top: 4px; }
+
+/* Settings section card */
+.mp-section {
+  background: #fff; border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  box-shadow: var(--shadow-soft);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.mp-section .sec-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.mp-section .sec-title { font-size: 14px; font-weight: 700; letter-spacing: -0.005em; }
+.mp-section .sec-sub { font-size: 12px; color: var(--color-text-muted); }
+
+/* Settings row */
+.mp-row {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 14px; align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--color-border-subtle);
+}
+.mp-row:last-of-type { border-bottom: none; padding-bottom: 0; }
+.mp-row .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.mp-row .nm { font-size: 13.5px; font-weight: 600; color: var(--color-text-primary); }
+.mp-row .desc { font-size: 11.5px; color: var(--color-text-muted); line-height: 1.5; }
+.mp-row .desc b { color: var(--color-text-primary); font-weight: 700; }
+
+/* Value pill (e.g. "곧 출시") */
+.mp-row .value-pill {
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 4px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+}
