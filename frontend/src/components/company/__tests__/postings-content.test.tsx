@@ -5,16 +5,12 @@ import { PostingsContent } from "../postings-content";
 import type { JobPosting } from "@/lib/types/posting";
 
 const fetchMock = vi.fn();
-const createMock = vi.fn();
 const patchMock = vi.fn();
 const deleteMock = vi.fn();
-const parseMock = vi.fn();
 vi.mock("@/lib/api/posting", () => ({
   fetchPostings: (...a: unknown[]) => fetchMock(...a),
-  createPosting: (...a: unknown[]) => createMock(...a),
   patchPosting: (...a: unknown[]) => patchMock(...a),
   deletePosting: (...a: unknown[]) => deleteMock(...a),
-  parsePosting: (...a: unknown[]) => parseMock(...a),
 }));
 vi.mock("@/lib/api/application", () => ({
   fetchApplications: vi.fn().mockResolvedValue([]),
@@ -25,6 +21,7 @@ vi.mock("@/lib/api/company-analysis", () => ({
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), back: vi.fn(), replace: vi.fn() }),
+  usePathname: () => "/company/postings",
 }));
 
 const samplePosting: JobPosting = {
@@ -38,10 +35,8 @@ const samplePosting: JobPosting = {
 
 beforeEach(() => {
   fetchMock.mockReset();
-  createMock.mockReset();
   patchMock.mockReset();
   deleteMock.mockReset();
-  parseMock.mockReset();
 });
 
 describe("PostingsContent", () => {
@@ -51,56 +46,29 @@ describe("PostingsContent", () => {
     expect(await screen.findByText(/아직 등록한 공고가 없어요/)).toBeInTheDocument();
   });
 
-  test("기존 리스트 표시 + keyword chip", async () => {
+  test("기존 리스트 표시 — 공고 제목 + 회사명", async () => {
     fetchMock.mockResolvedValue([samplePosting]);
     render(<PostingsContent />);
     expect(await screen.findByText("백엔드 개발자")).toBeInTheDocument();
-    expect(screen.getByText("Spring")).toBeInTheDocument();
-    expect(screen.getByText("MSA")).toBeInTheDocument();
+    expect(screen.getByText("(주)테크")).toBeInTheDocument();
   });
 
-  test("직접 작성 → 저장 → 리스트 prepend", async () => {
+  test("헤더에 + 공고 등록 링크 표시", async () => {
     fetchMock.mockResolvedValue([]);
-    createMock.mockResolvedValue(samplePosting);
-    const user = userEvent.setup();
     render(<PostingsContent />);
-    await waitFor(() => expect(screen.getByText(/아직 등록한 공고가 없어요/)).toBeInTheDocument());
-
-    await user.click(screen.getByRole("tab", { name: /직접 작성/ }));
-    await user.type(screen.getByLabelText(/회사명/), "(주)테크");
-    await user.type(screen.getByLabelText(/공고 제목/), "백엔드 개발자");
-    await user.click(screen.getByRole("button", { name: /저장 후 자소서 작성/ }));
-
-    await waitFor(() => {
-      expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
-        source: "MANUAL", company: "(주)테크", title: "백엔드 개발자",
-      }));
-    });
-    expect(await screen.findByText("백엔드 개발자")).toBeInTheDocument();
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    const link = screen.getByRole("link", { name: /공고 등록/ });
+    expect(link).toHaveAttribute("href", "/company/postings/new");
   });
 
-  test("URL 파싱 실패 시 manual 탭 자동 전환 + 배너", async () => {
-    fetchMock.mockResolvedValue([]);
-    parseMock.mockRejectedValue(new Error("자동 파싱이 안 되는 사이트예요. 직접 작성으로 입력해주세요."));
-    const user = userEvent.setup();
-    render(<PostingsContent />);
-    await waitFor(() => expect(screen.getByText(/아직 등록한 공고가 없어요/)).toBeInTheDocument());
-
-    await user.type(screen.getByLabelText(/채용공고 URL/), "https://example.com/job/1");
-    await user.click(screen.getByRole("button", { name: /^파싱$/ }));
-
-    expect(await screen.findByText(/자동 파싱이 안 되는 사이트/)).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /직접 작성/, selected: true })).toBeInTheDocument();
-  });
-
-  test("카드 편집 → 모달 → 저장 → 리스트 갱신", async () => {
+  test("카드 더보기 클릭 → 편집 모달 열림", async () => {
     fetchMock.mockResolvedValue([samplePosting]);
     patchMock.mockResolvedValue({ ...samplePosting, title: "백엔드 개발자 (수정됨)" });
     const user = userEvent.setup();
     render(<PostingsContent />);
     await screen.findByText("백엔드 개발자");
 
-    await user.click(screen.getAllByRole("button", { name: /^편집$/ })[0]);
+    await user.click(screen.getByRole("button", { name: /더보기/ }));
     const titleInput = await screen.findByLabelText(/공고 제목/);
     await user.clear(titleInput);
     await user.type(titleInput, "백엔드 개발자 (수정됨)");
@@ -111,4 +79,19 @@ describe("PostingsContent", () => {
     });
     expect(await screen.findByText("백엔드 개발자 (수정됨)")).toBeInTheDocument();
   });
+
+  test("필터 칩 — 전체/진행중/마감 버튼 표시", async () => {
+    fetchMock.mockResolvedValue([]);
+    render(<PostingsContent />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    expect(screen.getByRole("button", { name: /전체/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /진행중/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /마감/ })).toBeInTheDocument();
+  });
+
+  // TODO Task 9: create flow (URL 파싱 / 직접 작성) 은 /company/postings/new 라우트로 이동 — 해당 페이지 테스트에서 커버
+  test.skip("직접 작성 → 저장 → 리스트 prepend", () => {});
+  test.skip("URL 파싱 실패 시 manual 탭 자동 전환 + 배너", () => {});
+  // TODO Task 9: keyword chip 은 PostingCard 에서 제거됨 — posting-detail 에서 커버
+  test.skip("기존 리스트 표시 + keyword chip", () => {});
 });
