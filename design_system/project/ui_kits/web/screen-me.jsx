@@ -13,9 +13,9 @@ const ME_NAV = [
 ];
 
 const ME_TITLES = {
-  profile:   { eyebrow: "ME · PROFILE",       title: "내 정보",        sub: "자소서·이력서 헤더와 채용공고 매칭에 쓰이는 정보예요. 한 번 정리해두면 모든 화면이 자동으로 채워집니다." },
-  career:    { eyebrow: "ME · CAREER · PROJECTS", title: "경력기술",   sub: "프로젝트 경험을 한 번 구조화해두면, 자소서·면접 답변·기업별 매칭 분석에 그대로 다시 쓸 수 있어요." },
-  portfolio: { eyebrow: "ME · PORTFOLIO",     title: "포트폴리오",     sub: "외부 링크 또는 파일을 한곳에 모아두는 곳이에요. 자소서 헤더에 같이 보내져요." },
+  profile:   { title: "내 정보",        sub: "자소서·이력서 헤더와 채용공고 매칭에 쓰이는 정보예요. 한 번 정리해두면 모든 화면이 자동으로 채워집니다." },
+  career:    { title: "경력기술",       sub: "프로젝트 경험을 한 번 구조화해두면, 자소서·면접 답변·기업별 매칭 분석에 그대로 다시 쓸 수 있어요." },
+  portfolio: { title: "포트폴리오",     sub: "외부 링크 또는 파일을 한곳에 모아두는 곳이에요. 자소서 헤더에 같이 보내져요." },
 };
 
 /* ---------- Sidebar ---------- */
@@ -44,7 +44,6 @@ function MePageHeader({ active }) {
   return (
     <section className="pg-head">
       <div className="lead">
-        <div className="eyebrow">{t.eyebrow}</div>
         <h1>{t.title}</h1>
         <p className="sub">{t.sub}</p>
       </div>
@@ -235,16 +234,92 @@ function ListRow({ tone = "", icon, nm, meta }) {
 /* ============================================================
    PORTFOLIO — links + files in one bucket
 ============================================================ */
+const LINK_TYPES = [
+  { id: "github",   lbl: "GitHub",   glyph: "GH" },
+  { id: "notion",   lbl: "Notion",   glyph: "N"  },
+  { id: "behance",  lbl: "Behance",  glyph: "Be" },
+  { id: "dribbble", lbl: "Dribbble", glyph: "Dr" },
+  { id: "figma",    lbl: "Figma",    glyph: "Fg" },
+  { id: "pdf",      lbl: "PDF",      glyph: "PDF" },
+  { id: "url",      lbl: "기타 URL", glyph: "URL" },
+  { id: "file",     lbl: "파일 업로드", glyph: "⬆" },
+];
+
+function PortfolioModal({ onClose }) {
+  const [type, setType] = useState("github");
+  return (
+    <div className="pf-modal-backdrop" onClick={onClose}>
+      <div className="pf-modal" onClick={e => e.stopPropagation()}>
+        <header className="head">
+          <h3>포트폴리오 추가</h3>
+          <button className="close" onClick={onClose} aria-label="닫기">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+          </button>
+        </header>
+        <div className="body">
+          <div className="fld">
+            <label className="lbl">링크 종류 <span className="req">*</span></label>
+            <div className="pf-type-grid">
+              {LINK_TYPES.map(t => (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={"pf-type-chip" + (type === t.id ? " active" : "")}
+                  onClick={() => setType(t.id)}
+                >
+                  <span className="ico">{t.glyph}</span>
+                  <span className="lbl">{t.lbl}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="fld">
+            <label className="lbl">제목 <span className="req">*</span></label>
+            <input className="input" placeholder="예: 식권 정산 API · 캐시 적중률 개선"/>
+          </div>
+          <div className="fld">
+            <label className="lbl">{type === "file" ? "파일 업로드" : "URL"} <span className="req">*</span></label>
+            <input className="input" defaultValue={type === "file" ? "" : "https://github.com/somikim/meal-settlement"} placeholder={type === "file" ? "파일을 선택해주세요" : "https://…"}/>
+          </div>
+          <div className="fld">
+            <label className="lbl">한 줄 설명</label>
+            <input className="input" placeholder="40자 이내 권장"/>
+          </div>
+          <div className="fld">
+            <label className="lbl">사용 기술</label>
+            <div className="tagbox">
+              <span className="tag">Spring Boot<button className="x">×</button></span>
+              <span className="tag">Redis<button className="x">×</button></span>
+              <span className="tag">PostgreSQL<button className="x">×</button></span>
+              <input placeholder="태그 추가…"/>
+            </div>
+            <span className="helper">Enter / 콤마(,)로 추가</span>
+          </div>
+          <div className="fld">
+            <label className="lbl">본인 기여 요약</label>
+            <textarea defaultValue="API 캐시 적중률을 23% → 71%까지 끌어올려 평균 응답을 340ms → 110ms로 줄였습니다."/>
+          </div>
+        </div>
+        <footer className="foot">
+          <button className="btn ghost sm" onClick={onClose}>취소</button>
+          <button className="btn primary sm" onClick={onClose}>추가</button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
 function PortfolioView() {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <section className="me-section">
       <div className="sec-head">
         <div className="sec-title">포트폴리오</div>
         <div className="head-r">
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalOpen(true)}>
             <Ico.Link size={13}/> 링크 추가
           </button>
-          <button className="btn secondary sm">
+          <button className="btn secondary sm" onClick={() => setModalOpen(true)}>
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
             파일 업로드
           </button>
@@ -256,15 +331,12 @@ function PortfolioView() {
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
           </span>
           <div className="body">
-            <div className="nm">github.com/somikim</div>
-            <div className="meta">GitHub · 레포 14개 · Java · Spring · TS</div>
+            <div className="nm">github.com/somikim · 식권 정산 API</div>
+            <div className="meta">GitHub · Spring Boot · Redis · PostgreSQL · 본인 기여 100%</div>
           </div>
-          <span className="kind-pill">링크</span>
+          <span className="kind-pill">GitHub</span>
           <div className="actions">
             <button className="iconbtn"><Ico.Edit size={14}/></button>
-            <button className="iconbtn">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            </button>
           </div>
         </div>
         <div className="list-row lav">
@@ -275,12 +347,9 @@ function PortfolioView() {
             <div className="nm">somi.notion.site/portfolio</div>
             <div className="meta">Notion · 프로젝트 5건 · 마지막 업데이트 4일 전</div>
           </div>
-          <span className="kind-pill">링크</span>
+          <span className="kind-pill">Notion</span>
           <div className="actions">
             <button className="iconbtn"><Ico.Edit size={14}/></button>
-            <button className="iconbtn">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            </button>
           </div>
         </div>
         <div className="list-row mint">
@@ -291,15 +360,11 @@ function PortfolioView() {
           </div>
           <span className="kind-pill file">파일</span>
           <div className="actions">
-            <button className="iconbtn">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            </button>
-            <button className="iconbtn">
-              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            </button>
+            <button className="iconbtn"><Ico.Edit size={14}/></button>
           </div>
         </div>
       </div>
+      {modalOpen && <PortfolioModal onClose={() => setModalOpen(false)}/>}
     </section>
   );
 }

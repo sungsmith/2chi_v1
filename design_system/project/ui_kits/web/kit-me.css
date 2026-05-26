@@ -23,10 +23,10 @@
   display: flex; flex-direction: column; gap: 2px;
 }
 .side-nav .crumb {
-  font-family: var(--font-family-mono);
-  font-size: 10.5px; font-weight: 700;
+  font-family: var(--font-family-sans);
+  font-size: 12px; font-weight: 700;
   color: var(--color-text-muted);
-  letter-spacing: 0.12em; text-transform: uppercase;
+  letter-spacing: -0.01em;
   padding: 4px 10px 12px;
   border-bottom: 1px dashed var(--color-border-default);
   margin-bottom: 6px;
@@ -45,7 +45,6 @@
   font-size: 9.5px; font-weight: 700;
   padding: 2px 6px; border-radius: 999px;
   background: var(--color-primary-100); color: var(--color-primary-700);
-  letter-spacing: 0.04em;
 }
 .side-nav .nav-item.active .pill { background: var(--color-primary-600); color: #fff; }
 
@@ -62,14 +61,8 @@
 
 .pg-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding: 0 2px; }
 .pg-head .lead { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.pg-head .eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-family-mono);
-  font-size: 11px; font-weight: 700;
-  color: var(--color-text-muted);
-  letter-spacing: 0.12em; text-transform: uppercase;
-}
-.pg-head .eyebrow::before { content: ""; width: 20px; height: 1px; background: currentColor; opacity: 0.5; }
+.pg-head .eyebrow { display: none; }
+.pg-head .eyebrow::before { display: none; }
 .pg-head h1 {
   margin: 0; font-family: var(--font-family-hand);
   font-size: 38px; line-height: 1.2; font-weight: 400;
@@ -107,7 +100,6 @@
   color: var(--color-text-secondary);
   font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
   display: grid; place-items: center;
-  letter-spacing: 0.04em;
 }
 .sub-section-head .ttl { font-family: var(--font-family-sans); font-weight: 700; font-size: 15px; color: var(--color-text-primary); letter-spacing: -0.01em; }
 .sub-section-head .sub { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
@@ -162,7 +154,6 @@
   font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
   padding: 2px 7px; border-radius: 999px;
   background: var(--color-surface-soft); color: var(--color-text-secondary);
-  letter-spacing: 0.04em;
 }
 .list-row .kind-pill.file { background: var(--color-mint-50); color: var(--color-mint-700); }
 
@@ -327,7 +318,7 @@
 .prar-cell .ko { font-size: 13px; font-weight: 700; color: var(--color-text-primary); }
 .prar-cell .en {
   font-family: var(--font-family-mono); font-size: 10px;
-  color: var(--color-text-muted); letter-spacing: 0.08em;
+  color: var(--color-text-muted);
 }
 .prar-cell .cell-count {
   margin-left: auto;
@@ -351,7 +342,7 @@
 }
 .metrics-strip .metric-label {
   font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700;
-  color: var(--color-text-secondary); letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
   text-transform: uppercase; padding-right: 8px;
   border-right: 1px solid var(--color-border-default);
   margin-right: 4px;
@@ -387,9 +378,117 @@
 .add-proj-sm:hover { background: var(--color-primary-50); color: var(--color-primary-700); border-color: var(--color-primary-300); border-style: solid; }
 
 /* ============================================================
-   CAREER · workspace structure
+   Portfolio — add/edit modal + link-type chooser
+============================================================ */
+.pf-modal-backdrop {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(37,36,31,0.42);
+  display: grid; place-items: center;
+}
+.pf-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 520px; max-width: calc(100vw - 32px);
+  border: 1px solid var(--color-border-default);
+  box-shadow: var(--shadow-modal);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.pf-modal .head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.pf-modal .head h3 {
+  margin: 0; font-family: var(--font-family-sans);
+  font-size: 16px; font-weight: 700;
+}
+.pf-modal .close {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: none; background: var(--color-surface-soft);
+  color: var(--color-text-muted); cursor: pointer;
+  display: grid; place-items: center;
+}
+.pf-modal .body { padding: 16px 22px; display: flex; flex-direction: column; gap: 14px; max-height: 70vh; overflow-y: auto; }
+
+/* Modal form fields — same atom as .form-grid .fld but scoped to modal */
+.pf-modal .body .fld { display: flex; flex-direction: column; gap: 6px; }
+.pf-modal .body .lbl {
+  font-size: 12.5px; font-weight: 700; color: var(--color-text-primary);
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.pf-modal .body .lbl .req { color: var(--color-semantic-error); }
+.pf-modal .body .input,
+.pf-modal .body textarea {
+  height: 38px; padding: 0 12px;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-md);
+  background: #fff; font-family: inherit; font-size: 13.5px;
+  color: var(--color-text-primary); width: 100%;
+}
+.pf-modal .body textarea { height: auto; min-height: 80px; padding: 10px 12px; resize: vertical; line-height: 1.5; }
+.pf-modal .body .input:focus,
+.pf-modal .body textarea:focus {
+  outline: none; border-color: var(--color-border-focus); box-shadow: var(--focus-ring);
+}
+.pf-modal .body .helper { font-size: 11.5px; color: var(--color-text-muted); }
+.pf-modal .body .tagbox {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  padding: 6px 8px; background: #fff;
+  border: 1px solid var(--color-border-strong); border-radius: 10px;
+  min-height: 38px;
+}
+.pf-modal .body .tagbox:focus-within { border-color: var(--color-primary-500); box-shadow: var(--focus-ring); }
+.pf-modal .body .tagbox input { border: none; outline: none; flex: 1; min-width: 80px; font-size: 13px; background: transparent; padding: 4px; }
+.pf-modal .body .tagbox .tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 4px 3px 9px; border-radius: 999px;
+  background: var(--color-primary-50); color: var(--color-primary-700);
+  border: 1px solid var(--color-primary-100);
+  font-size: 11.5px; font-weight: 600;
+}
+.pf-modal .body .tagbox .tag .x {
+  width: 16px; height: 16px; border-radius: 50%;
+  display: inline-grid; place-items: center; cursor: pointer; border: none;
+  background: var(--color-primary-100); color: var(--color-primary-700);
+}
+.pf-modal .foot {
+  display: flex; align-items: center; justify-content: flex-end; gap: 6px;
+  padding: 12px 22px;
+  background: var(--color-surface-soft);
+  border-top: 1px solid var(--color-border-default);
+}
+
+/* Link type chooser — chip grid */
+.pf-type-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+}
+.pf-type-chip {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 12px 6px; border-radius: 10px;
+  background: var(--color-surface-default);
+  border: 1.5px solid var(--color-border-default);
+  font-family: inherit; cursor: pointer;
+  color: var(--color-text-secondary);
+}
+.pf-type-chip:hover { background: var(--color-surface-soft); }
+.pf-type-chip.active {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-500);
+  color: var(--color-primary-700);
+}
+.pf-type-chip .ico {
+  width: 24px; height: 24px; border-radius: 6px;
+  background: var(--color-surface-soft); color: var(--color-text-secondary);
+  display: grid; place-items: center;
+  font-family: var(--font-family-mono); font-size: 9px; font-weight: 800;
+}
+.pf-type-chip.active .ico { background: var(--color-primary-100); color: var(--color-primary-700); }
+.pf-type-chip .lbl { font-size: 11.5px; font-weight: 700; }
+
+/* ============================================================
+   CAREER · workspace
    - career-meta:   inline meta line (not a card)
-   - info-banner:   restrained notice (white bg + colored left rule)
+   - info-banner:   restrained notice (white bg, tone in icon tile)
    - work-section:  "회사 경력" section header marking editable area
    - add-company-row: dashed CTA replacing the yellow paper page-foot
 ============================================================ */
@@ -413,21 +512,24 @@
 }
 .career-meta .meta-edit:hover { background: var(--color-surface-soft); color: var(--color-text-primary); }
 
-/* Compact info banner — neutral border, no colored left rule.
-   Tone signal lives only in the icon color. */
+/* Compact info banner — neutral border, tone lives in icon tile. */
 .info-banner {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 12px;
   padding: 10px 12px 10px 14px;
   background: #fff;
   border: 1px solid var(--color-border-default);
   border-radius: 10px;
   font-size: 12.5px; line-height: 1.55; color: var(--color-text-primary);
+  letter-spacing: -0.005em;
 }
 .info-banner .ico {
-  width: 18px; height: 18px; flex: 0 0 auto;
-  color: var(--color-text-muted); display: inline-flex; align-items: center;
+  width: 22px; height: 22px; border-radius: 6px;
+  flex: 0 0 auto;
+  display: grid; place-items: center;
+  background: var(--color-surface-soft);
+  color: var(--color-text-muted);
 }
-.info-banner.lav .ico { color: var(--color-lavender-600); }
+.info-banner.lav .ico { background: var(--color-lavender-50); color: var(--color-lavender-600); }
 .info-banner .body { flex: 1; min-width: 0; }
 .info-banner .body b { font-weight: 700; }
 .info-banner .body .miss { color: var(--color-semantic-error); font-weight: 700; }

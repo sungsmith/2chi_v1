@@ -310,7 +310,7 @@ function CompanyAnalysisView() {
   );
 }
 
-function AnalysisListView({ onOpen }) {
+function AnalysisListView({ onOpen, onNew }) {
   const items = [
     { co: "카카오",   tag: "방금 분석", match: 72, postings: 2, fresh: true },
     { co: "네이버",   tag: "3일 전",   match: 81, postings: 1 },
@@ -324,7 +324,7 @@ function AnalysisListView({ onOpen }) {
           <h1>기업분석</h1>
           <div className="sub">DART · 뉴스 · 채용 페이지를 한 번에 정리한 회사별 카드를 모아둡니다.</div>
         </div>
-        <button className="btn primary"><Ico.Plus size={14}/> 회사 분석 추가</button>
+        <button className="btn primary" onClick={onNew}><Ico.Plus size={14}/> 회사 분석 추가</button>
       </section>
 
       <div className="posting-toolbar">
@@ -408,7 +408,18 @@ function CompanyScreen() {
           </>
         )}
         {active === "analysis" && sub === "list" && (
-          <AnalysisListView onOpen={() => setSub("result")}/>
+          <AnalysisListView
+            onOpen={() => setSub("result")}
+            onNew={() => setSub("entry")}
+          />
+        )}
+        {active === "analysis" && sub === "entry" && (
+          <>
+            <button className="pd-back" onClick={() => setSub("list")}>
+              <Ico.ArrowLeft size={12}/> 분석 목록으로
+            </button>
+            <CompanyAnalysisEntry onResult={() => setSub("result")}/>
+          </>
         )}
         {active === "analysis" && sub === "result" && (
           <>
@@ -637,4 +648,100 @@ function PostingDetailView({ posting, onBack, onEdit, onOpenCl, onOpenCompose })
     </div>
   );
 }
-Object.assign(window, { PostingDetailView });
+function CompanyAnalysisEntry({ onResult }) {
+  const [step, setStep] = useState("search"); // search | candidates | empty
+  const [picked, setPicked] = useState("c1");
+  return (
+    <div className="ca-entry">
+      <section className="co-head">
+        <div>
+          <h1>새 회사 분석</h1>
+          <div className="sub">분석할 회사명을 검색해주세요. DART · 뉴스 · 인재상을 한 번에 정리해드릴게요.</div>
+        </div>
+      </section>
+
+      <section className="ca-entry-card">
+        <div className="head">
+          <span className="lbl">회사명 <span className="req">*</span></span>
+          <span className="sub">정확한 회사명이 좋아요 (예: "카카오", "(주)테크컴퍼니")</span>
+        </div>
+        <div className="ca-search-row">
+          <label className="ca-search-field">
+            <span className="ico"><Ico.Search size={16}/></span>
+            <input defaultValue="카카오" placeholder="회사명 검색…"/>
+          </label>
+          <button className="ca-search-btn" onClick={() => setStep("candidates")}>
+            <Ico.Sparkle size={14}/> 검색
+          </button>
+        </div>
+
+        {step === "candidates" && (
+          <>
+            <div className="head" style={{paddingTop:4}}>
+              <span className="lbl">동명 기업 후보 · 3</span>
+              <span className="sub">DART 등록된 사업자 기준</span>
+            </div>
+            <div className="ca-candidates">
+              <div className={"ca-cand-row" + (picked === "c1" ? " selected" : "")} onClick={() => setPicked("c1")}>
+                <span className="co-glyph">카</span>
+                <div className="body">
+                  <span className="nm">주식회사 카카오</span>
+                  <span className="meta">IT · 모바일 플랫폼 <span className="sep">·</span> 본사 경기 성남 <span className="sep">·</span> 임직원 5,100명</span>
+                </div>
+                <span className="stock">KOSPI 035720</span>
+                <span className="pick-radio"/>
+              </div>
+              <div className={"ca-cand-row" + (picked === "c2" ? " selected" : "")} onClick={() => setPicked("c2")}>
+                <span className="co-glyph">카</span>
+                <div className="body">
+                  <span className="nm">카카오게임즈</span>
+                  <span className="meta">게임 · 모바일/PC <span className="sep">·</span> 본사 경기 성남 <span className="sep">·</span> 임직원 1,200명</span>
+                </div>
+                <span className="stock">KOSDAQ 293490</span>
+                <span className="pick-radio"/>
+              </div>
+              <div className={"ca-cand-row" + (picked === "c3" ? " selected" : "")} onClick={() => setPicked("c3")}>
+                <span className="co-glyph">카</span>
+                <div className="body">
+                  <span className="nm">카카오페이</span>
+                  <span className="meta">금융 · 간편결제 <span className="sep">·</span> 본사 서울 <span className="sep">·</span> 임직원 1,150명</span>
+                </div>
+                <span className="stock">KOSPI 377300</span>
+                <span className="pick-radio"/>
+              </div>
+            </div>
+            <div className="ca-entry-foot">
+              <span className="hint">맞는 회사가 없다면 직접 입력해주세요.</span>
+              <button className="btn primary sm" onClick={onResult}>
+                선택하고 분석 시작 <Ico.ArrowRight size={13}/>
+              </button>
+            </div>
+          </>
+        )}
+
+        {step === "empty" && (
+          <div className="ca-empty">
+            <span className="ico">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </span>
+            <div className="body">
+              <div className="ttl">정보가 제한적이에요</div>
+              <div className="desc">DART에 등록된 정보가 없거나, 비상장 기업일 수 있어요. 직접 회사 정보를 입력하면 그대로 분석에 활용할게요.</div>
+              <div className="actions">
+                <button className="btn ghost sm" onClick={() => setStep("search")}>다시 검색</button>
+                <button className="btn primary sm">직접 입력하기</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+
+      <div style={{display:"flex", justifyContent:"center", gap:8}}>
+        <button className="btn ghost sm" onClick={() => setStep(step === "empty" ? "candidates" : "empty")}>
+          (데모) {step === "empty" ? "후보 보기" : "정보 부족 케이스 보기"}
+        </button>
+      </div>
+    </div>
+  );
+}
+Object.assign(window, { CompanyAnalysisEntry });

@@ -22,7 +22,6 @@ function DashboardScreen({ onNavigate, completedOnb }) {
         {/* Greeting */}
         <section className="greet">
           <div className="greet-text">
-            <div className="greet-meta">2026 · 05 · 12 수요일 · 오늘의 준비 현황</div>
             <h1>
               {completedOnb ? "다시 만나서 반가워요" : "안녕하세요"}, 소미님
               <span className="wave" role="img" aria-label="hi">👋</span>

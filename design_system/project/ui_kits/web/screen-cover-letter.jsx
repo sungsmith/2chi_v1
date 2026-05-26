@@ -18,7 +18,7 @@ const DRAFT_PARAGRAPH = (
 
 function CoverLetterScreen() {
   return (
-    <main className="kit-main">
+    <div>
       <div className="cl-shell">
         {/* MAIN */}
         <div className="cl-main">
@@ -34,7 +34,25 @@ function CoverLetterScreen() {
               </div>
               <div className="pills">
                 <button className="btn secondary"><Ico.Save size={14}/> 임시저장</button>
-                <button className="btn secondary"><Ico.Download size={14}/> PDF</button>
+                <div style={{position:"relative"}}>
+                  <button className="btn secondary">
+                    <Ico.Download size={14}/> 다운로드 <Ico.ChevronDown size={12}/>
+                  </button>
+                  <div className="download-menu">
+                    <button className="download-item">
+                      <span className="ext">PDF</span>
+                      <span className="meta"><b>제출용</b> · 폰트 포함 · 인쇄 최적화</span>
+                    </button>
+                    <button className="download-item">
+                      <span className="ext">DOCX</span>
+                      <span className="meta"><b>편집용</b> · MS Word · 외부 편집 가능</span>
+                    </button>
+                    <button className="download-item">
+                      <span className="ext">TXT</span>
+                      <span className="meta">텍스트만 · 클립보드 복사용</span>
+                    </button>
+                  </div>
+                </div>
                 <button className="btn ai">AI 초안 다시 만들기</button>
               </div>
             </div>
@@ -53,10 +71,48 @@ function CoverLetterScreen() {
               {DRAFT_PARAGRAPH}
             </div>
             <div className="q-foot">
-              <div className="counter">글자수 <b>318</b> / 500 (공백 포함)</div>
+              <div className="counter">
+                <button className="counter-toggle">
+                  <Ico.Check size={10}/> 공백 포함
+                </button>
+                <span className="count-text"><b>318</b> / 500</span>
+              </div>
               <div className="q-actions">
                 <button className="btn ghost sm"><Ico.Refresh size={12}/> 다시 쓰기</button>
+                <button className="btn secondary sm">맞춤법 검사</button>
                 <button className="btn tertiary sm"><Ico.Sparkle size={12}/> 자소서 톤 맞추기</button>
+              </div>
+            </div>
+
+            <div className="ai-validation">
+              <div className="ai-val-head">
+                <span className="ttl"><Ico.Sparkle size={12}/> AI 생성 자동 검증</span>
+                <span className="stamp">2분 전 · 3건 검토 권장</span>
+              </div>
+              <div className="ai-val-row ok">
+                <span className="ico"><Ico.Check size={11}/></span>
+                <span>글자수 <b>318자</b> · 제한 500자 이내</span>
+              </div>
+              <div className="ai-val-row ok">
+                <span className="ico"><Ico.Check size={11}/></span>
+                <span>공고 핵심 키워드 <b>4 / 5</b>개 반영 (PostgreSQL, Redis, 결제·정산, 도메인)</span>
+              </div>
+              <div className="ai-val-row warn">
+                <span className="ico">!</span>
+                <span>이력에서 확인되지 않은 표현 <b>2건</b> — Kafka 기반 비동기 처리, MSA 운영 경험</span>
+              </div>
+            </div>
+
+            <div className="spellcheck-banner">
+              <div className="left">
+                <span className="badge warning dot">맞춤법 검사 결과 · 2건</span>
+                <span className="sc-detail">
+                  "<b>설계 도면</b>" 표현 주위 띄어쓰기 1건 · "<b>운용</b>" → <b>운영</b> 추천 1건
+                </span>
+              </div>
+              <div className="right">
+                <button className="btn ghost sm">건너뛰기</button>
+                <button className="btn primary sm">한 번에 적용</button>
               </div>
             </div>
           </article>
@@ -75,8 +131,14 @@ function CoverLetterScreen() {
               </span>
             </div>
             <div className="q-foot">
-              <div className="counter">글자수 <b>0</b> / 400</div>
+              <div className="counter">
+                <button className="counter-toggle">
+                  <Ico.Check size={10}/> 공백 포함
+                </button>
+                <span className="count-text"><b>0</b> / 400</span>
+              </div>
               <div className="q-actions">
+                <button className="btn secondary sm">맞춤법 검사</button>
                 <button className="btn ai sm">AI 초안 만들기</button>
               </div>
             </div>
@@ -128,7 +190,7 @@ function CoverLetterScreen() {
           </section>
         </aside>
       </div>
-    </main>
+    </div>
   );
 }
 

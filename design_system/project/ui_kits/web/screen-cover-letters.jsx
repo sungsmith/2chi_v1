@@ -79,6 +79,10 @@ function ClCard({ item, master = false, onOpen }) {
 function ClListView({ onOpenEditor }) {
   const [filter, setFilter] = useState("all");
   const [sort, setSort] = useState("recent");
+
+  if (filter === "trash") {
+    return <TrashView onBack={() => setFilter("all")}/>;
+  }
   return (
     <>
       <div className="cl-list-head">
@@ -131,6 +135,73 @@ function ClListView({ onOpenEditor }) {
 /* ============================================================
    경력기술서 재구조화
 ============================================================ */
+const TRASH_ITEMS = [
+  { id: "t1", title: "당근 Server Engineer · 결제 자소서",  co: "당근",   pos: "Backend",            deleted: "2026.05.10", remainingDays: 28 },
+  { id: "t2", title: "라인 백엔드 신입 자소서 v2",          co: "라인",   pos: "백엔드 신입",         deleted: "2026.04.28", remainingDays: 16 },
+  { id: "t3", title: "쿠팡 결제 백엔드 (구버전 마스터)",    co: "쿠팡",   pos: "백엔드",              deleted: "2026.04.15", remainingDays: 3, soon: true },
+];
+
+function TrashView({ onBack }) {
+  return (
+    <>
+      <div style={{display:"flex", alignItems:"center", gap:8, marginBottom:14}}>
+        <button className="btn ghost sm" onClick={onBack}>
+          <Ico.ArrowLeft size={12}/> 자소서 목록으로
+        </button>
+      </div>
+
+      <section className="co-head" style={{marginBottom:14}}>
+        <div>
+          <h1>휴지통</h1>
+          <div className="sub" style={{fontSize:13.5, color:"var(--color-text-secondary)", marginTop:4}}>
+            삭제한 자소서는 <b>30일간</b> 보관 후 영구 삭제돼요.
+          </div>
+        </div>
+      </section>
+
+      <div className="trash-banner">
+        <span className="ico">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </span>
+        <span className="body">
+          <b>3건이 휴지통에 있어요.</b> 30일이 지나면 자동으로 영구 삭제돼요. 그 안에 복구하면 원본 그대로 돌아와요.
+        </span>
+        <button className="clear-all">전부 영구 삭제</button>
+      </div>
+
+      <div className="trash-table">
+        <div className="trash-row head">
+          <div>자소서</div>
+          <div>삭제일</div>
+          <div>영구 삭제까지</div>
+          <div/>
+        </div>
+        {TRASH_ITEMS.map(t => (
+          <div key={t.id} className="trash-row">
+            <div className="body">
+              <div className="nm">{t.title}</div>
+              <div className="meta"><span className="co">{t.co}</span> · {t.pos}</div>
+            </div>
+            <div className="deleted-at">{t.deleted}</div>
+            <div className={"remaining" + (t.soon ? " soon" : "")}>
+              <span className="bar"><span style={{width: (t.remainingDays / 30 * 100) + "%"}}/></span>
+              {t.remainingDays}일
+            </div>
+            <div className="actions">
+              <button className="btn ghost sm"><Ico.Refresh size={12}/> 복구</button>
+              <button className="btn ghost sm" style={{color:"var(--color-semantic-error)"}}>
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                영구 삭제
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+Object.assign(window, { TrashView });
+
 const POSTINGS_FOR_PICKER = [
   { id: "p1", co: "카카오",         nm: "백엔드 (Saas 팀)",            role: "백엔드 · 결제·정산", dday: "D-3",  match: 72, soon: true },
   { id: "p2", co: "(주)테크컴퍼니", nm: "백엔드 개발자 (경력 2~5년)",   role: "백엔드 · 결제·정산", dday: "D-19", match: 68 },
@@ -144,7 +215,7 @@ function CareerStatementView() {
 
   if (!picked) {
     return (
-      <div className="cs-shell">
+      <>
         <div className="cs-head">
           <div>
             <h1>경력기술서 재구조화</h1>
@@ -201,12 +272,12 @@ function CareerStatementView() {
             </button>
           </div>
         </section>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="cs-shell">
+    <>
       <div className="cs-head">
         <div>
           <h1>경력기술서 재구조화</h1>
@@ -303,7 +374,7 @@ function CareerStatementView() {
           </div>
         </section>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -329,8 +400,18 @@ function CoverLettersScreen({ initialTab = "cl-list", onOpenEditor }) {
         ))}
       </aside>
       <div className="cl-main">
-        {tab === "cl-list"      && <ClListView onOpenEditor={onOpenEditor}/>}
+        {tab === "cl-list"      && <ClListView onOpenEditor={() => setTab("cl-editor")}/>}
         {tab === "cl-statement" && <CareerStatementView/>}
+        {tab === "cl-editor"    && (
+          <>
+            <div style={{marginBottom: 14}}>
+              <button className="btn ghost sm" onClick={() => setTab("cl-list")}>
+                <Ico.ArrowLeft size={12}/> 자소서 목록으로
+              </button>
+            </div>
+            <CoverLetterScreen/>
+          </>
+        )}
       </div>
     </div>
   );

@@ -358,7 +358,7 @@ function CalendarDay({ onOpenEvt }) {
           <div className="cal-day-track" style={{ height: hours.length * cellHeight }}>
             {events.map((e, idx) => {
               const top = (e.start - dayStart) * cellHeight;
-              const height = Math.max(60, e.dur * cellHeight - 6);
+              const height = Math.max(72, e.dur * cellHeight - 6);
               return (
                 <div
                   key={idx}
@@ -421,6 +421,8 @@ const KAN_COLS = [
 ];
 
 function KanbanView() {
+  const [result, setResult] = useState("all"); // all | active | passed | failed
+  const [sort, setSort] = useState("recent");
   return (
     <>
       <section className="ap-head">
@@ -434,6 +436,30 @@ function KanbanView() {
       </section>
 
       {STAGE_LEGEND}
+
+      <div className="kan-toolbar">
+        <div className="filter-chips">
+          <button className={result === "all"    ? "active" : ""} onClick={() => setResult("all")}>전체 <span className="n">7</span></button>
+          <button className={result === "active" ? "active" : ""} onClick={() => setResult("active")}>진행중 <span className="n">7</span></button>
+          <button className={result === "passed" ? "active" : ""} onClick={() => setResult("passed")}>합격 <span className="n">2</span></button>
+          <button className={result === "failed" ? "active" : ""} onClick={() => setResult("failed")}>불합격 <span className="n">3</span></button>
+        </div>
+        <div className="sort">
+          <span className="lbl">정렬</span>
+          <div className="seg">
+            <button className={sort === "recent" ? "active" : ""} onClick={() => setSort("recent")}>최신순</button>
+            <button className={sort === "dday"   ? "active" : ""} onClick={() => setSort("dday")}>마감순</button>
+            <button className={sort === "co"     ? "active" : ""} onClick={() => setSort("co")}>회사명</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="kan-active-filters">
+        <span className="lbl">활성 필터</span>
+        <span className="chip">백엔드 직군<button className="x"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></span>
+        <span className="chip">최근 30일<button className="x"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></span>
+        <button className="clear">전체 초기화</button>
+      </div>
 
       <div className="kanban">
         {KAN_COLS.map(col => (
@@ -477,6 +503,7 @@ function HistoryRow({ time, icon, iconTone, msg, actor }) {
 }
 
 function HistoryView() {
+  const [sort, setSort] = useState("recent");
   return (
     <>
       <section className="ap-head">
@@ -489,6 +516,23 @@ function HistoryView() {
           <button className="btn secondary sm"><Ico.Download size={12}/> 내보내기</button>
         </div>
       </section>
+
+      <div className="kan-toolbar">
+        <div className="filter-chips">
+          <button className="active">전체 <span className="n">142</span></button>
+          <button>전형 변경 <span className="n">38</span></button>
+          <button>자소서 <span className="n">52</span></button>
+          <button>알림 <span className="n">29</span></button>
+          <button>지원 등록 <span className="n">23</span></button>
+        </div>
+        <div className="sort">
+          <span className="lbl">정렬</span>
+          <div className="seg">
+            <button className={sort === "recent" ? "active" : ""} onClick={() => setSort("recent")}>시간 역순</button>
+            <button className={sort === "co"     ? "active" : ""} onClick={() => setSort("co")}>회사별</button>
+          </div>
+        </div>
+      </div>
 
       <section className="history">
         <div className="history-day">2026.05.12 (수) · 오늘<span className="count">3</span></div>
@@ -536,6 +580,20 @@ function HistoryView() {
           msg={<><b>당근 Server Engineer · 결제</b>가 <span className="stage-from">1차면접</span><Ico.ArrowRight size={11}/><span className="stage-to">불합격</span>으로 변경됐어요.</>}
           actor="김소미 · 결과 입력"
         />
+
+        <div className="history-pager">
+          <span className="meta">전체 <b>142</b>건 · <b>1–30</b> 보기</span>
+          <nav className="pg">
+            <a className="disabled" aria-disabled="true">‹</a>
+            <a className="active">1</a>
+            <a>2</a>
+            <a>3</a>
+            <a>4</a>
+            <span className="ellipsis">…</span>
+            <a>5</a>
+            <a>›</a>
+          </nav>
+        </div>
       </section>
     </>
   );

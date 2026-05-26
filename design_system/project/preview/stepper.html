@@ -25,7 +25,7 @@
   .step-v { display: flex; flex-direction: column; gap: 0; padding-left: 6px; }
   .step-v .item { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: flex-start; position: relative; padding: 6px 0 14px; }
   .step-v .item::before {
-    content: ""; position: absolute; left: 13px; top: 30px; bottom: -4px;
+    content: ""; position: absolute; left: 13px; top: 30px; bottom: -6px;
     width: 2px; background: var(--color-neutral-200);
   }
   .step-v .item:last-child::before { display: none; }
@@ -34,7 +34,9 @@
     background: var(--color-neutral-100); color: var(--color-text-secondary);
     font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
     display: grid; place-items: center;
+    justify-self: center;
     border: 2px solid #fff; box-shadow: 0 0 0 1px var(--color-neutral-200);
+    position: relative; z-index: 1;
   }
   .step-v .item.done .dot { background: var(--color-mint-500); color: #fff; box-shadow: 0 0 0 1px var(--color-mint-500); }
   .step-v .item.done::before { background: var(--color-mint-300); }

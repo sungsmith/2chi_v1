@@ -409,12 +409,67 @@ function NotiSettingsRow({ nm, desc, defOn = true, locked = false }) {
 }
 
 function NotiSettingsView() {
+  // 'default' | 'requesting' | 'granted' | 'blocked'
+  const [pushState, setPushState] = useState("default");
   return (
     <>
       <section className="mp-head">
         <h1>알림 설정</h1>
         <div className="sub">받고 싶은 알림 채널과 카테고리를 카테고리별로 정리할 수 있어요.</div>
       </section>
+
+      {pushState === "default" && (
+        <div className="push-card">
+          <span className="ico"><Ico.Bell size={24}/></span>
+          <div className="body">
+            <span className="ttl">웹푸시 알림을 켜시겠어요?</span>
+            <span className="desc">
+              마감 임박 알림과 면접 일정을 브라우저에서 바로 받아볼 수 있어요.
+              브라우저 권한 동의 한 번이면 됩니다.
+            </span>
+          </div>
+          <div className="actions">
+            <button className="btn ghost sm" onClick={() => setPushState("blocked")}>나중에</button>
+            <button className="btn primary sm" onClick={() => setPushState("requesting")}>
+              <Ico.Bell size={12}/> 권한 요청하기
+            </button>
+          </div>
+        </div>
+      )}
+
+      {pushState === "granted" && (
+        <div className="push-card granted">
+          <span className="ico"><Ico.Check size={24}/></span>
+          <div className="body">
+            <span className="ttl">웹푸시 알림이 켜져 있어요</span>
+            <span className="desc">
+              현재 기기 · 브라우저에서 <b>마감 임박 · 면접 일정</b> 알림을 받아볼 수 있어요.
+              다른 기기에서는 따로 설정해야 해요.
+            </span>
+          </div>
+          <div className="actions">
+            <span className="status-pill"><Ico.Check size={11}/> 권한 허용됨</span>
+          </div>
+        </div>
+      )}
+
+      {pushState === "blocked" && (
+        <div className="push-card blocked">
+          <span className="ico">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <div className="body">
+            <span className="ttl">브라우저에서 웹푸시 알림이 차단되어 있어요</span>
+            <span className="desc">
+              주소창 왼쪽 <b>🔒 자물쇠 → 알림</b>에서 권한을 직접 허용해주세요.
+              그래도 안 된다면 이메일 알림으로 받아볼 수 있어요.
+            </span>
+          </div>
+          <div className="actions">
+            <button className="btn secondary sm" onClick={() => setPushState("default")}>다시 시도</button>
+          </div>
+        </div>
+      )}
 
       <section className="mp-section">
         <div className="sec-head">
@@ -452,8 +507,31 @@ function NotiSettingsView() {
           <span className="sec-sub">받고 싶은 채널을 골라주세요</span>
         </div>
         <NotiSettingsRow nm="이메일 알림" desc="가장 안정적인 채널 · 발송 후 30일간 보관" defOn={true}/>
-        <NotiSettingsRow nm="웹푸시 알림" desc="브라우저 알림 권한이 필요해요" defOn={true}/>
+        <NotiSettingsRow nm="웹푸시 알림" desc={
+          pushState === "granted" ? "브라우저 권한 허용됨 · 현재 기기에서 수신 중" :
+          pushState === "blocked" ? "브라우저에서 차단됨 · 위 안내 참고" :
+          "브라우저 알림 권한이 필요해요"
+        } defOn={pushState === "granted"}/>
       </section>
+
+      {pushState === "requesting" && (
+        <>
+          <div className="push-prompt-backdrop"/>
+          <div className="push-prompt" role="dialog">
+            <span className="browser-ico"><Ico.Bell size={16}/></span>
+            <div>
+              <div className="head">알림 표시 권한</div>
+              <div className="desc">
+                <span className="origin">app.2chi.io</span>에서 알림을 표시하려고 합니다.
+              </div>
+            </div>
+            <div className="row">
+              <button className="deny" onClick={() => setPushState("blocked")}>차단</button>
+              <button className="allow" onClick={() => setPushState("granted")}>허용</button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

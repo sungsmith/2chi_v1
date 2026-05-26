@@ -13,14 +13,14 @@
   gap: 28px;
   align-items: flex-start;
 }
-.cl-main { min-width: 0; display: flex; flex-direction: column; }
+.cl-main { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
 
 /* ============================================================
    List page
 ============================================================ */
 .cl-list-head {
   display: flex; align-items: flex-end; justify-content: space-between;
-  margin-bottom: 18px; gap: 16px;
+  gap: 16px;
 }
 .cl-list-head h1 {
   margin: 0; font-family: var(--font-family-hand);
@@ -30,7 +30,6 @@
 
 .cl-toolbar {
   display: flex; align-items: center; gap: 8px;
-  margin-bottom: 14px;
 }
 .cl-toolbar .search {
   display: flex; align-items: center; gap: 8px;
@@ -85,10 +84,8 @@
   font-family: var(--font-family-sans);
   font-size: 13px; font-weight: 700;
   color: var(--color-text-secondary);
-  letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 8px 2px;
-  margin-top: 18px;
 }
 .cl-section-title .count {
   font-family: var(--font-family-mono); font-size: 11px;
@@ -213,12 +210,77 @@
 .cl-card.add .hint { font-size: 11.5px; color: var(--color-text-muted); }
 
 /* ============================================================
-   경력기술서 재구조화 — 2-step flow
+   Trash view (휴지통 30-day grace)
+============================================================ */
+.trash-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--color-yellow-50);
+  border: 1px solid var(--color-yellow-200);
+  border-radius: 10px;
+  font-size: 12.5px; color: var(--color-text-primary);
+}
+.trash-banner .ico {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: var(--color-yellow-100); color: var(--color-yellow-400);
+  display: grid; place-items: center; flex: 0 0 auto;
+}
+.trash-banner .body { flex: 1; }
+.trash-banner b { font-weight: 700; }
+.trash-banner .clear-all {
+  background: transparent; border: 1px solid var(--color-border-default);
+  padding: 5px 10px; border-radius: 6px;
+  font-family: inherit; font-size: 11.5px; font-weight: 700;
+  color: var(--color-semantic-error); cursor: pointer;
+}
+.trash-banner .clear-all:hover { background: var(--color-semantic-error-bg); border-color: transparent; }
+
+.trash-table {
+  background: #fff; border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+.trash-row {
+  display: grid; grid-template-columns: 1fr 100px 140px auto;
+  gap: 14px; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.trash-row:last-child { border-bottom: none; }
+.trash-row:hover { background: var(--color-surface-soft); }
+.trash-row.head {
+  background: var(--color-surface-soft);
+  font-family: var(--font-family-mono); font-size: 10.5px;
+  font-weight: 700; color: var(--color-text-muted);
+  padding: 10px 18px;
+}
+.trash-row .body { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.trash-row .nm { font-size: 14px; font-weight: 700; }
+.trash-row .meta { font-size: 11.5px; color: var(--color-text-muted); }
+.trash-row .meta .co { color: var(--color-text-secondary); font-weight: 600; }
+.trash-row .deleted-at {
+  font-family: var(--font-family-mono); font-size: 11px; color: var(--color-text-muted);
+}
+.trash-row .remaining {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-family-mono); font-size: 11px; font-weight: 700;
+}
+.trash-row .remaining .bar {
+  width: 60px; height: 4px; background: var(--color-neutral-100);
+  border-radius: 999px; overflow: hidden;
+}
+.trash-row .remaining .bar > span {
+  display: block; height: 100%; border-radius: 999px;
+  background: var(--color-mint-500);
+}
+.trash-row .remaining.soon .bar > span { background: var(--color-pink-400); }
+.trash-row .remaining.soon { color: var(--color-pink-500); }
+.trash-row .actions { display: inline-flex; gap: 6px; }
    Step 1: 채용공고 선택 (full-width gate)
    Step 2: 옵션 + 결과 비교
 ============================================================ */
 .cs-shell {
-  display: grid; grid-template-columns: 1fr; gap: 18px;
+  display: flex; flex-direction: column; gap: 18px;
 }
 .cs-head {
   display: flex; align-items: flex-end; justify-content: space-between;
@@ -358,8 +420,7 @@
 .cs-options .ctl-lbl .opt {
   font-family: var(--font-family-mono); font-size: 9.5px;
   padding: 2px 6px; border-radius: 4px;
-  background: var(--color-surface-soft); color: var(--color-text-muted);
-  letter-spacing: 0.04em; font-weight: 600;
+  background: var(--color-surface-soft); color: var(--color-text-muted); font-weight: 600;
 }
 .cs-options .ctl-input, .cs-options textarea {
   width: 100%; height: 38px; padding: 0 12px;
@@ -414,8 +475,7 @@
 }
 .cs-pane-head .ttl-row { display: inline-flex; align-items: center; gap: 8px; }
 .cs-pane-head .ttl-eyebrow {
-  font-family: var(--font-family-mono); font-size: 10px; font-weight: 700;
-  letter-spacing: 0.1em; color: var(--color-text-muted); text-transform: uppercase;
+  font-family: var(--font-family-mono); font-size: 10px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase;
   padding: 2px 7px; border-radius: 4px; background: var(--color-surface-soft);
 }
 .cs-result-pane.after .cs-pane-head .ttl-eyebrow {
@@ -443,7 +503,7 @@
 .cs-pane-body h4:first-child { margin-top: 0; }
 .cs-pane-body .meta-line {
   font-family: var(--font-family-mono); font-size: 11px;
-  color: var(--color-text-muted); margin-bottom: 4px; letter-spacing: 0.04em;
+  color: var(--color-text-muted); margin-bottom: 4px;
 }
 .cs-pane-body ul { padding-left: 18px; margin: 0 0 12px; }
 .cs-pane-body li { margin-bottom: 4px; }

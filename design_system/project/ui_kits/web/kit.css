@@ -414,7 +414,7 @@ html, body { background: var(--color-bg); }
 .greet-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 .greet-meta {
   display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--font-family-mono); font-size: 11px; letter-spacing: 0.12em;
+  font-family: var(--font-family-mono); font-size: 11px;
   color: var(--color-text-muted); text-transform: uppercase;
 }
 .greet-meta::before { content: ""; width: 22px; height: 1px; background: currentColor; opacity: 0.5; }
@@ -452,8 +452,7 @@ html, body { background: var(--color-bg); }
 .greet-aside small {
   display: block;
   font-family: var(--font-family-sans); font-size: 11px;
-  color: var(--color-text-muted); font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--color-text-muted); font-weight: 600; text-transform: uppercase;
 }
 .greet-aside .memo-copy {
   font-family: var(--font-family-hand);
@@ -537,11 +536,11 @@ html, body { background: var(--color-bg); }
   border-radius: var(--radius-sm); width: 56px;
 }
 .sched-row.soon .sched-date { background: var(--color-primary-600); border-color: var(--color-primary-600); color: #fff; }
-.sched-date .m  { font-size: 10px; font-family: var(--font-family-mono); font-weight: 600; color: var(--color-text-muted); letter-spacing: 0.04em; line-height: 1; }
+.sched-date .m  { font-size: 10px; font-family: var(--font-family-mono); font-weight: 600; color: var(--color-text-muted); line-height: 1; }
 .sched-row.soon .sched-date .m { color: rgba(255,255,255,0.75); }
 .sched-date .d  { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--color-text-primary); }
 .sched-row.soon .sched-date .d { color: #fff; }
-.sched-date .wd { font-size: 10px; font-family: var(--font-family-mono); font-weight: 600; color: var(--color-text-muted); letter-spacing: 0.04em; line-height: 1; }
+.sched-date .wd { font-size: 10px; font-family: var(--font-family-mono); font-weight: 600; color: var(--color-text-muted); line-height: 1; }
 .sched-row.soon .sched-date .wd { color: rgba(255,255,255,0.7); }
 .sched-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .sched-info .co { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
@@ -566,7 +565,7 @@ html, body { background: var(--color-bg); }
 .match-ring::after { content: ""; position: absolute; inset: 9px; background: var(--color-surface-default); border-radius: 50%; }
 .match-ring > span { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; line-height: 1; }
 .match-ring .v { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
-.match-ring .lbl { font-family: var(--font-family-mono); font-size: 10px; font-weight: 600; color: var(--color-text-muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+.match-ring .lbl { font-family: var(--font-family-mono); font-size: 10px; font-weight: 600; color: var(--color-text-muted); margin-top: 4px; text-transform: uppercase; }
 .match-top .meta { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .match-top .meta .k { font-size: 12px; color: var(--color-text-muted); font-weight: 600; }
 .match-top .meta .t { font-size: 15px; font-weight: 700; }
@@ -598,7 +597,7 @@ html, body { background: var(--color-bg); }
   display: flex; align-items: center; gap: 22px;
 }
 .shortcuts .lead { display: flex; flex-direction: column; gap: 2px; padding-right: 22px; border-right: 1px dashed var(--color-border-default); min-width: 200px; }
-.shortcuts .lead .k { font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700; color: var(--color-text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.shortcuts .lead .k { font-family: var(--font-family-mono); font-size: 10.5px; font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; }
 .shortcuts .lead .t { font-family: var(--font-family-hand); font-size: 22px; font-weight: 400; line-height: 1.2; }
 .shortcuts-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .shortcut {
@@ -653,7 +652,6 @@ html, body { background: var(--color-bg); }
   font-family: var(--font-family-mono); font-size: 10px;
   font-weight: 700; padding: 2px 7px; border-radius: 999px;
   background: var(--color-surface-soft); color: var(--color-text-secondary);
-  letter-spacing: 0.04em;
 }
 .sub-tabs .active .pill {
   background: var(--color-primary-100); color: var(--color-primary-700);
