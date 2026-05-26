@@ -1,4 +1,4 @@
-import { Sparkle } from "../icons";
+import { Sparkle } from "@/components/ui/icons";
 import type { Career } from "@/lib/types/career";
 
 type Props = { careers: Career[] };

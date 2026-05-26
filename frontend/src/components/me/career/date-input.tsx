@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Calendar } from "../icons";
+import { Calendar } from "@/components/ui/icons";
 
 export type DateInputProps = {
   value: string;

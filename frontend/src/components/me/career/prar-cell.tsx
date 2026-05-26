@@ -18,7 +18,7 @@ export function PrarCell({ tone, glyph, ko, en, value, max = 240, placeholder, o
   const len = local.length;
 
   return (
-    <div className={`prar-cell ${tone}`}>
+    <div className={"prar-cell " + tone}>
       <div className="cell-head">
         <span className="glyph">{glyph}</span>
         <span className="cell-title">

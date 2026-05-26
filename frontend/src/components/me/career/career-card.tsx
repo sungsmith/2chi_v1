@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Pencil, Trash, Plus } from "../icons";
+import { Plus, Edit } from "@/components/ui/icons";
 import { ProjectCard } from "./project-card";
 import { updateCareer, deleteCareer, createProject, deleteProject } from "@/lib/api/career";
 import type { Career, Project, ProjectCreateRequest } from "@/lib/types/career";
@@ -14,6 +14,16 @@ type Props = {
   onDelete: () => void;
   onError: (message: string) => void;
 };
+
+function formatPeriod(career: Career): string {
+  const start = career.startDate.slice(0, 7).replace("-", ".");
+  const end = career.isCurrent ? "재직 중" : (career.endDate ? career.endDate.slice(0, 7).replace("-", ".") : "—");
+  return `${start} ~ ${end}`;
+}
+
+function calcMark(company: string): string {
+  return company.replace(/[\s(주)]/g, "").slice(0, 1) || "사";
+}
 
 export function CareerCard({ career, defaultOpen = false, onChange, onDelete, onError }: Props) {
   const [open, setOpen] = useState(defaultOpen);
@@ -78,21 +88,20 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
     });
   }
 
+  const mark = calcMark(career.company);
+  const markTone = career.isCurrent ? "" : "lav";
+  const statusPill = career.isCurrent ? "재직 중" : `퇴사 · ${career.endDate ? career.endDate.slice(0, 7).replace("-", ".") : ""}`;
+  const period = formatPeriod(career);
+
   return (
-    <section className={`career-card ${open ? "open" : ""}`} style={{ marginBottom: 16 }}>
-      <header
-        className="career-card-head"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: 16,
-          background: "var(--color-surface-default)",
-          borderRadius: "var(--radius-lg)",
-          border: "1px solid var(--color-border-default)",
-        }}
-      >
-        <div style={{ flex: 1, cursor: editing ? "default" : "pointer" }} onClick={() => !editing && setOpen((o) => { if (o) setAddingProject(false); return !o; })}>
+    <div className={"co-band" + (career.isCurrent ? " current" : "")}>
+      <div className="co-band-head">
+        <span className={"co-mark " + markTone}>{mark}</span>
+        <div
+          className="co-band-info"
+          style={{ cursor: editing ? "default" : "pointer" }}
+          onClick={() => !editing && setOpen((o) => { if (o) setAddingProject(false); return !o; })}
+        >
           {editing ? (
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <input value={draft.company} onChange={(e) => setDraft({ ...draft, company: e.target.value })} placeholder="회사명" style={{ padding: 8 }} />
@@ -102,19 +111,30 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
             </div>
           ) : (
             <>
-              <div style={{ fontSize: 16, fontWeight: 700 }}>{career.company}</div>
-              <div style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
-                {career.position ?? "직책 미입력"} · {career.startDate} ~ {career.isCurrent ? "재직중" : (career.endDate ?? "—")}
+              <div className="nm">
+                {career.company}
+                <span className={"pill " + (career.isCurrent ? "" : "past")}>{statusPill}</span>
+              </div>
+              <div className="meta">
+                <span className="role">{career.position ?? "직책 미입력"}</span>
+                <span className="sep" />
+                <span>{period}</span>
+                {career.projects.length > 0 && (
+                  <>
+                    <span className="sep" />
+                    <span>프로젝트 {career.projects.length}건</span>
+                  </>
+                )}
               </div>
             </>
           )}
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="co-band-actions">
           {editing ? (
             <>
-              <button className="btn ghost" onClick={saveEdit}>저장</button>
+              <button className="iconbtn-sm" onClick={saveEdit}>저장</button>
               <button
-                className="btn ghost"
+                className="iconbtn-sm"
                 onClick={() => {
                   setEditing(false);
                   setDraft({
@@ -125,33 +145,32 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
                   });
                 }}
               >취소</button>
+              <button className="iconbtn-sm" onClick={handleDelete}>삭제</button>
             </>
           ) : (
-            <>
-              <button className="btn ghost" onClick={() => setEditing(true)}><Pencil /> 편집</button>
-              <button className="btn ghost" onClick={handleDelete}><Trash /> 삭제</button>
-            </>
+            <button className="iconbtn-sm" onClick={() => setEditing(true)}><Edit size={12} />편집</button>
           )}
         </div>
-      </header>
+      </div>
 
       {open && (
-        <div style={{ padding: "12px 16px" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>프로젝트 ({career.projects.length}건)</div>
-          {career.projects.map((p, i) => (
-            <ProjectCard
-              key={p.id}
-              project={p}
-              careerId={career.id}
-              defaultOpen={i === 0}
-              onChange={handleProjectChange}
-              onDelete={() => handleDeleteProject(p.id)}
-              onError={onError}
-            />
-          ))}
+        <div className="co-band-body">
+          <div className="pj-list">
+            {career.projects.map((p, i) => (
+              <ProjectCard
+                key={p.id}
+                project={p}
+                careerId={career.id}
+                defaultOpen={i === 0}
+                onChange={handleProjectChange}
+                onDelete={() => handleDeleteProject(p.id)}
+                onError={onError}
+              />
+            ))}
+          </div>
           {!addingProject ? (
-            <button className="btn ghost" onClick={() => setAddingProject(true)} style={{ marginTop: 8 }}>
-              <Plus size={14} /> 프로젝트 추가
+            <button className="add-proj-sm" onClick={() => setAddingProject(true)}>
+              <Plus size={12} />프로젝트 추가
             </button>
           ) : (
             <NewProjectForm
@@ -161,6 +180,6 @@ export function CareerCard({ career, defaultOpen = false, onChange, onDelete, on
           )}
         </div>
       )}
-    </section>
+    </div>
   );
 }
