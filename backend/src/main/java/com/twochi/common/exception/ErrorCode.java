@@ -32,7 +32,8 @@ public enum ErrorCode {
     USER_WITHDRAWN_GRACE(HttpStatus.GONE, "탈퇴된 계정입니다. 30일 유예 기간 내에 복구 가능해요."),
     ALREADY_WITHDRAWN(HttpStatus.CONFLICT, "이미 탈퇴 처리됐어요."),
     SETTING_LOCKED(HttpStatus.BAD_REQUEST, "보안 알림은 변경할 수 없어요."),
-    UNKNOWN_SETTING(HttpStatus.BAD_REQUEST, "알 수 없는 알림 설정이에요.");
+    UNKNOWN_SETTING(HttpStatus.BAD_REQUEST, "알 수 없는 알림 설정이에요."),
+    DUPLICATE_SETTING(HttpStatus.BAD_REQUEST, "동일한 알림 설정이 중복 포함됐어요.");
 
     private final HttpStatus status;
     private final String defaultMessage;

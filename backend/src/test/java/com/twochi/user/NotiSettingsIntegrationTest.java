@@ -173,4 +173,33 @@ class NotiSettingsIntegrationTest {
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("UNKNOWN_SETTING"));
     }
+
+    @Test
+    void patchNotiSettings_duplicateId_returns400() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(
+                        Map.of("id", "deadline-d3", "enabled", true),
+                        Map.of("id", "deadline-d3", "enabled", false)
+                    )
+                ))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("DUPLICATE_SETTING"));
+    }
+
+    @Test
+    void patchNotiSettings_emptyOverrides_returnsCurrentStateUnchanged() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("overrides", List.of()))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.settings.length()").value(12))
+            .andExpect(jsonPath("$.settings[?(@.id == 'deadline-d3')].enabled").value(true)); // 기본값 그대로
+
+        // DB 에도 row 0 (sparse 유지)
+        assertThat(userNotiSettingRepository.findAll()).isEmpty();
+    }
 }

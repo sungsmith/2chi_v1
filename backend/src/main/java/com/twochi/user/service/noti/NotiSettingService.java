@@ -47,6 +47,12 @@ public class NotiSettingService {
     public NotiSettingsResponse update(Long userId, List<UpdateNotiSettingsRequest.Item> overrides) {
         Instant now = Instant.now();
 
+        // 0. 중복 id 검사 — 모호한 last-write-wins 방지
+        long distinctIds = overrides.stream().map(UpdateNotiSettingsRequest.Item::id).distinct().count();
+        if (distinctIds != overrides.size()) {
+            throw new BusinessException(ErrorCode.DUPLICATE_SETTING);
+        }
+
         // 1. 모든 항목 검증 — 하나라도 잘못되면 변경 없음
         for (UpdateNotiSettingsRequest.Item item : overrides) {
             NotiSettingDef def = NotiSettingDef.fromId(item.id())
