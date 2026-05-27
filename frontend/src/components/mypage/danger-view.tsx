@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import { Download } from "@/components/ui/icons";
+import { WithdrawConfirmModal } from "./withdraw-confirm-modal";
 
 export function DangerView() {
+  const [confirmOpen, setConfirmOpen] = useState(false);
+
   return (
     <>
       <section className="mp-head">
@@ -36,11 +42,15 @@ export function DangerView() {
             <div className="desc">· 지원 일정 · 히스토리 로그 · 알림 기록</div>
             <div className="desc">30일간 휴면 상태로 유예 후 영구 삭제됩니다.</div>
           </div>
-          <button className="btn danger" disabled>
+          <button className="btn danger" onClick={() => setConfirmOpen(true)}>
             회원 탈퇴
           </button>
         </div>
       </section>
+
+      {confirmOpen && (
+        <WithdrawConfirmModal onClose={() => setConfirmOpen(false)} />
+      )}
     </>
   );
 }

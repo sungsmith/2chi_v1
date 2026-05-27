@@ -76,6 +76,32 @@ export function LoginForm() {
 
   return (
     <div className="auth-card">
+      {searchParams.get("password-changed") === "true" && (
+        <div className="info-banner" role="status">
+          <span className="body">비밀번호가 변경됐어요. 새 비밀번호로 다시 로그인해주세요.</span>
+          <button
+            type="button"
+            className="x"
+            aria-label="닫기"
+            onClick={() => router.replace("/login")}
+          >
+            ×
+          </button>
+        </div>
+      )}
+      {searchParams.get("withdrawn") === "true" && (
+        <div className="info-banner" role="status">
+          <span className="body">탈퇴 처리됐어요. 30일 이내에 같은 이메일로 로그인하면 복구할 수 있어요.</span>
+          <button
+            type="button"
+            className="x"
+            aria-label="닫기"
+            onClick={() => router.replace("/login")}
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="brand">
         <img src="/logo.svg" alt="이취 (2chi)" />
         <div>
