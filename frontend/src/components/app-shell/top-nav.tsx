@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { NavMenu } from "./nav-menu";
 import { NavIconButton } from "./nav-icon-button";
 import { ProfileMenu } from "./profile-menu";
 
 export function TopNav() {
+  const router = useRouter();
   return (
     <header
       style={{
@@ -54,7 +56,7 @@ export function TopNav() {
           </NavIconButton>
           <NavIconButton
             ariaLabel="알림"
-            onClick={() => alert("알림 기능은 곧 제공됩니다.")}
+            onClick={() => router.push("/mypage/notification-center")}
           >
             <BellIcon />
           </NavIconButton>
