@@ -33,7 +33,7 @@ PR B1 머지만으로도 UI live (빈 화면 또는 dev seed 데이터). PR B2/B
 |---|---|---|
 | 1 | 3 PR 분해 (B1 / B2 / B3) | 한 PR 로 묶으면 폭발. 각 sub-PR 이 detectable 가치 + 머지 cadence 짧음 |
 | 2 | PR B1 testing — `@Profile("dev")` seeder | PR B2/B3 머지 전 FE 동작 검증 필요. seeder 가 idempotent + prod 영향 0 |
-| 3 | Schema A — 구체 컬럼 (`icon` / `icon_tone` / `message` 모두 BE column) | v1 closed beta — i18n 없음, 메시지 변경 빈도 낮음. Producer 코드 단순 (template 없음). 추후 type-driven 필요 시 v2 마이그레이션 |
+| 3 | Schema B — V1 `notification` 테이블 활용 (type-driven) | brainstorm 후 발견: V1 가 이미 sophisticated 한 `notification` 테이블 보유 (channel/type/title/body/payload_json/scheduled_at/sent_at/error 등). type CHECK 가 NotiSettingDef 와 매칭. 별도 테이블 만드는 대신 V1 활용 — v2 email/push 통합 시 schema 변경 없음. FE 가 type → icon/tone 매핑 보유 |
 | 4 | No pagination + 30일 query filter | 사용자당 월 ~50건 규모. `WHERE created_at > now - 30d ORDER BY DESC` 한 쿼리. cleanup cron 은 PR B2 |
 | 5 | TopNav bell — navigation 만 (unread dot 안 함) | polling 인프라 회피. dot 은 PR B3 머지 후 별도 follow-up |
 | 6 | Bulk-only + hard delete | mock UI 에 per-row 인터랙션 없음. 알림은 ephemeral (30일) — soft delete 의미 없음 |
@@ -48,12 +48,14 @@ PR B1 머지만으로도 UI live (빈 화면 또는 dev seed 데이터). PR B2/B
 
 | 파일 | 책임 |
 |---|---|
-| `domain/Notification.java` | 엔티티 `(id, userId, icon, iconTone, message, createdAt, readAt)`. `Notification.of(...)` 정적 팩토리 + `markRead(now)` 메서드 |
-| `repository/NotificationRepository.java` | `findByUserIdAndCreatedAtAfterOrderByCreatedAtDesc(userId, since)` / `markAllReadByUserId(userId, now)` `@Modifying` / `deleteAllByUserId(userId)` `@Modifying` |
-| `service/NotificationService.java` | `@Transactional` — `list(userId)` / `markAllRead(userId)` / `deleteAll(userId)`. 30일 cutoff 강제 |
-| `service/NotificationProducer.java` | `publish(userId, icon, tone, message)` — PR B2/B3 가 의존할 future-facing API. PR B1 에선 seeder 만 사용 |
+| `domain/Notification.java` | 엔티티 (V1 schema 매핑: id, userId, channel, type, title, body, payloadJson, scheduledAt, sentAt, readAt, error, createdAt). `Notification.forInbox(userId, type, title, body, now)` 팩토리 + `markRead(now)` |
+| `domain/NotificationChannel.java` | enum: EMAIL / WEB_PUSH / INBOX (V1 CHECK 매핑) |
+| `domain/NotificationType.java` | enum: POSTING_DEADLINE_D3 / D1 / SCHEDULE_D1 / COVER_LETTER_UNSUBMITTED_7D / WEEKLY_SUMMARY / EMAIL_VERIFY / PASSWORD_RESET (V1 CHECK 매핑) |
+| `repository/NotificationRepository.java` | `findByUserIdAndChannelAndCreatedAtAfterOrderByCreatedAtDesc(userId, channel, since)` / `markAllReadByUserIdAndChannel(userId, channel, now)` `@Modifying` / `deleteAllByUserIdAndChannel(userId, channel)` `@Modifying` |
+| `service/NotificationService.java` | `@Transactional` — `list(userId)` / `markAllRead(userId)` / `deleteAll(userId)`. 30일 cutoff + INBOX channel 강제 |
+| `service/NotificationProducer.java` | `publish(userId, type, title)` 또는 `publish(userId, type, title, body)` — PR B2/B3 의존 API. INBOX 채널 + sentAt=now |
 | `controller/NotificationController.java` | 3 endpoint: `GET /api/v1/notifications`, `PATCH /api/v1/notifications/read-all`, `DELETE /api/v1/notifications` |
-| `dto/NotificationItemResponse.java` | record `(id, icon, iconTone, message, createdAt: Instant, readAt: Instant?)` |
+| `dto/NotificationItemResponse.java` | record `(id, type: String, title: String, body: String?, createdAt: Instant, readAt: Instant?)` |
 | `dto/NotificationListResponse.java` | record `(notifications: List<NotificationItemResponse>)` |
 | `seed/NotificationSeeder.java` | `@Profile("dev")` + `CommandLineRunner`. 첫 사용자에게 sample 6개 insert (idempotent) |
 
@@ -68,8 +70,9 @@ PR B1 머지만으로도 UI live (빈 화면 또는 dev seed 데이터). PR B2/B
 **신규**:
 | 파일 | 책임 |
 |---|---|
-| `lib/types/notification.ts` | `NotificationItem` / `NotificationIconTone` / `NotificationListResponse` |
+| `lib/types/notification.ts` | `NotificationItem` / `NotificationIconTone` / `NotificationType` / `NotificationListResponse` |
 | `lib/api/notification.ts` | `fetchNotifications` / `markAllRead` / `deleteAllNotifications` |
+| `lib/utils/notification-presentation.ts` | `typeToIcon(type)` + `typeToTone(type)` 매핑. V1 의 7 type 모두 cover. fallback default |
 | `components/mypage/delete-all-confirm-modal.tsx` | PR A modal 패턴 (`pf-modal-backdrop`). danger CTA. inline error |
 | `components/mypage/__tests__/delete-all-confirm-modal.test.tsx` | 4 tests |
 
@@ -89,35 +92,49 @@ PR B1 머지만으로도 UI live (빈 화면 또는 dev seed 데이터). PR B2/B
 
 ## 5. 데이터 모델 — Migration V5
 
+V1 의 기존 `notification` 테이블을 활용. V5 는 minor 변경만:
+1. legacy `notification_preference` 제거 (V4 의 `user_noti_setting` 이 대체)
+2. `notification.channel` CHECK 에 `INBOX` 추가 (in-app inbox 전용, 발송 워커 미경유)
+
 ```sql
--- V5__notification.sql
+-- V5__notification_inbox.sql
 
-CREATE TABLE notification (
-    id          BIGSERIAL    PRIMARY KEY,
-    user_id     BIGINT       NOT NULL REFERENCES app_user(id) ON DELETE CASCADE,
-    icon        VARCHAR(20)  NOT NULL,
-    icon_tone   VARCHAR(10)  NOT NULL,
-    message     TEXT         NOT NULL,
-    created_at  TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    read_at     TIMESTAMPTZ
-);
+-- 1. legacy notification_preference 제거 (V4 user_noti_setting 이 대체)
+DROP TABLE IF EXISTS notification_preference CASCADE;
 
-CREATE INDEX idx_notification_user_created
-    ON notification (user_id, created_at DESC);
+-- 2. notification.channel 에 'INBOX' 추가 — in-app inbox 전용
+ALTER TABLE notification DROP CONSTRAINT ck_notification_channel;
+ALTER TABLE notification ADD CONSTRAINT ck_notification_channel
+    CHECK (channel IN ('EMAIL', 'WEB_PUSH', 'INBOX'));
 
-COMMENT ON TABLE  notification IS '알림 row. 30일 이전은 query filter 로 안 보임. cleanup cron(PR B2)이 hard delete';
-COMMENT ON COLUMN notification.icon      IS 'FE 아이콘 키 (Bell / Check / Sparkle / FileEdit / Plus 등)';
-COMMENT ON COLUMN notification.icon_tone IS '아이콘 톤 (default / mint / lav / pink / warn)';
-COMMENT ON COLUMN notification.read_at   IS '읽음 처리 시각. NULL이면 unread';
+COMMENT ON TABLE notification IS '알림. INBOX: in-app inbox (PR B1+). EMAIL/WEB_PUSH: 발송 워커 채널 (v2)';
 ```
 
-**핵심 결정**:
-- `BIGSERIAL` PK — 다른 테이블과 일관
-- `user_id ON DELETE CASCADE` — v2 cron 의 user hard delete 시 자동 정리
-- `read_at` nullable — NULL = unread (별도 boolean 컬럼 불필요)
-- 복합 인덱스 `(user_id, created_at DESC)` — 주 쿼리가 인덱스 1개로 처리
+**V1 의 기존 notification 컬럼** (참고):
+- `id BIGSERIAL PK`
+- `user_id BIGINT NOT NULL REFERENCES app_user(id) ON DELETE CASCADE`
+- `channel VARCHAR(20)` — CHECK (EMAIL / WEB_PUSH / **INBOX** 추가)
+- `type VARCHAR(50)` — CHECK (POSTING_DEADLINE_D3 / D1 / SCHEDULE_D1 / COVER_LETTER_UNSUBMITTED_7D / WEEKLY_SUMMARY / EMAIL_VERIFY / PASSWORD_RESET)
+- `title VARCHAR(200) NOT NULL` — 알림 제목 (PR B1 의 display message)
+- `body TEXT` — 상세 본문 (PR B1 미사용)
+- `payload_json JSONB` — i18n / 변수 (v2)
+- `scheduled_at TIMESTAMPTZ` — v2 발송 워커
+- `sent_at TIMESTAMPTZ` — 발송 시각 (INBOX 채널은 insert 즉시 now)
+- `read_at TIMESTAMPTZ` — 읽음 시각, NULL = unread
+- `error TEXT` — 발송 실패 (v2)
+- `created_at TIMESTAMPTZ DEFAULT NOW()`
 
-`V5_R__rollback.sql`: `DROP TABLE IF EXISTS notification;`
+**기존 인덱스** (V1 이미 정의):
+- `idx_notif_user_created (user_id, created_at DESC)` — PR B1 의 주 쿼리 활용
+- `idx_notif_pending (scheduled_at) WHERE sent_at IS NULL` — v2 워커용
+
+**핵심 결정**:
+- 새 테이블 만들지 않음 — V1 design intent 존중
+- INBOX 채널 추가 — PR B1 의 알림은 channel='INBOX', sent_at=now() 즉시 set
+- FE 가 type → (icon, tone) 매핑 보유 (별도 icon/icon_tone 컬럼 없이)
+- `notification_preference` DROP — V4 user_noti_setting 이 supersede
+
+`V5_R__rollback.sql`: legacy 복원 (`notification_preference` 재생성 + INBOX 제거).
 
 ---
 
@@ -131,9 +148,9 @@ Response (200):
   "notifications": [
     {
       "id": 123,
-      "icon": "Bell",
-      "iconTone": "pink",
-      "message": "카카오 백엔드 (Saas 팀) 서류 마감이 오늘 23:59예요",
+      "type": "POSTING_DEADLINE_D3",
+      "title": "쿠팡 백엔드 (라스트마일) 마감 D-3",
+      "body": null,
       "createdAt": "2026-05-27T00:00:00Z",
       "readAt": null
     }
@@ -141,16 +158,20 @@ Response (200):
 }
 ```
 - 정렬: `created_at DESC`
-- 필터: `created_at > now() - 30d`
+- 필터: `created_at > now() - 30d` + `channel = 'INBOX'` (이메일/웹푸시 발송 로그는 inbox 에 미노출 — v2 워커가 별도 관리)
 - pagination 없음
+- `body` 는 PR B1 에선 항상 null (v2 가 활용)
+- FE 가 `type` 으로 icon/tone 매핑
 
 ### 6.2 PATCH /api/v1/notifications/read-all
 
-Body 없음. Response 204. SQL: `UPDATE notification SET read_at = now() WHERE user_id = ? AND read_at IS NULL`
+Body 없음. Response 204. SQL: `UPDATE notification SET read_at = now() WHERE user_id = ? AND channel = 'INBOX' AND read_at IS NULL`
 
 ### 6.3 DELETE /api/v1/notifications
 
-Body 없음. Response 204. SQL: `DELETE FROM notification WHERE user_id = ?`
+Body 없음. Response 204. SQL: `DELETE FROM notification WHERE user_id = ? AND channel = 'INBOX'`
+
+(EMAIL/WEB_PUSH 발송 로그는 보존 — v2 발송 워커가 관리)
 
 ### 6.4 Auth & Errors
 
@@ -195,6 +216,8 @@ const router = useRouter();
 
 ## 8. Backend Seeder (dev profile only)
 
+V1 의 7 type CHECK 값만 사용. 6개 sample 모두 type/title 매핑 가능. INBOX 채널 + sentAt=now.
+
 ```java
 @Component
 @Profile("dev")
@@ -216,12 +239,12 @@ public class NotificationSeeder implements CommandLineRunner {
 
         Instant now = Instant.now();
         repo.saveAll(List.of(
-            Notification.of(user.getId(), "Bell",     "pink",    "카카오 백엔드 (Saas 팀) 서류 마감이 오늘 23:59예요", now.minus(Duration.ofHours(3))),
-            Notification.of(user.getId(), "Check",    "mint",    "(주)테크컴퍼니 1차면접 일정이 등록됐어요",        now.minus(Duration.ofHours(5))),
-            Notification.of(user.getId(), "Sparkle",  "default", "AI가 카카오 공고 매칭 결과를 정리했어요",         now.minus(Duration.ofHours(8))),
-            Notification.of(user.getId(), "FileEdit", "mint",    "네이버 신입 백엔드 자소서가 저장됐어요",          now.minus(Duration.ofDays(1))),
-            Notification.of(user.getId(), "Bell",     "warn",    "쿠팡 백엔드 (라스트마일) 마감 D-3",              now.minus(Duration.ofDays(2))),
-            Notification.of(user.getId(), "Plus",     "default", "기업분석 — 카카오 분석이 완료됐어요",            now.minus(Duration.ofDays(3)))
+            Notification.forInbox(user.getId(), NotificationType.POSTING_DEADLINE_D1,         "카카오 백엔드 (Saas 팀) 서류 마감이 오늘 23:59예요", null, now.minus(Duration.ofHours(3))),
+            Notification.forInbox(user.getId(), NotificationType.SCHEDULE_D1,                  "(주)테크컴퍼니 1차면접 일정이 등록됐어요",        null, now.minus(Duration.ofHours(5))),
+            Notification.forInbox(user.getId(), NotificationType.WEEKLY_SUMMARY,               "이번 주 자소서·지원 현황 요약을 정리했어요",      null, now.minus(Duration.ofHours(8))),
+            Notification.forInbox(user.getId(), NotificationType.COVER_LETTER_UNSUBMITTED_7D,  "네이버 신입 백엔드 자소서를 저장하고 제출하지 않은 지 7일이에요", null, now.minus(Duration.ofDays(1))),
+            Notification.forInbox(user.getId(), NotificationType.POSTING_DEADLINE_D3,          "쿠팡 백엔드 (라스트마일) 마감 D-3",              null, now.minus(Duration.ofDays(2))),
+            Notification.forInbox(user.getId(), NotificationType.EMAIL_VERIFY,                  "회원가입 인증 메일을 발송했어요",                 null, now.minus(Duration.ofDays(3)))
         ));
     }
 }
@@ -231,6 +254,36 @@ public class NotificationSeeder implements CommandLineRunner {
 - `repo.count() > 0` — bootRun 반복 호출에 중복 insert 안 함
 - prod 영향 0 (Bean 자체 미등록)
 - `read_at` 은 모두 NULL (unread) — 사용자가 mark-all-read 직접 동작 검증 가능
+- 모두 V1 type CHECK 매칭 — 마이그레이션 위반 없음
+
+## 8.1 FE — type 표시 매핑 (`lib/utils/notification-presentation.ts`)
+
+```typescript
+import type { NotificationIconTone } from "@/lib/types/notification";
+
+export type NotificationPresentation = {
+  icon: "Bell" | "Check" | "Sparkle" | "FileEdit" | "Plus";
+  tone: NotificationIconTone;
+};
+
+const MAP: Record<string, NotificationPresentation> = {
+  POSTING_DEADLINE_D3:          { icon: "Bell",     tone: "warn"    },
+  POSTING_DEADLINE_D1:          { icon: "Bell",     tone: "pink"    },
+  SCHEDULE_D1:                  { icon: "Check",    tone: "mint"    },
+  COVER_LETTER_UNSUBMITTED_7D:  { icon: "FileEdit", tone: "mint"    },
+  WEEKLY_SUMMARY:               { icon: "Sparkle",  tone: "default" },
+  EMAIL_VERIFY:                 { icon: "Bell",     tone: "lav"     },
+  PASSWORD_RESET:               { icon: "Bell",     tone: "lav"     },
+};
+
+const FALLBACK: NotificationPresentation = { icon: "Bell", tone: "default" };
+
+export function notificationPresentation(type: string): NotificationPresentation {
+  return MAP[type] ?? FALLBACK;
+}
+```
+
+V1 의 7 type 모두 cover. 미래 type 추가 시 FALLBACK 으로 안전.
 
 ---
 
