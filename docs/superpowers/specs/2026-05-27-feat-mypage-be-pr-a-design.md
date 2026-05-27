@@ -143,7 +143,7 @@ public class UserNotiSetting {
 | `ALREADY_WITHDRAWN` | 409 | DELETE /me 가 이미 탈퇴된 사용자에게 |
 | `PASSWORD_MISMATCH` | 400 | currentPassword 불일치 |
 | `PASSWORD_UNCHANGED` | 400 | newPassword == current |
-| `NICKNAME_TAKEN` | 409 | 닉네임 중복 |
+| `NICKNAME_DUPLICATE` (기존 재사용) | 409 | 닉네임 중복 |
 | `SETTING_LOCKED` | 400 | locked 설정 override 시도 |
 | `UNKNOWN_SETTING` | 400 | 알 수 없는 setting_id |
 
@@ -221,7 +221,7 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 
 **Errors**:
 - 400 (validation)
-- 409 `NICKNAME_TAKEN`
+- 409 `NICKNAME_DUPLICATE` (기존 코드 재사용)
 
 **Response**: 200 + 갱신된 me snapshot
 
@@ -355,7 +355,7 @@ if (user.getDeletedAt() != null) {
 
 | 테스트 | 케이스 |
 |---|---|
-| `UserProfileUpdateServiceTest` | 정상 변경 · 중복 닉네임(NICKNAME_TAKEN) · 본인 현재 닉네임 no-op · validation |
+| `UserProfileUpdateServiceTest` | 정상 변경 · 중복 닉네임(NICKNAME_DUPLICATE) · 본인 현재 닉네임 no-op · validation |
 | `PasswordChangeServiceTest` | 정상 · currentPassword 틀림(PASSWORD_MISMATCH) · same as current(PASSWORD_UNCHANGED) · 약한 비밀번호 |
 | `AccountClosureServiceTest` | 정상(deleted_at 세팅 + owned data 그대로) · currentPassword 틀림 · already withdrawn |
 | `NotiSettingServiceTest` | 빈 override → 12 default · 일부 override 머지 · default 와 같은 값 → row 미생성 · default 로 되돌리기 → row 삭제 · locked 거부 · unknown id |
