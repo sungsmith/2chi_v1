@@ -1,21 +1,30 @@
-interface NotiSettingsRowProps {
-  nm: string;
-  desc: string;
-  defOn?: boolean;
-  locked?: boolean;
-}
+"use client";
 
-export function NotiSettingsRow({ nm, desc, defOn = true, locked = false }: NotiSettingsRowProps) {
+import type { NotiSettingItemDto } from "@/lib/types/mypage";
+
+type Props = {
+  item: NotiSettingItemDto;
+  onToggle: (next: boolean) => void;
+  disabled?: boolean;
+};
+
+export function NotiSettingsRow({ item, onToggle, disabled = false }: Props) {
   return (
     <div className="mp-row">
       <div className="body">
-        <span className="nm">{nm}</span>
-        <span className="desc">{desc}</span>
+        <span className="nm">{item.label}</span>
+        <span className="desc">{item.description}</span>
       </div>
-      {locked ? (
+      {item.locked ? (
         <span className="value-pill" title="계정 보안 알림은 끌 수 없어요">강제 ON</span>
       ) : (
-        <span className={`switch${defOn ? " on" : ""}`} aria-label={`${nm} 알림 ${defOn ? "켜짐" : "꺼짐"}`} />
+        <button
+          type="button"
+          className={`switch${item.enabled ? " on" : ""}`}
+          aria-label={`${item.label} 알림 ${item.enabled ? "켜짐" : "꺼짐"}`}
+          onClick={() => onToggle(!item.enabled)}
+          disabled={disabled}
+        />
       )}
     </div>
   );
