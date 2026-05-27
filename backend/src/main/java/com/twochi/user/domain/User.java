@@ -104,6 +104,11 @@ public class User {
         this.updatedAt = now;
     }
 
+    public void changeNickname(String newNickname, Instant now) {
+        this.nickname = newNickname;
+        this.updatedAt = now;
+    }
+
     public void withdraw(Instant now) {
         this.deletedAt = now;
         this.updatedAt = now;
