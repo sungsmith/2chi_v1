@@ -940,6 +940,7 @@ export function PasswordChangeModal({ onClose }: Props) {
             <input
               id="current-password"
               type="password"
+              className="input"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               disabled={submitting}
@@ -951,6 +952,7 @@ export function PasswordChangeModal({ onClose }: Props) {
             <input
               id="new-password"
               type="password"
+              className="input"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               disabled={submitting}
@@ -961,18 +963,28 @@ export function PasswordChangeModal({ onClose }: Props) {
             <input
               id="confirm-new-password"
               type="password"
+              className="input"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               disabled={submitting}
             />
           </div>
-          <div className="hint">변경 후 보안을 위해 자동으로 로그아웃돼요. 다시 로그인해주세요.</div>
-          {error && <div className="error-text" role="alert">{error}</div>}
+          <div className="helper">변경 후 보안을 위해 자동으로 로그아웃돼요. 다시 로그인해주세요.</div>
+          {error && (
+            <div role="alert" style={{
+              padding: "8px 12px",
+              background: "var(--color-semantic-error-bg)",
+              color: "var(--color-semantic-error)",
+              borderRadius: "var(--radius-md)",
+              fontSize: "13px",
+              marginTop: "8px",
+            }}>{error}</div>
+          )}
         </div>
 
-        <footer className="actions">
-          <button type="button" className="btn ghost" onClick={onClose} disabled={submitting}>취소</button>
-          <button type="button" className="btn primary" onClick={handleSubmit} disabled={submitting}>
+        <footer className="foot">
+          <button type="button" className="btn ghost sm" onClick={onClose} disabled={submitting}>취소</button>
+          <button type="button" className="btn primary sm" onClick={handleSubmit} disabled={submitting}>
             {submitting ? "변경 중..." : "변경"}
           </button>
         </footer>
@@ -1234,18 +1246,28 @@ export function WithdrawConfirmModal({ onClose }: Props) {
             <input
               id="withdraw-password"
               type="password"
+              className="input"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               disabled={submitting}
               autoFocus
             />
           </div>
-          {error && <div className="error-text" role="alert">{error}</div>}
+          {error && (
+            <div role="alert" style={{
+              padding: "8px 12px",
+              background: "var(--color-semantic-error-bg)",
+              color: "var(--color-semantic-error)",
+              borderRadius: "var(--radius-md)",
+              fontSize: "13px",
+              marginTop: "8px",
+            }}>{error}</div>
+          )}
         </div>
 
-        <footer className="actions">
-          <button type="button" className="btn ghost" onClick={onClose} disabled={submitting}>취소</button>
-          <button type="button" className="btn danger" onClick={handleSubmit} disabled={submitting}>
+        <footer className="foot">
+          <button type="button" className="btn ghost sm" onClick={onClose} disabled={submitting}>취소</button>
+          <button type="button" className="btn danger sm" onClick={handleSubmit} disabled={submitting}>
             {submitting ? "처리 중..." : "회원 탈퇴"}
           </button>
         </footer>

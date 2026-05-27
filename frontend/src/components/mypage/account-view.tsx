@@ -82,8 +82,10 @@ export function AccountView() {
           onClose={() => setEditingNickname(false)}
           onSuccess={async (updated) => {
             setMe(updated);
-            await refreshUser();
             setEditingNickname(false);
+            refreshUser().catch(() => {
+              // silent — local view 는 이미 setMe 로 갱신됨. TopNav 만 다음 mount 까지 stale
+            });
           }}
         />
       )}

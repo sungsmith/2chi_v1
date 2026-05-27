@@ -58,19 +58,29 @@ export function NicknameEditModal({ currentNickname, onClose, onSuccess }: Props
             <input
               id="nickname-input"
               type="text"
+              className="input"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               disabled={submitting}
               autoFocus
             />
-            <div className="hint">2~20자의 한글/영문/숫자 및 - _ 만 가능해요.</div>
+            <div className="helper">2~20자의 한글/영문/숫자 및 - _ 만 가능해요.</div>
           </div>
-          {error && <div className="error-text" role="alert">{error}</div>}
+          {error && (
+            <div role="alert" style={{
+              padding: "8px 12px",
+              background: "var(--color-semantic-error-bg)",
+              color: "var(--color-semantic-error)",
+              borderRadius: "var(--radius-md)",
+              fontSize: "13px",
+              marginTop: "8px",
+            }}>{error}</div>
+          )}
         </div>
 
-        <footer className="actions">
-          <button type="button" className="btn ghost" onClick={onClose} disabled={submitting}>취소</button>
-          <button type="button" className="btn primary" onClick={handleSubmit} disabled={submitting}>
+        <footer className="foot">
+          <button type="button" className="btn ghost sm" onClick={onClose} disabled={submitting}>취소</button>
+          <button type="button" className="btn primary sm" onClick={handleSubmit} disabled={submitting}>
             {submitting ? "저장 중..." : "저장"}
           </button>
         </footer>
