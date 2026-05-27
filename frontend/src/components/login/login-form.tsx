@@ -76,6 +76,11 @@ export function LoginForm() {
 
   return (
     <div className="auth-card">
+      {searchParams.get("password-changed") === "true" && (
+        <div className="info-banner" role="status">
+          비밀번호가 변경됐어요. 새 비밀번호로 다시 로그인해주세요.
+        </div>
+      )}
       <div className="brand">
         <img src="/logo.svg" alt="이취 (2chi)" />
         <div>

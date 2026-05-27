@@ -7,12 +7,14 @@ import type { MeProfile } from "@/lib/types/mypage";
 import { formatRelativeKo } from "@/lib/utils/relative-time";
 import { Edit } from "@/components/ui/icons";
 import { NicknameEditModal } from "./nickname-edit-modal";
+import { PasswordChangeModal } from "./password-change-modal";
 
 export function AccountView() {
   const { refreshUser } = useAuth();
   const [me, setMe] = useState<MeProfile | null>(null);
   const [error, setError] = useState<string | undefined>();
   const [editingNickname, setEditingNickname] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
 
   useEffect(() => {
     fetchMe()
@@ -64,8 +66,7 @@ export function AccountView() {
             <span className="nm">비밀번호</span>
             <span className="desc">{passwordHint}</span>
           </div>
-          {/* Task 3 에서 password modal trigger 로 변경됨. 현재는 disabled. */}
-          <button className="btn secondary sm" disabled>비밀번호 변경</button>
+          <button className="btn secondary sm" onClick={() => setChangingPassword(true)}>비밀번호 변경</button>
         </div>
         <div className="mp-row">
           <div className="body">
@@ -88,6 +89,9 @@ export function AccountView() {
             });
           }}
         />
+      )}
+      {changingPassword && (
+        <PasswordChangeModal onClose={() => setChangingPassword(false)} />
       )}
     </>
   );
