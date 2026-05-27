@@ -80,7 +80,9 @@ class PasswordChangeIntegrationTest {
 
     @Test
     void changePassword_validInput_updatesHashAndChangedAt() throws Exception {
-        Instant before = userRepository.findById(userId).orElseThrow().getPasswordChangedAt();
+        User snapshot = userRepository.findById(userId).orElseThrow();
+        Instant before = snapshot.getPasswordChangedAt();
+        Instant beforeUpdatedAt = snapshot.getUpdatedAt();
 
         mockMvc.perform(patch("/api/v1/users/me/password")
                 .header("Authorization", "Bearer " + accessToken)
@@ -94,10 +96,13 @@ class PasswordChangeIntegrationTest {
         User updated = userRepository.findById(userId).orElseThrow();
         assertThat(passwordEncoder.matches("NewPass5678!", updated.getPasswordHash())).isTrue();
         assertThat(updated.getPasswordChangedAt()).isAfter(before);
+        assertThat(updated.getUpdatedAt()).isAfterOrEqualTo(beforeUpdatedAt);
     }
 
     @Test
     void changePassword_wrongCurrent_returns400() throws Exception {
+        String hashBefore = userRepository.findById(userId).orElseThrow().getPasswordHash();
+
         mockMvc.perform(patch("/api/v1/users/me/password")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,6 +112,9 @@ class PasswordChangeIntegrationTest {
                 ))))
             .andExpect(status().isBadRequest())
             .andExpect(jsonPath("$.code").value("PASSWORD_MISMATCH"));
+
+        String hashAfter = userRepository.findById(userId).orElseThrow().getPasswordHash();
+        assertThat(hashAfter).isEqualTo(hashBefore);
     }
 
     @Test

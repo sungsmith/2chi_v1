@@ -29,6 +29,8 @@ public class PasswordChangeService {
         if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
             throw new BusinessException(ErrorCode.PASSWORD_MISMATCH);
         }
+        // plaintext equality: user 가 새/현재 비번을 같은 입력으로 보낼 때 차단.
+        // matches() 통과 후라 currentPassword == 실 비번이 보장됨.
         if (currentPassword.equals(newPassword)) {
             throw new BusinessException(ErrorCode.PASSWORD_UNCHANGED);
         }
