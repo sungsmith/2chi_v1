@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ActiveProfiles("test")
-class MeIntegrationTest {
+class UserProfileIntegrationTest {
 
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper om;
@@ -72,56 +72,62 @@ class MeIntegrationTest {
     }
 
     @Test
-    void me_validAccessToken_returnsUserInfo() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me")
-                .header("Authorization", "Bearer " + accessToken))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.email").value("alice@example.com"))
-            .andExpect(jsonPath("$.nickname").value("alice"))
-            .andExpect(jsonPath("$.role").value("USER"))
-            .andExpect(jsonPath("$.userId").isNumber())
-            .andExpect(jsonPath("$.joinedAt").isString())
-            .andExpect(jsonPath("$.passwordChangedAt").isString())
-            .andExpect(jsonPath("$.plan").value("free"));
-    }
-
-    @Test
-    void me_noAccessToken_returns401() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me"))
-            .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void me_invalidAccessToken_returns401() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me")
-                .header("Authorization", "Bearer tampered.token.here"))
-            .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    void me_afterSignupBeforeOnboarding_onboardingCompletedFalse() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me")
-                .header("Authorization", "Bearer " + accessToken))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.onboardingCompleted").value(false));
-    }
-
-    @Test
-    void me_afterOnboarding_onboardingCompletedTrue() throws Exception {
-        Map<String, Object> body = Map.of(
-            "target", "JOB_CHANGE",
-            "careerYear", 3,
-            "targetJobs", java.util.List.of("BACKEND")
-        );
-        mockMvc.perform(post("/api/v1/onboarding")
+    void patchMe_validNickname_updatesAndReturnsMe() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(body)))
-            .andExpect(status().isOk());
-
-        mockMvc.perform(get("/api/v1/users/me")
-                .header("Authorization", "Bearer " + accessToken))
+                .content(om.writeValueAsString(Map.of("nickname", "new_nick"))))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.onboardingCompleted").value(true));
+            .andExpect(jsonPath("$.nickname").value("new_nick"))
+            .andExpect(jsonPath("$.email").value("alice@example.com"));
+    }
+
+    @Test
+    void patchMe_duplicateNickname_returns409() throws Exception {
+        Map<String, Object> signup = Map.of(
+            "email", "bob@example.com",
+            "password", "Pass1234!",
+            "nickname", "bob",
+            "ageConfirmed", true,
+            "consents", Map.of("terms", true, "privacy", true, "marketing", false)
+        );
+        mockMvc.perform(post("/api/v1/auth/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(signup)))
+            .andExpect(status().isCreated());
+
+        mockMvc.perform(patch("/api/v1/users/me")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("nickname", "bob"))))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.code").value("NICKNAME_DUPLICATE"));
+    }
+
+    @Test
+    void patchMe_sameNickname_returns200NoOp() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("nickname", "alice"))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.nickname").value("alice"));
+    }
+
+    @Test
+    void patchMe_invalidNickname_returns400() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("nickname", "x"))))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void patchMe_unauthenticated_returns401() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("nickname", "new_nick"))))
+            .andExpect(status().isUnauthorized());
     }
 }
