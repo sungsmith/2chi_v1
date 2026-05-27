@@ -7,12 +7,15 @@ import com.twochi.user.domain.User;
 import com.twochi.user.dto.ChangePasswordRequest;
 import com.twochi.user.dto.MeResponse;
 import com.twochi.user.dto.UpdateNicknameRequest;
+import com.twochi.user.dto.WithdrawRequest;
+import com.twochi.user.service.AccountClosureService;
 import com.twochi.user.service.PasswordChangeService;
 import com.twochi.user.service.UserProfileUpdateService;
 import com.twochi.user.service.UserQueryService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,13 +29,16 @@ public class UserController {
     private final UserQueryService userQueryService;
     private final UserProfileUpdateService userProfileUpdateService;
     private final PasswordChangeService passwordChangeService;
+    private final AccountClosureService accountClosureService;
 
     public UserController(UserQueryService userQueryService,
                           UserProfileUpdateService userProfileUpdateService,
-                          PasswordChangeService passwordChangeService) {
+                          PasswordChangeService passwordChangeService,
+                          AccountClosureService accountClosureService) {
         this.userQueryService = userQueryService;
         this.userProfileUpdateService = userProfileUpdateService;
         this.passwordChangeService = passwordChangeService;
+        this.accountClosureService = accountClosureService;
     }
 
     @GetMapping("/me")
@@ -66,6 +72,17 @@ public class UserController {
             throw new BusinessException(ErrorCode.UNAUTHENTICATED);
         }
         passwordChangeService.change(principal.userId(), req.currentPassword(), req.newPassword());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> withdraw(
+            @AuthenticationPrincipal AuthenticatedUser principal,
+            @Valid @RequestBody WithdrawRequest req) {
+        if (principal == null) {
+            throw new BusinessException(ErrorCode.UNAUTHENTICATED);
+        }
+        accountClosureService.close(principal.userId(), req.currentPassword());
         return ResponseEntity.noContent().build();
     }
 }

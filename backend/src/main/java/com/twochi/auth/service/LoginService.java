@@ -43,8 +43,16 @@ public class LoginService {
     public LoginResult login(LoginRequest req) {
         Instant now = Instant.now();
 
-        User user = userRepository.findByEmailAndDeletedAtIsNull(req.email())
+        User user = userRepository.findByEmail(req.email())
             .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_CREDENTIALS));
+
+        if (user.getDeletedAt() != null) {
+            Instant graceUntil = user.getDeletedAt().plus(java.time.Duration.ofDays(30));
+            if (now.isBefore(graceUntil)) {
+                throw new BusinessException(ErrorCode.USER_WITHDRAWN_GRACE);
+            }
+            throw new BusinessException(ErrorCode.USER_WITHDRAWN);
+        }
 
         if (user.isLocked(now)) {
             throw lockedException(user, now);
@@ -84,8 +92,11 @@ public class LoginService {
         RefreshTokenService.RotateResult rotated = refreshTokenService.rotate(oldRefreshToken);
 
         User user = userRepository.findById(rotated.userId())
-            .filter(u -> u.getDeletedAt() == null)
             .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
+
+        if (user.getDeletedAt() != null) {
+            throw new BusinessException(ErrorCode.USER_WITHDRAWN_GRACE);
+        }
 
         String access = jwtTokenProvider.issue(user.getId(), user.getEmail(), user.getNickname(), user.getRole());
 
