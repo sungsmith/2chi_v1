@@ -88,8 +88,9 @@ class NotificationServiceTest {
         Notification unread = repository.save(Notification.forInbox(USER_ID, NotificationType.WEEKLY_SUMMARY, "unread", null, now));
         Notification read = Notification.forInbox(USER_ID, NotificationType.WEEKLY_SUMMARY, "already-read", null, now);
         read.markRead(now.minus(Duration.ofMinutes(10)));
-        Instant priorReadAt = read.getReadAt();
-        repository.save(read);
+        Notification savedRead = repository.save(read);
+        // DB roundtrip 후 capture (PostgreSQL TIMESTAMPTZ 의 microsecond precision 으로 truncate 됨)
+        Instant priorReadAt = repository.findById(savedRead.getId()).orElseThrow().getReadAt();
 
         service.markAllRead(USER_ID);
 
