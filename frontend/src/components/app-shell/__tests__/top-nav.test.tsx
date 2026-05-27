@@ -104,13 +104,13 @@ describe("TopNav", () => {
     expect(window.alert).toHaveBeenCalledWith("검색 기능은 곧 제공됩니다.");
   });
 
-  test("알림 버튼 클릭 → alert 호출", async () => {
+  test("알림 버튼 클릭 → /mypage/notification-center 이동", async () => {
     const user = userEvent.setup();
     render(<TopNav />);
 
     await user.click(screen.getByRole("button", { name: /알림/ }));
 
-    expect(window.alert).toHaveBeenCalledWith("알림 기능은 곧 제공됩니다.");
+    expect(pushMock).toHaveBeenCalledWith("/mypage/notification-center");
   });
 
   test("user=null 시 ProfileMenu 미렌더 (닉네임 부재)", () => {
