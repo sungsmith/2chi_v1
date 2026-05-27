@@ -116,6 +116,9 @@ class AccountClosureIntegrationTest {
 
     @Test
     void withdraw_alreadyWithdrawn_returns409() throws Exception {
+        // 같은 access token 으로 두 번 호출 가능한 이유: JwtAuthenticationFilter 가 claims-only
+        // (DB lookup 없음, §6.1). filter 단에서 deletedAt 체크가 추가되면 이 케이스는
+        // 두 번째 호출 시 410 USER_WITHDRAWN 으로 바뀜.
         mockMvc.perform(delete("/api/v1/users/me")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)

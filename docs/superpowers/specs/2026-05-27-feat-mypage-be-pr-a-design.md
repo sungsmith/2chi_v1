@@ -255,7 +255,7 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 **Side effect**:
 - `user.deleted_at = now()` 만 세팅
 - owned data 미터치
-- 같은 토큰으로 이후 요청은 401 `USER_WITHDRAWN` (필터 단)
+- 같은 access token 으로 이후 요청은 token 만료(~15분) 까지 가능. refresh 차단으로 access window 자연 캡 (`JwtAuthenticationFilter` claims-only 유지 — §6.1 참조). 두 번째 DELETE /me 는 `ALREADY_WITHDRAWN` 409. 다른 endpoint (PATCH /me 등) 는 v1 에서 deletedAt 체크 없음 — known limitation
 
 **Response**: 204 No Content
 
