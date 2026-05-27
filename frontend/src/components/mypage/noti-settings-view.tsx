@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Bell } from "@/components/ui/icons";
 import { fetchNotiSettings, updateNotiSettings } from "@/lib/api/mypage";
 import type { NotiSettingItemDto } from "@/lib/types/mypage";
@@ -25,6 +25,7 @@ function groupByCategory(items: NotiSettingItemDto[]): Map<string, NotiSettingIt
 export function NotiSettingsView() {
   const [items, setItems] = useState<NotiSettingItemDto[] | null>(null);
   const [error, setError] = useState<string | undefined>();
+  const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetchNotiSettings()
@@ -32,8 +33,13 @@ export function NotiSettingsView() {
       .catch((e) => setError(e instanceof Error ? e.message : "알림 설정을 불러오지 못했어요."));
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
   async function handleToggle(id: string, nextEnabled: boolean): Promise<void> {
-    const previous = items;
     // optimistic
     setItems((prev) => prev?.map((i) => i.id === id ? { ...i, enabled: nextEnabled } : i) ?? null);
 
@@ -41,9 +47,15 @@ export function NotiSettingsView() {
       const response = await updateNotiSettings([{ id, enabled: nextEnabled }]);
       setItems(response.settings);
     } catch (e) {
-      setItems(previous);
+      // functional revert — race condition 방지 (다른 토글의 in-flight 응답이
+      // previous snapshot 으로 stomp 되는 worst case 회피)
+      setItems((curr) => curr?.map((i) => i.id === id ? { ...i, enabled: !nextEnabled } : i) ?? null);
       setError(e instanceof Error ? e.message : "저장에 실패했어요.");
-      setTimeout(() => setError(undefined), 3000);
+      if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = setTimeout(() => {
+        setError(undefined);
+        errorTimerRef.current = null;
+      }, 3000);
     }
   }
 

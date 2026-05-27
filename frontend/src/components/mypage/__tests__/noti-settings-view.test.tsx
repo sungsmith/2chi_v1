@@ -80,4 +80,44 @@ describe("NotiSettingsView", () => {
 
     expect(await screen.findByRole("alert")).toHaveTextContent("알림 설정을 불러오지 못했어요.");
   });
+
+  it("functional revert preserves other in-flight toggle (race condition)", async () => {
+    fetchNotiSettingsMock.mockResolvedValueOnce({ settings: sampleItems });
+
+    // 첫 번째 토글 (deadline-d3): 실패하지만 deferred — 두 번째 토글이 먼저 완료되도록
+    let rejectFirst: (err: Error) => void = () => {};
+    const firstPending = new Promise((_resolve, reject) => {
+      rejectFirst = reject;
+    });
+    // 두 번째 토글 (weekly-summary): 성공, weekly-summary 만 enabled=true 로 변경된 응답
+    const secondResponseItems = sampleItems.map((i) =>
+      i.id === "weekly-summary" ? { ...i, enabled: true } : i
+    );
+    updateNotiSettingsMock
+      .mockImplementationOnce(() => firstPending)
+      .mockResolvedValueOnce({ settings: secondResponseItems });
+
+    render(<NotiSettingsView />);
+    await screen.findByText("채용공고 마감 D-3");
+
+    // 1. deadline-d3 (true → false) 클릭 — pending
+    await userEvent.click(screen.getByRole("button", { name: /채용공고 마감 D-3 알림 켜짐/ }));
+    // 2. weekly-summary (false → true) 클릭 — 즉시 resolve
+    await userEvent.click(screen.getByRole("button", { name: /주간 요약 알림 꺼짐/ }));
+
+    // 두 번째 응답이 적용되어 weekly-summary 가 켜짐
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /주간 요약 알림 켜짐/ })).toBeInTheDocument()
+    );
+
+    // 3. 첫 번째 토글 실패 → functional revert
+    rejectFirst(new Error("저장에 실패했어요."));
+
+    // deadline-d3 는 다시 켜짐으로 복원
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /채용공고 마감 D-3 알림 켜짐/ })).toBeInTheDocument()
+    );
+    // 핵심: weekly-summary 는 켜진 상태 그대로 유지되어야 함 (snapshot revert 였다면 꺼짐으로 stomp 됨)
+    expect(screen.getByRole("button", { name: /주간 요약 알림 켜짐/ })).toBeInTheDocument();
+  });
 });
