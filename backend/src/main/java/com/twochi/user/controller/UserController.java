@@ -4,8 +4,10 @@ import com.twochi.auth.jwt.JwtAuthenticationFilter.AuthenticatedUser;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
 import com.twochi.user.domain.User;
+import com.twochi.user.dto.ChangePasswordRequest;
 import com.twochi.user.dto.MeResponse;
 import com.twochi.user.dto.UpdateNicknameRequest;
+import com.twochi.user.service.PasswordChangeService;
 import com.twochi.user.service.UserProfileUpdateService;
 import com.twochi.user.service.UserQueryService;
 import jakarta.validation.Valid;
@@ -23,11 +25,14 @@ public class UserController {
 
     private final UserQueryService userQueryService;
     private final UserProfileUpdateService userProfileUpdateService;
+    private final PasswordChangeService passwordChangeService;
 
     public UserController(UserQueryService userQueryService,
-                          UserProfileUpdateService userProfileUpdateService) {
+                          UserProfileUpdateService userProfileUpdateService,
+                          PasswordChangeService passwordChangeService) {
         this.userQueryService = userQueryService;
         this.userProfileUpdateService = userProfileUpdateService;
+        this.passwordChangeService = passwordChangeService;
     }
 
     @GetMapping("/me")
@@ -51,5 +56,16 @@ public class UserController {
         return ResponseEntity.ok(userQueryService.buildMe(
             updated.getId(), updated.getEmail(), updated.getNickname(), updated.getRole()
         ));
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<Void> changePassword(
+            @AuthenticationPrincipal AuthenticatedUser principal,
+            @Valid @RequestBody ChangePasswordRequest req) {
+        if (principal == null) {
+            throw new BusinessException(ErrorCode.UNAUTHENTICATED);
+        }
+        passwordChangeService.change(principal.userId(), req.currentPassword(), req.newPassword());
+        return ResponseEntity.noContent().build();
     }
 }
