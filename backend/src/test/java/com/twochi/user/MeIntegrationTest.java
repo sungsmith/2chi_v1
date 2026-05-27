@@ -79,7 +79,10 @@ class MeIntegrationTest {
             .andExpect(jsonPath("$.email").value("alice@example.com"))
             .andExpect(jsonPath("$.nickname").value("alice"))
             .andExpect(jsonPath("$.role").value("USER"))
-            .andExpect(jsonPath("$.userId").isNumber());
+            .andExpect(jsonPath("$.userId").isNumber())
+            .andExpect(jsonPath("$.joinedAt").isString())
+            .andExpect(jsonPath("$.passwordChangedAt").isString())
+            .andExpect(jsonPath("$.plan").value("free"));
     }
 
     @Test

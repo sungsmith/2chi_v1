@@ -51,6 +51,9 @@ public class User {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    @Column(name = "password_changed_at")
+    private Instant passwordChangedAt;
+
     private User(String email, String passwordHash, String nickname) {
         this.email = email;
         this.passwordHash = passwordHash;
@@ -60,6 +63,7 @@ public class User {
         this.failedLoginCount = 0;
         Instant now = Instant.now();
         this.createdAt = now;
+        this.passwordChangedAt = now;
         this.updatedAt = now;
     }
 
@@ -91,6 +95,17 @@ public class User {
         this.failedLoginCount = 0;
         this.lockedUntil = null;
         this.lastLoginAt = now;
+        this.updatedAt = now;
+    }
+
+    public void changePassword(String newPasswordHash, Instant now) {
+        this.passwordHash = newPasswordHash;
+        this.passwordChangedAt = now;
+        this.updatedAt = now;
+    }
+
+    public void withdraw(Instant now) {
+        this.deletedAt = now;
         this.updatedAt = now;
     }
 }
