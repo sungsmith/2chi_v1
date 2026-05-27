@@ -89,6 +89,19 @@ export function LoginForm() {
           </button>
         </div>
       )}
+      {searchParams.get("withdrawn") === "true" && (
+        <div className="info-banner" role="status">
+          <span>탈퇴 처리됐어요. 30일 이내에 같은 이메일로 로그인하면 복구할 수 있어요.</span>
+          <button
+            type="button"
+            className="banner-close"
+            aria-label="닫기"
+            onClick={() => router.replace("/login")}
+          >
+            ×
+          </button>
+        </div>
+      )}
       <div className="brand">
         <img src="/logo.svg" alt="이취 (2chi)" />
         <div>
