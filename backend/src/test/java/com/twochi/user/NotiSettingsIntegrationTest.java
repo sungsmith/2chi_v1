@@ -89,7 +89,12 @@ class NotiSettingsIntegrationTest {
             .andExpect(jsonPath("$.settings[?(@.id == 'weekly-summary')].locked").value(false))
             // signup-verify: defaultOn=true, locked=true
             .andExpect(jsonPath("$.settings[?(@.id == 'signup-verify')].enabled").value(true))
-            .andExpect(jsonPath("$.settings[?(@.id == 'signup-verify')].locked").value(true));
+            .andExpect(jsonPath("$.settings[?(@.id == 'signup-verify')].locked").value(true))
+            // iteration order = NotiSettingDef enum 선언 순서 (FE 가 의존하는 contract)
+            .andExpect(jsonPath("$.settings[0].id").value("deadline-d3"))
+            .andExpect(jsonPath("$.settings[11].id").value("channel-push"))
+            // field-drift 보호: label 도 검증
+            .andExpect(jsonPath("$.settings[?(@.id == 'deadline-d3')].label").value("채용공고 마감 D-3"));
     }
 
     @Test
