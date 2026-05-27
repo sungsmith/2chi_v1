@@ -34,9 +34,6 @@ public class Notification {
     @Column(columnDefinition = "text")
     private String body;
 
-    @Column(name = "payload_json", columnDefinition = "jsonb")
-    private String payloadJson;
-
     @Column(name = "scheduled_at")
     private Instant scheduledAt;
 

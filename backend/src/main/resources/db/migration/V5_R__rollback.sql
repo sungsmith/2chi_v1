@@ -1,7 +1,7 @@
 -- V5 rollback (manual). Flyway 자동 실행 안 함.
 -- 1. INBOX 채널 row 정리 + CHECK 복원
 DELETE FROM notification WHERE channel = 'INBOX';
-ALTER TABLE notification DROP CONSTRAINT ck_notification_channel;
+ALTER TABLE notification DROP CONSTRAINT IF EXISTS ck_notification_channel;
 ALTER TABLE notification ADD CONSTRAINT ck_notification_channel
     CHECK (channel IN ('EMAIL', 'WEB_PUSH'));
 
