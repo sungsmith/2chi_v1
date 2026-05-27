@@ -2,7 +2,12 @@
 ALTER TABLE app_user ADD COLUMN password_changed_at TIMESTAMPTZ;
 COMMENT ON COLUMN app_user.password_changed_at IS
     '마지막 비밀번호 변경 시각. NULL 이면 가입 후 한 번도 변경 안 함 (가입 시각이 기준)';
+
+-- backfill 시 trg_user_updated_at trigger 가 fire 되면 모든 기존 사용자의 updated_at 이
+-- 마이그레이션 시각으로 덮어써짐 → 잠시 trigger 비활성화 후 UPDATE
+ALTER TABLE app_user DISABLE TRIGGER trg_user_updated_at;
 UPDATE app_user SET password_changed_at = created_at WHERE password_changed_at IS NULL;
+ALTER TABLE app_user ENABLE TRIGGER trg_user_updated_at;
 
 -- 2. user_noti_setting (sparse override 테이블)
 CREATE TABLE user_noti_setting (
