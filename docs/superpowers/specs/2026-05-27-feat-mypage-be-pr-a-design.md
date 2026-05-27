@@ -131,15 +131,15 @@ public class UserNotiSetting {
 ### 4.6 Auth 변경 (`com.twochi.auth`)
 
 - **`LoginService.login`** — `findByEmail` 로 변경(현재는 `findByEmailAndDeletedAtIsNull` 라 deleted 사용자가 INVALID_CREDENTIALS 받음) + `deleted_at != null` 체크 + grace window 분기 (410 `USER_WITHDRAWN_GRACE`)
-- **`RefreshTokenService.refresh`** — refresh 시 user 의 `deleted_at` 체크. 탈퇴됐으면 새 access token 발급 거부 (410 `USER_WITHDRAWN_GRACE`)
+- **`LoginService.refresh`** — refresh 시 user 의 `deleted_at` 체크. 탈퇴됐으면 새 access token 발급 거부 (410 `USER_WITHDRAWN_GRACE`). `RefreshTokenService` 는 token rotation 만 책임 — user load + deletedAt 분기는 `LoginService.refresh` 안에 위치
 - **`JwtAuthenticationFilter`** — **변경 없음** (claims-only 유지). 탈퇴 직후 기존 access token 은 만료(~15분) 까지 유효. refresh 차단으로 자연스럽게 access window 캡
 
 ### 4.7 ErrorCode 추가 (`com.twochi.common.exception.ErrorCode`)
 
 | code | HTTP | 의미 |
 |---|---|---|
-| `USER_WITHDRAWN` | 401 | 탈퇴된 계정 (보호 endpoint 접근) |
-| `USER_WITHDRAWN_GRACE` | 410 | 탈퇴 후 30일 유예 중 (로그인 거부) |
+| `USER_WITHDRAWN` | 410 | 탈퇴된 계정 (30일 grace 경과 시 — v1 에서는 cron 미구현이라 사실상 unreachable) |
+| `USER_WITHDRAWN_GRACE` | 410 | 탈퇴 후 30일 유예 중 (로그인/refresh 거부) |
 | `ALREADY_WITHDRAWN` | 409 | DELETE /me 가 이미 탈퇴된 사용자에게 |
 | `PASSWORD_MISMATCH` | 400 | currentPassword 불일치 |
 | `PASSWORD_UNCHANGED` | 400 | newPassword == current |
@@ -184,7 +184,7 @@ COMMENT ON COLUMN user_noti_setting.setting_id IS 'NotiSettingDef enum 의 키 (
 - `dto/MeResponse.java` (3 필드 추가)
 - `domain/User.java` (컬럼 + 메서드 추가)
 - `auth/service/LoginService.java` (deleted_at 분기 — `findByEmailAndDeletedAtIsNull` → `findByEmail` 변경 포함)
-- `auth/service/RefreshTokenService.java` (refresh 시 deleted_at 체크)
+- (`auth/service/RefreshTokenService.java` 는 변경 없음 — user load 는 LoginService.refresh 에 있음)
 - `common/exception/ErrorCode.java` (8 code 추가)
 
 ---
@@ -327,7 +327,7 @@ if (user.getDeletedAt() != null) {
 
 `graceUntil` 응답 body 노출은 `BusinessException` 의 detail/message 패턴 따라 — 기존 코드의 detail 전달 메커니즘에 맞춰 plan 에서 구현.
 
-### 6.3 Refresh 시도 (`RefreshTokenService.refresh`)
+### 6.3 Refresh 시도 (`LoginService.refresh`)
 
 refresh 시 user 의 `deleted_at` 체크. 탈퇴됐으면 새 access token 발급 거부:
 
@@ -364,7 +364,7 @@ if (user.getDeletedAt() != null) {
 
 | 테스트 | 케이스 |
 |---|---|
-| `UserControllerIntegrationTest` | PATCH /me · PATCH /me/password · DELETE /me end-to-end. 탈퇴 후 GET /me → 401 USER_WITHDRAWN. 탈퇴 후 POST /auth/login → 410 USER_WITHDRAWN_GRACE + graceUntil |
+| `AccountClosureIntegrationTest` 등 | PATCH /me · PATCH /me/password · DELETE /me end-to-end. 탈퇴 후 같은 token 으로 두 번째 DELETE → 409 ALREADY_WITHDRAWN. 탈퇴 후 POST /auth/login → 410 USER_WITHDRAWN_GRACE. 탈퇴 후 POST /auth/refresh → 410 USER_WITHDRAWN_GRACE |
 | `NotiSettingsControllerIntegrationTest` | GET (override 없음) → 12 default · PATCH 후 GET 반영 · locked 시도 400 |
 
 ### 7.3 회귀
