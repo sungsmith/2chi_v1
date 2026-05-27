@@ -4,15 +4,11 @@ import userEvent from "@testing-library/user-event";
 import { PasswordChangeModal } from "../password-change-modal";
 
 const changePasswordMock = vi.fn();
-const setAccessTokenMock = vi.fn();
 const pushMock = vi.fn();
 const logoutMock = vi.fn();
 
 vi.mock("@/lib/api/mypage", () => ({
   changePassword: (...args: unknown[]) => changePasswordMock(...args),
-}));
-vi.mock("@/lib/api/http", () => ({
-  setAccessToken: (...args: unknown[]) => setAccessTokenMock(...args),
 }));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: pushMock }),
@@ -26,7 +22,6 @@ vi.mock("@/contexts/auth-context", () => ({
 
 beforeEach(() => {
   changePasswordMock.mockReset();
-  setAccessTokenMock.mockReset();
   pushMock.mockReset();
   logoutMock.mockReset();
 });
@@ -42,7 +37,6 @@ describe("PasswordChangeModal", () => {
     await userEvent.click(screen.getByRole("button", { name: /변경/ }));
 
     await waitFor(() => expect(changePasswordMock).toHaveBeenCalledWith("OldPass1!", "NewPass2!"));
-    expect(setAccessTokenMock).toHaveBeenCalledWith(null);
     expect(logoutMock).toHaveBeenCalled();
     expect(pushMock).toHaveBeenCalledWith("/login?password-changed=true");
   });
@@ -69,7 +63,7 @@ describe("PasswordChangeModal", () => {
     await userEvent.click(screen.getByRole("button", { name: /변경/ }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent("현재 비밀번호가 일치하지 않아요.");
-    expect(setAccessTokenMock).not.toHaveBeenCalled();
+    expect(logoutMock).not.toHaveBeenCalled();
   });
 
   it("requires all 3 fields", async () => {

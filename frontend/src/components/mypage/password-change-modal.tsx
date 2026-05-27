@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { changePassword } from "@/lib/api/mypage";
-import { setAccessToken } from "@/lib/api/http";
 
 type Props = {
   onClose: () => void;
@@ -34,8 +33,7 @@ export function PasswordChangeModal({ onClose }: Props) {
     setSubmitting(true);
     try {
       await changePassword(currentPassword, newPassword);
-      // forced logout — 옛 access token 이 ~15분 유효한 known limitation 회피
-      setAccessToken(null);
+      // forced logout — setAccessToken(null) 은 logout() 안에서 이미 처리됨
       await logout();
       router.push("/login?password-changed=true");
     } catch (e) {
@@ -65,6 +63,7 @@ export function PasswordChangeModal({ onClose }: Props) {
               type="password"
               className="input"
               aria-label="현재 비밀번호"
+              autoComplete="current-password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
               disabled={submitting}
@@ -78,6 +77,7 @@ export function PasswordChangeModal({ onClose }: Props) {
               type="password"
               className="input"
               aria-label="새 비밀번호"
+              autoComplete="new-password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               disabled={submitting}
@@ -90,6 +90,7 @@ export function PasswordChangeModal({ onClose }: Props) {
               type="password"
               className="input"
               aria-label="새 비밀번호 확인"
+              autoComplete="new-password"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               disabled={submitting}

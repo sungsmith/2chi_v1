@@ -78,7 +78,15 @@ export function LoginForm() {
     <div className="auth-card">
       {searchParams.get("password-changed") === "true" && (
         <div className="info-banner" role="status">
-          비밀번호가 변경됐어요. 새 비밀번호로 다시 로그인해주세요.
+          <span>비밀번호가 변경됐어요. 새 비밀번호로 다시 로그인해주세요.</span>
+          <button
+            type="button"
+            className="banner-close"
+            aria-label="닫기"
+            onClick={() => router.replace("/login")}
+          >
+            ×
+          </button>
         </div>
       )}
       <div className="brand">
