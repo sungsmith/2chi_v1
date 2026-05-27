@@ -50,12 +50,24 @@ export function WithdrawConfirmModal({ onClose }: Props) {
         </header>
 
         <div className="body">
-          <div className="helper">
-            <b>탈퇴 시 영구 삭제되는 데이터</b>
+          <div role="note" style={{
+            padding: "12px 14px",
+            background: "var(--color-semantic-error-bg)",
+            borderRadius: "var(--radius-md)",
+            borderLeft: "3px solid var(--color-semantic-error)",
+            fontSize: "13px",
+            lineHeight: 1.6,
+            marginBottom: "12px",
+          }}>
+            <div style={{ fontWeight: 600, marginBottom: "6px", color: "var(--color-semantic-error)" }}>
+              탈퇴 시 영구 삭제되는 데이터
+            </div>
             <div>· 회원 정보 (이메일, 닉네임, 연결된 소셜 계정)</div>
             <div>· 자소서 · 경력기술 · 포트폴리오 링크</div>
             <div>· 지원 일정 · 히스토리 로그 · 알림 기록</div>
-            <div>30일간 휴면 상태로 유예 후 영구 삭제됩니다. 그 안에 다시 로그인하면 복구할 수 있어요.</div>
+            <div style={{ marginTop: "8px", fontSize: "12px", color: "var(--color-text-muted)" }}>
+              30일간 휴면 상태로 유예 후 영구 삭제됩니다. 그 안에 다시 로그인하면 복구할 수 있어요.
+            </div>
           </div>
           <div className="fld">
             <label className="lbl" htmlFor="withdraw-password">현재 비밀번호 <span className="req" aria-hidden="true">*</span></label>
@@ -85,7 +97,7 @@ export function WithdrawConfirmModal({ onClose }: Props) {
 
         <footer className="foot">
           <button type="button" className="btn ghost sm" onClick={onClose} disabled={submitting}>취소</button>
-          <button type="button" className="btn danger sm" onClick={handleSubmit} disabled={submitting}>
+          <button type="button" className="btn danger sm" onClick={handleSubmit} disabled={submitting || !currentPassword}>
             {submitting ? "처리 중..." : "회원 탈퇴"}
           </button>
         </footer>

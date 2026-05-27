@@ -50,11 +50,13 @@ describe("WithdrawConfirmModal", () => {
     expect(logoutMock).not.toHaveBeenCalled();
   });
 
-  it("requires password input", async () => {
+  it("disables submit button until password is entered", async () => {
     render(<WithdrawConfirmModal onClose={vi.fn()} />);
-    await userEvent.click(screen.getByRole("button", { name: /회원 탈퇴/ }));
-    expect(await screen.findByRole("alert")).toHaveTextContent(/입력해주세요/);
-    expect(withdrawMock).not.toHaveBeenCalled();
+    const submit = screen.getByRole("button", { name: /회원 탈퇴/ });
+    expect(submit).toBeDisabled();
+
+    await userEvent.type(screen.getByLabelText("현재 비밀번호"), "x");
+    expect(submit).toBeEnabled();
   });
 
   it("cancel button calls onClose", async () => {

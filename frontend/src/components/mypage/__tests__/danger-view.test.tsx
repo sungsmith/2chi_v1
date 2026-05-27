@@ -36,4 +36,13 @@ describe("DangerView", () => {
     const exportBtn = screen.getByRole("button", { name: /데이터 요청/ });
     expect(exportBtn).toBeDisabled();
   });
+
+  it("closes modal when cancel is clicked", async () => {
+    render(<DangerView />);
+    await userEvent.click(screen.getByRole("button", { name: "회원 탈퇴" }));
+    expect(screen.getByRole("heading", { name: "회원 탈퇴 확인" })).toBeInTheDocument();
+
+    await userEvent.click(screen.getByRole("button", { name: "취소" }));
+    expect(screen.queryByRole("heading", { name: "회원 탈퇴 확인" })).not.toBeInTheDocument();
+  });
 });
