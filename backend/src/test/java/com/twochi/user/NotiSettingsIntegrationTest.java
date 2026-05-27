@@ -18,9 +18,12 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.List;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -101,5 +104,73 @@ class NotiSettingsIntegrationTest {
     void getNotiSettings_unauthenticated_returns401() throws Exception {
         mockMvc.perform(get("/api/v1/users/me/noti-settings"))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void patchNotiSettings_singleOverride_persisted() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(Map.of("id", "deadline-d3", "enabled", false))
+                ))))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.settings[?(@.id == 'deadline-d3')].enabled").value(false));
+
+        // GET 으로 다시 확인
+        mockMvc.perform(get("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.settings[?(@.id == 'deadline-d3')].enabled").value(false));
+    }
+
+    @Test
+    void patchNotiSettings_setBackToDefault_removesRow() throws Exception {
+        // 1. default 와 다른 값 (deadline-d3 default=true → false)
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(Map.of("id", "deadline-d3", "enabled", false))
+                ))))
+            .andExpect(status().isOk());
+
+        assertThat(userNotiSettingRepository.findAll()).hasSize(1);
+
+        // 2. default 로 되돌림
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(Map.of("id", "deadline-d3", "enabled", true))
+                ))))
+            .andExpect(status().isOk());
+
+        // row 가 삭제되어야 함 (sparse 유지)
+        assertThat(userNotiSettingRepository.findAll()).isEmpty();
+    }
+
+    @Test
+    void patchNotiSettings_lockedItem_returns400() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(Map.of("id", "signup-verify", "enabled", false))
+                ))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("SETTING_LOCKED"));
+    }
+
+    @Test
+    void patchNotiSettings_unknownId_returns400() throws Exception {
+        mockMvc.perform(patch("/api/v1/users/me/noti-settings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "overrides", List.of(Map.of("id", "nonexistent-key", "enabled", true))
+                ))))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("UNKNOWN_SETTING"));
     }
 }

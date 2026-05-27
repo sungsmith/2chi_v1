@@ -30,7 +30,9 @@ public enum ErrorCode {
     PASSWORD_UNCHANGED(HttpStatus.BAD_REQUEST, "현재 비밀번호와 동일해요. 다른 비밀번호로 설정해주세요."),
     USER_WITHDRAWN(HttpStatus.GONE, "탈퇴된 계정입니다."),
     USER_WITHDRAWN_GRACE(HttpStatus.GONE, "탈퇴된 계정입니다. 30일 유예 기간 내에 복구 가능해요."),
-    ALREADY_WITHDRAWN(HttpStatus.CONFLICT, "이미 탈퇴 처리됐어요.");
+    ALREADY_WITHDRAWN(HttpStatus.CONFLICT, "이미 탈퇴 처리됐어요."),
+    SETTING_LOCKED(HttpStatus.BAD_REQUEST, "보안 알림은 변경할 수 없어요."),
+    UNKNOWN_SETTING(HttpStatus.BAD_REQUEST, "알 수 없는 알림 설정이에요.");
 
     private final HttpStatus status;
     private final String defaultMessage;
