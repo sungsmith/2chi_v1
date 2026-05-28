@@ -1,6 +1,7 @@
 "use client";
 
 import { SignupErrors } from "@/lib/validation/signup";
+import { Check } from "@/components/ui/icons";
 
 type Props = {
   ageConfirmed: boolean;
@@ -25,7 +26,7 @@ export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChan
   return (
     <div className="auth-terms">
       <div className={"all" + (agreeAll ? " on" : "")} onClick={toggleAll} role="checkbox" aria-checked={agreeAll} tabIndex={0}>
-        <span className={"box" + (agreeAll ? " on" : "")} />
+        <span className="box">{agreeAll && <Check size={10} />}</span>
         전체 동의
       </div>
 
@@ -36,7 +37,7 @@ export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChan
         aria-checked={terms}
         tabIndex={0}
       >
-        <span className="box" />
+        <span className="box">{terms && <Check size={9} />}</span>
         <span className="req">[필수]</span>
         서비스 이용약관
         <a className="view" href="/terms" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>보기</a>
@@ -50,7 +51,7 @@ export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChan
         aria-checked={privacy}
         tabIndex={0}
       >
-        <span className="box" />
+        <span className="box">{privacy && <Check size={9} />}</span>
         <span className="req">[필수]</span>
         개인정보 수집·이용 동의
         <a className="view" href="/privacy" target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()}>보기</a>
@@ -64,7 +65,7 @@ export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChan
         aria-checked={ageConfirmed}
         tabIndex={0}
       >
-        <span className="box" />
+        <span className="box">{ageConfirmed && <Check size={9} />}</span>
         <span className="req">[필수]</span>
         만 14세 이상 확인
       </div>
@@ -77,7 +78,7 @@ export function ConsentSection({ ageConfirmed, terms, privacy, marketing, onChan
         aria-checked={marketing}
         tabIndex={0}
       >
-        <span className="box" />
+        <span className="box">{marketing && <Check size={9} />}</span>
         <span className="opt">[선택]</span>
         마케팅 정보 수신 동의
       </div>
