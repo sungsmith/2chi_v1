@@ -15,7 +15,7 @@
 | `POSTING_DEADLINE_D3` | 공고 마감 3일 전 | 매일 |
 | `POSTING_DEADLINE_D1` | 공고 마감 1일 전 | 매일 |
 | `SCHEDULE_D1` | 지원 일정(면접/코테/서류/협상) 1일 전 | 매일 |
-| `COVER_LETTER_UNSUBMITTED_7D` | DRAFT 자소서 저장 후 7일 경과 | 매일 (dedup 1회) |
+| `COVER_LETTER_UNSUBMITTED_7D` | 마감 전 공고의 DRAFT 자소서가 7일 방치됨 (opt-in) | 매일 (dedup 1회) |
 | `WEEKLY_SUMMARY` | 주간 활동 요약 | 매주 월요일 |
 | (cleanup) | 30일 이전 알림 hard delete | 매일 |
 
@@ -97,10 +97,16 @@ COMMENT ON COLUMN notification.dedup_key IS
   - EventType → 한글 매핑 테이블 (서류 마감 / 코딩테스트 / 1차 면접 / 2차 면접 / 임원 면접 / 처우 협상)
 
 ### 4.3 COVER_LETTER_UNSUBMITTED_7D
-- 조회: `CoverLetterVariantRepository` where `status = DRAFT AND createdAt <= now-7d AND deletedAt IS NULL`
-  - `createdAt` 기준 ("저장한 지 7일"). dedup_key=`CL7:{variantId}` 라 7일 경과 후 1회만 발송.
-- 대상: variant 의 `userId`, 회사명은 `postingId` → JobPosting `company` (postingId null 이면 회사명 생략)
-- 문구: `"{company} 자소서를 저장한 지 7일째예요. 마저 다듬어볼까요?"` (회사명 없으면 "작성 중인 자소서를 저장한 지 7일째예요. 마저 다듬어볼까요?")
+- 조회: `CoverLetterVariantRepository` where:
+  - `status = DRAFT` — 사용자가 "완료 저장" 을 안 함. ("임시 저장"=DRAFT / "완료 저장"=COMPLETED 두 버튼으로 명시 구분, `write-content.tsx` + `VariantPatchRequest.status`)
+  - `postingId IS NOT NULL` — 공고에 연결된 자소서만. 범용 초안(마스터 기반, postingId null)은 마감 개념이 없어 제외.
+  - `posting.deadline >= today` — 마감 안 지남. 마감 지난 공고는 지원 불가라 알림 무의미 → 제외.
+  - `updatedAt <= now-7d` — 마지막 수정 7일 경과 = 방치.
+  - `deletedAt IS NULL`
+- **기준 = updatedAt(마지막 수정)**. 작업 중(7일 내 수정)이면 타이머 리셋되어 알림 안 감. "마감 임박" 신호는 POSTING_DEADLINE_D3/D1 이 담당하므로 여기선 추가 트리거 없이 7일 방치만 본다(역할 분담 / 중복 방지).
+- 대상: variant 의 `userId`, 회사명은 `postingId` → JobPosting `company`
+- 문구: `"{company} 자소서가 아직 작성 중이에요. 마감 전에 마무리해볼까요?"`
+- dedup `CL7:{variantId}` 1회 (7일 방치 첫 도달 시 1회. 재수정 후 재방치해도 재알림 없음 — v1 허용)
 
 ### 4.4 WEEKLY_SUMMARY (월요일만)
 - 대상: 온보딩 완료한 전체 사용자 (또는 지난주 활동 있는 사용자)
@@ -112,16 +118,21 @@ COMMENT ON COLUMN notification.dedup_key IS
 
 ## 5. 알림 설정 연동
 
-- `NotificationType` → `settingId` 매핑 (enum 주석 기준):
-  - `POSTING_DEADLINE_D3` → `deadline-d3`
-  - `POSTING_DEADLINE_D1` → `deadline-d1`
-  - `SCHEDULE_D1` → `interview-d1`
-  - `COVER_LETTER_UNSUBMITTED_7D` → `cl-unsubmitted`
-  - `WEEKLY_SUMMARY` → `weekly-summary`
+`NotificationType` → `settingId` 매핑 + `NotiSettingDef.defaultOn`(디자인 시스템 알림설정 화면과 1:1):
+
+| type | settingId | defaultOn | 성격 |
+|---|---|---|---|
+| `POSTING_DEADLINE_D3` | `deadline-d3` | **ON** | 핵심 (공고 마감 임박) |
+| `POSTING_DEADLINE_D1` | `deadline-d1` | **ON** | 핵심 |
+| `SCHEDULE_D1` | `interview-d1` | **ON** | 핵심 (일정 D-1) |
+| `COVER_LETTER_UNSUBMITTED_7D` | `cl-unsubmitted` | **OFF** | opt-in (방치 자소서) |
+| `WEEKLY_SUMMARY` | `weekly-summary` | **OFF** | opt-in |
+
 - 각 generator 가 publish 전: `UserNotiSettingRepository.findByUserIdAndSettingId(userId, settingId)`
   - row 있으면 `enabled` 값 사용
-  - row 없으면 `NotiSettingDef.{settingId}.defaultEnabled` 사용
+  - row 없으면 `NotiSettingDef.fromId(settingId).defaultOn()` 사용
   - `false` 면 skip
+- **알림 양 관리**: 핵심 3종(공고 마감 D-3/D-1, 일정 D-1)만 기본 ON. 자소서 미제출·주간요약은 기본 OFF(사용자가 켜야 수신). cron 은 5종 모두 구현하되 default 가 양을 조절.
 - 성능: 사용자 수가 적은 v1 에선 per-user 조회로 충분. (대량 시 settingId 별 일괄 조회로 최적화 — v2)
 
 ## 6. 스케줄 + cleanup + dev 트리거
@@ -148,9 +159,15 @@ COMMENT ON COLUMN notification.dedup_key IS
 - `DevNotificationControllerTest` (integration): 수동 트리거 → 알림 생성 확인
 - dedup unique 충돌 시 `DataIntegrityViolationException` graceful handling (existsBy 선체크 + 충돌 무시)
 
-## 8. 미해결 / 가정
+## 8. 결정 사항 / 가정
 
-- **가정**: `JobPosting`, `Event`(via Application), `CoverLetterVariant` 모두 `userId` 로 소유자 추적 가능. (B1 까지 구현된 도메인에서 확인됨)
-- **가정**: `Application` 에 `company` 문자열 필드 존재. (SCHEDULE_D1 / CL7 문구용 — Task 1 에서 재확인)
+### 결정됨 (brainstorming)
+- 자소서 미제출: **마감 임박 추가 트리거 안 함** (공고 마감 알림이 담당), **postingId null 제외**, **updatedAt 7일 방치 기준**.
+- 알림 5종 모두 구현, default 는 NotiSettingDef.defaultOn 그대로 (핵심 3종 ON / 자소서·주간 OFF).
+
+### 가정 (Task 1 에서 재확인)
+- `JobPosting`, `Event`(via Application), `CoverLetterVariant` 모두 `userId` 로 소유자 추적 가능. (B1 까지 구현된 도메인에서 확인됨)
+- `Application` 에 `company` 문자열 필드 존재 (SCHEDULE_D1 문구용).
+- CL7 은 `CoverLetterVariant` → `JobPosting`(postingId) 조인으로 `deadline`·`company` 참조.
 - soft-delete 컬럼(`deletedAt`) 유무는 도메인별로 Task 1 에서 확인 후 조회 조건 확정.
-- WEEKLY_SUMMARY 대상 사용자 범위("전체 온보딩 완료" vs "지난주 활동자")는 Task 4 에서 성능 보고 확정 — v1 기본은 전체 온보딩 완료 사용자.
+- WEEKLY_SUMMARY 대상 사용자 범위는 v1 기본 "전체 온보딩 완료 사용자" — 성능 이슈 시 "지난주 활동자" 로 축소 (Task 4).
