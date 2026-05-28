@@ -24,11 +24,13 @@ export function LoginForm() {
   // banner 는 비밀번호 변경 / 회원탈퇴 흐름이 sessionStorage 로 전달.
   // URL 쿼리 대신 sessionStorage 를 쓰는 이유는 layout guard 의 자동 redirect 와의
   // race 에 영향받지 않기 위함 (docs/issues/0005 참조). mount 직후 1회 읽고 제거.
+  // setBanner 는 Promise.resolve().then 으로 effect 동기 흐름 밖에서 호출
+  // (react-hooks/set-state-in-effect 회피 — docs/learning/react19-set-state-in-effect-pattern).
   useEffect(() => {
     const b = sessionStorage.getItem("loginBanner");
     if (b === "password-changed" || b === "withdrawn") {
-      setBanner(b);
       sessionStorage.removeItem("loginBanner");
+      Promise.resolve(b).then(setBanner);
     }
   }, []);
 

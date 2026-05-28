@@ -155,19 +155,19 @@ describe("LoginForm", () => {
     expect(pushMock).toHaveBeenCalledWith("/");
   });
 
-  test("sessionStorage loginBanner=password-changed 면 배너 표시 후 key 제거", () => {
+  test("sessionStorage loginBanner=password-changed 면 배너 표시 후 key 제거", async () => {
     sessionStorage.setItem("loginBanner", "password-changed");
     render(<LoginForm />);
 
-    expect(screen.getByText(/비밀번호가 변경됐어요/)).toBeInTheDocument();
+    expect(await screen.findByText(/비밀번호가 변경됐어요/)).toBeInTheDocument();
     expect(sessionStorage.getItem("loginBanner")).toBeNull();
   });
 
-  test("sessionStorage loginBanner=withdrawn 면 복구 안내 배너 표시 후 key 제거", () => {
+  test("sessionStorage loginBanner=withdrawn 면 복구 안내 배너 표시 후 key 제거", async () => {
     sessionStorage.setItem("loginBanner", "withdrawn");
     render(<LoginForm />);
 
-    expect(screen.getByText(/30일 이내에 같은 이메일로 로그인하면 복구/)).toBeInTheDocument();
+    expect(await screen.findByText(/30일 이내에 같은 이메일로 로그인하면 복구/)).toBeInTheDocument();
     expect(sessionStorage.getItem("loginBanner")).toBeNull();
   });
 
