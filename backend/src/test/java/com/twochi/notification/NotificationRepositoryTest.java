@@ -64,7 +64,7 @@ class NotificationRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional  // @Modifying bulk delete 는 활성 트랜잭션 필요. count() 는 aggregate 쿼리라 1차 캐시 안 거쳐 stale 없음.
     void cleanup_은_cutoff_이전_INBOX_만_삭제() {
         Instant now = Instant.now();
         repository.saveAndFlush(Notification.forInbox(userId1, NotificationType.WEEKLY_SUMMARY, "old", null, now.minus(Duration.ofDays(31))));
