@@ -41,6 +41,19 @@ describe("WithdrawConfirmModal", () => {
     expect(pushMock).toHaveBeenCalledWith("/login");
   });
 
+  it("does not persist loginBanner or redirect if logout fails", async () => {
+    withdrawMock.mockResolvedValueOnce(undefined);
+    logoutMock.mockRejectedValueOnce(new Error("network"));
+    render(<WithdrawConfirmModal onClose={vi.fn()} />);
+
+    await userEvent.type(screen.getByLabelText("현재 비밀번호"), "Pass1234!");
+    await userEvent.click(screen.getByRole("button", { name: /회원 탈퇴/ }));
+
+    await waitFor(() => expect(logoutMock).toHaveBeenCalled());
+    expect(sessionStorage.getItem("loginBanner")).toBeNull();
+    expect(pushMock).not.toHaveBeenCalled();
+  });
+
   it("shows error on PASSWORD_MISMATCH", async () => {
     withdrawMock.mockRejectedValueOnce(new Error("현재 비밀번호가 일치하지 않아요."));
     render(<WithdrawConfirmModal onClose={vi.fn()} />);

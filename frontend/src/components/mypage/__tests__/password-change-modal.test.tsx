@@ -43,6 +43,21 @@ describe("PasswordChangeModal", () => {
     expect(pushMock).toHaveBeenCalledWith("/login");
   });
 
+  it("does not persist loginBanner or redirect if logout fails", async () => {
+    changePasswordMock.mockResolvedValueOnce(undefined);
+    logoutMock.mockRejectedValueOnce(new Error("network"));
+    render(<PasswordChangeModal onClose={vi.fn()} />);
+
+    await userEvent.type(screen.getByLabelText("현재 비밀번호"), "OldPass1!");
+    await userEvent.type(screen.getByLabelText("새 비밀번호"), "NewPass2!");
+    await userEvent.type(screen.getByLabelText("새 비밀번호 확인"), "NewPass2!");
+    await userEvent.click(screen.getByRole("button", { name: /변경/ }));
+
+    await waitFor(() => expect(logoutMock).toHaveBeenCalled());
+    expect(sessionStorage.getItem("loginBanner")).toBeNull();
+    expect(pushMock).not.toHaveBeenCalled();
+  });
+
   it("shows mismatch error when new != confirm", async () => {
     render(<PasswordChangeModal onClose={vi.fn()} />);
 
