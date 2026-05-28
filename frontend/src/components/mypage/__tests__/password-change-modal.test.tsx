@@ -24,6 +24,7 @@ beforeEach(() => {
   changePasswordMock.mockReset();
   pushMock.mockReset();
   logoutMock.mockReset();
+  sessionStorage.clear();
 });
 
 describe("PasswordChangeModal", () => {
@@ -38,7 +39,8 @@ describe("PasswordChangeModal", () => {
 
     await waitFor(() => expect(changePasswordMock).toHaveBeenCalledWith("OldPass1!", "NewPass2!"));
     expect(logoutMock).toHaveBeenCalled();
-    expect(pushMock).toHaveBeenCalledWith("/login?password-changed=true");
+    expect(sessionStorage.getItem("loginBanner")).toBe("password-changed");
+    expect(pushMock).toHaveBeenCalledWith("/login");
   });
 
   it("shows mismatch error when new != confirm", async () => {

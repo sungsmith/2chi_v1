@@ -33,9 +33,12 @@ export function PasswordChangeModal({ onClose }: Props) {
     setSubmitting(true);
     try {
       await changePassword(currentPassword, newPassword);
+      // banner 정보를 sessionStorage 로 전달 — layout guard 의 자동 redirect 와
+      // 명시적 redirect 가 경합해도 banner 표시는 URL 쿼리에 의존하지 않으므로 보장됨.
+      sessionStorage.setItem("loginBanner", "password-changed");
       // forced logout — setAccessToken(null) 은 logout() 안에서 이미 처리됨
       await logout();
-      router.push("/login?password-changed=true");
+      router.push("/login");
     } catch (e) {
       setError(e instanceof Error ? e.message : "변경에 실패했어요.");
       setSubmitting(false);

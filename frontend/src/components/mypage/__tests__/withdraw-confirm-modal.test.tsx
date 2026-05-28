@@ -24,6 +24,7 @@ beforeEach(() => {
   withdrawMock.mockReset();
   pushMock.mockReset();
   logoutMock.mockReset();
+  sessionStorage.clear();
 });
 
 describe("WithdrawConfirmModal", () => {
@@ -36,7 +37,8 @@ describe("WithdrawConfirmModal", () => {
 
     await waitFor(() => expect(withdrawMock).toHaveBeenCalledWith("Pass1234!"));
     expect(logoutMock).toHaveBeenCalled();
-    expect(pushMock).toHaveBeenCalledWith("/login?withdrawn=true");
+    expect(sessionStorage.getItem("loginBanner")).toBe("withdrawn");
+    expect(pushMock).toHaveBeenCalledWith("/login");
   });
 
   it("shows error on PASSWORD_MISMATCH", async () => {
