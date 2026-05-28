@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
@@ -16,9 +16,23 @@ export function LoginForm() {
   const [passwordError, setPasswordError] = useState<string | undefined>();
   const [topError, setTopError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
+  const [banner, setBanner] = useState<"password-changed" | "withdrawn" | null>(null);
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  // banner 는 비밀번호 변경 / 회원탈퇴 흐름이 sessionStorage 로 전달.
+  // URL 쿼리 대신 sessionStorage 를 쓰는 이유는 layout guard 의 자동 redirect 와의
+  // race 에 영향받지 않기 위함 (docs/issues/0005 참조). mount 직후 1회 읽고 제거.
+  // setBanner 는 Promise.resolve().then 으로 effect 동기 흐름 밖에서 호출
+  // (react-hooks/set-state-in-effect 회피 — docs/learning/react19-set-state-in-effect-pattern).
+  useEffect(() => {
+    const b = sessionStorage.getItem("loginBanner");
+    if (b === "password-changed" || b === "withdrawn") {
+      sessionStorage.removeItem("loginBanner");
+      Promise.resolve().then(() => setBanner(b));
+    }
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -76,27 +90,27 @@ export function LoginForm() {
 
   return (
     <div className="auth-card">
-      {searchParams.get("password-changed") === "true" && (
+      {banner === "password-changed" && (
         <div className="info-banner" role="status">
           <span className="body">비밀번호가 변경됐어요. 새 비밀번호로 다시 로그인해주세요.</span>
           <button
             type="button"
             className="x"
             aria-label="닫기"
-            onClick={() => router.replace("/login")}
+            onClick={() => setBanner(null)}
           >
             ×
           </button>
         </div>
       )}
-      {searchParams.get("withdrawn") === "true" && (
+      {banner === "withdrawn" && (
         <div className="info-banner" role="status">
           <span className="body">탈퇴 처리됐어요. 30일 이내에 같은 이메일로 로그인하면 복구할 수 있어요.</span>
           <button
             type="button"
             className="x"
             aria-label="닫기"
-            onClick={() => router.replace("/login")}
+            onClick={() => setBanner(null)}
           >
             ×
           </button>

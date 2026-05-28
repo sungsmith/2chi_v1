@@ -45,6 +45,7 @@ beforeEach(() => {
   pushMock.mockReset();
   loginMock.mockReset();
   mockSearchParams = new URLSearchParams();
+  sessionStorage.clear();
 });
 
 afterEach(() => {
@@ -152,5 +153,28 @@ describe("LoginForm", () => {
     await user.click(screen.getByRole("button", { name: /^로그인$/ }));
 
     expect(pushMock).toHaveBeenCalledWith("/");
+  });
+
+  test("sessionStorage loginBanner=password-changed 면 배너 표시 후 key 제거", async () => {
+    sessionStorage.setItem("loginBanner", "password-changed");
+    render(<LoginForm />);
+
+    expect(await screen.findByText(/비밀번호가 변경됐어요/)).toBeInTheDocument();
+    expect(sessionStorage.getItem("loginBanner")).toBeNull();
+  });
+
+  test("sessionStorage loginBanner=withdrawn 면 복구 안내 배너 표시 후 key 제거", async () => {
+    sessionStorage.setItem("loginBanner", "withdrawn");
+    render(<LoginForm />);
+
+    expect(await screen.findByText(/30일 이내에 같은 이메일로 로그인하면 복구/)).toBeInTheDocument();
+    expect(sessionStorage.getItem("loginBanner")).toBeNull();
+  });
+
+  test("loginBanner 없으면 배너 미표시", () => {
+    render(<LoginForm />);
+
+    expect(screen.queryByText(/비밀번호가 변경됐어요/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/탈퇴 처리됐어요/)).not.toBeInTheDocument();
   });
 });

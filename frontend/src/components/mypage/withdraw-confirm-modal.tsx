@@ -29,7 +29,11 @@ export function WithdrawConfirmModal({ onClose }: Props) {
       await withdraw(currentPassword);
       // forced logout — setAccessToken(null) 은 logout() 안에서 이미 처리됨
       await logout();
-      router.push("/login?withdrawn=true");
+      // banner 정보는 logout 성공 후에만 기록 (logout 실패 시 stale key 방지).
+      // URL 쿼리 대신 sessionStorage 라 layout guard 의 자동 redirect 와 경합해도
+      // banner 표시가 URL 에 의존하지 않으므로 보장됨.
+      sessionStorage.setItem("loginBanner", "withdrawn");
+      router.push("/login");
     } catch (e) {
       setError(e instanceof Error ? e.message : "탈퇴 처리에 실패했어요.");
       setSubmitting(false);

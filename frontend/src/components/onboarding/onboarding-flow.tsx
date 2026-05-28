@@ -51,7 +51,6 @@ export function OnboardingFlow() {
         careerYear: careerYear!,
         targetJobs: [...targetJobs],
       });
-      await refreshUser();
       setShowWelcome(true);
     } catch (err) {
       if (err instanceof OnboardingApiError) {
@@ -64,8 +63,9 @@ export function OnboardingFlow() {
     }
   }
 
-  function dismissWelcome() {
+  async function dismissWelcome() {
     setShowWelcome(false);
+    await refreshUser();
     router.push("/");
   }
 
