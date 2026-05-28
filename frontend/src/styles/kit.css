@@ -1072,10 +1072,11 @@ html, body { background: var(--color-bg); }
   font-size: 12.5px; line-height: 1.55; color: var(--color-text-primary);
 }
 .info-banner .ico {
-  width: 18px; height: 18px; flex: 0 0 auto;
-  color: var(--color-text-muted); display: inline-flex; align-items: center;
+  width: 22px; height: 22px; flex: 0 0 auto; border-radius: 6px;
+  display: grid; place-items: center;
+  background: var(--color-surface-soft); color: var(--color-text-muted);
 }
-.info-banner.lav .ico { color: var(--color-lavender-600); }
+.info-banner.lav .ico { background: var(--color-lavender-50); color: var(--color-lavender-600); }
 .info-banner .body { flex: 1; min-width: 0; }
 .info-banner .body b { font-weight: 700; }
 .info-banner .body .miss { color: var(--color-semantic-error); font-weight: 700; }
@@ -3948,6 +3949,8 @@ button.switch:disabled {
 }
 .auth-terms .all .box {
   width: 16px; height: 16px; border-radius: 4px;
+  border: 1.5px solid var(--color-border-strong);
+  display: inline-grid; place-items: center; background: #fff;
 }
 .auth-terms .on .box {
   background: var(--color-primary-600); border-color: var(--color-primary-600); color: #fff;
@@ -4006,7 +4009,23 @@ button.switch:disabled {
    Onboarding brand-panel — ported from kit-screens.css
    (Task 2 port: classes used by brand-panel.tsx after mock realign)
 ============================================================ */
+.onb-left {
+  padding: 48px 44px 40px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(400px 280px at 18% 12%, var(--color-lavender-100), transparent 70%),
+    radial-gradient(540px 360px at 88% 88%, var(--color-mint-100), transparent 70%),
+    radial-gradient(360px 240px at 78% 18%, var(--color-pink-100), transparent 70%),
+    var(--color-bg);
+}
 .onb-left .onb-logo img { height: 48px; width: auto; display: block; }
+.onb-left h1 {
+  font-family: var(--font-family-hand); font-weight: 400; letter-spacing: 0;
+  font-size: 50px; line-height: 1.15; margin: 0; color: var(--color-text-primary);
+}
+.onb-left h1 .accent { color: var(--color-primary-600); }
+.onb-left .lead { font-size: 15px; line-height: 1.65; color: var(--color-text-secondary); max-width: 40ch; }
 .onb-headline { display: flex; flex-direction: column; gap: 14px; }
 .onb-eyebrow {
   font-family: var(--font-family-mono); font-size: 11px;
@@ -4122,6 +4141,7 @@ button.switch:disabled {
 }
 .onb-step-pill.active .bar::after,
 .onb-step-pill.done .bar::after { transform: scaleX(1); }
+.onb-step-pill.done .bar::after { background: var(--color-mint-500); }
 .onb-step-pill .meta {
   display: flex;
   align-items: center;
@@ -4144,8 +4164,8 @@ button.switch:disabled {
   font-family: var(--font-family-mono);
   transition: all 0.3s ease;
 }
-.onb-step-pill.active .num,
-.onb-step-pill.done .num { background: var(--color-primary-500); color: #fff; }
+.onb-step-pill.active .num { background: var(--color-primary-500); color: #fff; }
+.onb-step-pill.done   .num { background: var(--color-mint-500);    color: #fff; }
 .onb-step-pill.active .meta,
 .onb-step-pill.done .meta { color: var(--color-text-primary); }
 
@@ -4217,13 +4237,13 @@ button.switch:disabled {
   color: var(--color-text-primary);
 }
 .onb-choice.selected .icon-wrap { background: #fff; color: var(--color-primary-700); }
-.onb-choice .icon-wrap[data-tone="primary"]  { background: var(--color-primary-50);  color: var(--color-primary-700); }
-.onb-choice .icon-wrap[data-tone="mint"]     { background: var(--color-mint-50);     color: var(--color-mint-700); }
-.onb-choice .icon-wrap[data-tone="lavender"] { background: var(--color-lavender-50); color: var(--color-lavender-600); }
-.onb-choice .icon-wrap[data-tone="peach"]    { background: var(--color-peach-50);    color: var(--color-peach-400); }
-.onb-choice.selected .icon-wrap[data-tone]   { background: #fff; }
-.onb-choice .title { font-family: var(--font-family-hand); font-size: 26px; font-weight: 400; letter-spacing: 0; line-height: 1.2; }
-.onb-choice .desc  { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+.onb-choice[data-tone="primary"]  .icon-wrap { background: var(--color-primary-50);  color: var(--color-primary-700); }
+.onb-choice[data-tone="mint"]     .icon-wrap { background: var(--color-mint-50);     color: var(--color-mint-700); }
+.onb-choice[data-tone="lavender"] .icon-wrap { background: var(--color-lavender-50); color: var(--color-lavender-600); }
+.onb-choice[data-tone="peach"]    .icon-wrap { background: var(--color-peach-50);    color: var(--color-peach-400); }
+.onb-choice.selected[data-tone]   .icon-wrap { background: #fff; }
+.onb-choice .title { display: block; font-family: var(--font-family-hand); font-size: 26px; font-weight: 400; letter-spacing: 0; line-height: 1.2; }
+.onb-choice .desc  { display: block; font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
 .onb-choice .check {
   position: absolute;
   top: 16px; right: 16px;
@@ -4307,12 +4327,12 @@ button.switch:disabled {
   flex: 0 0 auto;
   color: var(--color-text-primary);
 }
-.position-card.tone-1 .ico { background: var(--color-primary-100); color: var(--color-primary-700); }
-.position-card.tone-2 .ico { background: var(--color-mint-100);    color: var(--color-mint-700); }
-.position-card.tone-3 .ico { background: var(--color-lavender-100); color: var(--color-lavender-600); }
-.position-card.tone-4 .ico { background: var(--color-peach-100);   color: var(--color-peach-400); }
-.position-card .name { font-family: var(--font-family-hand); font-size: 20px; font-weight: 400; letter-spacing: 0; line-height: 1.2; }
-.position-card .desc { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
+.position-card.tone-1 .ico { background: var(--color-primary-50);  color: var(--color-primary-700); }
+.position-card.tone-2 .ico { background: var(--color-lavender-50); color: var(--color-lavender-600); }
+.position-card.tone-3 .ico { background: var(--color-peach-50);    color: var(--color-peach-400); }
+.position-card.tone-4 .ico { background: var(--color-mint-50);     color: var(--color-mint-700); }
+.position-card .name { display: block; font-family: var(--font-family-hand); font-size: 20px; font-weight: 400; letter-spacing: 0; line-height: 1.2; }
+.position-card .desc { display: block; font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
 .position-card .check {
   position: absolute;
   top: 14px; right: 14px;
@@ -4362,6 +4382,7 @@ button.switch:disabled {
   position: relative;
   box-shadow: var(--shadow-modal);
   animation: popIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
 }
 @keyframes popIn {
   from { opacity: 0; transform: scale(0.92); }
