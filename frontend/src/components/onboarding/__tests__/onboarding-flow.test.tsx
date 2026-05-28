@@ -1,5 +1,5 @@
 import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { OnboardingFlow } from "../onboarding-flow";
 
@@ -85,16 +85,18 @@ describe("OnboardingFlow", () => {
     expect(body.careerYear).toBe(3);
     expect(body.targetJobs).toEqual(expect.arrayContaining(["BACKEND", "INFRA_CLOUD"]));
 
-    expect(refreshUserMock).toHaveBeenCalled();
-
-    // 이 시점에 push 아직 호출 안 됨 — WelcomeModal 표시
+    // submit 직후엔 refreshUser·push 모두 호출 안 됨 — WelcomeModal 만 표시.
+    // (refreshUser 가 submit 에서 호출되면 user.onboardingCompleted 갱신 →
+    //  page guard 가 redirect 하여 모달이 mount 직후 사라짐 — ISSUE-0005 회귀 방지)
+    expect(refreshUserMock).not.toHaveBeenCalled();
     expect(pushMock).not.toHaveBeenCalled();
 
-    // WelcomeModal "대시보드로 이동" 클릭
+    // WelcomeModal "대시보드로 이동" 클릭 → refreshUser 후 push('/')
     const dashboardBtn = await screen.findByRole("button", { name: /대시보드로 이동/ });
     await user.click(dashboardBtn);
 
-    expect(pushMock).toHaveBeenCalledWith("/");
+    await waitFor(() => expect(pushMock).toHaveBeenCalledWith("/"));
+    expect(refreshUserMock).toHaveBeenCalled();
   });
 
   test("API 400 응답 → 상단 알림", async () => {

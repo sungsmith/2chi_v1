@@ -30,7 +30,7 @@ export function LoginForm() {
     const b = sessionStorage.getItem("loginBanner");
     if (b === "password-changed" || b === "withdrawn") {
       sessionStorage.removeItem("loginBanner");
-      Promise.resolve(b).then(setBanner);
+      Promise.resolve().then(() => setBanner(b));
     }
   }, []);
 
