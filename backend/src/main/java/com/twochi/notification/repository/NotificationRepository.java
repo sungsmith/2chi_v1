@@ -26,4 +26,11 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     @Query("DELETE FROM Notification n WHERE n.userId = :userId AND n.channel = :channel")
     int deleteAllByUserIdAndChannel(@Param("userId") Long userId,
                                      @Param("channel") NotificationChannel channel);
+
+    boolean existsByUserIdAndDedupKey(Long userId, String dedupKey);
+
+    @Modifying
+    @Query("DELETE FROM Notification n WHERE n.channel = :channel AND n.createdAt < :cutoff")
+    int deleteByChannelAndCreatedAtBefore(@Param("channel") NotificationChannel channel,
+                                          @Param("cutoff") Instant cutoff);
 }

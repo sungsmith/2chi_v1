@@ -46,11 +46,14 @@ public class Notification {
     @Column(columnDefinition = "text")
     private String error;
 
+    @Column(name = "dedup_key", length = 120)
+    private String dedupKey;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     private Notification(Long userId, NotificationChannel channel, NotificationType type,
-                         String title, String body, Instant createdAt, Instant sentAt) {
+                         String title, String body, Instant createdAt, Instant sentAt, String dedupKey) {
         this.userId = userId;
         this.channel = channel;
         this.type = type;
@@ -58,6 +61,7 @@ public class Notification {
         this.body = body;
         this.createdAt = createdAt;
         this.sentAt = sentAt;
+        this.dedupKey = dedupKey;
     }
 
     /**
@@ -65,7 +69,12 @@ public class Notification {
      * EMAIL / WEB_PUSH 채널 알림은 v2 발송 워커가 별도 팩토리로 생성.
      */
     public static Notification forInbox(Long userId, NotificationType type, String title, String body, Instant now) {
-        return new Notification(userId, NotificationChannel.INBOX, type, title, body, now, now);
+        return new Notification(userId, NotificationChannel.INBOX, type, title, body, now, now, null);
+    }
+
+    public static Notification forInboxDeduped(Long userId, NotificationType type, String title,
+                                               String body, Instant now, String dedupKey) {
+        return new Notification(userId, NotificationChannel.INBOX, type, title, body, now, now, dedupKey);
     }
 
     public void markRead(Instant now) {
