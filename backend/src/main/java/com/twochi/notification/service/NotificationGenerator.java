@@ -1,5 +1,6 @@
 package com.twochi.notification.service;
 
+import com.twochi.application.repository.EventRepository;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
@@ -19,13 +20,16 @@ public class NotificationGenerator {
     private final JobPostingRepository jobPostingRepository;
     private final NotiSettingResolver settingResolver;
     private final NotificationProducer producer;
+    private final EventRepository eventRepository;
 
     public NotificationGenerator(JobPostingRepository jobPostingRepository,
                                  NotiSettingResolver settingResolver,
-                                 NotificationProducer producer) {
+                                 NotificationProducer producer,
+                                 EventRepository eventRepository) {
         this.jobPostingRepository = jobPostingRepository;
         this.settingResolver = settingResolver;
         this.producer = producer;
+        this.eventRepository = eventRepository;
     }
 
     public void generatePostingDeadline(LocalDate today) {
@@ -43,5 +47,27 @@ public class NotificationGenerator {
                     "PD_D1:" + p.getId());
             }
         }
+    }
+
+    public void generateScheduleD1(LocalDate today) {
+        for (var r : eventRepository.findScheduleEventsByDate(today.plusDays(1))) {
+            if (settingResolver.isEnabled(r.getUserId(), NotificationType.SCHEDULE_D1)) {
+                producer.publishDeduped(r.getUserId(), NotificationType.SCHEDULE_D1,
+                    "%s %s 일정이 내일이에요".formatted(r.getCompany(), eventTypeLabel(r.getType())),
+                    "SCH_D1:" + r.getEventId());
+            }
+        }
+    }
+
+    private static String eventTypeLabel(com.twochi.application.domain.EventType type) {
+        return switch (type) {
+            case DOC_DEADLINE -> "서류 마감";
+            case CODING_TEST -> "코딩테스트";
+            case FIRST_INTERVIEW -> "1차 면접";
+            case SECOND_INTERVIEW -> "2차 면접";
+            case EXEC_INTERVIEW -> "임원 면접";
+            case NEGOTIATION -> "처우 협상";
+            default -> "일정";
+        };
     }
 }
