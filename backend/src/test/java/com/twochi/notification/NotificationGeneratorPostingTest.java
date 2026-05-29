@@ -4,6 +4,7 @@ import com.twochi.notification.domain.NotificationType;
 import com.twochi.notification.service.NotiSettingResolver;
 import com.twochi.notification.service.NotificationGenerator;
 import com.twochi.notification.service.NotificationProducer;
+import com.twochi.application.repository.EventRepository;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ import static org.mockito.Mockito.*;
 class NotificationGeneratorPostingTest {
 
     @Mock JobPostingRepository jobPostingRepository;
+    @Mock EventRepository eventRepository;
     @Mock NotiSettingResolver settingResolver;
     @Mock NotificationProducer producer;
     @InjectMocks NotificationGenerator generator;
