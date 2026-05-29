@@ -52,7 +52,24 @@ class NotificationGeneratorPostingTest {
 
         verify(producer).publishDeduped(
             eq(1L), eq(NotificationType.POSTING_DEADLINE_D1),
-            contains("마감이 내일"), eq("PD_D1:42"));
+            eq("카카오 백엔드 마감이 내일이에요"), eq("PD_D1:42"));
+    }
+
+    @Test
+    void D3_마감_공고_설정ON_이면_publish() {
+        LocalDate today = LocalDate.of(2026, 5, 28);
+        when(jobPostingRepository.findByDeadline(today.plusDays(3)))
+            .thenReturn(List.of(postingWithId(7L, 1L, today.plusDays(3))));
+        when(jobPostingRepository.findByDeadline(today.plusDays(1)))
+            .thenReturn(List.of());
+        when(settingResolver.isEnabled(1L, NotificationType.POSTING_DEADLINE_D3))
+            .thenReturn(true);
+
+        generator.generatePostingDeadline(today);
+
+        verify(producer).publishDeduped(
+            eq(1L), eq(NotificationType.POSTING_DEADLINE_D3),
+            eq("카카오 백엔드 마감이 3일 남았어요"), eq("PD_D3:7"));
     }
 
     @Test
