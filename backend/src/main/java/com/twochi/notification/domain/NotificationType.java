@@ -17,5 +17,18 @@ public enum NotificationType {
     COVER_LETTER_UNSUBMITTED_7D,
     WEEKLY_SUMMARY,
     EMAIL_VERIFY,
-    PASSWORD_RESET
+    PASSWORD_RESET;
+
+    /** NotiSettingDef.id 와 매핑. cron/이벤트가 사용자 설정을 조회할 때 사용. */
+    public String settingId() {
+        return switch (this) {
+            case POSTING_DEADLINE_D3 -> "deadline-d3";
+            case POSTING_DEADLINE_D1 -> "deadline-d1";
+            case SCHEDULE_D1 -> "interview-d1";
+            case COVER_LETTER_UNSUBMITTED_7D -> "cl-unsubmitted";
+            case WEEKLY_SUMMARY -> "weekly-summary";
+            case EMAIL_VERIFY -> "signup-verify";
+            case PASSWORD_RESET -> "pw-reset";
+        };
+    }
 }

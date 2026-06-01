@@ -45,6 +45,13 @@ public class NotificationService {
         repository.deleteAllByUserIdAndChannel(userId, INBOX);
     }
 
+    /** RETENTION(30일) 이전 INBOX 알림 hard delete. cron 전용. 삭제 건수 반환. */
+    @Transactional
+    public int cleanup(Instant now) {
+        return repository.deleteByChannelAndCreatedAtBefore(
+            INBOX, now.minus(RETENTION));
+    }
+
     private NotificationItemResponse toResponse(Notification n) {
         return new NotificationItemResponse(
             n.getId(),

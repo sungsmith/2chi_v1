@@ -37,4 +37,25 @@ public interface EventRepository extends JpaRepository<Event, Long> {
           AND e.applicationId IN (SELECT a.id FROM Application a WHERE a.userId = :userId)
     """)
     Optional<Event> findByIdAndUserId(Long id, Long userId);
+
+    /** 특정 날짜의 일정 이벤트(스케줄 타입만)를 Application JOIN 해 userId·company 와 함께 조회. */
+    @Query("""
+        SELECT e.id AS eventId, e.type AS type, a.userId AS userId, a.company AS company
+        FROM Event e JOIN Application a ON e.applicationId = a.id
+        WHERE e.eventDate = :date
+          AND e.type IN (com.twochi.application.domain.EventType.DOC_DEADLINE,
+                         com.twochi.application.domain.EventType.CODING_TEST,
+                         com.twochi.application.domain.EventType.FIRST_INTERVIEW,
+                         com.twochi.application.domain.EventType.SECOND_INTERVIEW,
+                         com.twochi.application.domain.EventType.EXEC_INTERVIEW,
+                         com.twochi.application.domain.EventType.NEGOTIATION)
+    """)
+    List<ScheduleRow> findScheduleEventsByDate(java.time.LocalDate date);
+
+    interface ScheduleRow {
+        Long getEventId();
+        com.twochi.application.domain.EventType getType();
+        Long getUserId();
+        String getCompany();
+    }
 }

@@ -32,4 +32,16 @@ public class NotificationProducer {
     public Notification publish(Long userId, NotificationType type, String title, String body) {
         return repository.save(Notification.forInbox(userId, type, title, body, Instant.now()));
     }
+
+    /**
+     * dedup_key 기반 멱등 publish. 이미 같은 (userId, dedupKey) 알림이 있으면 skip.
+     * existsBy 선체크 + unique 제약(동시성 안전망). cron 전용.
+     */
+    @Transactional
+    public Notification publishDeduped(Long userId, NotificationType type, String title, String dedupKey) {
+        if (repository.existsByUserIdAndDedupKey(userId, dedupKey)) {
+            return null;
+        }
+        return repository.save(Notification.forInboxDeduped(userId, type, title, null, Instant.now(), dedupKey));
+    }
 }
