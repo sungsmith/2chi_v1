@@ -86,7 +86,7 @@ export function KanbanView() {
 
       {apps.length === 0 ? (
         <section className="empty-state" style={{ padding: 32, textAlign: "center", color: "var(--color-text-secondary)" }}>
-          아직 지원이 없어요. 공고에서 "지원함"을 눌러 추가해보세요.
+          아직 지원이 없어요. 공고에서 「지원함」을 눌러 추가해보세요.
         </section>
       ) : (
         <div className="kanban">
