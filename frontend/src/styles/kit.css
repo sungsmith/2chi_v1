@@ -2922,14 +2922,15 @@ html, body { background: var(--color-bg); }
 .stage-legend .dot.int1 { background: var(--color-mint-500); }
 .stage-legend .dot.int2 { background: var(--color-lavender-500); }
 .stage-legend .dot.exec { background: var(--color-pink-400); }
-.stage-legend .dot.nego { background: var(--color-peach-400); }
+.stage-legend .dot.nego { background: var(--color-yellow-400); }
 .stage-legend .dot.ok   { background: var(--color-mint-700); }
 .stage-legend .dot.fail { background: var(--color-text-disabled); }
 
 /* ── Kanban board ── */
 .kanban {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   gap: 12px;
 }
 .kanban-col {
@@ -2955,7 +2956,9 @@ html, body { background: var(--color-bg); }
 .kanban-col-head .nm .dot.int1 { background: var(--color-mint-500); }
 .kanban-col-head .nm .dot.int2 { background: var(--color-lavender-500); }
 .kanban-col-head .nm .dot.exec { background: var(--color-pink-400); }
-.kanban-col-head .nm .dot.nego { background: var(--color-peach-400); }
+.kanban-col-head .nm .dot.nego { background: var(--color-yellow-400); }
+.kanban-col-head .nm .dot.ok   { background: var(--color-mint-700); }
+.kanban-col-head .nm .dot.fail { background: var(--color-text-disabled); }
 .kanban-col-head .count {
   font-family: var(--font-family-mono); font-size: 10.5px;
   padding: 2px 7px; border-radius: 999px;
