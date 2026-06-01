@@ -83,11 +83,11 @@ public class Profile {
     }
 
     public void updateBasicInfo(String name, LocalDate birthDate, String phone, String region, String introduction, Instant now) {
-        this.name = name;
-        this.birthDate = birthDate;
-        this.phone = phone;
-        this.region = region;
-        this.introduction = introduction;
+        if (name != null) this.name = name;
+        if (birthDate != null) this.birthDate = birthDate;
+        if (phone != null) this.phone = phone;
+        if (region != null) this.region = region;
+        if (introduction != null) this.introduction = introduction;
         this.updatedAt = now;
     }
 }

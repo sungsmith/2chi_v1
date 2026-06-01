@@ -9,5 +9,5 @@ public record ProfileBasicUpdateRequest(
     LocalDate birthDate,
     @Size(max = 20) String phone,
     @Size(max = 50) String region,
-    String introduction
+    @Size(max = 1000) String introduction
 ) {}

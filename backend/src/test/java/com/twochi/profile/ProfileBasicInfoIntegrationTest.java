@@ -56,12 +56,14 @@ class ProfileBasicInfoIntegrationTest {
         );
         mockMvc.perform(post("/api/v1/auth/signup")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(om.writeValueAsString(signup)));
+            .content(om.writeValueAsString(signup)))
+            .andExpect(status().isCreated());
 
         // 2. 로그인
         MvcResult login = mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(Map.of("email", "alice@example.com", "password", "Pass1234!"))))
+            .andExpect(status().isOk())
             .andReturn();
         accessToken = om.readTree(login.getResponse().getContentAsString()).get("accessToken").asText();
 
@@ -74,7 +76,8 @@ class ProfileBasicInfoIntegrationTest {
         mockMvc.perform(post("/api/v1/onboarding")
             .header("Authorization", "Bearer " + accessToken)
             .contentType(MediaType.APPLICATION_JSON)
-            .content(om.writeValueAsString(onboarding)));
+            .content(om.writeValueAsString(onboarding)))
+            .andExpect(status().isOk());
     }
 
     @AfterEach
@@ -137,5 +140,62 @@ class ProfileBasicInfoIntegrationTest {
     void unauthenticated_401() throws Exception {
         mockMvc.perform(get("/api/v1/me/profile"))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void get_without_profile_returns_404() throws Exception {
+        // 온보딩 없이 가입만 한 유저는 Profile 행이 없으므로 404
+        Map<String, Object> signupReq = Map.of(
+            "email", "bob@example.com",
+            "password", "Pass1234!",
+            "nickname", "bob",
+            "ageConfirmed", true,
+            "consents", Map.of("terms", true, "privacy", true, "marketing", false)
+        );
+        mockMvc.perform(post("/api/v1/auth/signup")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(signupReq)))
+            .andExpect(status().isCreated());
+
+        MvcResult loginRes = mockMvc.perform(post("/api/v1/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of("email", "bob@example.com", "password", "Pass1234!"))))
+            .andExpect(status().isOk())
+            .andReturn();
+        String bobToken = om.readTree(loginRes.getResponse().getContentAsString()).get("accessToken").asText();
+
+        mockMvc.perform(get("/api/v1/me/profile")
+                .header("Authorization", "Bearer " + bobToken))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.code").value("PROFILE_NOT_FOUND"));
+    }
+
+    @Test
+    void patch_partial_preserves_omitted_fields() throws Exception {
+        // 먼저 전체 필드 채우기
+        Map<String, Object> full = Map.of(
+            "name", "홍길동",
+            "birthDate", "1998-03-01",
+            "phone", "010-1234-5678",
+            "region", "서울",
+            "introduction", "백엔드 지망"
+        );
+        mockMvc.perform(patch("/api/v1/me/profile")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(full)))
+            .andExpect(status().isOk());
+
+        // name 만 변경 — 나머지 필드는 유지돼야 함
+        Map<String, Object> partial = Map.of("name", "김철수");
+        mockMvc.perform(patch("/api/v1/me/profile")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(partial)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.name").value("김철수"))
+            .andExpect(jsonPath("$.phone").value("010-1234-5678"))
+            .andExpect(jsonPath("$.region").value("서울"))
+            .andExpect(jsonPath("$.introduction").value("백엔드 지망"));
     }
 }
