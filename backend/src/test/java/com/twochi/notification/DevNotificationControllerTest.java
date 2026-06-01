@@ -39,4 +39,14 @@ class DevNotificationControllerTest {
         verify(generator).runDaily(LocalDate.of(2026, 5, 28));
         verify(service).cleanup(any(java.time.Instant.class));
     }
+
+    @Test
+    void run_cron_은_date_없으면_KST_오늘로_generator_호출() throws Exception {
+        mvc.perform(post("/api/v1/dev/notifications/run-cron"))
+            .andExpect(status().isOk());
+
+        // 기본값 = LocalDate.now(Asia/Seoul). 정확한 날짜는 실행시점 KST 라 any() 로 검증.
+        verify(generator).runDaily(any(LocalDate.class));
+        verify(service).cleanup(any(java.time.Instant.class));
+    }
 }
