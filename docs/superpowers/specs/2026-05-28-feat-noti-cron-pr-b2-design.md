@@ -44,7 +44,7 @@ NotificationProducer.publish(userId, type, title)   // B1 의 기존 API
         ▼
    notification INSERT (unique(user_id, dedup_key) 가 동시성 안전망)
 
-DevNotificationController (@Profile("dev"))
+DevNotificationController (@Profile("!prod"))
    POST /api/v1/dev/notifications/run-cron  → NotificationGenerator 직접 호출 (수동 검증)
 ```
 
@@ -143,9 +143,9 @@ COMMENT ON COLUMN notification.dedup_key IS
   - 호출 순서: D3 → D1 → SCHEDULE → CL7 → (월요일이면 WEEKLY_SUMMARY) → cleanup
   - 월요일 판정: `LocalDate.now(KST).getDayOfWeek() == MONDAY`
 - `cleanup`: `NotificationRepository.deleteByCreatedAtBefore(now.minus(30d))` (`@Modifying @Query` bulk delete)
-- `DevNotificationController` (`@Profile("dev")`):
-  - `POST /api/v1/dev/notifications/run-cron` → `NotificationGenerator.runAll(LocalDate)` 호출 (today override 가능하게 optional `?date=` 쿼리)
-  - 수동 검증·QA 용. prod 빌드엔 미포함.
+- `DevNotificationController` (`@Profile("!prod")`):
+  - `POST /api/v1/dev/notifications/run-cron` → `NotificationGenerator.runDaily(LocalDate)` 호출 (today override 가능하게 optional `?date=` 쿼리)
+  - 수동 검증·QA 용. prod 빌드엔 미포함. 기본 active profile 이 `local` 이라 `!prod` 로 두면 local/dev/test 전부 노출.
 
 ## 7. 테스트 전략
 
