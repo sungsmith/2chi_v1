@@ -30,6 +30,7 @@ class OpenAiAnalysisClientTest {
         OpenAiAnalysisClient c = clientWithKey("");
         ReflectionTestUtils.invokeMethod(c, "init");
         assertThatThrownBy(() -> c.generate("프롬프트"))
-            .isInstanceOf(IllegalStateException.class);
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessageContaining("OPENAI_API_KEY");
     }
 }
