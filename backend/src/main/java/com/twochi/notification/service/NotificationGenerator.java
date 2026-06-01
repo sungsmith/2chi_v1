@@ -7,7 +7,9 @@ import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 /**
  * cron 알림 생성. 각 generate* 메서드는 의도적으로 @Transactional 을 두지 않는다 —
@@ -17,6 +19,8 @@ import java.time.LocalDate;
  */
 @Service
 public class NotificationGenerator {
+
+    private static final ZoneId SEOUL = ZoneId.of("Asia/Seoul");
 
     private final JobPostingRepository jobPostingRepository;
     private final NotiSettingResolver settingResolver;
@@ -64,8 +68,7 @@ public class NotificationGenerator {
     }
 
     public void generateCoverLetterUnsubmitted(LocalDate today) {
-        java.time.Instant staleBefore = today.atStartOfDay(java.time.ZoneId.of("Asia/Seoul"))
-            .minusDays(7).toInstant();
+        Instant staleBefore = today.atStartOfDay(SEOUL).minusDays(7).toInstant();
         for (var r : variantRepository.findUnsubmittedBefore(today, staleBefore)) {
             if (settingResolver.isEnabled(r.getUserId(), NotificationType.COVER_LETTER_UNSUBMITTED_7D)) {
                 producer.publishDeduped(r.getUserId(), NotificationType.COVER_LETTER_UNSUBMITTED_7D,
