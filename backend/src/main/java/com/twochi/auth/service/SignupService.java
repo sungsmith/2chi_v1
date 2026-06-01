@@ -2,6 +2,7 @@ package com.twochi.auth.service;
 
 import com.twochi.auth.dto.SignupRequest;
 import com.twochi.auth.dto.SignupResponse;
+import com.twochi.auth.event.UserSignedUpEvent;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
 import com.twochi.consent.domain.ConsentLog;
@@ -9,7 +10,6 @@ import com.twochi.consent.domain.ConsentType;
 import com.twochi.consent.repository.ConsentLogRepository;
 import com.twochi.user.domain.User;
 import com.twochi.user.repository.UserRepository;
-import com.twochi.auth.event.UserSignedUpEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
