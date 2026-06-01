@@ -35,7 +35,8 @@ public enum ErrorCode {
     UNKNOWN_SETTING(HttpStatus.BAD_REQUEST, "알 수 없는 알림 설정이에요."),
     DUPLICATE_SETTING(HttpStatus.BAD_REQUEST, "동일한 알림 설정이 중복 포함됐어요."),
     EDUCATION_NOT_FOUND(HttpStatus.NOT_FOUND, "학력 정보를 찾을 수 없어요."),
-    CERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "자격증 정보를 찾을 수 없어요.");
+    CERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "자격증 정보를 찾을 수 없어요."),
+    EXPERIENCE_NOT_FOUND(HttpStatus.NOT_FOUND, "경험 정보를 찾을 수 없어요.");
 
     private final HttpStatus status;
     private final String defaultMessage;
