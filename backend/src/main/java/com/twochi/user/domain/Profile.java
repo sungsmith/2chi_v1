@@ -8,6 +8,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -36,6 +37,21 @@ public class Profile {
     @Column(name = "onboarding_completed", nullable = false)
     private boolean onboardingCompleted;
 
+    @Column(name = "name", length = 50)
+    private String name;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
+
+    @Column(name = "phone", length = 20)
+    private String phone;
+
+    @Column(name = "region", length = 50)
+    private String region;
+
+    @Column(name = "introduction", columnDefinition = "text")
+    private String introduction;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -63,6 +79,15 @@ public class Profile {
         this.careerYear = careerYear;
         this.targetJobsRaw = jobs.stream().map(Enum::name).toArray(String[]::new);
         this.onboardingCompleted = true;
+        this.updatedAt = now;
+    }
+
+    public void updateBasicInfo(String name, LocalDate birthDate, String phone, String region, String introduction, Instant now) {
+        this.name = name;
+        this.birthDate = birthDate;
+        this.phone = phone;
+        this.region = region;
+        this.introduction = introduction;
         this.updatedAt = now;
     }
 }
