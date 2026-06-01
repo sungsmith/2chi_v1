@@ -1,8 +1,6 @@
 package com.twochi.profile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twochi.career.repository.CareerRepository;
-import com.twochi.career.repository.ProjectRepository;
 import com.twochi.consent.repository.ConsentLogRepository;
 import com.twochi.profile.education.repository.EducationRepository;
 import com.twochi.user.repository.UserRepository;
@@ -21,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -35,8 +34,6 @@ class EducationIntegrationTest {
     @Autowired private UserRepository userRepository;
     @Autowired private ConsentLogRepository consentLogRepository;
     @Autowired private com.twochi.user.repository.ProfileRepository profileRepository;
-    @Autowired private CareerRepository careerRepository;
-    @Autowired private ProjectRepository projectRepository;
     @Autowired private EducationRepository educationRepository;
     @Autowired private RedisConnectionFactory redis;
 
@@ -45,8 +42,6 @@ class EducationIntegrationTest {
     @BeforeEach
     void setUp() throws Exception {
         educationRepository.deleteAll();
-        projectRepository.deleteAll();
-        careerRepository.deleteAll();
         profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
@@ -73,8 +68,6 @@ class EducationIntegrationTest {
     @AfterEach
     void tearDown() {
         educationRepository.deleteAll();
-        projectRepository.deleteAll();
-        careerRepository.deleteAll();
         profileRepository.deleteAll();
         consentLogRepository.deleteAll();
         userRepository.deleteAll();
@@ -101,7 +94,7 @@ class EducationIntegrationTest {
             .andExpect(jsonPath("$.orderIndex").value(0));
 
         // DB에 1건 저장 확인
-        assert educationRepository.count() == 1;
+        assertThat(educationRepository.count()).isEqualTo(1);
     }
 
     @Test

@@ -21,7 +21,7 @@ public class EducationService {
 
     @Transactional(readOnly = true)
     public List<Education> findAllByUserId(Long userId) {
-        return educationRepository.findByUserIdOrderByOrderIndexAsc(userId);
+        return educationRepository.findAllByUserIdOrderByOrderIndexAsc(userId);
     }
 
     public Education create(Long userId, EducationRequest req) {
@@ -49,7 +49,7 @@ public class EducationService {
         educationRepository.delete(e);
     }
 
-    public Education findOwned(Long userId, Long educationId) {
+    private Education findOwned(Long userId, Long educationId) {
         return educationRepository.findByIdAndUserId(educationId, userId)
             .orElseThrow(() -> new BusinessException(ErrorCode.EDUCATION_NOT_FOUND));
     }

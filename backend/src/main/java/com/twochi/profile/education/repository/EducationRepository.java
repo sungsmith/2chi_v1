@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface EducationRepository extends JpaRepository<Education, Long> {
 
-    List<Education> findByUserIdOrderByOrderIndexAsc(Long userId);
+    List<Education> findAllByUserIdOrderByOrderIndexAsc(Long userId);
 
     Optional<Education> findByIdAndUserId(Long id, Long userId);
 
