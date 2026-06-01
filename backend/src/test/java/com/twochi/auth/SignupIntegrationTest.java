@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+// @Transactional: 각 테스트 후 롤백 → 커밋이 없으므로 AFTER_COMMIT 이벤트 리스너
+// (WelcomeNotificationListener)는 여기서 의도적으로 발화하지 않음. 가입 알림 부수효과는
+// WelcomeNotificationIntegrationTest 에서 비-@Transactional 로 검증.
 @Transactional
 @ActiveProfiles("test")
 class SignupIntegrationTest {
