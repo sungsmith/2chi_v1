@@ -49,4 +49,14 @@ describe("KanbanView", () => {
     render(<KanbanView />);
     await waitFor(() => expect(screen.getByText(/아직 지원이 없어요/)).toBeInTheDocument());
   });
+
+  test("카드 단계 select 변경 → patchApplication 호출 + 낙관적 이동", async () => {
+    fetchMock.mockResolvedValue([app({ id: 5, company: "토스", currentStage: "DOC_SUBMITTED" })]);
+    patchMock.mockResolvedValue({});
+    render(<KanbanView />);
+    await waitFor(() => expect(screen.getByText("토스")).toBeInTheDocument());
+    const select = screen.getByLabelText("토스 단계 변경");
+    await userEvent.selectOptions(select, "FIRST_INTERVIEW");
+    await waitFor(() => expect(patchMock).toHaveBeenCalledWith(5, { currentStage: "FIRST_INTERVIEW" }));
+  });
 });

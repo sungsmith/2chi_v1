@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchApplications } from "@/lib/api/application";
+import { fetchApplications, patchApplication } from "@/lib/api/application";
 import { STAGE_LABEL, type ApplicationSummary, type Stage } from "@/lib/types/application";
 
 const ACTIVE_COLUMNS: { stage: Stage; dot: string }[] = [
@@ -36,6 +36,17 @@ export function KanbanView() {
   }
   if (apps === null) {
     return <section style={{ padding: 24, color: "var(--color-text-secondary)" }}>불러오는 중…</section>;
+  }
+
+  async function changeStage(target: ApplicationSummary, nextStage: Stage) {
+    const prev = apps!;
+    setApps(prev.map(x => x.id === target.id ? { ...x, currentStage: nextStage } : x)); // 낙관적
+    try {
+      await patchApplication(target.id, { currentStage: nextStage });
+    } catch {
+      setApps(prev); // 실패 시 되돌림
+      setError("단계 변경에 실패했어요. 잠시 후 다시 시도해주세요.");
+    }
   }
 
   const count = (r: ResultFilter) => r === "all" ? apps.length : apps.filter(a => a.currentResult === r).length;
@@ -86,6 +97,16 @@ export function KanbanView() {
                     </div>
                     <div className="pos">{a.role}</div>
                     <div className="meta"><span>{a.updatedAt.slice(0, 10)}</span></div>
+                    <select
+                      aria-label={`${a.company} 단계 변경`}
+                      className="kan-stage-select"
+                      value={a.currentStage}
+                      onChange={(e) => changeStage(a, e.target.value as Stage)}
+                    >
+                      {(Object.keys(STAGE_LABEL) as Stage[]).map(s => (
+                        <option key={s} value={s}>{STAGE_LABEL[s]}</option>
+                      ))}
+                    </select>
                   </article>
                 ))}
               </div>
