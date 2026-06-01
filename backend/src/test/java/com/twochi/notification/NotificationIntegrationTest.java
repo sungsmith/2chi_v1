@@ -67,6 +67,7 @@ class NotificationIntegrationTest {
             "consents", Map.of("terms", true, "privacy", true, "marketing", false)
         );
         mockMvc.perform(post("/api/v1/auth/signup").contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsString(signup)));
+        notificationRepository.deleteAll(); // 가입 환영 알림 제거 — 각 테스트가 직접 삽입하는 것만 검증
 
         MvcResult login = mockMvc.perform(post("/api/v1/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)

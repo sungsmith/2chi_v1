@@ -9,6 +9,8 @@ import com.twochi.consent.domain.ConsentType;
 import com.twochi.consent.repository.ConsentLogRepository;
 import com.twochi.user.domain.User;
 import com.twochi.user.repository.UserRepository;
+import com.twochi.auth.event.UserSignedUpEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,13 +23,16 @@ public class SignupService {
     private final UserRepository userRepository;
     private final ConsentLogRepository consentLogRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     public SignupService(UserRepository userRepository,
                          ConsentLogRepository consentLogRepository,
-                         PasswordEncoder passwordEncoder) {
+                         PasswordEncoder passwordEncoder,
+                         ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.consentLogRepository = consentLogRepository;
         this.passwordEncoder = passwordEncoder;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -52,6 +57,8 @@ public class SignupService {
         consentLogRepository.save(ConsentLog.record(user.getId(), ConsentType.TERMS,     req.consents().terms(),     CONSENT_VERSION, ip, userAgent));
         consentLogRepository.save(ConsentLog.record(user.getId(), ConsentType.PRIVACY,   req.consents().privacy(),   CONSENT_VERSION, ip, userAgent));
         consentLogRepository.save(ConsentLog.record(user.getId(), ConsentType.MARKETING, req.consents().marketing(), CONSENT_VERSION, ip, userAgent));
+
+        eventPublisher.publishEvent(new UserSignedUpEvent(user.getId()));
 
         return new SignupResponse(user.getId(), user.getEmail(), user.getNickname());
     }
