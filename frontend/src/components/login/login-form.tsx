@@ -159,10 +159,6 @@ export function LoginForm() {
           />
           {passwordError && <span className="helper error">{passwordError}</span>}
         </div>
-        <div className="row">
-          <span className="check" aria-hidden="true" />
-          <Link className="link" href="/reset-password">비밀번호 재설정</Link>
-        </div>
         <button type="submit" className="primary-btn" disabled={submitting}>
           {submitting ? "처리중…" : "로그인"}
         </button>
