@@ -1,92 +1,127 @@
 "use client";
 
-import { useState } from "react";
-import type { KanbanColumn } from "@/lib/mock/applications";
+import { useEffect, useState } from "react";
+import { fetchApplications, patchApplication } from "@/lib/api/application";
+import { STAGE_LABEL, type ApplicationSummary, type Stage } from "@/lib/types/application";
 
-const Ico = {
-  Plus: ({ size = 12 }: { size?: number }) => (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-    </svg>
-  ),
-};
+const ACTIVE_COLUMNS: { stage: Stage; dot: string }[] = [
+  { stage: "DOC_SUBMITTED",    dot: "doc"  },
+  { stage: "CODING_TEST",      dot: "code" },
+  { stage: "FIRST_INTERVIEW",  dot: "int1" },
+  { stage: "SECOND_INTERVIEW", dot: "int2" },
+  { stage: "EXEC_INTERVIEW",   dot: "exec" },
+  { stage: "NEGOTIATION",      dot: "nego" },
+];
 
-const STAGE_LEGEND = (
-  <section className="stage-legend">
-    <span className="item"><span className="dot doc"/>서류</span>
-    <span className="item"><span className="dot code"/>코딩테스트</span>
-    <span className="item"><span className="dot int1"/>1차면접</span>
-    <span className="item"><span className="dot int2"/>2차면접</span>
-    <span className="item"><span className="dot exec"/>임원면접</span>
-    <span className="item"><span className="dot ok"/>합격</span>
-    <span className="item"><span className="dot fail"/>불합격</span>
-  </section>
-);
+const TERMINAL_COLUMNS: { stage: Stage; dot: string }[] = [
+  { stage: "PASSED", dot: "ok"   },
+  { stage: "FAILED", dot: "fail" },
+];
 
-type Props = { columns: KanbanColumn[] };
+type ResultFilter = "all" | "IN_PROGRESS" | "PASSED" | "FAILED";
 
-export function KanbanView({ columns }: Props) {
-  const [result, setResult] = useState("all"); // all | active | passed | failed
-  const [sort, setSort] = useState("recent");
+export function KanbanView() {
+  const [apps, setApps] = useState<ApplicationSummary[] | null>(null);
+  const [error, setError] = useState<string | undefined>();
+  const [actionError, setActionError] = useState<string | undefined>();
+  const [result, setResult] = useState<ResultFilter>("all");
+
+  useEffect(() => {
+    fetchApplications()
+      .then(setApps)
+      .catch((e) => setError(e instanceof Error ? e.message : "지원 목록을 불러오지 못했어요."));
+  }, []);
+
+  if (error) {
+    return <section style={{ padding: 24 }}><div role="alert" className="helper error">{error}</div></section>;
+  }
+  if (apps === null) {
+    return <section style={{ padding: 24, color: "var(--color-text-secondary)" }}>불러오는 중…</section>;
+  }
+
+  async function changeStage(target: ApplicationSummary, nextStage: Stage) {
+    const prev = apps!;
+    setApps(prev.map(x => x.id === target.id ? { ...x, currentStage: nextStage } : x)); // 낙관적
+    try {
+      await patchApplication(target.id, { currentStage: nextStage });
+    } catch {
+      setApps(prev); // 실패 시 되돌림 (보드는 유지, 배너로만 안내)
+      setActionError("단계 변경에 실패했어요. 잠시 후 다시 시도해주세요.");
+    }
+  }
+
+  const count = (r: ResultFilter) => r === "all" ? apps.length : apps.filter(a => a.currentResult === r).length;
+  const visible = result === "all" ? apps : apps.filter(a => a.currentResult === result);
+
+  // When filtering by a terminal result, append the terminal column; otherwise show 6 active columns
+  const columns =
+    result === "PASSED" ? [...ACTIVE_COLUMNS, TERMINAL_COLUMNS[0]] :
+    result === "FAILED" ? [...ACTIVE_COLUMNS, TERMINAL_COLUMNS[1]] :
+    ACTIVE_COLUMNS;
+
   return (
     <>
       <section className="ap-head">
         <div>
           <h1>지원 대시보드</h1>
-          <div className="sub">전형 단계별로 진행 중인 지원을 한눈에. 카드를 드래그해 단계를 이동할 수 있어요.</div>
-        </div>
-        <div className="actions">
-          <button className="btn secondary sm"><Ico.Plus size={12}/> 지원 추가</button>
+          <div className="sub">전형 단계별로 진행 중인 지원을 한눈에. 카드에서 단계를 바꿀 수 있어요.</div>
         </div>
       </section>
 
-      {STAGE_LEGEND}
+      {actionError && (
+        <div role="alert" className="info-banner" style={{ marginBottom: 8 }}>
+          <span className="body helper error">{actionError}</span>
+          <button type="button" className="x" aria-label="닫기" onClick={() => setActionError(undefined)}>×</button>
+        </div>
+      )}
 
       <div className="kan-toolbar">
         <div className="filter-chips">
-          <button className={result === "all"    ? "active" : ""} onClick={() => setResult("all")}>전체 <span className="n">7</span></button>
-          <button className={result === "active" ? "active" : ""} onClick={() => setResult("active")}>진행중 <span className="n">7</span></button>
-          <button className={result === "passed" ? "active" : ""} onClick={() => setResult("passed")}>합격 <span className="n">2</span></button>
-          <button className={result === "failed" ? "active" : ""} onClick={() => setResult("failed")}>불합격 <span className="n">3</span></button>
-        </div>
-        <div className="sort">
-          <span className="lbl">정렬</span>
-          <div className="seg">
-            <button className={sort === "recent" ? "active" : ""} onClick={() => setSort("recent")}>최신순</button>
-            <button className={sort === "dday"   ? "active" : ""} onClick={() => setSort("dday")}>마감순</button>
-            <button className={sort === "co"     ? "active" : ""} onClick={() => setSort("co")}>회사명</button>
-          </div>
+          <button className={result === "all"         ? "active" : ""} onClick={() => setResult("all")}>전체 <span className="n">{count("all")}</span></button>
+          <button className={result === "IN_PROGRESS" ? "active" : ""} onClick={() => setResult("IN_PROGRESS")}>진행중 <span className="n">{count("IN_PROGRESS")}</span></button>
+          <button className={result === "PASSED"      ? "active" : ""} onClick={() => setResult("PASSED")}>합격 <span className="n">{count("PASSED")}</span></button>
+          <button className={result === "FAILED"      ? "active" : ""} onClick={() => setResult("FAILED")}>불합격 <span className="n">{count("FAILED")}</span></button>
         </div>
       </div>
 
-      <div className="kan-active-filters">
-        <span className="lbl">활성 필터</span>
-        <span className="chip">백엔드 직군<button className="x"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></span>
-        <span className="chip">최근 30일<button className="x"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg></button></span>
-        <button className="clear">전체 초기화</button>
-      </div>
-
-      <div className="kanban">
-        {columns.map(col => (
-          <div key={col.id} className="kanban-col">
-            <div className="kanban-col-head">
-              <span className="nm"><span className={"dot " + col.id}/>{col.label}</span>
-              <span className="count">{col.count}</span>
-            </div>
-            {col.items.map((it) => (
-              <article key={it.id} className="kan-card">
-                <div className="row1">
-                  <span className="co">{it.co}</span>
-                  <span className={"dday-pill" + (it.soon ? "" : " cool")}>{it.dday}</span>
+      {apps.length === 0 ? (
+        <section className="empty-state" style={{ padding: 32, textAlign: "center", color: "var(--color-text-secondary)" }}>
+          아직 지원이 없어요. 공고에서 「지원함」을 눌러 추가해보세요.
+        </section>
+      ) : (
+        <div className="kanban">
+          {columns.map(col => {
+            const items = visible.filter(a => a.currentStage === col.stage);
+            return (
+              <div key={col.stage} className="kanban-col">
+                <div className="kanban-col-head">
+                  <span className="nm"><span className={"dot " + col.dot}/>{STAGE_LABEL[col.stage]}</span>
+                  <span className="count">{items.length}</span>
                 </div>
-                <div className="pos">{it.pos}</div>
-                <div className="meta"><span>{it.added}</span></div>
-              </article>
-            ))}
-            <button className="kan-add"><Ico.Plus size={11}/>지원 추가</button>
-          </div>
-        ))}
-      </div>
+                {items.map(a => (
+                  <article key={a.id} className="kan-card">
+                    <div className="row1">
+                      <span className="co">{a.company}</span>
+                    </div>
+                    <div className="pos">{a.role}</div>
+                    <div className="meta"><span>{a.updatedAt.slice(0, 10)}</span></div>
+                    <select
+                      aria-label={`${a.company} 단계 변경`}
+                      className="kan-stage-select"
+                      value={a.currentStage}
+                      onChange={(e) => changeStage(a, e.target.value as Stage)}
+                    >
+                      {(Object.keys(STAGE_LABEL) as Stage[]).map(s => (
+                        <option key={s} value={s}>{STAGE_LABEL[s]}</option>
+                      ))}
+                    </select>
+                  </article>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }
