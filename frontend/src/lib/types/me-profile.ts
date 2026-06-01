@@ -41,8 +41,8 @@ export type Education = {
   major: string | null;
   startDate: string | null; // ISO date
   endDate: string | null;
-  gpa: string | null; // BigDecimal → string
-  gpaMax: string | null;
+  gpa: number | null; // BigDecimal → JSON number
+  gpaMax: number | null;
   status: EducationStatus;
   orderIndex: number;
 };
@@ -88,8 +88,8 @@ export type EducationRequest = {
   major?: string | null;
   startDate?: string | null;
   endDate?: string | null;
-  gpa?: string | null;
-  gpaMax?: string | null;
+  gpa?: number | null;
+  gpaMax?: number | null;
   status: EducationStatus;
 };
 

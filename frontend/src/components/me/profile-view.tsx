@@ -8,16 +8,19 @@ import {
 import {
   fetchEducations,
   createEducation,
+  updateEducation,
   deleteEducation,
 } from "@/lib/api/education";
 import {
   fetchCertificates,
   createCertificate,
+  updateCertificate,
   deleteCertificate,
 } from "@/lib/api/certificate";
 import {
   fetchExperiences,
   createExperience,
+  updateExperience,
   deleteExperience,
 } from "@/lib/api/experience";
 import type {
@@ -35,8 +38,9 @@ import {
   EDUCATION_STATUS_LABEL,
   EXPERIENCE_TYPE_LABEL,
 } from "@/lib/types/me-profile";
+import { Edit as IcoEdit, Trash as IcoTrash, Plus as IcoPlus } from "@/components/ui/icons";
 
-/* ---- Icons ---- */
+/* ---- Icons (domain-specific, not in shared catalog) ---- */
 
 const IcoGradCap = (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -56,27 +60,6 @@ const IcoAward = (
 const IcoStar = (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <path d="M12 2 L15 8.5 22 9.3 17 14.1 18.5 21 12 17.8 5.5 21 7 14.1 2 9.3 9 8.5 z"/>
-  </svg>
-);
-
-const IcoEdit = (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-  </svg>
-);
-
-const IcoTrash = (
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="3 6 5 6 21 6"/>
-    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-  </svg>
-);
-
-const IcoPlus = (
-  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="12" y1="5" x2="12" y2="19"/>
-    <line x1="5" y1="12" x2="19" y2="12"/>
   </svg>
 );
 
@@ -132,12 +115,12 @@ function ListRow({
       <div className="actions">
         {onEdit && (
           <button className="iconbtn" aria-label="편집" onClick={onEdit}>
-            {IcoEdit}
+            <IcoEdit size={14} />
           </button>
         )}
         {onDelete && (
           <button className="iconbtn" aria-label="삭제" onClick={onDelete}>
-            {IcoTrash}
+            <IcoTrash size={14} />
           </button>
         )}
       </div>
@@ -148,7 +131,7 @@ function ListRow({
 function AddButton({ onClick }: { onClick: () => void }) {
   return (
     <button className="btn-text" onClick={onClick}>
-      {IcoPlus}{" "}추가
+      <IcoPlus size={12} />{" "}추가
     </button>
   );
 }
@@ -166,19 +149,45 @@ function EmptyRow({ message }: { message: string }) {
 const EDUCATION_LEVELS: EducationLevel[] = ["HIGH_SCHOOL", "UNIVERSITY", "GRADUATE"];
 const EDUCATION_STATUSES: EducationStatus[] = ["GRADUATED", "ATTENDING", "LEAVE", "DROP"];
 
+type EducationFormData = {
+  level: EducationLevel;
+  school: string;
+  major?: string;
+  status: EducationStatus;
+  startDate?: string;
+  endDate?: string;
+  gpa?: number | null;
+  gpaMax?: number | null;
+};
+
+type EducationInitial = {
+  level: EducationLevel;
+  school: string;
+  major: string | null;
+  status: EducationStatus;
+  startDate: string | null;
+  endDate: string | null;
+  gpa: number | null;
+  gpaMax: number | null;
+};
+
 function EducationForm({
+  initial,
   onSubmit,
   onCancel,
 }: {
-  onSubmit: (data: { level: EducationLevel; school: string; status: EducationStatus }) => Promise<void>;
+  initial?: EducationInitial;
+  onSubmit: (data: EducationFormData) => Promise<void>;
   onCancel: () => void;
 }) {
-  const [level, setLevel] = useState<EducationLevel>("UNIVERSITY");
-  const [school, setSchool] = useState("");
-  const [major, setMajor] = useState("");
-  const [status, setStatus] = useState<EducationStatus>("GRADUATED");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [level, setLevel] = useState<EducationLevel>(initial?.level ?? "UNIVERSITY");
+  const [school, setSchool] = useState(initial?.school ?? "");
+  const [major, setMajor] = useState(initial?.major ?? "");
+  const [status, setStatus] = useState<EducationStatus>(initial?.status ?? "GRADUATED");
+  const [startDate, setStartDate] = useState(initial?.startDate ?? "");
+  const [endDate, setEndDate] = useState(initial?.endDate ?? "");
+  const [gpaRaw, setGpaRaw] = useState(initial?.gpa != null ? String(initial.gpa) : "");
+  const [gpaMaxRaw, setGpaMaxRaw] = useState(initial?.gpaMax != null ? String(initial.gpaMax) : "");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -194,7 +203,9 @@ function EducationForm({
         ...(major.trim() ? { major: major.trim() } : {}),
         ...(startDate ? { startDate } : {}),
         ...(endDate ? { endDate } : {}),
-      } as Parameters<typeof onSubmit>[0]);
+        gpa: gpaRaw === "" ? null : Number(gpaRaw),
+        gpaMax: gpaMaxRaw === "" ? null : Number(gpaMaxRaw),
+      });
     } finally {
       setSaving(false);
     }
@@ -281,6 +292,32 @@ function EducationForm({
           ))}
         </select>
       </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="field">
+          <label className="lbl" htmlFor="edu-gpa">학점</label>
+          <input
+            id="edu-gpa"
+            className="input"
+            type="number"
+            step="0.01"
+            value={gpaRaw}
+            onChange={(e) => setGpaRaw(e.target.value)}
+            placeholder="3.8"
+          />
+        </div>
+        <div className="field">
+          <label className="lbl" htmlFor="edu-gpa-max">만점</label>
+          <input
+            id="edu-gpa-max"
+            className="input"
+            type="number"
+            step="0.01"
+            value={gpaMaxRaw}
+            onChange={(e) => setGpaMaxRaw(e.target.value)}
+            placeholder="4.5"
+          />
+        </div>
+      </div>
       <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
         <button type="button" className="btn ghost" onClick={onCancel}>취소</button>
         <button type="submit" className="btn" disabled={saving}>{saving ? "저장 중…" : "저장"}</button>
@@ -291,17 +328,33 @@ function EducationForm({
 
 /* ---- Certificate section ---- */
 
+type CertificateFormData = {
+  name: string;
+  issuer?: string;
+  acquiredAt?: string;
+  score?: string;
+};
+
+type CertificateInitial = {
+  name: string;
+  issuer: string | null;
+  acquiredAt: string | null;
+  score: string | null;
+};
+
 function CertificateForm({
+  initial,
   onSubmit,
   onCancel,
 }: {
-  onSubmit: (data: { name: string; issuer?: string; acquiredAt?: string }) => Promise<void>;
+  initial?: CertificateInitial;
+  onSubmit: (data: CertificateFormData) => Promise<void>;
   onCancel: () => void;
 }) {
-  const [name, setName] = useState("");
-  const [issuer, setIssuer] = useState("");
-  const [acquiredAt, setAcquiredAt] = useState("");
-  const [score, setScore] = useState("");
+  const [name, setName] = useState(initial?.name ?? "");
+  const [issuer, setIssuer] = useState(initial?.issuer ?? "");
+  const [acquiredAt, setAcquiredAt] = useState(initial?.acquiredAt ?? "");
+  const [score, setScore] = useState(initial?.score ?? "");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -315,7 +368,7 @@ function CertificateForm({
         ...(issuer.trim() ? { issuer: issuer.trim() } : {}),
         ...(acquiredAt ? { acquiredAt } : {}),
         ...(score.trim() ? { score: score.trim() } : {}),
-      } as Parameters<typeof onSubmit>[0]);
+      });
     } finally {
       setSaving(false);
     }
@@ -390,20 +443,42 @@ const EXPERIENCE_TYPES: ExperienceType[] = [
   "INTERN", "CLUB", "CONTEST", "VOLUNTEER", "SIDE_PROJECT", "OTHER",
 ];
 
+type ExperienceFormData = {
+  type: ExperienceType;
+  name: string;
+  organization?: string;
+  startDate?: string;
+  endDate?: string;
+  role?: string;
+  summary?: string;
+};
+
+type ExperienceInitial = {
+  type: ExperienceType;
+  name: string;
+  organization: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  role: string | null;
+  summary: string | null;
+};
+
 function ExperienceForm({
+  initial,
   onSubmit,
   onCancel,
 }: {
-  onSubmit: (data: { type: ExperienceType; name: string }) => Promise<void>;
+  initial?: ExperienceInitial;
+  onSubmit: (data: ExperienceFormData) => Promise<void>;
   onCancel: () => void;
 }) {
-  const [type, setType] = useState<ExperienceType>("INTERN");
-  const [name, setName] = useState("");
-  const [organization, setOrganization] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [role, setRole] = useState("");
-  const [summary, setSummary] = useState("");
+  const [type, setType] = useState<ExperienceType>(initial?.type ?? "INTERN");
+  const [name, setName] = useState(initial?.name ?? "");
+  const [organization, setOrganization] = useState(initial?.organization ?? "");
+  const [startDate, setStartDate] = useState(initial?.startDate ?? "");
+  const [endDate, setEndDate] = useState(initial?.endDate ?? "");
+  const [role, setRole] = useState(initial?.role ?? "");
+  const [summary, setSummary] = useState(initial?.summary ?? "");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -420,7 +495,7 @@ function ExperienceForm({
         ...(endDate ? { endDate } : {}),
         ...(role.trim() ? { role: role.trim() } : {}),
         ...(summary.trim() ? { summary: summary.trim() } : {}),
-      } as Parameters<typeof onSubmit>[0]);
+      });
     } finally {
       setSaving(false);
     }
@@ -559,6 +634,16 @@ export function ProfileView() {
   const [addingCert, setAddingCert] = useState(false);
   const [addingExp, setAddingExp] = useState(false);
 
+  // Edit state: which item id is being edited (null = none)
+  const [editingEduId, setEditingEduId] = useState<number | null>(null);
+  const [editingCertId, setEditingCertId] = useState<number | null>(null);
+  const [editingExpId, setEditingExpId] = useState<number | null>(null);
+
+  // Per-section mutation errors
+  const [eduError, setEduError] = useState<string | null>(null);
+  const [certError, setCertError] = useState<string | null>(null);
+  const [expError, setExpError] = useState<string | null>(null);
+
   useEffect(() => {
     Promise.all([
       fetchProfile(),
@@ -597,37 +682,112 @@ export function ProfileView() {
     }
   }
 
+  /* Education handlers */
+
   async function handleAddEducation(req: Parameters<typeof createEducation>[0]) {
-    const created = await createEducation(req);
-    setEducations((prev) => [...(prev ?? []), created]);
-    setAddingEdu(false);
+    setEduError(null);
+    try {
+      const created = await createEducation(req);
+      setEducations((prev) => [...(prev ?? []), created]);
+      setAddingEdu(false);
+    } catch (err) {
+      setEduError(err instanceof Error ? err.message : "추가에 실패했어요. 다시 시도해주세요.");
+      setAddingEdu(false);
+    }
+  }
+
+  async function handleUpdateEducation(id: number, req: Parameters<typeof updateEducation>[1]) {
+    setEduError(null);
+    try {
+      const updated = await updateEducation(id, req);
+      setEducations((prev) => (prev ?? []).map((e) => e.id === id ? updated : e));
+      setEditingEduId(null);
+    } catch (err) {
+      setEduError(err instanceof Error ? err.message : "수정에 실패했어요. 다시 시도해주세요.");
+      setEditingEduId(null);
+    }
   }
 
   async function handleDeleteEducation(id: number) {
-    await deleteEducation(id);
-    setEducations((prev) => (prev ?? []).filter((e) => e.id !== id));
+    setEduError(null);
+    try {
+      await deleteEducation(id);
+      setEducations((prev) => (prev ?? []).filter((e) => e.id !== id));
+    } catch (err) {
+      setEduError(err instanceof Error ? err.message : "삭제에 실패했어요. 다시 시도해주세요.");
+    }
   }
 
+  /* Certificate handlers */
+
   async function handleAddCertificate(req: Parameters<typeof createCertificate>[0]) {
-    const created = await createCertificate(req);
-    setCertificates((prev) => [...(prev ?? []), created]);
-    setAddingCert(false);
+    setCertError(null);
+    try {
+      const created = await createCertificate(req);
+      setCertificates((prev) => [...(prev ?? []), created]);
+      setAddingCert(false);
+    } catch (err) {
+      setCertError(err instanceof Error ? err.message : "추가에 실패했어요. 다시 시도해주세요.");
+      setAddingCert(false);
+    }
+  }
+
+  async function handleUpdateCertificate(id: number, req: Parameters<typeof updateCertificate>[1]) {
+    setCertError(null);
+    try {
+      const updated = await updateCertificate(id, req);
+      setCertificates((prev) => (prev ?? []).map((c) => c.id === id ? updated : c));
+      setEditingCertId(null);
+    } catch (err) {
+      setCertError(err instanceof Error ? err.message : "수정에 실패했어요. 다시 시도해주세요.");
+      setEditingCertId(null);
+    }
   }
 
   async function handleDeleteCertificate(id: number) {
-    await deleteCertificate(id);
-    setCertificates((prev) => (prev ?? []).filter((c) => c.id !== id));
+    setCertError(null);
+    try {
+      await deleteCertificate(id);
+      setCertificates((prev) => (prev ?? []).filter((c) => c.id !== id));
+    } catch (err) {
+      setCertError(err instanceof Error ? err.message : "삭제에 실패했어요. 다시 시도해주세요.");
+    }
   }
 
+  /* Experience handlers */
+
   async function handleAddExperience(req: Parameters<typeof createExperience>[0]) {
-    const created = await createExperience(req);
-    setExperiences((prev) => [...(prev ?? []), created]);
-    setAddingExp(false);
+    setExpError(null);
+    try {
+      const created = await createExperience(req);
+      setExperiences((prev) => [...(prev ?? []), created]);
+      setAddingExp(false);
+    } catch (err) {
+      setExpError(err instanceof Error ? err.message : "추가에 실패했어요. 다시 시도해주세요.");
+      setAddingExp(false);
+    }
+  }
+
+  async function handleUpdateExperience(id: number, req: Parameters<typeof updateExperience>[1]) {
+    setExpError(null);
+    try {
+      const updated = await updateExperience(id, req);
+      setExperiences((prev) => (prev ?? []).map((x) => x.id === id ? updated : x));
+      setEditingExpId(null);
+    } catch (err) {
+      setExpError(err instanceof Error ? err.message : "수정에 실패했어요. 다시 시도해주세요.");
+      setEditingExpId(null);
+    }
   }
 
   async function handleDeleteExperience(id: number) {
-    await deleteExperience(id);
-    setExperiences((prev) => (prev ?? []).filter((x) => x.id !== id));
+    setExpError(null);
+    try {
+      await deleteExperience(id);
+      setExperiences((prev) => (prev ?? []).filter((x) => x.id !== id));
+    } catch (err) {
+      setExpError(err instanceof Error ? err.message : "삭제에 실패했어요. 다시 시도해주세요.");
+    }
   }
 
   if (loadError) {
@@ -705,37 +865,64 @@ export function ProfileView() {
       <div className="sub-divider" />
 
       {/* 02 학력 */}
-      <div data-section="education">
+      <div data-section="education" data-testid="section-education">
         <ProfileSubHead
           idx={2}
           title="학력"
           sub="최신순으로 정렬돼요"
-          action={<AddButton onClick={() => setAddingEdu(true)} />}
+          action={<AddButton onClick={() => { setAddingEdu(true); setEditingEduId(null); }} />}
         />
+        {eduError && (
+          <div role="alert" style={{
+            padding: "8px 12px", marginBottom: 8,
+            background: "var(--color-semantic-error-bg)",
+            color: "var(--color-semantic-error)",
+            borderRadius: "var(--radius-md)", fontSize: 13,
+          }}>{eduError}</div>
+        )}
         <div className="list">
           {educations !== null && educations.length === 0 && !addingEdu && (
             <EmptyRow message="아직 등록된 학력이 없어요." />
           )}
           {(educations ?? []).map((edu, i) => (
-            <ListRow
-              key={edu.id}
-              tone={i === 0 ? "mint" : ""}
-              icon={IcoGradCap}
-              nm={
-                <>
-                  <span>{edu.school}</span>
-                  {edu.major && <span style={{ color: "var(--color-text-secondary)", marginLeft: 4 }}>· {edu.major}</span>}
-                </>
-              }
-              meta={
-                <>
-                  {EDUCATION_LEVEL_LABEL[edu.level]}
-                  {fmtRange(edu.startDate, edu.endDate) && ` · ${fmtRange(edu.startDate, edu.endDate)}`}
-                  {` · ${EDUCATION_STATUS_LABEL[edu.status]}`}
-                </>
-              }
-              onDelete={() => void handleDeleteEducation(edu.id)}
-            />
+            <div key={edu.id}>
+              <ListRow
+                tone={i === 0 ? "mint" : ""}
+                icon={IcoGradCap}
+                nm={
+                  <>
+                    <span>{edu.school}</span>
+                    {edu.major && <span style={{ color: "var(--color-text-secondary)", marginLeft: 4 }}>· {edu.major}</span>}
+                  </>
+                }
+                meta={
+                  <>
+                    {EDUCATION_LEVEL_LABEL[edu.level]}
+                    {fmtRange(edu.startDate, edu.endDate) && ` · ${fmtRange(edu.startDate, edu.endDate)}`}
+                    {` · ${EDUCATION_STATUS_LABEL[edu.status]}`}
+                    {edu.gpa != null ? ` · ${edu.gpa}/${edu.gpaMax ?? "?"}` : ""}
+                  </>
+                }
+                onEdit={() => { setEditingEduId(edu.id); setAddingEdu(false); }}
+                onDelete={() => void handleDeleteEducation(edu.id)}
+              />
+              {editingEduId === edu.id && (
+                <EducationForm
+                  initial={{
+                    level: edu.level,
+                    school: edu.school,
+                    major: edu.major,
+                    status: edu.status,
+                    startDate: edu.startDate,
+                    endDate: edu.endDate,
+                    gpa: edu.gpa,
+                    gpaMax: edu.gpaMax,
+                  }}
+                  onSubmit={(req) => handleUpdateEducation(edu.id, req)}
+                  onCancel={() => setEditingEduId(null)}
+                />
+              )}
+            </div>
           ))}
         </div>
         {addingEdu && (
@@ -754,27 +941,49 @@ export function ProfileView() {
           idx={3}
           title="자격증"
           sub="희망 포지션 표준 역량 매트릭스와 비교돼요"
-          action={<AddButton onClick={() => setAddingCert(true)} />}
+          action={<AddButton onClick={() => { setAddingCert(true); setEditingCertId(null); }} />}
         />
+        {certError && (
+          <div role="alert" style={{
+            padding: "8px 12px", marginBottom: 8,
+            background: "var(--color-semantic-error-bg)",
+            color: "var(--color-semantic-error)",
+            borderRadius: "var(--radius-md)", fontSize: 13,
+          }}>{certError}</div>
+        )}
         <div className="list">
           {certificates !== null && certificates.length === 0 && !addingCert && (
             <EmptyRow message="아직 등록된 자격증이 없어요." />
           )}
           {(certificates ?? []).map((cert, i) => (
-            <ListRow
-              key={cert.id}
-              tone={i === 0 ? "lav" : ""}
-              icon={IcoAward}
-              nm={cert.name}
-              meta={
-                <>
-                  {cert.issuer ?? ""}
-                  {cert.acquiredAt ? ` · ${cert.acquiredAt.slice(0, 7)}` : ""}
-                  {cert.score ? ` · ${cert.score}` : ""}
-                </>
-              }
-              onDelete={() => void handleDeleteCertificate(cert.id)}
-            />
+            <div key={cert.id}>
+              <ListRow
+                tone={i === 0 ? "lav" : ""}
+                icon={IcoAward}
+                nm={cert.name}
+                meta={
+                  <>
+                    {cert.issuer ?? ""}
+                    {cert.acquiredAt ? ` · ${cert.acquiredAt.slice(0, 7)}` : ""}
+                    {cert.score ? ` · ${cert.score}` : ""}
+                  </>
+                }
+                onEdit={() => { setEditingCertId(cert.id); setAddingCert(false); }}
+                onDelete={() => void handleDeleteCertificate(cert.id)}
+              />
+              {editingCertId === cert.id && (
+                <CertificateForm
+                  initial={{
+                    name: cert.name,
+                    issuer: cert.issuer,
+                    acquiredAt: cert.acquiredAt,
+                    score: cert.score,
+                  }}
+                  onSubmit={(req) => handleUpdateCertificate(cert.id, req)}
+                  onCancel={() => setEditingCertId(null)}
+                />
+              )}
+            </div>
           ))}
         </div>
         {addingCert && (
@@ -793,32 +1002,57 @@ export function ProfileView() {
           idx={4}
           title="경험 · 대외활동"
           sub="인턴, 동아리, 공모전, 봉사, 사이드 프로젝트 모두 OK"
-          action={<AddButton onClick={() => setAddingExp(true)} />}
+          action={<AddButton onClick={() => { setAddingExp(true); setEditingExpId(null); }} />}
         />
+        {expError && (
+          <div role="alert" style={{
+            padding: "8px 12px", marginBottom: 8,
+            background: "var(--color-semantic-error-bg)",
+            color: "var(--color-semantic-error)",
+            borderRadius: "var(--radius-md)", fontSize: 13,
+          }}>{expError}</div>
+        )}
         <div className="list">
           {experiences !== null && experiences.length === 0 && !addingExp && (
             <EmptyRow message="아직 등록된 경험이 없어요." />
           )}
           {(experiences ?? []).map((exp, i) => (
-            <ListRow
-              key={exp.id}
-              tone={i === 0 ? "peach" : ""}
-              icon={IcoStar}
-              nm={
-                <>
-                  <span>{exp.name}</span>
-                  {exp.organization && <span style={{ color: "var(--color-text-secondary)", marginLeft: 4 }}>· {exp.organization}</span>}
-                </>
-              }
-              meta={
-                <>
-                  {EXPERIENCE_TYPE_LABEL[exp.type]}
-                  {fmtRange(exp.startDate, exp.endDate) && ` · ${fmtRange(exp.startDate, exp.endDate)}`}
-                  {exp.role ? ` · ${exp.role}` : ""}
-                </>
-              }
-              onDelete={() => void handleDeleteExperience(exp.id)}
-            />
+            <div key={exp.id}>
+              <ListRow
+                tone={i === 0 ? "peach" : ""}
+                icon={IcoStar}
+                nm={
+                  <>
+                    <span>{exp.name}</span>
+                    {exp.organization && <span style={{ color: "var(--color-text-secondary)", marginLeft: 4 }}>· {exp.organization}</span>}
+                  </>
+                }
+                meta={
+                  <>
+                    {EXPERIENCE_TYPE_LABEL[exp.type]}
+                    {fmtRange(exp.startDate, exp.endDate) && ` · ${fmtRange(exp.startDate, exp.endDate)}`}
+                    {exp.role ? ` · ${exp.role}` : ""}
+                  </>
+                }
+                onEdit={() => { setEditingExpId(exp.id); setAddingExp(false); }}
+                onDelete={() => void handleDeleteExperience(exp.id)}
+              />
+              {editingExpId === exp.id && (
+                <ExperienceForm
+                  initial={{
+                    type: exp.type,
+                    name: exp.name,
+                    organization: exp.organization,
+                    startDate: exp.startDate,
+                    endDate: exp.endDate,
+                    role: exp.role,
+                    summary: exp.summary,
+                  }}
+                  onSubmit={(req) => handleUpdateExperience(exp.id, req)}
+                  onCancel={() => setEditingExpId(null)}
+                />
+              )}
+            </div>
           ))}
         </div>
         {addingExp && (

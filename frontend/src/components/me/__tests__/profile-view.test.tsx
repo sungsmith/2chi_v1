@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProfileView } from "../profile-view";
 
@@ -24,21 +24,23 @@ vi.mock("@/lib/api/education", () => ({
 
 const fetchCertificatesMock = vi.fn();
 const createCertificateMock = vi.fn();
+const updateCertificateMock = vi.fn();
 const deleteCertificateMock = vi.fn();
 vi.mock("@/lib/api/certificate", () => ({
   fetchCertificates: (...args: unknown[]) => fetchCertificatesMock(...args),
   createCertificate: (...args: unknown[]) => createCertificateMock(...args),
-  updateCertificate: vi.fn(),
+  updateCertificate: (...args: unknown[]) => updateCertificateMock(...args),
   deleteCertificate: (...args: unknown[]) => deleteCertificateMock(...args),
 }));
 
 const fetchExperiencesMock = vi.fn();
 const createExperienceMock = vi.fn();
+const updateExperienceMock = vi.fn();
 const deleteExperienceMock = vi.fn();
 vi.mock("@/lib/api/experience", () => ({
   fetchExperiences: (...args: unknown[]) => fetchExperiencesMock(...args),
   createExperience: (...args: unknown[]) => createExperienceMock(...args),
-  updateExperience: vi.fn(),
+  updateExperience: (...args: unknown[]) => updateExperienceMock(...args),
   deleteExperience: (...args: unknown[]) => deleteExperienceMock(...args),
 }));
 
@@ -62,8 +64,8 @@ const sampleEducation = {
   major: "컴퓨터공학",
   startDate: "2018-03-01",
   endDate: "2022-02-28",
-  gpa: "3.8",
-  gpaMax: "4.5",
+  gpa: 3.8,
+  gpaMax: 4.5,
   status: "GRADUATED" as const,
   orderIndex: 0,
 };
@@ -98,9 +100,11 @@ beforeEach(() => {
   deleteEducationMock.mockReset();
   fetchCertificatesMock.mockReset();
   createCertificateMock.mockReset();
+  updateCertificateMock.mockReset();
   deleteCertificateMock.mockReset();
   fetchExperiencesMock.mockReset();
   createExperienceMock.mockReset();
+  updateExperienceMock.mockReset();
   deleteExperienceMock.mockReset();
 });
 
@@ -202,8 +206,10 @@ describe("ProfileView", () => {
     render(<ProfileView />);
     await waitFor(() => expect(screen.getByText("한국대학교")).toBeInTheDocument());
 
-    const deleteButtons = screen.getAllByRole("button", { name: /삭제/ });
-    await user.click(deleteButtons[0]);
+    // Scope to the education section to avoid positional fragility
+    const eduSection = screen.getByTestId("section-education");
+    const deleteBtn = within(eduSection).getByRole("button", { name: /삭제/ });
+    await user.click(deleteBtn);
 
     await waitFor(() => {
       expect(deleteEducationMock).toHaveBeenCalledWith(1);
@@ -217,12 +223,52 @@ describe("ProfileView", () => {
     render(<ProfileView />);
     await waitFor(() => expect(screen.getByDisplayValue("홍길동")).toBeInTheDocument());
 
-    // Click the save/edit button for basic info
-    const saveBtn = screen.getByRole("button", { name: /기본정보 저장|저장/ });
+    // Click the save button for basic info — exact match avoids hitting section save buttons
+    const saveBtn = screen.getByRole("button", { name: "기본정보 저장" });
     await user.click(saveBtn);
 
     await waitFor(() => {
       expect(updateProfileBasicMock).toHaveBeenCalled();
+    });
+  });
+
+  it("editing a 학력 entry calls updateEducation and updates the row", async () => {
+    setupAllMocks();
+    const updatedEdu = {
+      ...sampleEducation,
+      school: "서울과기대",
+      major: "소프트웨어공학",
+    };
+    updateEducationMock.mockResolvedValue(updatedEdu);
+    const user = userEvent.setup();
+    render(<ProfileView />);
+    await waitFor(() => expect(screen.getByText("한국대학교")).toBeInTheDocument());
+
+    // Click the 편집 button in the education section
+    const eduSection = screen.getByTestId("section-education");
+    const editBtn = within(eduSection).getByRole("button", { name: /편집/ });
+    await user.click(editBtn);
+
+    // The edit form should appear pre-filled with the existing school name
+    const schoolInput = await screen.findByDisplayValue("한국대학교");
+
+    // Change the school name
+    await user.clear(schoolInput);
+    await user.type(schoolInput, "서울과기대");
+
+    // Submit the edit form
+    await user.click(screen.getByRole("button", { name: /^저장$/ }));
+
+    await waitFor(() => {
+      expect(updateEducationMock).toHaveBeenCalledWith(
+        1,
+        expect.objectContaining({ school: "서울과기대" })
+      );
+    });
+
+    // Row should now display the updated school name
+    await waitFor(() => {
+      expect(screen.getByText("서울과기대")).toBeInTheDocument();
     });
   });
 });
