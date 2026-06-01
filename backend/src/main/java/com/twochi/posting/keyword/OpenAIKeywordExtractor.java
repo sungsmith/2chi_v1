@@ -35,10 +35,8 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
     @PostConstruct
     void init() {
         if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException(
-                "OPENAI_API_KEY 환경변수가 설정되지 않았어요. " +
-                ".env 파일 또는 환경변수에 OPENAI_API_KEY=sk-... 추가하세요."
-            );
+            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출 요청은 실패합니다. (앱 기동은 정상)");
+            return;
         }
         this.client = RestClient.builder()
             // HTTP/1.1 강제: JDK HttpClient 기본 (HTTP/2) 가 api.openai.com 과
@@ -53,6 +51,9 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
 
     @Override
     public List<String> extract(String mainTasks, String requirements, String preferred) {
+        if (client == null) {
+            throw new IllegalStateException("OPENAI_API_KEY 미설정 — 공고 키워드 추출 불가");
+        }
         String userPrompt = """
             다음 채용공고에서 핵심 기술·키워드를 10개 이내로 추출하세요.
             결과는 JSON 배열만 반환하세요. 다른 텍스트·설명·코드블록 금지.

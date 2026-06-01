@@ -34,9 +34,8 @@ public class OpenAiCoverLetterClient implements CoverLetterAiClient {
     @PostConstruct
     void init() {
         if (apiKey == null || apiKey.isBlank()) {
-            throw new IllegalStateException(
-                "OPENAI_API_KEY 환경변수가 설정되지 않았어요."
-            );
+            log.warn("OPENAI_API_KEY 미설정 — 자소서 AI 생성 요청은 실패합니다. (앱 기동은 정상)");
+            return;
         }
         this.client = RestClient.builder()
             .requestFactory(new SimpleClientHttpRequestFactory())
@@ -48,6 +47,9 @@ public class OpenAiCoverLetterClient implements CoverLetterAiClient {
 
     @Override
     public Result generate(String prompt) {
+        if (client == null) {
+            throw new IllegalStateException("OPENAI_API_KEY 미설정 — 자소서 AI 생성 불가");
+        }
         Map<String, Object> requestBody = Map.of(
             "model", model,
             "max_tokens", 1500,
