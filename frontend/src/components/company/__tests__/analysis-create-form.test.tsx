@@ -40,6 +40,7 @@ describe("AnalysisCreateForm", () => {
 
     await waitFor(() => expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
       company: "주식회사 카카오",
+      urls: [],
     })));
     expect(pushMock).toHaveBeenCalledWith("/company/analysis/99");
   });
@@ -56,5 +57,21 @@ describe("AnalysisCreateForm", () => {
       company: "(주)테크",
     })));
     expect(pushMock).toHaveBeenCalledWith("/company/analysis/42");
+  });
+
+  test("URL 입력 후 직접 분석 시작 → urls 가 API 에 전달됨", async () => {
+    createMock.mockResolvedValue({ id: 7, company: "(주)테크", summaryJson: "{}", sourceUrls: ["https://tech.com/about"], generatedAt: "x", generatedBy: "y", expiresInDays: 30 });
+    const user = userEvent.setup();
+    render(<AnalysisCreateForm />);
+
+    await user.type(screen.getByRole("textbox", { name: /회사명/ }), "(주)테크");
+    await user.type(screen.getByPlaceholderText("https://example.com/about"), "https://tech.com/about");
+    await user.click(screen.getByRole("button", { name: /분석 시작/ }));
+
+    await waitFor(() => expect(createMock).toHaveBeenCalledWith(expect.objectContaining({
+      company: "(주)테크",
+      urls: ["https://tech.com/about"],
+    })));
+    expect(pushMock).toHaveBeenCalledWith("/company/analysis/7");
   });
 });

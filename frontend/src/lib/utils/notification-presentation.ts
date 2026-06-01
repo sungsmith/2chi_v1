@@ -17,6 +17,7 @@ const MAP: Record<string, NotificationPresentation> = {
   WEEKLY_SUMMARY:               { icon: "Sparkle",  tone: "default" },
   EMAIL_VERIFY:                 { icon: "Bell",     tone: "lav"     },
   PASSWORD_RESET:               { icon: "Bell",     tone: "lav"     },
+  WELCOME:                      { icon: "Sparkle",  tone: "mint"    },
 };
 
 const FALLBACK: NotificationPresentation = { icon: "Bell", tone: "default" };

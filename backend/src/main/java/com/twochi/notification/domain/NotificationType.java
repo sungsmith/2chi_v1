@@ -9,6 +9,7 @@ package com.twochi.notification.domain;
  * - WEEKLY_SUMMARY → weekly-summary
  * - EMAIL_VERIFY → signup-verify (locked)
  * - PASSWORD_RESET → pw-reset (locked)
+ * - WELCOME → (ungated, 설정 없음) — 가입 축하, 항상 발송
  */
 public enum NotificationType {
     POSTING_DEADLINE_D3,
@@ -17,7 +18,8 @@ public enum NotificationType {
     COVER_LETTER_UNSUBMITTED_7D,
     WEEKLY_SUMMARY,
     EMAIL_VERIFY,
-    PASSWORD_RESET;
+    PASSWORD_RESET,
+    WELCOME;
 
     /** NotiSettingDef.id 와 매핑. cron/이벤트가 사용자 설정을 조회할 때 사용. */
     public String settingId() {
@@ -29,6 +31,8 @@ public enum NotificationType {
             case WEEKLY_SUMMARY -> "weekly-summary";
             case EMAIL_VERIFY -> "signup-verify";
             case PASSWORD_RESET -> "pw-reset";
+            case WELCOME -> throw new UnsupportedOperationException(
+                "WELCOME 은 ungated(항상 발송) — 대응 설정 없음. gating 경로에서 호출 금지.");
         };
     }
 }
