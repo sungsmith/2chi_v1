@@ -1,15 +1,21 @@
 package com.twochi.notification.service;
 
+import com.twochi.application.repository.ApplicationRepository;
 import com.twochi.application.repository.EventRepository;
+import com.twochi.coverletter.domain.CoverLetterVariant;
 import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
+import com.twochi.user.domain.Profile;
+import com.twochi.user.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.IsoFields;
 
 /**
  * cron 알림 생성. 각 generate* 메서드는 의도적으로 @Transactional 을 두지 않는다 —
@@ -27,17 +33,23 @@ public class NotificationGenerator {
     private final NotificationProducer producer;
     private final EventRepository eventRepository;
     private final CoverLetterVariantRepository variantRepository;
+    private final ProfileRepository profileRepository;
+    private final ApplicationRepository applicationRepository;
 
     public NotificationGenerator(JobPostingRepository jobPostingRepository,
                                  NotiSettingResolver settingResolver,
                                  NotificationProducer producer,
                                  EventRepository eventRepository,
-                                 CoverLetterVariantRepository variantRepository) {
+                                 CoverLetterVariantRepository variantRepository,
+                                 ProfileRepository profileRepository,
+                                 ApplicationRepository applicationRepository) {
         this.jobPostingRepository = jobPostingRepository;
         this.settingResolver = settingResolver;
         this.producer = producer;
         this.eventRepository = eventRepository;
         this.variantRepository = variantRepository;
+        this.profileRepository = profileRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     public void generatePostingDeadline(LocalDate today) {
@@ -75,6 +87,36 @@ public class NotificationGenerator {
                     "%s 자소서가 아직 작성 중이에요. 마감 전에 마무리해볼까요?".formatted(r.getCompany()),
                     "CL7:" + r.getVariantId());
             }
+        }
+    }
+
+    public void generateWeeklySummary(LocalDate today) {
+        Instant to = today.atStartOfDay(SEOUL).toInstant();
+        Instant from = today.minusDays(7).atStartOfDay(SEOUL).toInstant();
+        int week = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+        int weekYear = today.get(IsoFields.WEEK_BASED_YEAR);
+        String isoWeek = "%d-W%02d".formatted(weekYear, week);
+
+        for (Profile profile : profileRepository.findByOnboardingCompletedTrue()) {
+            long applied = applicationRepository.countByUserIdAndCreatedAtBetween(profile.getUserId(), from, to);
+            long drafts = variantRepository
+                .countByUserIdAndStatusAndUpdatedAtBetweenAndDeletedAtIsNull(
+                    profile.getUserId(), CoverLetterVariant.Status.DRAFT, from, to);
+            if (applied == 0 && drafts == 0) continue;
+            if (!settingResolver.isEnabled(profile.getUserId(), NotificationType.WEEKLY_SUMMARY)) continue;
+            producer.publishDeduped(profile.getUserId(), NotificationType.WEEKLY_SUMMARY,
+                "이번 주 지원 %d건·자소서 초안 %d건을 정리했어요".formatted(applied, drafts),
+                "WK:" + profile.getUserId() + ":" + isoWeek);
+        }
+    }
+
+    /** 매일 도는 알림 (스케줄러용). cleanup 은 스케줄러가 NotificationService 로 별도 호출. */
+    public void runDaily(LocalDate today) {
+        generatePostingDeadline(today);
+        generateScheduleD1(today);
+        generateCoverLetterUnsubmitted(today);
+        if (today.getDayOfWeek() == DayOfWeek.MONDAY) {
+            generateWeeklySummary(today);
         }
     }
 

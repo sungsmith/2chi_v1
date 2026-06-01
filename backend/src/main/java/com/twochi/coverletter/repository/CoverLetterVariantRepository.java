@@ -22,6 +22,9 @@ public interface CoverLetterVariantRepository extends JpaRepository<CoverLetterV
 
     long countByUserIdAndPostingIdAndDeletedAtIsNull(Long userId, Long postingId);
 
+    long countByUserIdAndStatusAndUpdatedAtBetweenAndDeletedAtIsNull(
+        Long userId, CoverLetterVariant.Status status, Instant from, Instant to);
+
     @Query("""
         SELECT v.id AS variantId, v.userId AS userId, p.company AS company
         FROM CoverLetterVariant v JOIN JobPosting p ON v.postingId = p.id

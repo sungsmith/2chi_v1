@@ -1,5 +1,6 @@
 package com.twochi.notification;
 
+import com.twochi.application.repository.ApplicationRepository;
 import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.notification.service.NotiSettingResolver;
@@ -8,6 +9,7 @@ import com.twochi.notification.service.NotificationProducer;
 import com.twochi.application.repository.EventRepository;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
+import com.twochi.user.repository.ProfileRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +30,8 @@ class NotificationGeneratorPostingTest {
     @Mock JobPostingRepository jobPostingRepository;
     @Mock EventRepository eventRepository;
     @Mock CoverLetterVariantRepository variantRepository;
+    @Mock ProfileRepository profileRepository;
+    @Mock ApplicationRepository applicationRepository;
     @Mock NotiSettingResolver settingResolver;
     @Mock NotificationProducer producer;
     @InjectMocks NotificationGenerator generator;
