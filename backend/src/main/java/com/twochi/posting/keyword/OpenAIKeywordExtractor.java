@@ -35,7 +35,7 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
     @PostConstruct
     void init() {
         if (apiKey == null || apiKey.isBlank()) {
-            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출 요청은 실패합니다. (앱 기동은 정상)");
+            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출은 생략됩니다 (빈 키워드로 진행). (앱 기동은 정상)");
             return;
         }
         this.client = RestClient.builder()
@@ -52,7 +52,7 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
     @Override
     public List<String> extract(String mainTasks, String requirements, String preferred) {
         if (client == null) {
-            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출 건너뜀 (빈 키워드로 진행)");
+            log.debug("OPENAI_API_KEY 미설정 — 공고 키워드 추출 건너뜀 (빈 키워드로 진행)");
             return List.of();
         }
         String userPrompt = """
