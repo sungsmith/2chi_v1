@@ -30,4 +30,13 @@ describe("UrlInputList", () => {
     await user.click(screen.getByRole("button", { name: /URL 추가/ }));
     expect(onChange).toHaveBeenCalledWith(["https://a.com", ""]);
   });
+
+  test("제거 버튼 클릭 시 onChange 에 해당 행 빠진 배열", async () => {
+    const onChange = vi.fn();
+    const user = userEvent.setup();
+    render(<UrlInputList urls={["https://a.com", "https://b.com"]} onChange={onChange} max={5} />);
+    const removeButtons = screen.getAllByRole("button", { name: "URL 제거" });
+    await user.click(removeButtons[0]);
+    expect(onChange).toHaveBeenCalledWith(["https://b.com"]);
+  });
 });
