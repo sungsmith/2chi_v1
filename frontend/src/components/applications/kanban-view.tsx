@@ -13,12 +13,13 @@ const ACTIVE_COLUMNS: { stage: Stage; dot: string }[] = [
   { stage: "NEGOTIATION",      dot: "nego" },
 ];
 
-const TERMINAL_COLUMNS: { stage: Stage; dot: string }[] = [
-  { stage: "PASSED", dot: "ok"   },
-  { stage: "FAILED", dot: "fail" },
-];
-
 type ResultFilter = "all" | "IN_PROGRESS" | "PASSED" | "FAILED";
+
+// 종료 결과 필터(합격/불합격) 선택 시에만 해당 종료 단계 컬럼을 덧붙인다.
+const TERMINAL_COLUMN: Partial<Record<ResultFilter, { stage: Stage; dot: string }>> = {
+  PASSED: { stage: "PASSED", dot: "ok"   },
+  FAILED: { stage: "FAILED", dot: "fail" },
+};
 
 export function KanbanView() {
   const [apps, setApps] = useState<ApplicationSummary[] | null>(null);
@@ -54,10 +55,8 @@ export function KanbanView() {
   const visible = result === "all" ? apps : apps.filter(a => a.currentResult === result);
 
   // When filtering by a terminal result, append the terminal column; otherwise show 6 active columns
-  const columns =
-    result === "PASSED" ? [...ACTIVE_COLUMNS, TERMINAL_COLUMNS[0]] :
-    result === "FAILED" ? [...ACTIVE_COLUMNS, TERMINAL_COLUMNS[1]] :
-    ACTIVE_COLUMNS;
+  const terminal = TERMINAL_COLUMN[result];
+  const columns = terminal ? [...ACTIVE_COLUMNS, terminal] : ACTIVE_COLUMNS;
 
   return (
     <>
