@@ -1,5 +1,6 @@
 package com.twochi.notification;
 
+import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.notification.service.NotiSettingResolver;
 import com.twochi.notification.service.NotificationGenerator;
@@ -26,6 +27,7 @@ class NotificationGeneratorPostingTest {
 
     @Mock JobPostingRepository jobPostingRepository;
     @Mock EventRepository eventRepository;
+    @Mock CoverLetterVariantRepository variantRepository;
     @Mock NotiSettingResolver settingResolver;
     @Mock NotificationProducer producer;
     @InjectMocks NotificationGenerator generator;

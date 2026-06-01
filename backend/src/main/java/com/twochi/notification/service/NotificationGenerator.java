@@ -1,6 +1,7 @@
 package com.twochi.notification.service;
 
 import com.twochi.application.repository.EventRepository;
+import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
@@ -21,15 +22,18 @@ public class NotificationGenerator {
     private final NotiSettingResolver settingResolver;
     private final NotificationProducer producer;
     private final EventRepository eventRepository;
+    private final CoverLetterVariantRepository variantRepository;
 
     public NotificationGenerator(JobPostingRepository jobPostingRepository,
                                  NotiSettingResolver settingResolver,
                                  NotificationProducer producer,
-                                 EventRepository eventRepository) {
+                                 EventRepository eventRepository,
+                                 CoverLetterVariantRepository variantRepository) {
         this.jobPostingRepository = jobPostingRepository;
         this.settingResolver = settingResolver;
         this.producer = producer;
         this.eventRepository = eventRepository;
+        this.variantRepository = variantRepository;
     }
 
     public void generatePostingDeadline(LocalDate today) {
@@ -55,6 +59,18 @@ public class NotificationGenerator {
                 producer.publishDeduped(r.getUserId(), NotificationType.SCHEDULE_D1,
                     "%s %s 일정이 내일이에요".formatted(r.getCompany(), eventTypeLabel(r.getType())),
                     "SCH_D1:" + r.getEventId());
+            }
+        }
+    }
+
+    public void generateCoverLetterUnsubmitted(LocalDate today) {
+        java.time.Instant staleBefore = today.atStartOfDay(java.time.ZoneId.of("Asia/Seoul"))
+            .minusDays(7).toInstant();
+        for (var r : variantRepository.findUnsubmittedBefore(today, staleBefore)) {
+            if (settingResolver.isEnabled(r.getUserId(), NotificationType.COVER_LETTER_UNSUBMITTED_7D)) {
+                producer.publishDeduped(r.getUserId(), NotificationType.COVER_LETTER_UNSUBMITTED_7D,
+                    "%s 자소서가 아직 작성 중이에요. 마감 전에 마무리해볼까요?".formatted(r.getCompany()),
+                    "CL7:" + r.getVariantId());
             }
         }
     }
