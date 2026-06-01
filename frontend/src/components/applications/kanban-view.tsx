@@ -23,6 +23,7 @@ type ResultFilter = "all" | "IN_PROGRESS" | "PASSED" | "FAILED";
 export function KanbanView() {
   const [apps, setApps] = useState<ApplicationSummary[] | null>(null);
   const [error, setError] = useState<string | undefined>();
+  const [actionError, setActionError] = useState<string | undefined>();
   const [result, setResult] = useState<ResultFilter>("all");
 
   useEffect(() => {
@@ -44,8 +45,8 @@ export function KanbanView() {
     try {
       await patchApplication(target.id, { currentStage: nextStage });
     } catch {
-      setApps(prev); // 실패 시 되돌림
-      setError("단계 변경에 실패했어요. 잠시 후 다시 시도해주세요.");
+      setApps(prev); // 실패 시 되돌림 (보드는 유지, 배너로만 안내)
+      setActionError("단계 변경에 실패했어요. 잠시 후 다시 시도해주세요.");
     }
   }
 
@@ -66,6 +67,13 @@ export function KanbanView() {
           <div className="sub">전형 단계별로 진행 중인 지원을 한눈에. 카드에서 단계를 바꿀 수 있어요.</div>
         </div>
       </section>
+
+      {actionError && (
+        <div role="alert" className="info-banner" style={{ marginBottom: 8 }}>
+          <span className="body helper error">{actionError}</span>
+          <button type="button" className="x" aria-label="닫기" onClick={() => setActionError(undefined)}>×</button>
+        </div>
+      )}
 
       <div className="kan-toolbar">
         <div className="filter-chips">
