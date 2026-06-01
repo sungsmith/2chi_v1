@@ -91,6 +91,9 @@ public class NotificationGenerator {
     }
 
     public void generateWeeklySummary(LocalDate today) {
+        // 시간 범위는 의도상 [from, to) 이지만 아래 count 들이 Spring Data Between 을 써서 closed [from, to].
+        // 자정(SEOUL) 정확 동시 데이터만 양쪽 주차에 카운트될 수 있으나 dedup_key 가 알림 중복은 방지.
+        // v1 베타엔 영향 0. 트래픽 증가 시 @Query 의 < :to 로 정확화 권장.
         Instant to = today.atStartOfDay(SEOUL).toInstant();
         Instant from = today.minusDays(7).atStartOfDay(SEOUL).toInstant();
         int week = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
