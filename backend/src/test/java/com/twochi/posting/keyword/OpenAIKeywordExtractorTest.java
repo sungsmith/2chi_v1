@@ -15,7 +15,6 @@ import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -83,11 +82,10 @@ class OpenAIKeywordExtractorTest {
     }
 
     @Test
-    void 키_없이_extract_호출시_IllegalState() {
+    void 키_없이_extract_호출시_빈리스트_반환_공고생성_보호() {
         OpenAIKeywordExtractor c = unitClientWithKey("");
         ReflectionTestUtils.invokeMethod(c, "init");
-        assertThatThrownBy(() -> c.extract("a", "b", "c"))
-            .isInstanceOf(IllegalStateException.class)
-            .hasMessageContaining("OPENAI_API_KEY");
+        // 키워드 추출은 best-effort 부가기능 — 키 부재 시 공고 생성을 막지 않고 빈 키워드로 진행.
+        assertThat(c.extract("a", "b", "c")).isEmpty();
     }
 }

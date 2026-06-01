@@ -52,7 +52,8 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
     @Override
     public List<String> extract(String mainTasks, String requirements, String preferred) {
         if (client == null) {
-            throw new IllegalStateException("OPENAI_API_KEY 미설정 — 공고 키워드 추출 불가");
+            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출 건너뜀 (빈 키워드로 진행)");
+            return List.of();
         }
         String userPrompt = """
             다음 채용공고에서 핵심 기술·키워드를 10개 이내로 추출하세요.
