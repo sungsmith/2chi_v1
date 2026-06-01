@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createOrReplaceAnalysis } from "@/lib/api/company-analysis";
+import { UrlInputList } from "./url-input-list";
 
 type Props = {
   initialCompany?: string;
@@ -42,6 +43,7 @@ const DART_CANDIDATES = [
 export function AnalysisCreateForm({ initialCompany = "" }: Props) {
   const router = useRouter();
   const [company, setCompany] = useState(initialCompany);
+  const [urls, setUrls] = useState<string[]>([]);
   const [step, setStep] = useState<"search" | "candidates" | "empty">("search");
   const [picked, setPicked] = useState<string>("c1");
   const [submitting, setSubmitting] = useState(false);
@@ -58,7 +60,7 @@ export function AnalysisCreateForm({ initialCompany = "" }: Props) {
     try {
       const result = await createOrReplaceAnalysis({
         company: companyName,
-        urls: [],
+        urls,
       });
       router.push(`/company/analysis/${result.id}`);
     } catch (e) {
@@ -105,6 +107,12 @@ export function AnalysisCreateForm({ initialCompany = "" }: Props) {
             <IcoSparkle size={14} /> 검색
           </button>
         </div>
+
+        <div className="head" style={{ paddingTop: 4 }}>
+          <span className="lbl">회사 관련 링크</span>
+          <span className="sub">회사 소개·채용 페이지 링크를 넣으면 인재상·활용 포인트를 더 정확히 분석해드려요. (선택 · 최대 5개)</span>
+        </div>
+        <UrlInputList urls={urls} onChange={setUrls} max={5} />
 
         {step === "candidates" && (
           <>
