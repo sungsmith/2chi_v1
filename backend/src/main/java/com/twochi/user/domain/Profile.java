@@ -38,14 +38,14 @@ public class Profile {
     private boolean onboardingCompleted;
 
     @Convert(converter = ProfilePiiConverter.class)
-    @Column(name = "name", length = 255)
+    @Column(name = "name", columnDefinition = "text")
     private String name;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Convert(converter = ProfilePiiConverter.class)
-    @Column(name = "phone", length = 255)
+    @Column(name = "phone", columnDefinition = "text")
     private String phone;
 
     @Column(name = "region", length = 50)
