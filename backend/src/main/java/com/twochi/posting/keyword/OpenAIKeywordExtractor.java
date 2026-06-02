@@ -2,14 +2,9 @@ package com.twochi.posting.keyword;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import com.twochi.common.ai.AbstractOpenAiClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,41 +12,20 @@ import java.util.Map;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class OpenAIKeywordExtractor implements KeywordExtractor {
+public class OpenAIKeywordExtractor extends AbstractOpenAiClient implements KeywordExtractor {
 
-    @Value("${openai.api-url:https://api.openai.com/v1/chat/completions}")
-    private String apiUrl;
+    public OpenAIKeywordExtractor(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
-    @Value("${openai.api-key:}")
-    private String apiKey;
-
-    @Value("${openai.model:gpt-4o-mini}")
-    private String model;
-
-    private final ObjectMapper objectMapper;
-    private RestClient client;
-
-    @PostConstruct
-    void init() {
-        if (apiKey == null || apiKey.isBlank()) {
-            log.warn("OPENAI_API_KEY 미설정 — 공고 키워드 추출은 생략됩니다 (빈 키워드로 진행). (앱 기동은 정상)");
-            return;
-        }
-        this.client = RestClient.builder()
-            // HTTP/1.1 강제: JDK HttpClient 기본 (HTTP/2) 가 api.openai.com 과
-            // RST_STREAM 충돌 — SimpleClientHttpRequestFactory 는 HttpURLConnection
-            // 기반 (HTTP/1.1) 이라 안정적.
-            .requestFactory(new SimpleClientHttpRequestFactory())
-            .baseUrl(apiUrl)
-            .defaultHeader("Authorization", "Bearer " + apiKey)
-            .defaultHeader("Content-Type", "application/json")
-            .build();
+    @Override
+    protected String missingKeyWarning() {
+        return "OPENAI_API_KEY 미설정 — 공고 키워드 추출은 생략됩니다 (빈 키워드로 진행). (앱 기동은 정상)";
     }
 
     @Override
     public List<String> extract(String mainTasks, String requirements, String preferred) {
-        if (client == null) {
+        if (!hasClient()) {
             log.debug("OPENAI_API_KEY 미설정 — 공고 키워드 추출 건너뜀 (빈 키워드로 진행)");
             return List.of();
         }
@@ -74,11 +48,7 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
         );
 
         try {
-            String responseBody = client.post()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(requestBody)
-                .retrieve()
-                .body(String.class);
+            String responseBody = chatCompletion(requestBody);
             return parseKeywords(responseBody);
         } catch (Exception e) {
             log.warn("LLM 키워드 추출 실패 — 빈 배열로 폴백 ({})", e.getMessage());
@@ -88,9 +58,8 @@ public class OpenAIKeywordExtractor implements KeywordExtractor {
 
     private List<String> parseKeywords(String responseBody) {
         try {
-            JsonNode root = objectMapper.readTree(responseBody);
             // OpenAI chat completions: choices[0].message.content
-            String text = root.path("choices").get(0).path("message").path("content").asText();
+            String text = extractContent(parseResponse(responseBody));
             JsonNode arr = objectMapper.readTree(text);
             List<String> out = new ArrayList<>();
             if (arr.isArray()) {

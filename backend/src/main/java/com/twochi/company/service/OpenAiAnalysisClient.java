@@ -1,55 +1,28 @@
 package com.twochi.company.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+import com.twochi.common.ai.AbstractOpenAiClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
-public class OpenAiAnalysisClient implements AnalysisAiClient {
+public class OpenAiAnalysisClient extends AbstractOpenAiClient implements AnalysisAiClient {
 
-    @Value("${openai.api-url:https://api.openai.com/v1/chat/completions}")
-    private String apiUrl;
+    public OpenAiAnalysisClient(ObjectMapper objectMapper) {
+        super(objectMapper);
+    }
 
-    @Value("${openai.api-key:}")
-    private String apiKey;
-
-    @Value("${openai.model:gpt-4o-mini}")
-    private String model;
-
-    private final ObjectMapper objectMapper;
-    private RestClient client;
-
-    @PostConstruct
-    void init() {
-        if (apiKey == null || apiKey.isBlank()) {
-            log.warn("OPENAI_API_KEY 미설정 — 기업분석 생성 요청은 503 으로 실패합니다. (앱 기동은 정상)");
-            return;
-        }
-        this.client = RestClient.builder()
-            .requestFactory(new SimpleClientHttpRequestFactory())
-            .baseUrl(apiUrl)
-            .defaultHeader("Authorization", "Bearer " + apiKey)
-            .defaultHeader("Content-Type", "application/json")
-            .build();
+    @Override
+    protected String missingKeyWarning() {
+        return "OPENAI_API_KEY 미설정 — 기업분석 생성 요청은 503 으로 실패합니다. (앱 기동은 정상)";
     }
 
     @Override
     public Result generate(String prompt) {
-        if (client == null) {
-            throw new IllegalStateException("OPENAI_API_KEY 미설정 — 기업분석 생성 불가");
-        }
         Map<String, Object> requestBody = Map.of(
             "model", model,
             "max_tokens", 1500,
@@ -62,16 +35,12 @@ public class OpenAiAnalysisClient implements AnalysisAiClient {
             )
         );
 
-        String responseBody = client.post()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(requestBody)
-            .retrieve()
-            .body(String.class);
+        String responseBody = chatCompletion(requestBody);
 
         try {
-            JsonNode root = objectMapper.readTree(responseBody);
-            String text = root.path("choices").get(0).path("message").path("content").asText();
-            Integer tokensUsed = root.path("usage").path("total_tokens").asInt(0);
+            var root = parseResponse(responseBody);
+            String text = extractContent(root);
+            int tokensUsed = extractTotalTokens(root);
             return new Result(text, model, tokensUsed);
         } catch (Exception e) {
             log.warn("OpenAI 응답 파싱 실패: {}", responseBody);
