@@ -38,6 +38,9 @@ public abstract class AbstractOpenAiClient {
             return;
         }
         this.client = RestClient.builder()
+            // HTTP/1.1 강제: JDK HttpClient 기본 (HTTP/2) 가 api.openai.com 과
+            // RST_STREAM 충돌 — SimpleClientHttpRequestFactory 는 HttpURLConnection
+            // 기반 (HTTP/1.1) 이라 안정적.
             .requestFactory(new SimpleClientHttpRequestFactory())
             .baseUrl(apiUrl)
             .defaultHeader("Authorization", "Bearer " + apiKey)
@@ -71,7 +74,11 @@ public abstract class AbstractOpenAiClient {
     }
 
     protected String extractContent(JsonNode root) {
-        return root.path("choices").get(0).path("message").path("content").asText();
+        JsonNode choices = root.path("choices");
+        if (!choices.isArray() || choices.isEmpty()) {
+            throw new IllegalArgumentException("OpenAI 응답에 choices 배열이 없음");
+        }
+        return choices.get(0).path("message").path("content").asText();
     }
 
     protected int extractTotalTokens(JsonNode root) {
