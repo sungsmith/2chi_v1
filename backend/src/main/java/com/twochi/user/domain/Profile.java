@@ -37,13 +37,15 @@ public class Profile {
     @Column(name = "onboarding_completed", nullable = false)
     private boolean onboardingCompleted;
 
-    @Column(name = "name", length = 50)
+    @Convert(converter = ProfilePiiConverter.class)
+    @Column(name = "name", length = 255)
     private String name;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @Column(name = "phone", length = 20)
+    @Convert(converter = ProfilePiiConverter.class)
+    @Column(name = "phone", length = 255)
     private String phone;
 
     @Column(name = "region", length = 50)
