@@ -5,7 +5,8 @@ const BASE = "/api/v1/me/educations";
 
 export async function fetchEducations(): Promise<Education[]> {
   const res = await http(BASE);
-  return res.json();
+  const data = await res.json();
+  return data.educations; // BE wraps: { educations: [...] }
 }
 
 export async function createEducation(req: EducationRequest): Promise<Education> {

@@ -624,6 +624,7 @@ export function ProfileView() {
 
   // Basic info edit state
   const [basicName, setBasicName] = useState("");
+  const [basicBirthDate, setBasicBirthDate] = useState("");
   const [basicPhone, setBasicPhone] = useState("");
   const [basicRegion, setBasicRegion] = useState("");
   const [basicIntro, setBasicIntro] = useState("");
@@ -654,6 +655,7 @@ export function ProfileView() {
       .then(([p, e, c, x]) => {
         setProfile(p);
         setBasicName(p.name ?? "");
+        setBasicBirthDate(p.birthDate ?? "");
         setBasicPhone(p.phone ?? "");
         setBasicRegion(p.region ?? "");
         setBasicIntro(p.introduction ?? "");
@@ -669,6 +671,7 @@ export function ProfileView() {
   async function handleBasicSave() {
     const req: ProfileBasicUpdateRequest = {
       name: basicName || null,
+      birthDate: basicBirthDate || null,
       phone: basicPhone || null,
       region: basicRegion || null,
       introduction: basicIntro || null,
@@ -820,6 +823,16 @@ export function ProfileView() {
             className="input"
             value={basicName}
             onChange={(e) => setBasicName(e.target.value)}
+          />
+        </div>
+        <div className="fld">
+          <label className="lbl" htmlFor="basic-birth">생년월일</label>
+          <input
+            id="basic-birth"
+            type="date"
+            className="input"
+            value={basicBirthDate}
+            onChange={(e) => setBasicBirthDate(e.target.value)}
           />
         </div>
         <div className="fld">

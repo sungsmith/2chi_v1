@@ -5,7 +5,8 @@ const BASE = "/api/v1/me/certificates";
 
 export async function fetchCertificates(): Promise<Certificate[]> {
   const res = await http(BASE);
-  return res.json();
+  const data = await res.json();
+  return data.certificates; // BE wraps: { certificates: [...] }
 }
 
 export async function createCertificate(req: CertificateRequest): Promise<Certificate> {

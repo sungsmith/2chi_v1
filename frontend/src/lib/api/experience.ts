@@ -5,7 +5,8 @@ const BASE = "/api/v1/me/experiences";
 
 export async function fetchExperiences(): Promise<Experience[]> {
   const res = await http(BASE);
-  return res.json();
+  const data = await res.json();
+  return data.experiences; // BE wraps: { experiences: [...] }
 }
 
 export async function createExperience(req: ExperienceRequest): Promise<Experience> {
