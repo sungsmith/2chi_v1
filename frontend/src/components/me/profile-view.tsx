@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef, ReactNode } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import {
   fetchProfile,
   updateProfileBasic,
@@ -39,6 +39,7 @@ import {
   EXPERIENCE_TYPE_LABEL,
 } from "@/lib/types/me-profile";
 import { Edit as IcoEdit, Trash as IcoTrash, Plus as IcoPlus } from "@/components/ui/icons";
+import { DateInput } from "./career/date-input";
 
 /* ---- Icons (domain-specific, not in shared catalog) ---- */
 
@@ -148,84 +149,6 @@ function EmptyRow({ message }: { message: string }) {
       }}
     >
       {message}
-    </div>
-  );
-}
-
-/* ---- DateField: segmented date input (연도[4] / 월[2] / 일[2]) ---- */
-
-function DateField({
-  value,
-  onChange,
-  ariaLabel,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  ariaLabel?: string;
-}) {
-  const valid = /^\d{4}-\d{2}-\d{2}$/.test(value);
-  const seed = valid ? value.split("-") : ["", "", ""];
-  const [yy, setYy] = useState(seed[0]);
-  const [mm, setMm] = useState(seed[1] ?? "");
-  const [dd, setDd] = useState(seed[2] ?? "");
-  const mRef = useRef<HTMLInputElement>(null);
-  const dRef = useRef<HTMLInputElement>(null);
-
-  function emit(y: string, m: string, d: string) {
-    if (y.length === 4 && m.length >= 1 && d.length >= 1) {
-      onChange(`${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`);
-    } else {
-      onChange("");
-    }
-  }
-
-  return (
-    <div className="date-field" role="group" aria-label={ariaLabel}>
-      <input
-        className="input date-seg date-yy"
-        inputMode="numeric"
-        maxLength={4}
-        placeholder="연도"
-        aria-label={ariaLabel ? `${ariaLabel} 연도` : "연도"}
-        value={yy}
-        onChange={(e) => {
-          const v = e.target.value.replace(/\D/g, "").slice(0, 4);
-          setYy(v);
-          emit(v, mm, dd);
-          if (v.length === 4) mRef.current?.focus();
-        }}
-      />
-      <span className="date-sep">.</span>
-      <input
-        ref={mRef}
-        className="input date-seg date-mm"
-        inputMode="numeric"
-        maxLength={2}
-        placeholder="월"
-        aria-label={ariaLabel ? `${ariaLabel} 월` : "월"}
-        value={mm}
-        onChange={(e) => {
-          const v = e.target.value.replace(/\D/g, "").slice(0, 2);
-          setMm(v);
-          emit(yy, v, dd);
-          if (v.length === 2) dRef.current?.focus();
-        }}
-      />
-      <span className="date-sep">.</span>
-      <input
-        ref={dRef}
-        className="input date-seg date-dd"
-        inputMode="numeric"
-        maxLength={2}
-        placeholder="일"
-        aria-label={ariaLabel ? `${ariaLabel} 일` : "일"}
-        value={dd}
-        onChange={(e) => {
-          const v = e.target.value.replace(/\D/g, "").slice(0, 2);
-          setDd(v);
-          emit(yy, mm, v);
-        }}
-      />
     </div>
   );
 }
@@ -346,11 +269,11 @@ function EducationForm({
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
           <label className="lbl">입학일</label>
-          <DateField value={startDate} onChange={setStartDate} ariaLabel="입학일" />
+          <DateInput value={startDate} onChange={setStartDate} />
         </div>
         <div className="field">
           <label className="lbl">졸업일</label>
-          <DateField value={endDate} onChange={setEndDate} ariaLabel="졸업일" />
+          <DateInput value={endDate} onChange={setEndDate} />
         </div>
       </div>
       <div className="field">
@@ -484,7 +407,7 @@ function CertificateForm({
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
           <label className="lbl">취득일</label>
-          <DateField value={acquiredAt} onChange={setAcquiredAt} ariaLabel="취득일" />
+          <DateInput value={acquiredAt} onChange={setAcquiredAt} />
         </div>
         <div className="field">
           <label className="lbl" htmlFor="cert-score">점수</label>
@@ -618,11 +541,11 @@ function ExperienceForm({
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
           <label className="lbl">시작일</label>
-          <DateField value={startDate} onChange={setStartDate} ariaLabel="시작일" />
+          <DateInput value={startDate} onChange={setStartDate} />
         </div>
         <div className="field">
           <label className="lbl">종료일</label>
-          <DateField value={endDate} onChange={setEndDate} ariaLabel="종료일" />
+          <DateInput value={endDate} onChange={setEndDate} />
           <div className="helper">진행 중이면 비워두세요</div>
         </div>
       </div>
@@ -883,7 +806,7 @@ export function ProfileView() {
         </div>
         <div className="fld">
           <label className="lbl">생년월일</label>
-          <DateField value={basicBirthDate} onChange={setBasicBirthDate} ariaLabel="생년월일" />
+          <DateInput value={basicBirthDate} onChange={setBasicBirthDate} />
         </div>
         <div className="fld">
           <label className="lbl" htmlFor="basic-phone">연락처</label>
