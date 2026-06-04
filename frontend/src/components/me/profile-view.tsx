@@ -138,7 +138,15 @@ function AddButton({ onClick }: { onClick: () => void }) {
 
 function EmptyRow({ message }: { message: string }) {
   return (
-    <div className="list-row" style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
+    <div
+      style={{
+        padding: "16px 14px",
+        color: "var(--color-text-secondary)",
+        fontSize: 13,
+        border: "1px dashed var(--color-border-default)",
+        borderRadius: "var(--radius-md)",
+      }}
+    >
       {message}
     </div>
   );
