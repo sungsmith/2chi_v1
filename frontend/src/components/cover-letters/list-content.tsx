@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import * as Ico from "@/components/ui/icons";
 import { fetchVariantsGrouped } from "@/lib/api/cover-letter";
 import { type VariantListGroup } from "@/lib/types/cover-letter";
 import { MASTERS_MOCK, CL_FILTERS } from "@/lib/mock/cover-letters";
@@ -29,10 +30,17 @@ export function CoverLetterListContent() {
             마스터 자소서 한 벌을 만들어두면, 회사별 변형본은 한 번에 만들어드려요.
           </div>
         </div>
+        <button className="btn primary" type="button">
+          <Ico.Plus size={14} /> 새 자소서 작성
+        </button>
       </div>
 
       {/* Filter strip — visual only in this PR; no filtering logic yet TODO Task 8 */}
       <div className="cl-toolbar">
+        <label className="search">
+          <span className="ico"><Ico.Search size={14} /></span>
+          <input placeholder="회사명 · 자소서 제목으로 검색&#8230;" />
+        </label>
         <div className="cl-filter-chips">
           {CL_FILTERS.map((f) => (
             <button key={f.id} className={f.id === "all" ? "active" : ""} type="button">
@@ -71,6 +79,11 @@ export function CoverLetterListContent() {
         {MASTERS_MOCK.map((m) => (
           <ClCard key={m.id} item={m} master disabled />
         ))}
+        <button className="cl-card add" type="button">
+          <span className="ico"><Ico.Plus size={14} /></span>
+          <span className="label">새 마스터 자소서</span>
+          <span className="hint">공통 톤을 한 번에 정해두기</span>
+        </button>
       </div>
 
       {/* 변형본 그룹 — 기존 5.7 variant API 데이터 */}
