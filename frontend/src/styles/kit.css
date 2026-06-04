@@ -1585,6 +1585,13 @@ html, body { background: var(--color-bg); }
   gap: 28px;
   align-items: flex-start;
 }
+/* 변형본 편집 화면: side-nav 없이 단일 컬럼(빈 사이드바 컬럼 방지) */
+.cl-shell.cl-shell--editor {
+  display: block;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
 .cl-main { min-width: 0; display: flex; flex-direction: column; gap: 18px; }
 
 /* ============================================================
