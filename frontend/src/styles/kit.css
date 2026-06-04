@@ -952,7 +952,7 @@ html, body { background: var(--color-bg); }
 .page-head .title {
   margin: 0 0 6px;
   font-family: var(--font-family-hand);
-  font-size: 42px;
+  font-size: 38px;
   line-height: 1.2;
   font-weight: 400;
   letter-spacing: -0.005em;
