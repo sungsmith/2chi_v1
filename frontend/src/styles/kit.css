@@ -421,6 +421,11 @@ html, body { background: var(--color-bg); }
 .input.error:focus { box-shadow: var(--focus-ring-error); }
 .helper { font-size: var(--fs-helper); color: var(--color-text-muted); }
 .helper.error { color: var(--color-semantic-error); }
+.date-field { display: flex; align-items: center; gap: 6px; }
+.date-field .date-seg { text-align: center; }
+.date-field .date-yy { width: 72px; }
+.date-field .date-mm, .date-field .date-dd { width: 52px; }
+.date-field .date-sep { color: var(--color-text-muted); }
 
 /* ============================================================
    App-shell (main page area below the nav)
