@@ -22,6 +22,7 @@ export function SideNav() {
 
   return (
     <aside className="side-nav">
+      <div className="crumb">내 정보</div>
       {ME_NAV.map((item) => {
         const active =
           item.href === "/me"
