@@ -39,6 +39,7 @@ import {
   EXPERIENCE_TYPE_LABEL,
 } from "@/lib/types/me-profile";
 import { Edit as IcoEdit, Trash as IcoTrash, Plus as IcoPlus } from "@/components/ui/icons";
+import { DateInput } from "./career/date-input";
 
 /* ---- Icons (domain-specific, not in shared catalog) ---- */
 
@@ -138,7 +139,15 @@ function AddButton({ onClick }: { onClick: () => void }) {
 
 function EmptyRow({ message }: { message: string }) {
   return (
-    <div className="list-row" style={{ color: "var(--color-text-secondary)", fontSize: 13 }}>
+    <div
+      style={{
+        padding: "16px 14px",
+        color: "var(--color-text-secondary)",
+        fontSize: 13,
+        border: "1px dashed var(--color-border-default)",
+        borderRadius: "var(--radius-md)",
+      }}
+    >
       {message}
     </div>
   );
@@ -259,24 +268,12 @@ function EducationForm({
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
-          <label className="lbl" htmlFor="edu-start">입학일</label>
-          <input
-            id="edu-start"
-            className="input"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+          <label className="lbl">입학일</label>
+          <DateInput value={startDate} onChange={setStartDate} />
         </div>
         <div className="field">
-          <label className="lbl" htmlFor="edu-end">졸업일</label>
-          <input
-            id="edu-end"
-            className="input"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+          <label className="lbl">졸업일</label>
+          <DateInput value={endDate} onChange={setEndDate} />
         </div>
       </div>
       <div className="field">
@@ -409,14 +406,8 @@ function CertificateForm({
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
-          <label className="lbl" htmlFor="cert-date">취득일</label>
-          <input
-            id="cert-date"
-            className="input"
-            type="date"
-            value={acquiredAt}
-            onChange={(e) => setAcquiredAt(e.target.value)}
-          />
+          <label className="lbl">취득일</label>
+          <DateInput value={acquiredAt} onChange={setAcquiredAt} />
         </div>
         <div className="field">
           <label className="lbl" htmlFor="cert-score">점수</label>
@@ -549,24 +540,12 @@ function ExperienceForm({
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
         <div className="field">
-          <label className="lbl" htmlFor="exp-start">시작일</label>
-          <input
-            id="exp-start"
-            className="input"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+          <label className="lbl">시작일</label>
+          <DateInput value={startDate} onChange={setStartDate} />
         </div>
         <div className="field">
-          <label className="lbl" htmlFor="exp-end">종료일</label>
-          <input
-            id="exp-end"
-            className="input"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+          <label className="lbl">종료일</label>
+          <DateInput value={endDate} onChange={setEndDate} />
           <div className="helper">진행 중이면 비워두세요</div>
         </div>
       </div>
@@ -826,14 +805,8 @@ export function ProfileView() {
           />
         </div>
         <div className="fld">
-          <label className="lbl" htmlFor="basic-birth">생년월일</label>
-          <input
-            id="basic-birth"
-            type="date"
-            className="input"
-            value={basicBirthDate}
-            onChange={(e) => setBasicBirthDate(e.target.value)}
-          />
+          <label className="lbl">생년월일</label>
+          <DateInput value={basicBirthDate} onChange={setBasicBirthDate} />
         </div>
         <div className="fld">
           <label className="lbl" htmlFor="basic-phone">연락처</label>
