@@ -1,4 +1,7 @@
 -- V10__portfolio_link.sql — 내 정보 포트폴리오 외부 링크
+-- V1 이 portfolio_link 를 리치 스키마(link_type/file_url/tags/contribution)로 선‑정의해 두었으나
+-- v1 설계에서 폐기(외부 링크 모음으로 단순화). 미사용·빈 테이블이므로 안전하게 교체한다.
+DROP TABLE IF EXISTS portfolio_link CASCADE;
 CREATE TABLE portfolio_link (
     id          BIGSERIAL    PRIMARY KEY,
     user_id     BIGINT       NOT NULL REFERENCES app_user(id) ON DELETE CASCADE,
