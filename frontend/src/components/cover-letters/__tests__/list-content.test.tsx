@@ -13,23 +13,18 @@ vi.mock("next/navigation", () => ({
 beforeEach(() => { groupedMock.mockReset(); });
 
 describe("CoverLetterListContent", () => {
-  test("마스터 그룹 — MASTERS_MOCK 두 장 렌더링 + disabled", async () => {
+  test("마스터 잔재 제거 — 마스터 섹션·카드 없음", async () => {
     groupedMock.mockResolvedValue([]);
     render(<CoverLetterListContent />);
     await waitFor(() =>
-      expect(screen.getByText("마스터 자소서")).toBeInTheDocument()
+      expect(screen.getByText(/아직 작성한 자소서가 없어요/)).toBeInTheDocument()
     );
-    // both master cards present
-    expect(screen.getByText("백엔드 마스터 자소서")).toBeInTheDocument();
-    expect(screen.getByText("신입 백엔드 마스터 (중고신입 톤)")).toBeInTheDocument();
-    // master cards are aria-disabled
-    const articles = document.querySelectorAll("article.cl-card.master");
-    articles.forEach((el) =>
-      expect(el.getAttribute("aria-disabled")).toBe("true")
-    );
+    expect(screen.queryByText("마스터 자소서")).not.toBeInTheDocument();
+    expect(screen.queryByText("새 마스터 자소서")).not.toBeInTheDocument();
+    expect(document.querySelectorAll("article.cl-card.master").length).toBe(0);
   });
 
-  test("빈 상태 — 변형본 없음 안내", async () => {
+  test("빈 상태 — 자소서 없음 안내", async () => {
     groupedMock.mockResolvedValue([]);
     render(<CoverLetterListContent />);
     await waitFor(() =>
@@ -83,9 +78,8 @@ describe("CoverLetterListContent", () => {
     groupedMock.mockResolvedValue([]);
     render(<CoverLetterListContent />);
     await waitFor(() =>
-      expect(screen.getByText("마스터 자소서")).toBeInTheDocument()
+      expect(screen.getByText("전체")).toBeInTheDocument()
     );
-    expect(screen.getByText("전체")).toBeInTheDocument();
     expect(screen.getByText("작성중")).toBeInTheDocument();
     // "제출완료" appears in both the filter chip and variant badge area — at least once
     expect(screen.getAllByText("제출완료").length).toBeGreaterThan(0);

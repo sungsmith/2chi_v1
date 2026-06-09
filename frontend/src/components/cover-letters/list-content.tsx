@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import * as Ico from "@/components/ui/icons";
 import { fetchVariantsGrouped } from "@/lib/api/cover-letter";
 import { type VariantListGroup } from "@/lib/types/cover-letter";
-import { MASTERS_MOCK, CL_FILTERS } from "@/lib/mock/cover-letters";
+import { CL_FILTERS } from "@/lib/mock/cover-letters";
 import { ClCard } from "./cl-card";
 
 export function CoverLetterListContent() {
@@ -27,10 +27,14 @@ export function CoverLetterListContent() {
         <div>
           <h1>자소서</h1>
           <div className="sub">
-            마스터 자소서 한 벌을 만들어두면, 회사별 변형본은 한 번에 만들어드려요.
+            공고별 자소서를 한곳에서 작성·관리하세요.
           </div>
         </div>
-        <button className="btn primary" type="button">
+        <button
+          className="btn primary"
+          type="button"
+          onClick={() => router.push("/company/postings")}
+        >
           <Ico.Plus size={14} /> 새 자소서 작성
         </button>
       </div>
@@ -71,24 +75,9 @@ export function CoverLetterListContent() {
         </div>
       )}
 
-      {/* 마스터 그룹 — disabled (준비중). master CRUD 부활은 별도 PR */}
+      {/* 자소서 목록 — 공고별 변형본(5.7 variant API). 마스터 자소서는 v1 폐기. */}
       <div className="cl-section-title">
-        마스터 자소서 <span className="count">{MASTERS_MOCK.length}</span>
-      </div>
-      <div className="cl-grid">
-        {MASTERS_MOCK.map((m) => (
-          <ClCard key={m.id} item={m} master disabled />
-        ))}
-        <button className="cl-card add" type="button">
-          <span className="ico"><Ico.Plus size={14} /></span>
-          <span className="label">새 마스터 자소서</span>
-          <span className="hint">공통 톤을 한 번에 정해두기</span>
-        </button>
-      </div>
-
-      {/* 변형본 그룹 — 기존 5.7 variant API 데이터 */}
-      <div className="cl-section-title">
-        회사별 변형본{" "}
+        자소서{" "}
         <span className="count">
           {groups === null ? "…" : groups.reduce((acc, g) => acc + g.variants.length, 0)}
         </span>
@@ -99,7 +88,7 @@ export function CoverLetterListContent() {
       ) : groups.length === 0 ? (
         <div className="cl-grid">
           <p style={{ color: "var(--color-text-secondary)", gridColumn: "span 3" }}>
-            아직 작성한 자소서가 없어요.
+            아직 작성한 자소서가 없어요. 공고에서 자소서 작성을 시작해보세요.
           </p>
         </div>
       ) : (
