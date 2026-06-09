@@ -2,14 +2,17 @@ package com.twochi.coverletter.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twochi.activity.event.ActivityEvents;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
+import com.twochi.coverletter.domain.CoverLetterMaster.ItemType;
 import com.twochi.coverletter.domain.CoverLetterVariant;
 import com.twochi.coverletter.dto.*;
 import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +24,22 @@ import java.util.*;
 @Transactional
 public class CoverLetterVariantService {
 
+    private static final Map<ItemType, String> ITEM_LABEL = Map.of(
+        ItemType.MOTIVATION, "지원동기",
+        ItemType.FUTURE_PLAN, "입사 후 포부",
+        ItemType.TEAMWORK, "협업 경험",
+        ItemType.CONFLICT, "갈등 해결",
+        ItemType.ACHIEVEMENT, "성취 경험",
+        ItemType.PROBLEM_SOLVING, "문제 해결",
+        ItemType.STRENGTH, "본인의 강점",
+        ItemType.WEAKNESS, "본인의 약점",
+        ItemType.OTHER, "기타");
+
     private final CoverLetterVariantRepository repository;
     private final JobPostingRepository postingRepository;
     private final CoverLetterAiService aiService;
     private final ObjectMapper objectMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional(readOnly = true)
     public List<VariantListGroupedResponse> listGrouped(Long userId) {
@@ -92,6 +107,8 @@ public class CoverLetterVariantService {
             draft.model(), draft.tokensUsed(), now
         );
         CoverLetterVariant saved = repository.save(v);
+        eventPublisher.publishEvent(new ActivityEvents.AiDraftGenerated(
+            userId, posting.getCompany(), ITEM_LABEL.get(req.itemType()), now));
         return VariantResponse.from(saved, posting.getCompany(), posting.getTitle());
     }
 
@@ -111,6 +128,10 @@ public class CoverLetterVariantService {
 
         JobPosting p2 = v.getPostingId() == null ? null
             : postingRepository.findById(v.getPostingId()).orElse(null);
+        boolean completed = req.status() == CoverLetterVariant.Status.COMPLETED;
+        String company = (p2 == null) ? "(공고 없음)" : p2.getCompany();
+        eventPublisher.publishEvent(new ActivityEvents.CoverLetterSaved(
+            userId, company, ITEM_LABEL.get(v.getItemType()), completed, Instant.now()));
         return VariantResponse.from(v,
             p2 == null ? "(공고 없음)" : p2.getCompany(),
             p2 == null ? "" : p2.getTitle());

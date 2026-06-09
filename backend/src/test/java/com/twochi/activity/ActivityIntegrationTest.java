@@ -7,6 +7,7 @@ import com.twochi.application.repository.ApplicationRepository;
 import com.twochi.application.repository.EventRepository;
 import com.twochi.consent.repository.ConsentLogRepository;
 import com.twochi.coverletter.repository.CoverLetterVariantRepository;
+import com.twochi.coverletter.service.CoverLetterAiClient;
 import com.twochi.posting.keyword.KeywordExtractor;
 import com.twochi.posting.repository.JobPostingRepository;
 import com.twochi.user.repository.ProfileRepository;
@@ -54,6 +55,7 @@ class ActivityIntegrationTest {
     @Autowired private ConsentLogRepository consentLogRepository;
     @Autowired private UserRepository userRepository;
     @MockBean private KeywordExtractor keywordExtractor;
+    @MockBean private CoverLetterAiClient aiClient;
 
     private String token;
     private Long postingId;
@@ -81,6 +83,8 @@ class ActivityIntegrationTest {
     @BeforeEach
     void setUp() throws Exception {
         when(keywordExtractor.extract(any(), any(), any())).thenReturn(List.of());
+        when(aiClient.generate(any())).thenReturn(
+            new CoverLetterAiClient.Result("AI 초안 본문입니다.", "gpt-4o-mini", 800));
         clean();
 
         mockMvc.perform(post("/api/v1/auth/signup").contentType(MediaType.APPLICATION_JSON)
@@ -137,6 +141,28 @@ class ActivityIntegrationTest {
             assertThat(first.get("type").asText()).isEqualTo("APPLICATION_CREATED");
             assertThat(first.get("subject").asText()).contains("네이버");
             assertThat(body.get("counts").get("APPLICATION").asInt()).isGreaterThanOrEqualTo(1);
+        });
+    }
+
+    @Test
+    void AI_초안_생성_시_AI_DRAFT_GENERATED_기록() throws Exception {
+        mockMvc.perform(post("/api/v1/cover-letter-variants")
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(Map.of(
+                    "postingId", postingId,
+                    "itemType", "MOTIVATION",
+                    "question", "지원동기를 작성해주세요.",
+                    "charLimit", 500))))
+            .andExpect(status().isCreated());
+
+        await().atMost(ofSeconds(5)).untilAsserted(() -> {
+            MvcResult r = mockMvc.perform(get("/api/v1/activities?category=COVER_LETTER")
+                .header("Authorization", "Bearer " + token)).andReturn();
+            JsonNode body = om.readTree(r.getResponse().getContentAsString());
+            assertThat(body.get("activities").size()).isGreaterThanOrEqualTo(1);
+            assertThat(body.get("activities").get(0).get("type").asText()).isEqualTo("AI_DRAFT_GENERATED");
+            assertThat(body.get("activities").get(0).get("subject").asText()).contains("네이버");
         });
     }
 
