@@ -52,12 +52,12 @@ class MatchIntegrationTest {
     private String token;
 
     private void clean() {
-        activityLogRepository.deleteAll();
-        postingRepository.deleteAll();
-        careerRepository.deleteAll();
-        profileRepository.deleteAll();
-        consentLogRepository.deleteAll();
-        userRepository.deleteAll();
+        activityLogRepository.deleteAllInBatch();
+        postingRepository.deleteAllInBatch();
+        careerRepository.deleteAllInBatch();
+        profileRepository.deleteAllInBatch();
+        consentLogRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
         redis.getConnection().serverCommands().flushDb();
     }
 
