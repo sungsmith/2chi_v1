@@ -38,8 +38,9 @@ public class ActivityLogListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void onStageChanged(StageChanged e) {
-        String icon = e.failed() ? "X" : "Check";
-        String tone = e.failed() ? "fail" : "ok";
+        // 불합격: X·fail / 포기: X·중립(회색) / 그 외(단계 진행·합격): Check·ok
+        String icon = (e.failed() || e.withdrawn()) ? "X" : "Check";
+        String tone = e.failed() ? "fail" : (e.withdrawn() ? null : "ok");
         String suffix = KoreanParticle.ro(e.toLabel()) + " 변경됐어요.";
         save(ActivityLog.of(e.userId(), ActivityType.STAGE_CHANGED,
             icon, tone, "내", e.company() + " · " + e.role(),

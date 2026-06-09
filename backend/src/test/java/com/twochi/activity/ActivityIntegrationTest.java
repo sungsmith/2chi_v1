@@ -202,4 +202,28 @@ class ActivityIntegrationTest {
             assertThat(first.get("suffix").asText()).contains("변경됐어요");
         });
     }
+
+    @Test
+    void 포기_결과_변경_시_toLabel_은_포기() throws Exception {
+        MvcResult cr = mockMvc.perform(post("/api/v1/applications")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("postingId", postingId)))).andReturn();
+        Long appId = om.readTree(cr.getResponse().getContentAsString()).get("id").asLong();
+
+        mockMvc.perform(patch("/api/v1/applications/" + appId)
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("currentResult", "WITHDRAWN")))).andExpect(status().isOk());
+
+        await().atMost(ofSeconds(5)).untilAsserted(() -> {
+            MvcResult r = mockMvc.perform(get("/api/v1/activities?category=STAGE")
+                .header("Authorization", "Bearer " + token)).andReturn();
+            JsonNode body = om.readTree(r.getResponse().getContentAsString());
+            JsonNode first = body.get("activities").get(0);
+            assertThat(first.get("type").asText()).isEqualTo("STAGE_CHANGED");
+            assertThat(first.get("toLabel").asText()).isEqualTo("포기");
+            // 포기는 실패가 아니므로 X 아이콘이되 tone 은 중립(null)
+            assertThat(first.get("icon").asText()).isEqualTo("X");
+            assertThat(first.get("tone").isNull()).isTrue();
+        });
+    }
 }

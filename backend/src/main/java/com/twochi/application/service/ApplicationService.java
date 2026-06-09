@@ -100,14 +100,18 @@ public class ApplicationService {
         boolean stageChanged = stage != null && stage != oldStage;
         boolean resultChanged = result != null && result != oldResult;
         if (stageChanged || resultChanged) {
-            boolean failed = app.getCurrentResult() == Result.FAILED;
-            boolean passed = app.getCurrentResult() == Result.PASSED;
+            Result current = app.getCurrentResult();
+            boolean failed = current == Result.FAILED;
+            boolean passed = current == Result.PASSED;
+            boolean withdrawn = current == Result.WITHDRAWN;
+            boolean terminal = failed || passed || withdrawn;
             String fromLabel = STAGE_LABEL.get(oldStage);
-            String toLabel = (failed || passed)
-                ? RESULT_LABEL.get(app.getCurrentResult())
+            // 종료 결과(합격·불합격·포기)면 결과 라벨을, 아니면 새 전형 단계 라벨을 to 로.
+            String toLabel = terminal
+                ? RESULT_LABEL.get(current)
                 : STAGE_LABEL.get(app.getCurrentStage());
             eventPublisher.publishEvent(new ActivityEvents.StageChanged(
-                userId, app.getCompany(), app.getRole(), fromLabel, toLabel, failed, passed, now));
+                userId, app.getCompany(), app.getRole(), fromLabel, toLabel, failed, passed, withdrawn, now));
         }
         return app;
     }

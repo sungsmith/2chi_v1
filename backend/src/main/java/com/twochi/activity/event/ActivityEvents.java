@@ -12,7 +12,7 @@ public final class ActivityEvents {
     public record StageChanged(
         Long userId, String company, String role,
         String fromStageLabel, String toLabel,
-        boolean failed, boolean passed, Instant occurredAt) {}
+        boolean failed, boolean passed, boolean withdrawn, Instant occurredAt) {}
 
     public record CoverLetterSaved(
         Long userId, String company, String itemTypeLabel,

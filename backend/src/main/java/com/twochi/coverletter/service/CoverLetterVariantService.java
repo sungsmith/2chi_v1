@@ -124,14 +124,15 @@ public class CoverLetterVariantService {
                 p == null ? new String[0] : p.getKeywords());
         }
 
-        v.update(req.userEdit(), req.userRequest(), validationJson, req.status(), Instant.now());
+        Instant now = Instant.now();
+        v.update(req.userEdit(), req.userRequest(), validationJson, req.status(), now);
 
         JobPosting p2 = v.getPostingId() == null ? null
             : postingRepository.findById(v.getPostingId()).orElse(null);
         boolean completed = req.status() == CoverLetterVariant.Status.COMPLETED;
         String company = (p2 == null) ? "(공고 없음)" : p2.getCompany();
         eventPublisher.publishEvent(new ActivityEvents.CoverLetterSaved(
-            userId, company, ITEM_LABEL.get(v.getItemType()), completed, Instant.now()));
+            userId, company, ITEM_LABEL.get(v.getItemType()), completed, now));
         return VariantResponse.from(v,
             p2 == null ? "(공고 없음)" : p2.getCompany(),
             p2 == null ? "" : p2.getTitle());
