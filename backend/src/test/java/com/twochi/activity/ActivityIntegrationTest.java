@@ -167,6 +167,19 @@ class ActivityIntegrationTest {
     }
 
     @Test
+    void 가입_축하_알림이_활동_로그에_NOTIFICATION_으로_기록() throws Exception {
+        // setUp 의 signup → WelcomeNotificationListener → 알림 → 활동 로그(NOTIFICATION)
+        await().atMost(ofSeconds(5)).untilAsserted(() -> {
+            MvcResult r = mockMvc.perform(get("/api/v1/activities?category=NOTIFICATION")
+                .header("Authorization", "Bearer " + token)).andReturn();
+            JsonNode body = om.readTree(r.getResponse().getContentAsString());
+            assertThat(body.get("activities").size()).isGreaterThanOrEqualTo(1);
+            assertThat(body.get("activities").get(0).get("type").asText()).isEqualTo("NOTIFICATION");
+            assertThat(body.get("activities").get(0).get("actor").asText()).isEqualTo("시스템 · 알림");
+        });
+    }
+
+    @Test
     void 전형_변경_시_STAGE_CHANGED_from_to_기록() throws Exception {
         MvcResult cr = mockMvc.perform(post("/api/v1/applications")
             .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)

@@ -1,8 +1,10 @@
 package com.twochi.notification.service;
 
+import com.twochi.activity.event.ActivityEvents;
 import com.twochi.notification.domain.Notification;
 import com.twochi.notification.domain.NotificationType;
 import com.twochi.notification.repository.NotificationRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +18,11 @@ import java.time.Instant;
 public class NotificationProducer {
 
     private final NotificationRepository repository;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public NotificationProducer(NotificationRepository repository) {
+    public NotificationProducer(NotificationRepository repository, ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
+        this.eventPublisher = eventPublisher;
     }
 
     /** INBOX 채널 알림. sentAt = createdAt = now. */
@@ -30,7 +34,9 @@ public class NotificationProducer {
     /** body 가 필요한 경우 (v2 에 활용 가능). */
     @Transactional
     public Notification publish(Long userId, NotificationType type, String title, String body) {
-        return repository.save(Notification.forInbox(userId, type, title, body, Instant.now()));
+        Notification saved = repository.save(Notification.forInbox(userId, type, title, body, Instant.now()));
+        eventPublisher.publishEvent(new ActivityEvents.NotificationCreated(userId, title, saved.getCreatedAt()));
+        return saved;
     }
 
     /**
@@ -42,6 +48,8 @@ public class NotificationProducer {
         if (repository.existsByUserIdAndDedupKey(userId, dedupKey)) {
             return null;
         }
-        return repository.save(Notification.forInboxDeduped(userId, type, title, null, Instant.now(), dedupKey));
+        Notification saved = repository.save(Notification.forInboxDeduped(userId, type, title, null, Instant.now(), dedupKey));
+        eventPublisher.publishEvent(new ActivityEvents.NotificationCreated(userId, title, saved.getCreatedAt()));
+        return saved;
     }
 }
