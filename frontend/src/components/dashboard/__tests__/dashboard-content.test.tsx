@@ -19,6 +19,7 @@ vi.mock("@/lib/api/application", () => ({
   fetchEvents: vi.fn().mockResolvedValue([]),
   fetchApplications: () => applicationsMock(),
 }));
+vi.mock("@/lib/api/match", () => ({ fetchDashboardMatch: vi.fn().mockResolvedValue({ percent: 0, postingCount: 0, gaps: [] }) }));
 
 type AuthUser = { userId: number; email: string; nickname: string; onboardingCompleted: boolean };
 type AuthMock = {
@@ -127,10 +128,10 @@ describe("DashboardContent", () => {
     expect(within(inProgressCard!).getByText("2", { selector: ".num" })).toBeInTheDocument();
   });
 
-  test("매칭 분석 — 가짜 매칭률 대신 'v2 준비 중' 플레이스홀더", () => {
+  test("매칭 분석 — 공고 0건 시 빈 상태 안내 노출", async () => {
+    vi.useRealTimers();
     render(<DashboardContent />);
-    expect(screen.getByText("매칭 분석을 준비하고 있어요")).toBeInTheDocument();
-    expect(screen.getByText("v2 준비 중")).toBeInTheDocument();
+    expect(await screen.findByText(/아직 비교할 채용공고가 없어요/)).toBeInTheDocument();
     expect(screen.queryByText("매칭률")).not.toBeInTheDocument();
   });
 
