@@ -37,6 +37,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.awaitility:awaitility")
 	testAnnotationProcessor("org.projectlombok:lombok")
 }
 
