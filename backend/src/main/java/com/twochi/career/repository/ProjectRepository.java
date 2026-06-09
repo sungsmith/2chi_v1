@@ -16,6 +16,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     /** 권한 가드용 — userId 와 함께 검증. */
     Optional<Project> findByIdAndUserId(Long id, Long userId);
 
+    List<Project> findAllByUserId(Long userId);
+
     @Query("SELECT COALESCE(MAX(p.orderIndex), -1) FROM Project p WHERE p.careerHistoryId = :careerHistoryId")
     int findMaxOrderIndexByCareerHistoryId(Long careerHistoryId);
 
