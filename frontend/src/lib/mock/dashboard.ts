@@ -27,15 +27,6 @@ export type KpiCompletenessData = {
   parts: KpiCompletenessPart[];
 };
 
-export const KPI_COMPLETENESS_MOCK: KpiCompletenessData = {
-  total: 72,
-  parts: [
-    { name: "이력서", pct: 90, tone: "mint" },
-    { name: "경력 기술", pct: 70 },
-    { name: "포트폴리오", pct: 55, tone: "peach" },
-  ],
-};
-
 export type KpiCoverLettersMini = {
   k: string;
   v: number;
@@ -48,16 +39,6 @@ export type KpiCoverLettersData = {
   mini: KpiCoverLettersMini[];
 };
 
-export const KPI_COVER_LETTERS_MOCK: KpiCoverLettersData = {
-  total: 14,
-  totalUnit: "건",
-  mini: [
-    { k: "이번 달", v: 5, unit: "건" },
-    { k: "마스터", v: 6, unit: "개" },
-    { k: "변형본", v: 14, unit: "개" },
-  ],
-};
-
 export type KpiInProgressStage = {
   label: string;
   n: number;
@@ -68,17 +49,6 @@ export type KpiInProgressData = {
   total: number;
   totalUnit: string;
   stages: KpiInProgressStage[];
-};
-
-export const KPI_IN_PROGRESS_MOCK: KpiInProgressData = {
-  total: 7,
-  totalUnit: "건",
-  stages: [
-    { label: "서류", n: 3, cls: "doc" },
-    { label: "코테", n: 1, cls: "code" },
-    { label: "1차면접", n: 2, cls: "int1" },
-    { label: "2차면접", n: 1, cls: "int2" },
-  ],
 };
 
 export type ScheduleItem = {
@@ -140,32 +110,6 @@ export const UPCOMING_MOCK: ScheduleItem[] = [
     time: "16:00",
     dday: "D-6",
   },
-];
-
-export type MatchRing = {
-  percent: number;
-  position: string;
-  metricLabel: string;
-  description: string;
-};
-
-export type Gap = {
-  name: string;
-  sub: string;
-  hit: string;
-};
-
-export const MATCH_RING_MOCK: MatchRing = {
-  percent: 68,
-  position: "희망 포지션 · 백엔드",
-  metricLabel: "JD 평균 매칭률",
-  description: "최근 등록한 채용공고 8건을 기준으로, 이력과 키워드 매칭을 비교했어요.",
-};
-
-export const GAPS_MOCK: Gap[] = [
-  { name: "Kafka / MSA 운영 경험",        sub: "결제·정산 도메인 공고에서 자주 언급",   hit: "5건" },
-  { name: "대용량 트래픽 처리 (TPS 5K+)", sub: "관련 프로젝트 정량 결과 보완 추천",     hit: "4건" },
-  { name: "관측성(Observability) 도구",   sub: "Datadog · Grafana · OpenTelemetry",     hit: "3건" },
 ];
 
 export const TODAY_QUOTE_MOCK = "이번 주는 1차 면접 두 곳,\n차근히 준비해봐요.";
