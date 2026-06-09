@@ -1,36 +1,42 @@
 "use client";
 
-import { useState } from "react";
-import type { HistoryEntry } from "@/lib/mock/applications";
+import { useEffect, useState } from "react";
+import { fetchActivities } from "@/lib/api/activity";
+import type { ActivityCategory, ActivityListResponse } from "@/lib/types/activity";
+import { groupByDay } from "@/lib/activity/group";
 import { HistoryRow } from "./history-row";
 import * as Icons from "@/components/ui/icons";
 
 const Search = Icons.Search as React.ComponentType<{ size?: number }>;
 const Download = Icons.Download as React.ComponentType<{ size?: number }>;
 
-// Day grouping helper
-function groupByDay(entries: HistoryEntry[]) {
-  // For mock data: group into fixed day labels matching the mock
-  // In production this would parse entry dates
-  const day1 = entries.slice(0, 3);
-  const day2 = entries.slice(3, 5);
-  const day3 = entries.slice(5);
-  return [
-    { label: "2026.05.12 (수) · 오늘", count: day1.length, rows: day1 },
-    { label: "2026.05.11 (화)", count: day2.length, rows: day2 },
-    { label: "2026.05.09 (일)", count: day3.length, rows: day3 },
-  ].filter((g) => g.rows.length > 0);
-}
+const PAGE_SIZE = 30;
 
-type Props = {
-  entries: HistoryEntry[];
-};
+const CHIPS: { key: ActivityCategory | null; label: string; countKey?: ActivityCategory }[] = [
+  { key: null, label: "전체" },
+  { key: "STAGE", label: "전형 변경", countKey: "STAGE" },
+  { key: "COVER_LETTER", label: "자소서", countKey: "COVER_LETTER" },
+  { key: "NOTIFICATION", label: "알림", countKey: "NOTIFICATION" },
+  { key: "APPLICATION", label: "지원 등록", countKey: "APPLICATION" },
+];
 
-export function HistoryView({ entries }: Props) {
-  const [sort, setSort] = useState("recent");
+export function HistoryView() {
+  const [category, setCategory] = useState<ActivityCategory | null>(null);
+  const [page, setPage] = useState(0);
+  const [data, setData] = useState<ActivityListResponse | null>(null);
+  const [error, setError] = useState<string | undefined>();
 
-  const isEmpty = entries.length === 0;
-  const groups = isEmpty ? [] : groupByDay(entries);
+  useEffect(() => {
+    let cancelled = false;
+    fetchActivities({ category: category ?? undefined, page, size: PAGE_SIZE })
+      .then((res) => { if (!cancelled) { setError(undefined); setData(res); } })
+      .catch((e) => { if (!cancelled) { setData(null); setError(e instanceof Error ? e.message : "활동 기록을 불러오지 못했어요."); } });
+    return () => { cancelled = true; };
+  }, [category, page]);
+
+  const totalAll = data ? Object.values(data.counts).reduce((a, b) => a + b, 0) : 0;
+  const groups = data ? groupByDay(data.activities, new Date()) : [];
+  const isEmpty = data !== null && data.activities.length === 0;
 
   return (
     <>
@@ -40,35 +46,50 @@ export function HistoryView({ entries }: Props) {
           <div className="sub">지원 일정 · 전형 단계 · 결과의 모든 변경 로그를 시간 역순으로 보여드려요.</div>
         </div>
         <div className="actions">
-          <button className="btn ghost sm"><Search size={12} /> 검색</button>
-          <button className="btn secondary sm"><Download size={12} /> 내보내기</button>
+          <button className="btn ghost sm" disabled><Search size={12} /> 검색</button>
+          <button className="btn secondary sm" disabled><Download size={12} /> 내보내기</button>
         </div>
       </section>
 
       <div className="kan-toolbar">
         <div className="filter-chips">
-          <button className="active">전체 <span className="n">142</span></button>
-          <button>전형 변경 <span className="n">38</span></button>
-          <button>자소서 <span className="n">52</span></button>
-          <button>알림 <span className="n">29</span></button>
-          <button>지원 등록 <span className="n">23</span></button>
-        </div>
-        <div className="sort">
-          <span className="lbl">정렬</span>
-          <div className="seg">
-            <button className={sort === "recent" ? "active" : ""} onClick={() => setSort("recent")}>시간 역순</button>
-            <button className={sort === "co" ? "active" : ""} onClick={() => setSort("co")}>회사별</button>
-          </div>
+          {CHIPS.map((c) => {
+            const n = c.key === null ? totalAll : data?.counts[c.countKey!] ?? 0;
+            return (
+              <button
+                key={c.label}
+                className={category === c.key ? "active" : ""}
+                type="button"
+                onClick={() => { setCategory(c.key); setPage(0); }}
+              >
+                {c.label} <span className="n">{n}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {isEmpty ? (
+      {error && (
+        <section className="history">
+          <div role="alert" style={{ padding: "24px", color: "var(--color-semantic-error)" }}>{error}</div>
+        </section>
+      )}
+
+      {!error && data === null && (
+        <section className="history">
+          <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--color-text-muted)" }}>불러오는 중…</div>
+        </section>
+      )}
+
+      {!error && isEmpty && (
         <section className="history">
           <div style={{ padding: "48px 24px", textAlign: "center", color: "var(--color-text-muted)" }}>
             아직 활동 기록이 없어요. 지원서를 등록하면 히스토리가 쌓여요.
           </div>
         </section>
-      ) : (
+      )}
+
+      {!error && data && !isEmpty && (
         <section className="history">
           {groups.map((group) => (
             <div key={group.label}>
@@ -91,16 +112,11 @@ export function HistoryView({ entries }: Props) {
           ))}
 
           <div className="history-pager">
-            <span className="meta">전체 <b>142</b>건 · <b>1–30</b> 보기</span>
+            <span className="meta">전체 <b>{data.totalCount}</b>건 · <b>{page * PAGE_SIZE + 1}–{page * PAGE_SIZE + data.activities.length}</b> 보기</span>
             <nav className="pg">
-              <a className="disabled" aria-disabled="true">‹</a>
-              <a className="active">1</a>
-              <a>2</a>
-              <a>3</a>
-              <a>4</a>
-              <span className="ellipsis">…</span>
-              <a>5</a>
-              <a>›</a>
+              <a className={page === 0 ? "disabled" : ""} aria-disabled={page === 0} onClick={() => page > 0 && setPage(page - 1)}>‹</a>
+              <a className="active">{page + 1}</a>
+              <a className={!data.hasNext ? "disabled" : ""} aria-disabled={!data.hasNext} onClick={() => data.hasNext && setPage(page + 1)}>›</a>
             </nav>
           </div>
         </section>
