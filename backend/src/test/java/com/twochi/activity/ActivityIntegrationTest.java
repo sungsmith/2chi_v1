@@ -2,7 +2,16 @@ package com.twochi.activity;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twochi.activity.repository.ActivityLogRepository;
+import com.twochi.application.repository.ApplicationRepository;
+import com.twochi.application.repository.EventRepository;
+import com.twochi.consent.repository.ConsentLogRepository;
+import com.twochi.coverletter.repository.CoverLetterVariantRepository;
 import com.twochi.posting.keyword.KeywordExtractor;
+import com.twochi.posting.repository.JobPostingRepository;
+import com.twochi.user.repository.ProfileRepository;
+import com.twochi.user.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +45,43 @@ class ActivityIntegrationTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper om;
     @Autowired private RedisConnectionFactory redis;
+    @Autowired private ActivityLogRepository activityLogRepository;
+    @Autowired private ApplicationRepository applicationRepository;
+    @Autowired private EventRepository eventRepository;
+    @Autowired private CoverLetterVariantRepository variantRepository;
+    @Autowired private JobPostingRepository postingRepository;
+    @Autowired private ProfileRepository profileRepository;
+    @Autowired private ConsentLogRepository consentLogRepository;
+    @Autowired private UserRepository userRepository;
     @MockBean private KeywordExtractor keywordExtractor;
 
     private String token;
     private Long postingId;
 
+    // 영속 테스트 DB(로컬 Postgres) — @DirtiesContext 가 DB 를 리셋하지 않으므로
+    // 메서드 간 격리를 위해 직접 정리. deleteAllInBatch 는 엔티티 로드 없이 bulk DELETE 라
+    // 암호화 컬럼(profile)의 stale 데이터 복호화 시도를 피한다. FK 순서: 자식 → 부모.
+    private void clean() {
+        activityLogRepository.deleteAllInBatch();
+        eventRepository.deleteAllInBatch();
+        applicationRepository.deleteAllInBatch();
+        variantRepository.deleteAllInBatch();
+        postingRepository.deleteAllInBatch();
+        profileRepository.deleteAllInBatch();
+        consentLogRepository.deleteAllInBatch();
+        userRepository.deleteAllInBatch();
+        redis.getConnection().serverCommands().flushDb();
+    }
+
+    @AfterEach
+    void tearDown() {
+        clean();
+    }
+
     @BeforeEach
     void setUp() throws Exception {
         when(keywordExtractor.extract(any(), any(), any())).thenReturn(List.of());
-        redis.getConnection().serverCommands().flushDb();
+        clean();
 
         mockMvc.perform(post("/api/v1/auth/signup").contentType(MediaType.APPLICATION_JSON)
             .content(om.writeValueAsString(Map.of(
@@ -83,5 +120,47 @@ class ActivityIntegrationTest {
     void category_파라미터_파싱() throws Exception {
         mockMvc.perform(get("/api/v1/activities?category=STAGE")
             .header("Authorization", "Bearer " + token)).andExpect(status().isOk());
+    }
+
+    @Test
+    void 지원_등록_시_APPLICATION_CREATED_활동_로그_생성() throws Exception {
+        mockMvc.perform(post("/api/v1/applications")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("postingId", postingId)))).andExpect(status().isCreated());
+
+        await().atMost(ofSeconds(5)).untilAsserted(() -> {
+            MvcResult r = mockMvc.perform(get("/api/v1/activities")
+                .header("Authorization", "Bearer " + token)).andExpect(status().isOk()).andReturn();
+            JsonNode body = om.readTree(r.getResponse().getContentAsString());
+            assertThat(body.get("totalCount").asInt()).isGreaterThanOrEqualTo(1);
+            JsonNode first = body.get("activities").get(0);
+            assertThat(first.get("type").asText()).isEqualTo("APPLICATION_CREATED");
+            assertThat(first.get("subject").asText()).contains("네이버");
+            assertThat(body.get("counts").get("APPLICATION").asInt()).isGreaterThanOrEqualTo(1);
+        });
+    }
+
+    @Test
+    void 전형_변경_시_STAGE_CHANGED_from_to_기록() throws Exception {
+        MvcResult cr = mockMvc.perform(post("/api/v1/applications")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("postingId", postingId)))).andReturn();
+        Long appId = om.readTree(cr.getResponse().getContentAsString()).get("id").asLong();
+
+        mockMvc.perform(patch("/api/v1/applications/" + appId)
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("currentStage", "FIRST_INTERVIEW")))).andExpect(status().isOk());
+
+        await().atMost(ofSeconds(5)).untilAsserted(() -> {
+            MvcResult r = mockMvc.perform(get("/api/v1/activities?category=STAGE")
+                .header("Authorization", "Bearer " + token)).andReturn();
+            JsonNode body = om.readTree(r.getResponse().getContentAsString());
+            assertThat(body.get("totalCount").asInt()).isGreaterThanOrEqualTo(1);
+            JsonNode first = body.get("activities").get(0);
+            assertThat(first.get("type").asText()).isEqualTo("STAGE_CHANGED");
+            assertThat(first.get("fromLabel").asText()).isEqualTo("서류 제출");
+            assertThat(first.get("toLabel").asText()).isEqualTo("1차 면접");
+            assertThat(first.get("suffix").asText()).contains("변경됐어요");
+        });
     }
 }
