@@ -11,7 +11,7 @@ const CL_NAV: NavItem[] = [
     label: "자소서",
     href: "/cover-letters",
     pill: "14",
-    pillTitle: "휴지통 제외 자소서 전체 수 (마스터 + 변형본)",
+    pillTitle: "휴지통 제외 자소서 전체 수",
   },
   { id: "cl-statement", label: "경력기술서", href: "/cover-letters/career-statement" },
 ];
