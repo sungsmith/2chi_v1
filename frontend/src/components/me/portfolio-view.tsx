@@ -94,6 +94,7 @@ export function PortfolioView() {
   }
 
   async function handleFileDownload(id: number) {
+    setFileError(undefined);
     try {
       const url = await getPortfolioFileDownloadUrl(id);
       window.location.assign(url);
@@ -103,6 +104,7 @@ export function PortfolioView() {
   }
 
   async function handleFileDelete(id: number) {
+    setFileError(undefined);
     try {
       await deletePortfolioFile(id);
       loadFiles();

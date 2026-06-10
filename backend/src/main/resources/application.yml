@@ -44,7 +44,7 @@ minio:
   endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
   access-key: ${MINIO_ROOT_USER:}
   secret-key: ${MINIO_ROOT_PASSWORD:}
-  bucket: ${MINIO_BUCKET:portfolio}
+  bucket: ${MINIO_BUCKET:twochi-portfolio}
 
 server:
   port: ${SERVER_PORT:8080}
