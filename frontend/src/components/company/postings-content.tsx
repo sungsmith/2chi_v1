@@ -6,6 +6,7 @@ import { PostingCard } from "./posting-card";
 import { PostingEditModal } from "./posting-edit-modal";
 import { fetchPostings, patchPosting, deletePosting } from "@/lib/api/posting";
 import { fetchApplications } from "@/lib/api/application";
+import { fetchPostingMatches } from "@/lib/api/match";
 import type { JobPosting, JobPostingPatchRequest } from "@/lib/types/posting";
 
 const Ico = {
@@ -26,6 +27,7 @@ export function PostingsContent() {
   const [error, setError] = useState<string | undefined>();
   const [editing, setEditing] = useState<JobPosting | null>(null);
   const [appMap, setAppMap] = useState<Record<number, number>>({});
+  const [matchMap, setMatchMap] = useState<Record<number, number>>({});
   const [filter, setFilter] = useState<"all" | "active" | "closed">("all");
   const [search, setSearch] = useState("");
 
@@ -38,6 +40,14 @@ export function PostingsContent() {
         setAppMap(m);
       })
       .catch((e) => setError(e instanceof Error ? e.message : "공고를 불러오지 못했어요."));
+    // 공고별 매칭률 — 실패해도 목록엔 영향 없음
+    fetchPostingMatches()
+      .then((ms) => {
+        const mm: Record<number, number> = {};
+        for (const m of ms) mm[m.postingId] = m.percent;
+        setMatchMap(mm);
+      })
+      .catch(() => {});
   }, []);
 
   async function handlePatch(id: number, patch: JobPostingPatchRequest) {
@@ -144,6 +154,7 @@ export function PostingsContent() {
             <PostingCard
               key={p.id}
               posting={p}
+              match={matchMap[p.id]}
               applicationId={appMap[p.id] ?? null}
               onEdit={() => setEditing(p)}
               onDelete={() => handleDelete(p.id)}

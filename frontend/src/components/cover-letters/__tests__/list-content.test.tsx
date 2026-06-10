@@ -6,6 +6,9 @@ const groupedMock = vi.fn();
 vi.mock("@/lib/api/cover-letter", () => ({
   fetchVariantsGrouped: (...a: unknown[]) => groupedMock(...a),
 }));
+vi.mock("@/lib/api/match", () => ({
+  fetchPostingMatches: vi.fn().mockResolvedValue([]),
+}));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
 }));

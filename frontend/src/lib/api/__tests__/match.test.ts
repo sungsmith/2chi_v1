@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const httpMock = vi.fn();
 vi.mock("@/lib/api/http", () => ({ http: (...a: unknown[]) => httpMock(...a) }));
 
-import { fetchDashboardMatch } from "../match";
+import { fetchDashboardMatch, fetchPostingMatches } from "../match";
 
 beforeEach(() => httpMock.mockReset());
 
@@ -14,5 +14,14 @@ describe("fetchDashboardMatch", () => {
     const res = await fetchDashboardMatch();
     expect(httpMock).toHaveBeenCalledWith("/api/v1/me/match/dashboard");
     expect(res).toEqual(payload);
+  });
+});
+
+describe("fetchPostingMatches", () => {
+  it("엔드포인트 호출 + {matches} 언래핑", async () => {
+    httpMock.mockResolvedValue({ json: async () => ({ matches: [{ postingId: 7, percent: 50 }] }) });
+    const res = await fetchPostingMatches();
+    expect(httpMock).toHaveBeenCalledWith("/api/v1/me/match/postings");
+    expect(res).toEqual([{ postingId: 7, percent: 50 }]);
   });
 });

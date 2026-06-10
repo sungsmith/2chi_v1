@@ -5,6 +5,7 @@ import type { JobPosting } from "@/lib/types/posting";
 
 type Props = {
   posting: JobPosting;
+  match?: number;
   applicationId: number | null;
   onEdit: () => void;
   onDelete: () => void;
@@ -46,7 +47,7 @@ function srcClass(source: string): string {
   return "manual";
 }
 
-export function PostingCard({ posting, onEdit }: Props) {
+export function PostingCard({ posting, match, onEdit }: Props) {
   const { label: ddayLabel, soon, closed } = computeDday(posting.deadline);
   const added = formatAdded(posting.createdAt);
 
@@ -70,8 +71,11 @@ export function PostingCard({ posting, onEdit }: Props) {
         </span>
       </div>
       <div>
-        {/* match% 필드가 JobPosting 타입에 없어 생략 */}
-        <span style={{ fontSize: 11.5, color: "var(--color-text-muted)" }}>—</span>
+        {typeof match === "number" ? (
+          <span style={{ fontSize: 12, fontWeight: 600, color: "var(--color-text-primary)" }}>{match}%</span>
+        ) : (
+          <span style={{ fontSize: 11.5, color: "var(--color-text-muted)" }}>—</span>
+        )}
       </div>
       <div>
         <span className={`dday-pill${closed ? " closed" : soon ? "" : " cool"}`}>{ddayLabel}</span>
