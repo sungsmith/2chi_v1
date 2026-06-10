@@ -11,7 +11,22 @@ vi.mock("@/lib/api/portfolio", () => ({
   updatePortfolioLink: vi.fn(),
 }));
 
-beforeEach(() => { fetchMock.mockReset(); deleteMock.mockReset(); });
+const filesMock = vi.fn();
+const fileDeleteMock = vi.fn();
+vi.mock("@/lib/api/portfolio-file", () => ({
+  fetchPortfolioFiles: (...a: unknown[]) => filesMock(...a),
+  uploadPortfolioFile: vi.fn().mockResolvedValue({ id: 1 }),
+  getPortfolioFileDownloadUrl: vi.fn().mockResolvedValue("http://x/y"),
+  deletePortfolioFile: (...a: unknown[]) => fileDeleteMock(...a),
+}));
+
+beforeEach(() => {
+  fetchMock.mockReset();
+  deleteMock.mockReset();
+  filesMock.mockReset();
+  fileDeleteMock.mockReset();
+  filesMock.mockResolvedValue([]);
+});
 
 describe("PortfolioView", () => {
   it("빈 상태 안내", async () => {
@@ -40,10 +55,29 @@ describe("PortfolioView", () => {
     await waitFor(() => expect(deleteMock).toHaveBeenCalledWith(9));
   });
 
-  it("파일 업로드 버튼은 비활성(준비 중)", async () => {
+  it("파일 업로드 버튼 활성화", async () => {
     fetchMock.mockResolvedValue([]);
     render(<PortfolioView />);
     await screen.findByText(/아직 등록된 포트폴리오가 없어요/);
-    expect(screen.getByText(/파일 업로드/)).toBeDisabled();
+    expect(screen.getByText(/파일 업로드/)).not.toBeDisabled();
+  });
+
+  it("파일 목록 렌더 + 업로드 버튼 활성화", async () => {
+    fetchMock.mockResolvedValue([]);
+    filesMock.mockResolvedValue([{ id: 1, filename: "이력서.pdf", contentType: "application/pdf", sizeBytes: 2516582, createdAt: "2026-06-10T00:00:00Z" }]);
+    render(<PortfolioView />);
+    expect(await screen.findByText("이력서.pdf")).toBeInTheDocument();
+    expect(screen.getByText("2.4MB")).toBeInTheDocument();
+    expect(screen.getByText(/파일 업로드/)).not.toBeDisabled();
+  });
+
+  it("파일 삭제 → deletePortfolioFile 호출", async () => {
+    fetchMock.mockResolvedValue([]);
+    filesMock.mockResolvedValue([{ id: 9, filename: "a.pdf", contentType: "application/pdf", sizeBytes: 1024, createdAt: "2026-06-10T00:00:00Z" }]);
+    fileDeleteMock.mockResolvedValue(undefined);
+    render(<PortfolioView />);
+    await screen.findByText("a.pdf");
+    fireEvent.click(screen.getByLabelText("파일 삭제"));
+    await waitFor(() => expect(fileDeleteMock).toHaveBeenCalledWith(9));
   });
 });
