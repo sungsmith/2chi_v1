@@ -54,7 +54,7 @@ vi.mock("next/link", () => ({
 const baseProfile = {
   name: "김소미", birthDate: "1998-01-01", phone: "010-1111-2222",
   region: null, introduction: null, // 5개 중 3개 → 60%
-  target: null, careerYear: null, targetJobs: [], onboardingCompleted: true,
+  target: "JOB_CHANGE", careerYear: 2, targetJobs: ["BACKEND"], onboardingCompleted: true,
 };
 
 const variantGroups: VariantListGroup[] = [
@@ -95,11 +95,12 @@ afterEach(() => {
 });
 
 describe("DashboardContent", () => {
-  test("온보딩 완료자: 닉네임 + 부제 태그 3개 + HomeBanner 미표시", () => {
+  test("온보딩 완료자: 닉네임 + 프로필 기반 부제 태그 + HomeBanner 미표시", async () => {
+    vi.useRealTimers(); // 태그는 fetchProfile 이후 비동기 로드
     render(<DashboardContent />);
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/김소미님/);
-    expect(screen.getByText("백엔드")).toBeInTheDocument();
-    expect(screen.getByText("중고신입 (2년차)")).toBeInTheDocument();
+    expect(await screen.findByText("백엔드")).toBeInTheDocument();
+    expect(screen.getByText("2년차")).toBeInTheDocument();
     expect(screen.getByText("이직 준비 중")).toBeInTheDocument();
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });

@@ -1,15 +1,15 @@
 "use client";
 
 import { MascotCloud } from "@/components/ui/mascot-cloud";
-import { GREETING_TAGS } from "@/lib/mock/dashboard";
+import type { GreetingTag } from "@/lib/mock/dashboard";
 
 type Props = {
   nickname: string;
-  showTags: boolean;
+  tags: GreetingTag[];
   todayQuote?: string;
 };
 
-export function Greeting({ nickname, showTags, todayQuote }: Props) {
+export function Greeting({ nickname, tags, todayQuote }: Props) {
   return (
     <section className="greet">
       <div className="greet-text">
@@ -22,11 +22,11 @@ export function Greeting({ nickname, showTags, todayQuote }: Props) {
         <p className="line2">
           오늘도 이취가 다가오는 일정과 작성 흐름을 같이 정리해드릴게요. 내 이력과 지원 현황을 기준으로, 이번 주에 챙기면 좋을 준비를 모아뒀어요.
         </p>
-        {showTags && (
+        {tags.length > 0 && (
           <div className="greet-tags">
-            {GREETING_TAGS.map((t) => (
+            {tags.map((t) => (
               <span key={t.label} className={`greet-tag${t.tone ? ` ${t.tone}` : ""}`}>
-                <span className="swatch" />
+                <span className="sw" />
                 {t.label}
               </span>
             ))}

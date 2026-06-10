@@ -20,10 +20,12 @@ import {
   computeCoverLetters,
   computeInProgress,
 } from "@/lib/dashboard/aggregate";
+import { buildGreetingTags } from "@/lib/dashboard/greeting-tags";
 import type {
   KpiCompletenessData,
   KpiCoverLettersData,
   KpiInProgressData,
+  GreetingTag,
 } from "@/lib/mock/dashboard";
 import { TODAY_QUOTE_MOCK } from "@/lib/mock/dashboard";
 
@@ -36,6 +38,7 @@ type KpiData = {
 export function DashboardContent() {
   const { user } = useAuth();
   const [kpi, setKpi] = useState<KpiData | null>(null);
+  const [tags, setTags] = useState<GreetingTag[]>([]);
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
@@ -52,6 +55,7 @@ export function DashboardContent() {
           coverLetters: computeCoverLetters(variants, new Date()),
           inProgress: computeInProgress(apps),
         });
+        setTags(buildGreetingTags(profile));
       })
       .catch((e) =>
         setError(e instanceof Error ? e.message : "대시보드 정보를 불러오지 못했어요.")
@@ -65,7 +69,7 @@ export function DashboardContent() {
       <HomeBanner />
       <Greeting
         nickname={user.nickname}
-        showTags={user.onboardingCompleted}
+        tags={user.onboardingCompleted ? tags : []}
         todayQuote={TODAY_QUOTE_MOCK}
       />
       {error && (
