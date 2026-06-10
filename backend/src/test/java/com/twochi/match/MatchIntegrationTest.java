@@ -118,7 +118,48 @@ class MatchIntegrationTest {
     }
 
     @Test
+    void 공고별_매칭률_postingId_percent() throws Exception {
+        when(keywordExtractor.extract(any(), any(), any())).thenReturn(List.of("Spring", "Kafka"));
+        mockMvc.perform(post("/api/v1/onboarding")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of(
+                "target", "EMPLOYMENT", "careerYear", 2, "targetJobs", List.of("BACKEND")))))
+            .andExpect(status().is2xxSuccessful());
+        mockMvc.perform(patch("/api/v1/me/profile")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of("introduction", "Spring 기반 결제 정산 개발 경험"))))
+            .andExpect(status().isOk());
+        MvcResult cp = mockMvc.perform(post("/api/v1/postings")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of(
+                "source", "MANUAL", "company", "네이버", "title", "백엔드", "jobRole", "백엔드"))))
+            .andExpect(status().is2xxSuccessful()).andReturn();
+        long postingId = om.readTree(cp.getResponse().getContentAsString()).get("id").asLong();
+
+        MvcResult r = mockMvc.perform(get("/api/v1/me/match/postings")
+            .header("Authorization", "Bearer " + token)).andExpect(status().isOk()).andReturn();
+        JsonNode b = om.readTree(r.getResponse().getContentAsString());
+        assertThat(b.get("matches")).hasSize(1);
+        assertThat(b.get("matches").get(0).get("postingId").asLong()).isEqualTo(postingId);
+        assertThat(b.get("matches").get(0).get("percent").asInt()).isEqualTo(50);
+    }
+
+    @Test
+    void 공고별_keywords_없으면_제외() throws Exception {
+        when(keywordExtractor.extract(any(), any(), any())).thenReturn(List.of());
+        mockMvc.perform(post("/api/v1/postings")
+            .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+            .content(om.writeValueAsString(Map.of(
+                "source", "MANUAL", "company", "노키워드", "title", "백엔드", "jobRole", "백엔드"))))
+            .andExpect(status().is2xxSuccessful());
+        MvcResult r = mockMvc.perform(get("/api/v1/me/match/postings")
+            .header("Authorization", "Bearer " + token)).andReturn();
+        assertThat(om.readTree(r.getResponse().getContentAsString()).get("matches")).isEmpty();
+    }
+
+    @Test
     void 인증_없으면_401() throws Exception {
         mockMvc.perform(get("/api/v1/me/match/dashboard")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/v1/me/match/postings")).andExpect(status().isUnauthorized());
     }
 }

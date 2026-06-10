@@ -4,6 +4,7 @@ import com.twochi.auth.jwt.JwtAuthenticationFilter.AuthenticatedUser;
 import com.twochi.common.exception.BusinessException;
 import com.twochi.common.exception.ErrorCode;
 import com.twochi.match.dto.DashboardMatchResponse;
+import com.twochi.match.dto.PostingMatchResponse;
 import com.twochi.match.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,5 +23,11 @@ public class MatchController {
     public DashboardMatchResponse dashboard(@AuthenticationPrincipal AuthenticatedUser principal) {
         if (principal == null) throw new BusinessException(ErrorCode.UNAUTHENTICATED);
         return matchService.computeDashboardMatch(principal.userId());
+    }
+
+    @GetMapping("/postings")
+    public PostingMatchResponse postings(@AuthenticationPrincipal AuthenticatedUser principal) {
+        if (principal == null) throw new BusinessException(ErrorCode.UNAUTHENTICATED);
+        return matchService.computePostingMatches(principal.userId());
     }
 }

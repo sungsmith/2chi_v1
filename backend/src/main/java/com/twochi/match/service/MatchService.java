@@ -6,6 +6,7 @@ import com.twochi.career.repository.CareerRepository;
 import com.twochi.career.repository.ProjectRepository;
 import com.twochi.match.dto.DashboardMatchResponse;
 import com.twochi.match.dto.DashboardMatchResponse.Gap;
+import com.twochi.match.dto.PostingMatchResponse;
 import com.twochi.posting.domain.JobPosting;
 import com.twochi.posting.repository.JobPostingRepository;
 import com.twochi.user.domain.Profile;
@@ -97,5 +98,24 @@ public class MatchService {
             outcomes.add(o);
         }
         return aggregate(outcomes);
+    }
+
+    @Transactional(readOnly = true)
+    public PostingMatchResponse computePostingMatches(Long userId) {
+        List<Career> careers = careerRepository.findAllByUserIdOrderByOrderIndexDesc(userId);
+        List<Project> projects = projectRepository.findAllByUserId(userId);
+        String introduction = profileRepository.findById(userId).map(Profile::getIntroduction).orElse(null);
+        String corpus = buildCorpus(careers, projects, introduction);
+
+        List<PostingMatchResponse.PostingMatch> matches = new ArrayList<>();
+        for (JobPosting p : postingRepository.findAllByUserIdOrderByCreatedAtDesc(userId)) {
+            String[] kws = p.getKeywords();
+            if (kws == null || kws.length == 0) continue;
+            MatchOutcome o = matchOne(corpus, kws);
+            if (o.total() == 0) continue;
+            int percent = Math.round(o.matched() * 100f / o.total());
+            matches.add(new PostingMatchResponse.PostingMatch(p.getId(), percent));
+        }
+        return new PostingMatchResponse(matches);
     }
 }
