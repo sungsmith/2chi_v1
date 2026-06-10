@@ -19,6 +19,9 @@ vi.mock("@/lib/api/application", () => ({
 vi.mock("@/lib/api/company-analysis", () => ({
   fetchAnalysisByCompany: vi.fn().mockResolvedValue({ id: null, company: "" }),
 }));
+vi.mock("@/lib/api/match", () => ({
+  fetchPostingMatches: vi.fn().mockResolvedValue([]),
+}));
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn(), back: vi.fn(), replace: vi.fn() }),
   usePathname: () => "/company/postings",

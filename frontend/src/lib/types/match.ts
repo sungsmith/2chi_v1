@@ -5,3 +5,5 @@ export type DashboardMatch = {
   postingCount: number;
   gaps: MatchGap[];
 };
+
+export type PostingMatch = { postingId: number; percent: number };

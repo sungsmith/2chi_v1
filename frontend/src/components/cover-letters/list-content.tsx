@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as Ico from "@/components/ui/icons";
 import { fetchVariantsGrouped } from "@/lib/api/cover-letter";
+import { fetchPostingMatches } from "@/lib/api/match";
 import { type VariantListGroup } from "@/lib/types/cover-letter";
 import { CL_FILTERS } from "@/lib/mock/cover-letters";
 import { ClCard } from "./cl-card";
@@ -11,6 +12,7 @@ import { ClCard } from "./cl-card";
 export function CoverLetterListContent() {
   const router = useRouter();
   const [groups, setGroups] = useState<VariantListGroup[] | null>(null);
+  const [matchMap, setMatchMap] = useState<Map<number, number>>(new Map());
   const [error, setError] = useState<string | undefined>();
 
   useEffect(() => {
@@ -19,6 +21,10 @@ export function CoverLetterListContent() {
       .catch((e) =>
         setError(e instanceof Error ? e.message : "자소서를 불러오지 못했어요.")
       );
+    // 공고별 매칭률 — 실패해도 목록 자체엔 영향 없음(바만 생략)
+    fetchPostingMatches()
+      .then((ms) => setMatchMap(new Map(ms.map((m) => [m.postingId, m.percent]))))
+      .catch(() => {});
   }, []);
 
   return (
@@ -102,7 +108,7 @@ export function CoverLetterListContent() {
                   title: `${g.posting.company} · ${v.itemType}`,
                   co: g.posting.company,
                   pos: g.posting.title ?? "",
-                  match: 0,
+                  match: g.posting.id != null ? matchMap.get(g.posting.id) : undefined,
                   updated: v.updatedAt.slice(0, 10),
                   dday: null,
                   status: v.status === "COMPLETED" ? "ready" : "draft",

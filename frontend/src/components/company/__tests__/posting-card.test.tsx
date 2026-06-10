@@ -87,4 +87,17 @@ describe("PostingCard", () => {
     />);
     expect(screen.getByText("마감")).toBeInTheDocument();
   });
+
+  it("match prop 있으면 매칭률 %, 없으면 —", () => {
+    const { rerender } = render(<PostingCard
+      posting={POSTING as never} match={73}
+      applicationId={null} onEdit={vi.fn()} onDelete={vi.fn()} onApplied={vi.fn()}
+    />);
+    expect(screen.getByText("73%")).toBeInTheDocument();
+    rerender(<PostingCard
+      posting={POSTING as never}
+      applicationId={null} onEdit={vi.fn()} onDelete={vi.fn()} onApplied={vi.fn()}
+    />);
+    expect(screen.getByText("—")).toBeInTheDocument();
+  });
 });
