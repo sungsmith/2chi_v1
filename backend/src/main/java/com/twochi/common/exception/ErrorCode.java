@@ -38,7 +38,11 @@ public enum ErrorCode {
     PORTFOLIO_LINK_NOT_FOUND(HttpStatus.NOT_FOUND, "포트폴리오 링크를 찾을 수 없어요."),
     CERTIFICATE_NOT_FOUND(HttpStatus.NOT_FOUND, "자격증 정보를 찾을 수 없어요."),
     EXPERIENCE_NOT_FOUND(HttpStatus.NOT_FOUND, "경험 정보를 찾을 수 없어요."),
-    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "프로필 정보를 찾을 수 없어요.");
+    PROFILE_NOT_FOUND(HttpStatus.NOT_FOUND, "프로필 정보를 찾을 수 없어요."),
+    PORTFOLIO_FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "포트폴리오 파일을 찾을 수 없어요."),
+    UNSUPPORTED_FILE_TYPE(HttpStatus.BAD_REQUEST, "지원하지 않는 파일 형식이에요. (PDF·PNG·JPG)"),
+    FILE_TOO_LARGE(HttpStatus.PAYLOAD_TOO_LARGE, "파일이 너무 커요. 10MB 이하만 올릴 수 있어요."),
+    FILE_LIMIT_EXCEEDED(HttpStatus.CONFLICT, "포트폴리오 파일은 최대 10개까지 올릴 수 있어요.");
 
     private final HttpStatus status;
     private final String defaultMessage;

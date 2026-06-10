@@ -6,6 +6,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity
             .status(ErrorCode.VALIDATION_FAILED.status())
             .body(ErrorResponse.of(ErrorCode.VALIDATION_FAILED, "요청 본문을 해석할 수 없습니다.", traceId));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUpload(MaxUploadSizeExceededException ex) {
+        String traceId = UUID.randomUUID().toString();
+        return ResponseEntity
+            .status(ErrorCode.FILE_TOO_LARGE.status())
+            .body(ErrorResponse.of(ErrorCode.FILE_TOO_LARGE, ErrorCode.FILE_TOO_LARGE.defaultMessage(), traceId));
     }
 
     @ExceptionHandler(Exception.class)

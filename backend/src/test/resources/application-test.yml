@@ -10,6 +10,12 @@ spring:
     redis:
       database: ${TEST_REDIS_DB:1}
 
+minio:
+  endpoint: http://localhost:9000
+  access-key: test-access-key
+  secret-key: test-secret-key
+  bucket: portfolio-test
+
 openai:
   api-key: test-key-noop
 

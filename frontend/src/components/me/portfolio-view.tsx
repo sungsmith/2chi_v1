@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Edit, Trash, Link as LinkIco } from "@/components/ui/icons";
+import { useEffect, useRef, useState } from "react";
+import { Edit, Trash, Link as LinkIco, FileEdit, Download } from "@/components/ui/icons";
 import { fetchPortfolioLinks, deletePortfolioLink } from "@/lib/api/portfolio";
+import { fetchPortfolioFiles, uploadPortfolioFile, getPortfolioFileDownloadUrl, deletePortfolioFile } from "@/lib/api/portfolio-file";
 import type { PortfolioLink, PortfolioLinkKind } from "@/lib/types/me-portfolio";
+import type { PortfolioFile } from "@/lib/types/me-portfolio-file";
 import { PortfolioModal } from "./portfolio-modal";
 
 const GitHubSvg = () => (
@@ -23,6 +25,11 @@ const UploadSvg = () => (
     <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
   </svg>
 );
+
+function formatFileSize(bytes: number): string {
+  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)}MB`;
+  return `${Math.max(1, Math.round(bytes / 1024))}KB`;
+}
 
 function toneClass(kind: PortfolioLinkKind): string {
   if (kind === "NOTION") return " lav";
@@ -46,6 +53,9 @@ export function PortfolioView() {
   const [error, setError] = useState<string | undefined>();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<PortfolioLink | undefined>();
+  const [files, setFiles] = useState<PortfolioFile[] | null>(null);
+  const [fileError, setFileError] = useState<string | undefined>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   function load() {
     fetchPortfolioLinks()
@@ -54,12 +64,52 @@ export function PortfolioView() {
   }
   useEffect(() => { load(); }, []);
 
+  function loadFiles() {
+    fetchPortfolioFiles()
+      .then(setFiles)
+      .catch((e) => setFileError(e instanceof Error ? e.message : "파일을 불러오지 못했어요."));
+  }
+  useEffect(() => { loadFiles(); }, []);
+
   async function handleDelete(id: number) {
     try {
       await deletePortfolioLink(id);
       load();
     } catch (e) {
       setError(e instanceof Error ? e.message : "삭제하지 못했어요.");
+    }
+  }
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setFileError(undefined);
+    try {
+      await uploadPortfolioFile(file);
+      loadFiles();
+    } catch (err) {
+      setFileError(err instanceof Error ? err.message : "업로드에 실패했어요.");
+    }
+  }
+
+  async function handleFileDownload(id: number) {
+    setFileError(undefined);
+    try {
+      const url = await getPortfolioFileDownloadUrl(id);
+      window.location.assign(url);
+    } catch (err) {
+      setFileError(err instanceof Error ? err.message : "다운로드에 실패했어요.");
+    }
+  }
+
+  async function handleFileDelete(id: number) {
+    setFileError(undefined);
+    try {
+      await deletePortfolioFile(id);
+      loadFiles();
+    } catch (err) {
+      setFileError(err instanceof Error ? err.message : "삭제에 실패했어요.");
     }
   }
 
@@ -73,9 +123,16 @@ export function PortfolioView() {
           <button className="btn secondary sm" onClick={() => { setEditing(undefined); setModalOpen(true); }}>
             <LinkIco size={13} /> 링크 추가
           </button>
-          <button className="btn secondary sm" disabled title="곧 제공될 기능이에요">
-            <UploadSvg /> 파일 업로드 (준비 중)
+          <button className="btn secondary sm" type="button" onClick={() => fileInputRef.current?.click()}>
+            <UploadSvg /> 파일 업로드
           </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/pdf,image/png,image/jpeg"
+            style={{ display: "none" }}
+            onChange={handleUpload}
+          />
         </div>
       </div>
 
@@ -103,6 +160,26 @@ export function PortfolioView() {
           ))}
         </div>
       )}
+
+      {files && files.length > 0 && (
+        <div className="list" style={{ marginTop: 8 }}>
+          {files.map((f) => (
+            <div key={f.id} className="list-row">
+              <span className="badge-ico"><FileEdit size={16} /></span>
+              <div className="body">
+                <div className="nm">{f.filename}</div>
+                <div className="meta">{formatFileSize(f.sizeBytes)}</div>
+              </div>
+              <span className="kind-pill">파일</span>
+              <div className="actions">
+                <button className="iconbtn" aria-label="파일 다운로드" type="button" onClick={() => handleFileDownload(f.id)}><Download size={14} /></button>
+                <button className="iconbtn" aria-label="파일 삭제" type="button" onClick={() => handleFileDelete(f.id)}><Trash size={14} /></button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {fileError && <div role="alert" style={{ color: "var(--color-semantic-error)", fontSize: 13, marginTop: 6 }}>{fileError}</div>}
 
       {modalOpen && (
         <PortfolioModal
