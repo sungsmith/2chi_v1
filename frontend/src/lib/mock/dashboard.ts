@@ -10,12 +10,6 @@ export type GreetingTag = {
   tone?: "mint" | "lav" | "peach"; // .greet-tag.mint/.lav/.peach 매핑
 };
 
-export const GREETING_TAGS: GreetingTag[] = [
-  { label: "백엔드" },
-  { label: "중고신입 (2년차)", tone: "mint" },
-  { label: "이직 준비 중", tone: "lav" },
-];
-
 export type KpiCompletenessPart = {
   name: string;
   pct: number;
