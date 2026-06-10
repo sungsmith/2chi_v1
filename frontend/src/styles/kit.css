@@ -4466,6 +4466,7 @@ button.switch:disabled {
 .onb-welcome .card h3 { font-family: var(--font-family-hand); font-size: 30px; font-weight: 400; margin: 18px 0 8px; letter-spacing: 0; }
 .onb-welcome .card p  { font-size: 14px; color: var(--color-text-secondary); line-height: 1.65; margin: 0 0 24px; }
 .onb-welcome .summary {
+  width: 100%;
   text-align: left;
   background: var(--color-surface-soft);
   border-radius: var(--radius-md);
@@ -4473,11 +4474,11 @@ button.switch:disabled {
   margin-bottom: 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
-.onb-welcome .summary .row { display: flex; justify-content: space-between; font-size: 12.5px; }
-.onb-welcome .summary .row b    { font-weight: 600; }
-.onb-welcome .summary .row span { color: var(--color-text-muted); }
+.onb-welcome .summary .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; font-size: 12.5px; }
+.onb-welcome .summary .row b    { font-weight: 600; flex-shrink: 0; color: var(--color-text-secondary); }
+.onb-welcome .summary .row span { color: var(--color-text-primary); font-weight: 500; text-align: right; }
 .onb-welcome .card .mascot-cloud { display: inline-block; margin-bottom: 4px; }
 
 /* Responsive */
