@@ -1,3 +1,15 @@
+# 테스트는 개발/도그푸딩 DB(twochi)와 분리된 별도 DB·Redis 인덱스를 쓴다.
+# 로컬: ./gradlew test 는 .env 를 소싱하지 않으므로 DB_NAME 미설정 → twochi_test 사용
+#       (도그푸딩 데이터가 든 twochi 는 절대 건드리지 않음).
+# CI:   DB_NAME=twochi 를 명시적으로 주입 → CI 의 임시 postgres(twochi) 사용(폐기되므로 무방).
+# 최초 1회 로컬 셋업: docker exec twochi-postgres psql -U twochi -d twochi -c "CREATE DATABASE twochi_test OWNER twochi;"
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5433}/${DB_NAME:twochi_test}
+  data:
+    redis:
+      database: ${TEST_REDIS_DB:1}
+
 openai:
   api-key: test-key-noop
 
